@@ -61,7 +61,17 @@ public class MainCycleDung : MonoBehaviour
 
     public void EndTurn()
     {
-       var gg= MainStates.instance.combats.FindAll(x => x.META_TAGS.Contains("CUR_BATTLE"));
-       gg[0].main.GetComponentInChildren<XDcombat>().Iteration(true);
+        StartCoroutine(DoEnemyTurn());
+    }
+
+    public IEnumerator DoEnemyTurn()
+    {
+        var gg= MainStates.instance.combats.FindAll(x => x.META_TAGS.Contains("CUR_BATTLE"));
+        for (int i = 0; i < gg.Count; i++)
+        {
+            gg[i].main.GetComponentInChildren<XDcombat>().Iteration(true);
+            yield return new WaitForSeconds(1f);
+        }
+               
     }
 }

@@ -4729,6 +4729,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!1001 &360892572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6337,12 +6338,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509082444}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.056, y: -0.21, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.08979232, y: 0.6353082, z: -0.00037569975}
+  m_LocalScale: {x: 0.37569973, y: 0.37569973, z: 0.37569973}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1480990216}
+  m_Father: {fileID: 1940004615}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &513019014
 PrefabInstance:
@@ -7263,6 +7264,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!4 &577765495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 19057804835965149, guid: ee795c5081e7fa6488ca3a3271a80950, type: 3}
@@ -10231,6 +10233,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 9077919028482928247, guid: 822264d7e82fbfd4dbf2a5e69d31a1be, type: 3}
   m_PrefabInstance: {fileID: 799269933}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &801236646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: 8cf18ace18020e04aad0ed472e7a7720, type: 3}
+  m_PrefabInstance: {fileID: 1940004614}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &801737262
 PrefabInstance:
@@ -19927,9 +19934,6 @@ PrefabInstance:
       addedObject: {fileID: 1940004615}
     - targetCorrespondingSourceObject: {fileID: 2349986684744763794, guid: 4e95d31852a4411498c032d536ae4411, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 509082445}
-    - targetCorrespondingSourceObject: {fileID: 2349986684744763794, guid: 4e95d31852a4411498c032d536ae4411, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1091528254}
     - targetCorrespondingSourceObject: {fileID: 2349986684744763794, guid: 4e95d31852a4411498c032d536ae4411, type: 3}
       insertIndex: -1
@@ -19977,6 +19981,7 @@ MonoBehaviour:
   - combat
   - flash
   - animator
+  - death
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -19986,6 +19991,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 801236646}
 --- !u!114 &1480990219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24104,6 +24110,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!1001 &1835135544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26287,7 +26294,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7878350319992209165, guid: 8cf18ace18020e04aad0ed472e7a7720, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 509082445}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 8cf18ace18020e04aad0ed472e7a7720, type: 3}
 --- !u!4 &1940004615 stripped
@@ -42525,6 +42535,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!114 &3543005347857906521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49177,6 +49188,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!224 &5230528928511682122
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51604,6 +51616,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!114 &5664604390067880622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54048,6 +54061,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!1 &6225662834323562469
 GameObject:
   m_ObjectHideFlags: 0
@@ -62520,6 +62534,7 @@ MonoBehaviour:
   markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
+  visMain: {fileID: 0}
 --- !u!114 &8194376792285634124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64017,6 +64032,7 @@ MonoBehaviour:
     - chest
     - res1
     - res2
+    - leather
     m_values:
     - {fileID: 21300000, guid: f562338df1df4224f9ac7027d3c4d4df, type: 3}
     - {fileID: 21300000, guid: 430fd57e41b17074db2c02f860ee9e20, type: 3}
@@ -64026,6 +64042,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 0d85b936b397fc145908d94b0a612049, type: 3}
     - {fileID: 21300000, guid: 269f22b851489c4439396918a2f8ea67, type: 3}
     - {fileID: 21300000, guid: 3be4da47813890b43a560cf87c69e1c1, type: 3}
+    - {fileID: 21300000, guid: 3e989c492435fde4480e9202774a8110, type: 3}
   buildings:
     m_keys:
     - barracks1

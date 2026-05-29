@@ -28,6 +28,8 @@ public class AddedObject : MonoBehaviour
     public bool randomizeItemsParams = false;
     
     public List<GameObject> toActivate = new List<GameObject>();
+
+    public GameObject visMain;
     
     void Start()
     {
@@ -44,6 +46,7 @@ public class AddedObject : MonoBehaviour
             nn.transform.position = transform.position;
             nn.transform.parent = gameObject.transform.parent;
         }
+        if (visMain != null) nn =  visMain;
         
         var r = DatabaseAll.instance.CreateAny(id, isEnemy, amount, nn, overID, asMainViz ? gameObject : null, level:level);
         foreach (var v in addedVis)

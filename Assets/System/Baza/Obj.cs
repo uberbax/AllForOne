@@ -750,7 +750,10 @@ public class RObj
                 {
                     var g = ResourceHolder.instance.monsters[dbObj.ID];
                     var bb = GameObject.Instantiate(g, main.transform);
-                    visuals.Add("vis_main", bb);                    
+                    var hh = bb.GetComponent<VizRedirect>();
+                    if (hh != null && hh.visMain != null)
+                        visuals.Add("vis_main", hh.visMain);
+                    else visuals.Add("vis_main", bb);                    
                 }
                 
             }

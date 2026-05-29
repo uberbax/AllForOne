@@ -300,6 +300,25 @@ public class WaveSpawner : MonoBehaviour
 
         return s;
     }
+
+    public void AddExtras(RObj r, List<(string, string)> over)
+    {
+        if (over == null || over.Count == 0) return;
+        
+        foreach (var v in  over)
+        {
+            if (v.Item2 == "x") continue;
+            var al = r.visuals.Keys.ToList();
+            var t = al.Contains(v.Item1);
+            if (!t)
+            {
+                string s = v.Item1;
+                if (v.Item2 != "") s+= "#" + v.Item2;
+                r.AddViz(s);
+            }
+
+        }
+    }
     
     public List<RObj> DoSpawnAny(List<Bon> what, string tg, Transform lo1, Transform hi1, bool battle, Vector3 summonPos1, Vector3 summonPos2, bool isSummon = false,
         List<(string, string)> overridesViz = null)
@@ -323,6 +342,9 @@ public class WaveSpawner : MonoBehaviour
                 enm1.AddViz(GetOverride("combat", overridesViz));
                 enm1.AddViz(GetOverride("animator#pr:1", overridesViz));
                 enm1.AddViz(GetOverride("realcol#val:0.2", overridesViz));
+                
+                AddExtras(enm1, overridesViz);
+                
                 enm1.AddMeta(tg == "enemy" ? "wave" : "my_side");
                 res.Add(enm1);
                 

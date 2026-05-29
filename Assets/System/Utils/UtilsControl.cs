@@ -3444,12 +3444,12 @@ public class UtilsControl : MonoBehaviour
     private float duration = 0.5f;
     
     [ContextMenu("Start Random Drop")]
-    public void StartRandomDrop(Transform who, RObj a, Action end)
+    public void StartRandomDrop(Transform who, RObj a, Action end, Transform instigator)
     {
-        StartCoroutine(ParabolicDrop(who, a, end));
+        StartCoroutine(ParabolicDrop(who, a, end,  instigator));
     }
     
-    IEnumerator ParabolicDrop(Transform who, RObj a, Action end)
+    IEnumerator ParabolicDrop(Transform who, RObj a, Action end, Transform instigator)
     {
         var sg = who.gameObject.AddComponent<SortingGroup>();
         sg.sortingOrder = -20;
@@ -3464,6 +3464,11 @@ public class UtilsControl : MonoBehaviour
         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
             targetPos.z = STAY_Z;
         else STAY_Z = startPos.z;
+
+        var tt = instigator.GetComponentInChildren<PointsControl>();
+        Vector3 endPos = who.position;
+        if (tt != null && tt.loPoint != null) endPos = tt.loPoint.position;
+        var dY = endPos.y - startPos.y;
         
         while (elapsedTime < duration)
         {
@@ -3473,7 +3478,7 @@ public class UtilsControl : MonoBehaviour
             Vector3 horizontalPos = Vector3.Lerp(startPos, targetPos, t);
             
             // Parabolic height (peaks at middle)
-            float yOffset = 4f * height * (t - t * t);
+            float yOffset = 4f * height * (t - t * t) + dY * t;
             
             who.position = new Vector3(horizontalPos.x, startPos.y + yOffset, STAY_Z/*horizontalPos.z*/);
             who.transform.Rotate(0,0,90* Time.deltaTime);
@@ -3483,7 +3488,8 @@ public class UtilsControl : MonoBehaviour
         }
 
         if (end != null) end();
-        who.position = targetPos;
+         who.position = endPos;
+        
         if (ConfigLoader.GetMetaParamValue("autotake_drop") == 1)
         {
             MainStates.instance.PickDrop(a);
