@@ -1,0 +1,1624 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="files\style.css">
+<title>Isle of Lore 2: RPG Item Icons</title>
+</head>
+<body>
+<div id="divNavi">
+	<a class="aNavi" href="#Introduction">Introduction</a>
+	<a class="aNavi" href="#ContentStructure">Content Structure</a>
+	<a class="aNavi" href="#RPGItemIcons">RPG Item Icons</a>
+	<a class="aNavi" href="#ColorMapper">Color Mapper</a>
+	<a class="aNavi" href="#Specification">Specification</a>
+	<a class="aNavi" href="#Changelog">Changelog</a>
+</div>
+<div id="divMain">
+
+	<div class="divLogo"><img style="max-width: 700px; padding-top: 50px;" src="files\logo.png"></div>
+	
+	<p></p><a name="Introduction"></a><div class="divBuffer"></div>
+	<h2>Introduction</h2>
+
+	<p><b>Isle of Lore 2: RPG Item Icons</b> is a pack of 200 icons covering all your RPG, adventure, roguelike and strategy game needs, with icons for resources, equipment, weapons, armor, food and more. They work great with my other <b>Isle of Lore 2</b> packs, including <a href="https://assetstore.unity.com/packages/2d/environments/isle-of-lore-2-hex-tiles-regular-158781" target="_blank">Isle of Lore 2: Hex Tiles</a>!</p>
+
+	<p>The icons come as png files with and without a white outline and also as Krita (.kra) and Photoshop (.psd) source files for your personal edits. The pack is compatible with my batch image editing tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a>, which means you can easily change the color palette of the icons to your own liking... the required <b>Color Mapper Files</b> are included!</p>
+
+	<p>This documentation will go into more detail on how to find the files you want and how to change and re-export them to fit your needs.</p>
+	
+	<p>Please keep the license in mind, which is available as a <span class="spanCode">License.txt</span>-file in the folder you downloaded. If you have questions or feedback, you can reach me through the following channels. I especially recommend the mailing list and my Discord server to stay up-to-date respectively to chat about your and my projects!</p>
+	
+	<ul>
+		<li>E-Mail: <a href="mailto:info@stevencolling.com">info@stevencolling.com</a></li>
+		<li>Mailing List (get news and exclusive discounts!): <a href="https://mailinglist.stevencolling.com/game_assets/" target="_blank">https://mailinglist.stevencolling.com/game_assets/</a></li>
+		<li>Discord Server (connect with others using my software and assets!): <a href="https://stevencolling.com/discord.php" target="_blank">https://stevencolling.com/discord.php</a></li>
+		<li>Discord Profile: <a href="https://discordapp.com/users/171308170038214656/" target="_blank">https://discordapp.com/users/171308170038214656/</a></li>
+		<li>General Help: <a href="https://stevencolling.com/help.htm" target="_blank">https://stevencolling.com/help.htm</a></li>
+		<li>Website: <a href="https://stevencolling.com" target="_blank">https://stevencolling.com</a></li>
+	</ul>
+	
+	<p></p><a name="ContentStructure"></a><div class="divBuffer"></div>
+	<h2>Content Structure</h2>
+
+	<p>On the top level, the asset pack contains the folders <span class="spanCode">Assets</span>, <span class="spanCode">Documentation</span>, <span class="spanCode">Scenes</span> and <span class="spanCode">Sources</span>.</p>
+
+<p>If you want to use the assets as they are, head over to the <span class="spanCode">Assets</span>-folder and use the files in there. The folder <span class="spanCode">Scenes</span> provides a very basic but exemplary setup.</p>
+
+<p>The icons come in two variants. The first variant consists of the icons with a white outline. The second variant has no outline. Both variants have their respective folders <span class="spanCode">rpg_item_icons.standard_<b>outline</b></span> and <span class="spanCode">status_icons.standard_<b>transparent</b></span> within the <span class="spanCode">Assets</span>-folder.
+
+<p>In case you want to edit the assets, unpack the <span class="spanCode">Sources.zip</span> in the <span class="spanCode">Sources</span>-folder. There you find 3 sub-folders called <span class="spanCode">input</span>, <span class="spanCode">output</span> and <span class="spanCode">misc</span>, a folder which contains a list of the icon names written out, sorted by ID. The <span class="spanCode">output</span>-folder is empty, as these files were already moved to the <span class="spanCode">Assets</span> folder we discussed earlier. The <span class="spanCode">input</span>-folder though contains the source files, including Krita (.kra) and Photoshop (.psd) files from which the images were created as well as single png-exports of all the layers, which can be used with my tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a> to setup a regeneration of all the assets, which allows you to change colors and other properties of the assets automatically. A dedicated section further down will go into more detail. The <b>Color Mapper Files</b> <span class="spanCode">standard_outline<b>.colormapper.txt</b></span> (etc.) tell <b>Color Mapper</b> how to assemble the icons.</p>
+	
+	<p></p><a name="RPGItemIcons"></a><div class="divBuffer"></div>
+	<h2>RPG Item Icons</h2>
+	
+	<p>The following table provides an overview of all the item icons included.</p>
+
+	<table class="tableIcons">
+		<tr>
+			<th style="text-align: center">Icon</th>
+			<th>ID</th>
+			<th>Name</th>
+			<th>File</th>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_wood_0.png"></td>
+			<td>0</td>
+			<td>Wood</td>
+			<td>rpg_item_icon_wood_0.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_log_1.png"></td>
+			<td>1</td>
+			<td>Log</td>
+			<td>rpg_item_icon_log_1.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plank_2.png"></td>
+			<td>2</td>
+			<td>Plank</td>
+			<td>rpg_item_icon_plank_2.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_branch_3.png"></td>
+			<td>3</td>
+			<td>Branch</td>
+			<td>rpg_item_icon_branch_3.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bark_4.png"></td>
+			<td>4</td>
+			<td>Bark</td>
+			<td>rpg_item_icon_bark_4.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_root_5.png"></td>
+			<td>5</td>
+			<td>Root</td>
+			<td>rpg_item_icon_root_5.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leaf_6.png"></td>
+			<td>6</td>
+			<td>Leaf</td>
+			<td>rpg_item_icon_leaf_6.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_resin_7.png"></td>
+			<td>7</td>
+			<td>Resin</td>
+			<td>rpg_item_icon_resin_7.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_seeds_8.png"></td>
+			<td>8</td>
+			<td>Seeds</td>
+			<td>rpg_item_icon_seeds_8.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_pine_cone_9.png"></td>
+			<td>9</td>
+			<td>Pine Cone</td>
+			<td>rpg_item_icon_pine_cone_9.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sprout_10.png"></td>
+			<td>10</td>
+			<td>Sprout</td>
+			<td>rpg_item_icon_sprout_10.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_walnut_11.png"></td>
+			<td>11</td>
+			<td>Walnut</td>
+			<td>rpg_item_icon_walnut_11.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_coal_12.png"></td>
+			<td>12</td>
+			<td>Coal</td>
+			<td>rpg_item_icon_coal_12.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_grass_13.png"></td>
+			<td>13</td>
+			<td>Grass</td>
+			<td>rpg_item_icon_grass_13.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_herbs_14.png"></td>
+			<td>14</td>
+			<td>Herbs</td>
+			<td>rpg_item_icon_herbs_14.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_turf_15.png"></td>
+			<td>15</td>
+			<td>Turf</td>
+			<td>rpg_item_icon_turf_15.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_flowers_16.png"></td>
+			<td>16</td>
+			<td>Flowers</td>
+			<td>rpg_item_icon_flowers_16.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_straw_17.png"></td>
+			<td>17</td>
+			<td>Straw</td>
+			<td>rpg_item_icon_straw_17.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_manure_18.png"></td>
+			<td>18</td>
+			<td>Manure</td>
+			<td>rpg_item_icon_manure_18.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_rock_19.png"></td>
+			<td>19</td>
+			<td>Rock</td>
+			<td>rpg_item_icon_rock_19.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_stone_20.png"></td>
+			<td>20</td>
+			<td>Stone</td>
+			<td>rpg_item_icon_stone_20.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_flint_21.png"></td>
+			<td>21</td>
+			<td>Flint</td>
+			<td>rpg_item_icon_flint_21.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_copper_ore_22.png"></td>
+			<td>22</td>
+			<td>Copper Ore</td>
+			<td>rpg_item_icon_copper_ore_22.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_copper_nugget_23.png"></td>
+			<td>23</td>
+			<td>Copper Nugget</td>
+			<td>rpg_item_icon_copper_nugget_23.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_copper_ingot_24.png"></td>
+			<td>24</td>
+			<td>Copper Ingot</td>
+			<td>rpg_item_icon_copper_ingot_24.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_silver_ore_25.png"></td>
+			<td>25</td>
+			<td>Silver Ore</td>
+			<td>rpg_item_icon_silver_ore_25.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_silver_nugget_26.png"></td>
+			<td>26</td>
+			<td>Silver Nugget</td>
+			<td>rpg_item_icon_silver_nugget_26.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_silver_ingot_27.png"></td>
+			<td>27</td>
+			<td>Silver Ingot</td>
+			<td>rpg_item_icon_silver_ingot_27.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_gold_ore_28.png"></td>
+			<td>28</td>
+			<td>Gold Ore</td>
+			<td>rpg_item_icon_gold_ore_28.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_gold_nugget_29.png"></td>
+			<td>29</td>
+			<td>Gold Nugget</td>
+			<td>rpg_item_icon_gold_nugget_29.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_gold_ingot_30.png"></td>
+			<td>30</td>
+			<td>Gold Ingot</td>
+			<td>rpg_item_icon_gold_ingot_30.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_iron_ore_31.png"></td>
+			<td>31</td>
+			<td>Iron Ore</td>
+			<td>rpg_item_icon_iron_ore_31.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_iron_nugget_32.png"></td>
+			<td>32</td>
+			<td>Iron Nugget</td>
+			<td>rpg_item_icon_iron_nugget_32.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_iron_ingot_33.png"></td>
+			<td>33</td>
+			<td>Iron Ingot</td>
+			<td>rpg_item_icon_iron_ingot_33.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sponge_34.png"></td>
+			<td>34</td>
+			<td>Sponge</td>
+			<td>rpg_item_icon_sponge_34.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_seaweed_35.png"></td>
+			<td>35</td>
+			<td>Seaweed</td>
+			<td>rpg_item_icon_seaweed_35.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_salt_36.png"></td>
+			<td>36</td>
+			<td>Salt</td>
+			<td>rpg_item_icon_salt_36.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_water_37.png"></td>
+			<td>37</td>
+			<td>Water</td>
+			<td>rpg_item_icon_water_37.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_clam_38.png"></td>
+			<td>38</td>
+			<td>Clam</td>
+			<td>rpg_item_icon_clam_38.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_clay_39.png"></td>
+			<td>39</td>
+			<td>Clay</td>
+			<td>rpg_item_icon_clay_39.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_diamond_40.png"></td>
+			<td>40</td>
+			<td>Diamond</td>
+			<td>rpg_item_icon_diamond_40.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_crystal_41.png"></td>
+			<td>41</td>
+			<td>Crystal</td>
+			<td>rpg_item_icon_crystal_41.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_ice_42.png"></td>
+			<td>42</td>
+			<td>Ice</td>
+			<td>rpg_item_icon_ice_42.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_snowball_43.png"></td>
+			<td>43</td>
+			<td>Snowball</td>
+			<td>rpg_item_icon_snowball_43.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_apple_44.png"></td>
+			<td>44</td>
+			<td>Apple</td>
+			<td>rpg_item_icon_apple_44.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_lemon_45.png"></td>
+			<td>45</td>
+			<td>Lemon</td>
+			<td>rpg_item_icon_lemon_45.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_orange_46.png"></td>
+			<td>46</td>
+			<td>Orange</td>
+			<td>rpg_item_icon_orange_46.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_carrot_47.png"></td>
+			<td>47</td>
+			<td>Carrot</td>
+			<td>rpg_item_icon_carrot_47.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_turnip_48.png"></td>
+			<td>48</td>
+			<td>Turnip</td>
+			<td>rpg_item_icon_turnip_48.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_potato_49.png"></td>
+			<td>49</td>
+			<td>Potato</td>
+			<td>rpg_item_icon_potato_49.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_corn_50.png"></td>
+			<td>50</td>
+			<td>Corn</td>
+			<td>rpg_item_icon_corn_50.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_wheat_51.png"></td>
+			<td>51</td>
+			<td>Wheat</td>
+			<td>rpg_item_icon_wheat_51.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_salad_52.png"></td>
+			<td>52</td>
+			<td>Salad</td>
+			<td>rpg_item_icon_salad_52.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_garlic_53.png"></td>
+			<td>53</td>
+			<td>Garlic</td>
+			<td>rpg_item_icon_garlic_53.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_tomato_54.png"></td>
+			<td>54</td>
+			<td>Tomato</td>
+			<td>rpg_item_icon_tomato_54.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bread_55.png"></td>
+			<td>55</td>
+			<td>Bread</td>
+			<td>rpg_item_icon_bread_55.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_beer_56.png"></td>
+			<td>56</td>
+			<td>Beer</td>
+			<td>rpg_item_icon_beer_56.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_wine_57.png"></td>
+			<td>57</td>
+			<td>Wine</td>
+			<td>rpg_item_icon_wine_57.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_egg_58.png"></td>
+			<td>58</td>
+			<td>Egg</td>
+			<td>rpg_item_icon_egg_58.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_broken_egg_59.png"></td>
+			<td>59</td>
+			<td>Broken Egg</td>
+			<td>rpg_item_icon_broken_egg_59.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_mushroom_60.png"></td>
+			<td>60</td>
+			<td>Mushroom</td>
+			<td>rpg_item_icon_mushroom_60.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bee_61.png"></td>
+			<td>61</td>
+			<td>Bee</td>
+			<td>rpg_item_icon_bee_61.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_beehive_62.png"></td>
+			<td>62</td>
+			<td>Beehive</td>
+			<td>rpg_item_icon_beehive_62.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_honey_63.png"></td>
+			<td>63</td>
+			<td>Honey</td>
+			<td>rpg_item_icon_honey_63.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_milk_64.png"></td>
+			<td>64</td>
+			<td>Milk</td>
+			<td>rpg_item_icon_milk_64.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_cheese_65.png"></td>
+			<td>65</td>
+			<td>Cheese</td>
+			<td>rpg_item_icon_cheese_65.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_animal_tooth_66.png"></td>
+			<td>66</td>
+			<td>Animal Tooth</td>
+			<td>rpg_item_icon_animal_tooth_66.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_human_tooth_67.png"></td>
+			<td>67</td>
+			<td>Human Tooth</td>
+			<td>rpg_item_icon_human_tooth_67.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bone_68.png"></td>
+			<td>68</td>
+			<td>Bone</td>
+			<td>rpg_item_icon_bone_68.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_skull_69.png"></td>
+			<td>69</td>
+			<td>Skull</td>
+			<td>rpg_item_icon_skull_69.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_fishbone_70.png"></td>
+			<td>70</td>
+			<td>Fishbone</td>
+			<td>rpg_item_icon_fishbone_70.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bone_powder_71.png"></td>
+			<td>71</td>
+			<td>Bone Powder</td>
+			<td>rpg_item_icon_bone_powder_71.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_steak_72.png"></td>
+			<td>72</td>
+			<td>Steak</td>
+			<td>rpg_item_icon_steak_72.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leg_of_meat_73.png"></td>
+			<td>73</td>
+			<td>Leg of Meat</td>
+			<td>rpg_item_icon_leg_of_meat_73.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_fish_74.png"></td>
+			<td>74</td>
+			<td>Fish</td>
+			<td>rpg_item_icon_fish_74.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_worm_75.png"></td>
+			<td>75</td>
+			<td>Worm</td>
+			<td>rpg_item_icon_worm_75.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_eyeball_76.png"></td>
+			<td>76</td>
+			<td>Eyeball</td>
+			<td>rpg_item_icon_eyeball_76.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_feather_77.png"></td>
+			<td>77</td>
+			<td>Feather</td>
+			<td>rpg_item_icon_feather_77.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_scale_78.png"></td>
+			<td>78</td>
+			<td>Scale</td>
+			<td>rpg_item_icon_scale_78.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leather_79.png"></td>
+			<td>79</td>
+			<td>Leather</td>
+			<td>rpg_item_icon_leather_79.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_fur_80.png"></td>
+			<td>80</td>
+			<td>Fur</td>
+			<td>rpg_item_icon_fur_80.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_wool_81.png"></td>
+			<td>81</td>
+			<td>Wool</td>
+			<td>rpg_item_icon_wool_81.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_thread_82.png"></td>
+			<td>82</td>
+			<td>Thread</td>
+			<td>rpg_item_icon_thread_82.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_nails_83.png"></td>
+			<td>83</td>
+			<td>Nails</td>
+			<td>rpg_item_icon_nails_83.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_iron_spikes_84.png"></td>
+			<td>84</td>
+			<td>Iron Spikes</td>
+			<td>rpg_item_icon_iron_spikes_84.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_crowbar_85.png"></td>
+			<td>85</td>
+			<td>Crowbar</td>
+			<td>rpg_item_icon_crowbar_85.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_rope_86.png"></td>
+			<td>86</td>
+			<td>Rope</td>
+			<td>rpg_item_icon_rope_86.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_ladder_87.png"></td>
+			<td>87</td>
+			<td>Ladder</td>
+			<td>rpg_item_icon_ladder_87.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_pole_88.png"></td>
+			<td>88</td>
+			<td>Pole</td>
+			<td>rpg_item_icon_pole_88.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sleeping_bag_89.png"></td>
+			<td>89</td>
+			<td>Sleeping Bag</td>
+			<td>rpg_item_icon_sleeping_bag_89.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_tent_90.png"></td>
+			<td>90</td>
+			<td>Tent</td>
+			<td>rpg_item_icon_tent_90.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_campfire_91.png"></td>
+			<td>91</td>
+			<td>Campfire</td>
+			<td>rpg_item_icon_campfire_91.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_lockpicking_tools_92.png"></td>
+			<td>92</td>
+			<td>Lockpicking Tools</td>
+			<td>rpg_item_icon_lockpicking_tools_92.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bandage_93.png"></td>
+			<td>93</td>
+			<td>Bandage</td>
+			<td>rpg_item_icon_bandage_93.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_compass_94.png"></td>
+			<td>94</td>
+			<td>Compass</td>
+			<td>rpg_item_icon_compass_94.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_dice_95.png"></td>
+			<td>95</td>
+			<td>Dice</td>
+			<td>rpg_item_icon_dice_95.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_playing_card_96.png"></td>
+			<td>96</td>
+			<td>Playing Card</td>
+			<td>rpg_item_icon_playing_card_96.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_cards_97.png"></td>
+			<td>97</td>
+			<td>Cards</td>
+			<td>rpg_item_icon_cards_97.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_tinderbox_98.png"></td>
+			<td>98</td>
+			<td>Tinderbox</td>
+			<td>rpg_item_icon_tinderbox_98.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_net_99.png"></td>
+			<td>99</td>
+			<td>Net</td>
+			<td>rpg_item_icon_net_99.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_chain_100.png"></td>
+			<td>100</td>
+			<td>Chain</td>
+			<td>rpg_item_icon_chain_100.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_trap_101.png"></td>
+			<td>101</td>
+			<td>Trap</td>
+			<td>rpg_item_icon_trap_101.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_coin_102.png"></td>
+			<td>102</td>
+			<td>Coin</td>
+			<td>rpg_item_icon_coin_102.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_coins_103.png"></td>
+			<td>103</td>
+			<td>Coins</td>
+			<td>rpg_item_icon_coins_103.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_ring_104.png"></td>
+			<td>104</td>
+			<td>Ring</td>
+			<td>rpg_item_icon_ring_104.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_amulet_105.png"></td>
+			<td>105</td>
+			<td>Amulet</td>
+			<td>rpg_item_icon_amulet_105.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_mirror_106.png"></td>
+			<td>106</td>
+			<td>Mirror</td>
+			<td>rpg_item_icon_mirror_106.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_flute_107.png"></td>
+			<td>107</td>
+			<td>Flute</td>
+			<td>rpg_item_icon_flute_107.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_lute_108.png"></td>
+			<td>108</td>
+			<td>Lute</td>
+			<td>rpg_item_icon_lute_108.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_horn_109.png"></td>
+			<td>109</td>
+			<td>Horn</td>
+			<td>rpg_item_icon_horn_109.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_key_110.png"></td>
+			<td>110</td>
+			<td>Key</td>
+			<td>rpg_item_icon_key_110.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_boss_key_111.png"></td>
+			<td>111</td>
+			<td>Boss Key</td>
+			<td>rpg_item_icon_boss_key_111.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_key_chain_112.png"></td>
+			<td>112</td>
+			<td>Key Chain</td>
+			<td>rpg_item_icon_key_chain_112.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bust_113.png"></td>
+			<td>113</td>
+			<td>Bust</td>
+			<td>rpg_item_icon_bust_113.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_fairy_114.png"></td>
+			<td>114</td>
+			<td>Fairy</td>
+			<td>rpg_item_icon_fairy_114.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_empty_115.png"></td>
+			<td>115</td>
+			<td>Heart Piece Empty</td>
+			<td>rpg_item_icon_heart_piece_empty_115.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_small_116.png"></td>
+			<td>116</td>
+			<td>Heart Piece Small</td>
+			<td>rpg_item_icon_heart_piece_small_116.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_quarter_117.png"></td>
+			<td>117</td>
+			<td>Heart Piece Quarter</td>
+			<td>rpg_item_icon_heart_piece_quarter_117.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_half_118.png"></td>
+			<td>118</td>
+			<td>Heart Piece Half</td>
+			<td>rpg_item_icon_heart_piece_half_118.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_three_quarter_119.png"></td>
+			<td>119</td>
+			<td>Heart Piece Three Quarter</td>
+			<td>rpg_item_icon_heart_piece_three_quarter_119.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_heart_piece_full_120.png"></td>
+			<td>120</td>
+			<td>Heart Piece Full</td>
+			<td>rpg_item_icon_heart_piece_full_120.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_candle_121.png"></td>
+			<td>121</td>
+			<td>Candle</td>
+			<td>rpg_item_icon_candle_121.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_torch_122.png"></td>
+			<td>122</td>
+			<td>Torch</td>
+			<td>rpg_item_icon_torch_122.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_lantern_123.png"></td>
+			<td>123</td>
+			<td>Lantern</td>
+			<td>rpg_item_icon_lantern_123.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_dynamite_124.png"></td>
+			<td>124</td>
+			<td>Dynamite</td>
+			<td>rpg_item_icon_dynamite_124.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bomb_125.png"></td>
+			<td>125</td>
+			<td>Bomb</td>
+			<td>rpg_item_icon_bomb_125.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_paper_126.png"></td>
+			<td>126</td>
+			<td>Paper</td>
+			<td>rpg_item_icon_paper_126.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_letter_127.png"></td>
+			<td>127</td>
+			<td>Letter</td>
+			<td>rpg_item_icon_letter_127.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_envelope_128.png"></td>
+			<td>128</td>
+			<td>Envelope</td>
+			<td>rpg_item_icon_envelope_128.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_scroll_129.png"></td>
+			<td>129</td>
+			<td>Scroll</td>
+			<td>rpg_item_icon_scroll_129.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_map_130.png"></td>
+			<td>130</td>
+			<td>Map</td>
+			<td>rpg_item_icon_map_130.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_treasure_map_131.png"></td>
+			<td>131</td>
+			<td>Treasure Map</td>
+			<td>rpg_item_icon_treasure_map_131.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_book_132.png"></td>
+			<td>132</td>
+			<td>Book</td>
+			<td>rpg_item_icon_book_132.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_doll_133.png"></td>
+			<td>133</td>
+			<td>Doll</td>
+			<td>rpg_item_icon_doll_133.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_purse_134.png"></td>
+			<td>134</td>
+			<td>Purse</td>
+			<td>rpg_item_icon_purse_134.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_backpack_135.png"></td>
+			<td>135</td>
+			<td>Backpack</td>
+			<td>rpg_item_icon_backpack_135.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_saddle_136.png"></td>
+			<td>136</td>
+			<td>Saddle</td>
+			<td>rpg_item_icon_saddle_136.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sack_137.png"></td>
+			<td>137</td>
+			<td>Sack</td>
+			<td>rpg_item_icon_sack_137.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_crate_138.png"></td>
+			<td>138</td>
+			<td>Crate</td>
+			<td>rpg_item_icon_crate_138.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_barrel_139.png"></td>
+			<td>139</td>
+			<td>Barrel</td>
+			<td>rpg_item_icon_barrel_139.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_chest_140.png"></td>
+			<td>140</td>
+			<td>Chest</td>
+			<td>rpg_item_icon_chest_140.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_treasure_chest_141.png"></td>
+			<td>141</td>
+			<td>Treasure Chest</td>
+			<td>rpg_item_icon_treasure_chest_141.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_jar_142.png"></td>
+			<td>142</td>
+			<td>Jar</td>
+			<td>rpg_item_icon_jar_142.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bucket_143.png"></td>
+			<td>143</td>
+			<td>Bucket</td>
+			<td>rpg_item_icon_bucket_143.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_small_empty_potion_144.png"></td>
+			<td>144</td>
+			<td>Small Empty Potion</td>
+			<td>rpg_item_icon_small_empty_potion_144.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_small_health_potion_145.png"></td>
+			<td>145</td>
+			<td>Small Health Potion</td>
+			<td>rpg_item_icon_small_health_potion_145.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_small_mana_potion_146.png"></td>
+			<td>146</td>
+			<td>Small Mana Potion</td>
+			<td>rpg_item_icon_small_mana_potion_146.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_big_empty_potion_147.png"></td>
+			<td>147</td>
+			<td>Big Empty Potion</td>
+			<td>rpg_item_icon_big_empty_potion_147.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_big_health_potion_148.png"></td>
+			<td>148</td>
+			<td>Big Health Potion</td>
+			<td>rpg_item_icon_big_health_potion_148.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_big_mana_potion_149.png"></td>
+			<td>149</td>
+			<td>Big Mana Potion</td>
+			<td>rpg_item_icon_big_mana_potion_149.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_empty_bottle_150.png"></td>
+			<td>150</td>
+			<td>Empty Bottle</td>
+			<td>rpg_item_icon_empty_bottle_150.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bottle_with_letter_151.png"></td>
+			<td>151</td>
+			<td>Bottle with Letter</td>
+			<td>rpg_item_icon_bottle_with_letter_151.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_dagger_152.png"></td>
+			<td>152</td>
+			<td>Dagger</td>
+			<td>rpg_item_icon_dagger_152.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sword_153.png"></td>
+			<td>153</td>
+			<td>Sword</td>
+			<td>rpg_item_icon_sword_153.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_shortsword_154.png"></td>
+			<td>154</td>
+			<td>Shortsword</td>
+			<td>rpg_item_icon_shortsword_154.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_rapier_155.png"></td>
+			<td>155</td>
+			<td>Rapier</td>
+			<td>rpg_item_icon_rapier_155.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_axe_156.png"></td>
+			<td>156</td>
+			<td>Axe</td>
+			<td>rpg_item_icon_axe_156.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_greataxe_157.png"></td>
+			<td>157</td>
+			<td>Greataxe</td>
+			<td>rpg_item_icon_greataxe_157.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_hammer_158.png"></td>
+			<td>158</td>
+			<td>Hammer</td>
+			<td>rpg_item_icon_hammer_158.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_club_159.png"></td>
+			<td>159</td>
+			<td>Club</td>
+			<td>rpg_item_icon_club_159.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_mace_160.png"></td>
+			<td>160</td>
+			<td>Mace</td>
+			<td>rpg_item_icon_mace_160.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_staff_161.png"></td>
+			<td>161</td>
+			<td>Staff</td>
+			<td>rpg_item_icon_staff_161.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_lance_162.png"></td>
+			<td>162</td>
+			<td>Lance</td>
+			<td>rpg_item_icon_lance_162.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_trident_163.png"></td>
+			<td>163</td>
+			<td>Trident</td>
+			<td>rpg_item_icon_trident_163.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sickle_164.png"></td>
+			<td>164</td>
+			<td>Sickle</td>
+			<td>rpg_item_icon_sickle_164.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_pitchfork_165.png"></td>
+			<td>165</td>
+			<td>Pitchfork</td>
+			<td>rpg_item_icon_pitchfork_165.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_shovel_166.png"></td>
+			<td>166</td>
+			<td>Shovel</td>
+			<td>rpg_item_icon_shovel_166.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_mop_167.png"></td>
+			<td>167</td>
+			<td>Mop</td>
+			<td>rpg_item_icon_mop_167.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_pickaxe_168.png"></td>
+			<td>168</td>
+			<td>Pickaxe</td>
+			<td>rpg_item_icon_pickaxe_168.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_scythe_169.png"></td>
+			<td>169</td>
+			<td>Scythe</td>
+			<td>rpg_item_icon_scythe_169.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_saw_170.png"></td>
+			<td>170</td>
+			<td>Saw</td>
+			<td>rpg_item_icon_saw_170.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_fishing_rod_171.png"></td>
+			<td>171</td>
+			<td>Fishing Rod</td>
+			<td>rpg_item_icon_fishing_rod_171.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_magic_wand_172.png"></td>
+			<td>172</td>
+			<td>Magic Wand</td>
+			<td>rpg_item_icon_magic_wand_172.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_magic_staff_173.png"></td>
+			<td>173</td>
+			<td>Magic Staff</td>
+			<td>rpg_item_icon_magic_staff_173.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bow_174.png"></td>
+			<td>174</td>
+			<td>Bow</td>
+			<td>rpg_item_icon_bow_174.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_crossbow_175.png"></td>
+			<td>175</td>
+			<td>Crossbow</td>
+			<td>rpg_item_icon_crossbow_175.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_boomerang_176.png"></td>
+			<td>176</td>
+			<td>Boomerang</td>
+			<td>rpg_item_icon_boomerang_176.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_sling_177.png"></td>
+			<td>177</td>
+			<td>Sling</td>
+			<td>rpg_item_icon_sling_177.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_arrow_178.png"></td>
+			<td>178</td>
+			<td>Arrow</td>
+			<td>rpg_item_icon_arrow_178.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_bolt_179.png"></td>
+			<td>179</td>
+			<td>Bolt</td>
+			<td>rpg_item_icon_bolt_179.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_quiver_180.png"></td>
+			<td>180</td>
+			<td>Quiver</td>
+			<td>rpg_item_icon_quiver_180.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_wooden_shield_181.png"></td>
+			<td>181</td>
+			<td>Wooden Shield</td>
+			<td>rpg_item_icon_wooden_shield_181.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_iron_shield_182.png"></td>
+			<td>182</td>
+			<td>Iron Shield</td>
+			<td>rpg_item_icon_iron_shield_182.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_cap_183.png"></td>
+			<td>183</td>
+			<td>Cap</td>
+			<td>rpg_item_icon_cap_183.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_robe_184.png"></td>
+			<td>184</td>
+			<td>Robe</td>
+			<td>rpg_item_icon_robe_184.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_glove_185.png"></td>
+			<td>185</td>
+			<td>Glove</td>
+			<td>rpg_item_icon_glove_185.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_pants_186.png"></td>
+			<td>186</td>
+			<td>Pants</td>
+			<td>rpg_item_icon_pants_186.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_shoe_187.png"></td>
+			<td>187</td>
+			<td>Shoe</td>
+			<td>rpg_item_icon_shoe_187.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leather_helmet_188.png"></td>
+			<td>188</td>
+			<td>Leather Helmet</td>
+			<td>rpg_item_icon_leather_helmet_188.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leather_armor_189.png"></td>
+			<td>189</td>
+			<td>Leather Armor</td>
+			<td>rpg_item_icon_leather_armor_189.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leather_glove_190.png"></td>
+			<td>190</td>
+			<td>Leather Glove</td>
+			<td>rpg_item_icon_leather_glove_190.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_leather_pants_191.png"></td>
+			<td>191</td>
+			<td>Leather Pants</td>
+			<td>rpg_item_icon_leather_pants_191.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_boot_192.png"></td>
+			<td>192</td>
+			<td>Boot</td>
+			<td>rpg_item_icon_boot_192.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plate_helmet_193.png"></td>
+			<td>193</td>
+			<td>Plate Helmet</td>
+			<td>rpg_item_icon_plate_helmet_193.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plate_armor_194.png"></td>
+			<td>194</td>
+			<td>Plate Armor</td>
+			<td>rpg_item_icon_plate_armor_194.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plate_glove_195.png"></td>
+			<td>195</td>
+			<td>Plate Glove</td>
+			<td>rpg_item_icon_plate_glove_195.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plate_leggings_196.png"></td>
+			<td>196</td>
+			<td>Plate Leggings</td>
+			<td>rpg_item_icon_plate_leggings_196.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_plate_boot_197.png"></td>
+			<td>197</td>
+			<td>Plate Boot</td>
+			<td>rpg_item_icon_plate_boot_197.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_cape_198.png"></td>
+			<td>198</td>
+			<td>Cape</td>
+			<td>rpg_item_icon_cape_198.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\rpg_item_icons\rpg_item_icon_belt_199.png"></td>
+			<td>199</td>
+			<td>Belt</td>
+			<td>rpg_item_icon_belt_199.png</td>
+		</tr>
+	</table>
+	
+	<p></p><a name="ColorMapper"></a><div class="divBuffer"></div>
+	<h2>Re-exporting the Icons with Color Mapper</h2>
+	
+	<p>Please make sure to use the most up-to-date version of <b>Color Mapper</b>, as this asset pack requires the two new colors <b>wood</b> and <b>wood_dark</b> to be added to the config.</p>
+
+	<p>If you want to use the icons the way they are, refer to the <span class="spanCode">Sources\output</span>-folders. But if you want to change the icons, for example replace some or all of the colors, you can use my batch image editing tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a>. It can also re-size, re-scale and re-position icons, all in one go.</p>
+
+	<div class="divImage"><img src="files\colormapper_0.png"><p><b>Color Mapper</b> assembling an icon from its single parts.</p></div>
+	
+	<div class="divImage"><img src="files\colormapper_1.png"><p><b>Color Mapper</b> assembling an icon, but also switching out some of the colors.</p></div>
+	
+	<p>To make <b>Color Mapper</b> work, the <b>Isle of Lore 2: RPG Item Icons</b> download includes the folders <span class="spanCode">Sources\input\rpg_item_icons</span>, containing the <a href="https://krita.org" target="_blank">Krita</a> (.kra) and Photoshop (.psd) source files as well as png exports of the single layers and <b>Color Mapper Files</b> (.colormapper.txt) containing information on how <b>Color Mapper</b> is going to assemble the files.</p>
+	
+	<p><b>Color Mapper</b> isn't part of this asset pack and instead has to be downloaded <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">here</a>, which allows me to release updates for <b>Color Mapper</b> independently of the projects it is used in. The download includes a <span class="spanCode">Documentation</span>-folder with exact instructions on how to use <b>Color Mapper</b>, but the workflow in general is at follows:</p>
+	
+	<ol>
+		<li>Setup <b>Color Mapper's</b> configuration file so it knows where to find the <span class="spanCode">Sources\input</span> and <span class="spanCode">Sources\output</span> folders.</li>
+		<li>Running <b>Color Mapper</b>, which will gather all the <span class="spanCode">*.colormapper.txt</span>-files in the input folder and assemble the png files from the single layer files with colors referenced in the <span class="spanCode">*.colormapper.txt</span>-file and defined in <b>Color Mapper's</b> configuration file. The assembled png files will be put in the <span class="spanCode">output</span>-folder.</li>
+		<li>After checking the results, the files from the <span class="spanCode">output</span>-folder are ready to use.</li>
+	</ol>
+	
+	<p><b>Color Mapper</b> already comes with a configuration file <span class="spanCode">config.txt</span> properly setup with the colors from my <b>Isle of Lore 2</b> asset packs, but for the sake of completeness, here are the proper color entries for a <b>Color Mapper</b> configuration file.</p>
+	
+	<p class="pCode">
+		color: iol2_white -> #ffffff<br>
+		color: iol2_cloud_light -> #dadada<br>
+		color: iol2_cloud_dark -> #797979<br>
+		color: iol2_dark -> #161616<br>
+		color: iol2_gray_light -> #262626<br>
+		color: iol2_gray_dark -> #1f1f1f<br>
+		color: iol2_blue_light -> #56837f<br>
+		color: iol2_blue_medium -> #3c5858<br>
+		color: iol2_blue_dark -> #263236<br>
+		color: iol2_brown_light -> #92744d<br>
+		color: iol2_brown_dark -> #644939<br>
+		color: iol2_green_light -> #e8df63<br>
+		color: iol2_green_medium -> #889954<br>
+		color: iol2_green_dark -> #3a5241<br>
+		color: iol2_red_dark -> #662c2d<br>
+		color: iol2_red -> #9c4741<br>
+		color: iol2_orange -> #d09a54<br>
+		color: iol2_yellow -> #edc95e<br>
+		color: iol2_water_light -> #51c4b9<br>
+		color: iol2_water_medium -> #35a1a0<br>
+		color: iol2_water_dark -> #37838b<br>
+		color: iol2_stone -> #a78979<br>
+		color: iol2_fire -> #ba433a<br>
+		color: iol2_fire_yellow -> #fbd050<br>
+		color: iol2_fire_orange -> #df9c45<br>
+		color: iol2_sand_light -> #ffd66c<br>
+		color: iol2_sand_medium -> #dcb95f<br>
+		color: iol2_sand_dark -> #a37f49<br>
+		color: iol2_snow_light -> #a2e9de<br>
+		color: iol2_snow_medium -> #4b8588<br>
+		color: iol2_snow_dark -> #28434b<br>
+		color: iol2_skin -> #a78979<br>
+		color: iol2_smoke -> #4a4a4a<br>
+		color: iol2_skyblue_light -> #50b1d8<br>
+		color: iol2_skyblue_medium -> #3979bc<br>
+		color: iol2_purple -> #5e40a3<br>
+		<b>color: iol2_wood -> #e6c488</b><br>
+		<b>color: iol2_wood_dark -> #c5996c</b>
+	</p>
+	
+	<p>If you want to make changes to the icons themselves, you can open the <a href="https://krita.org" target="_blank">Krita</a> or Photoshop files, edit them and export the single layers accordingly. Make sure to keep the naming scheme <span class="spanCode">rpg_item_icon_(name)_(id)_(layer).png</span> intact, for example <span class="spanCode">rpg_item_icon_wood_0_line.png</span> for the <span class="spanCode">line</span>-layer of the Wood icon which has the id <span class="spanCode">0</span>.</p>
+
+	<p></p><a name="Specification"></a><div class="divBuffer"></div>
+	<h2>Specification</h2>
+	
+	<p></p><a name="SpecificationColors"></a><div class="divBuffer"></div>
+	<h3>Colors</h3>
+
+	<p>The following colors are used across all of my <b>Isle of Lore 2</b> packs. Every color except the ones grayed out are used in <b>Isle of Lore 2: RPG Item Icons</b>.</p>
+	
+	<table>
+		<tr>
+			<th>Color Name</th>
+			<th>Color Mapper Code</th>
+			<th>Hex Color Code</th>
+			<th style="padding: 0px; width: 10px"></th>
+		</tr>
+		<tr>
+			<td>Blue Light</td>
+			<td>iol2_blue_light</td>
+			<td>56837f</td>
+			<td style="padding: 0px; width: 10px; background-color: #56837f"></td>
+		</tr>
+		<tr>
+			<td>Blue Medium</td>
+			<td>iol2_blue_medium</td>
+			<td>3c5858</td>
+			<td style="padding: 0px; width: 10px; background-color: #3c5858"></td>
+		</tr>
+		<tr>
+			<td>Blue Dark</td>
+			<td>iol2_blue_dark</td>
+			<td>263236</td>
+			<td style="padding: 0px; width: 10px; background-color: #263236"></td>
+		</tr>
+		<tr>
+			<td>Brown Light</td>
+			<td>iol2_brown_light</td>
+			<td>92744d</td>
+			<td style="padding: 0px; width: 10px; background-color: #92744d"></td>
+		</tr>
+		<tr>
+			<td>Brown Dark</td>
+			<td>iol2_brown_dark</td>
+			<td>644939</td>
+			<td style="padding: 0px; width: 10px; background-color: #644939"></td>
+		</tr>
+		<tr>
+			<td>Cloud Light</td>
+			<td>iol2_cloud_light</td>
+			<td>dadada</td>
+			<td style="padding: 0px; width: 10px; background-color: #dadada"></td>
+		</tr>
+		<tr>
+			<td>Cloud Dark</td>
+			<td>iol2_cloud_dark</td>
+			<td>797979</td>
+			<td style="padding: 0px; width: 10px; background-color: #797979"></td>
+		</tr>
+		<tr>
+			<td>Dark</td>
+			<td>iol2_dark</td>
+			<td>161616</td>
+			<td style="padding: 0px; width: 10px; background-color: #161616"></td>
+		</tr>
+		<tr>
+			<td>Fire</td>
+			<td>iol2_fire</td>
+			<td>ba433a</td>
+			<td style="padding: 0px; width: 10px; background-color: #ba433a"></td>
+		</tr>
+		<tr>
+			<td>Fire Orange</td>
+			<td>iol2_fire_orange</td>
+			<td>df9c45</td>
+			<td style="padding: 0px; width: 10px; background-color: #df9c45"></td>
+		</tr>
+		<tr>
+			<td>Fire Yellow</td>
+			<td>iol2_fire_yellow</td>
+			<td>fbd050</td>
+			<td style="padding: 0px; width: 10px; background-color: #fbd050"></td>
+		</tr>
+		<tr>
+			<td>Gray Light</td>
+			<td>iol2_gray_light</td>
+			<td>262626</td>
+			<td style="padding: 0px; width: 10px; background-color: #262626"></td>
+		</tr>
+		<tr>
+			<td>Gray Dark</td>
+			<td>iol2_gray_dark</td>
+			<td>1f1f1f</td>
+			<td style="padding: 0px; width: 10px; background-color: #1f1f1f"></td>
+		</tr>
+		<tr>
+			<td>Green Light</td>
+			<td>iol2_green_light</td>
+			<td>e8df63</td>
+			<td style="padding: 0px; width: 10px; background-color: #e8df63"></td>
+		</tr>
+		<tr>
+			<td>Green Medium</td>
+			<td>iol2_green_medium</td>
+			<td>889954</td>
+			<td style="padding: 0px; width: 10px; background-color: #889954"></td>
+		</tr>
+		<tr>
+			<td>Green Dark</td>
+			<td>iol2_green_dark</td>
+			<td>3a5241</td>
+			<td style="padding: 0px; width: 10px; background-color: #3a5241"></td>
+		</tr>
+		<tr>
+			<td>Orange</td>
+			<td>iol2_orange</td>
+			<td>d09a54</td>
+			<td style="padding: 0px; width: 10px; background-color: #d09a54"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Purple</td>
+			<td>iol2_purple</td>
+			<td>5e40a3</td>
+			<td style="padding: 0px; width: 10px; background-color: #5e40a3"></td>
+		</tr>
+		<tr>
+			<td>Red</td>
+			<td>iol2_red</td>
+			<td>9c4741</td>
+			<td style="padding: 0px; width: 10px; background-color: #9c4741"></td>
+		</tr>
+		<tr>
+			<td>Red Dark</td>
+			<td>iol2_red_dark</td>
+			<td>662c2d</td>
+			<td style="padding: 0px; width: 10px; background-color: #662c2d"></td>
+		</tr>
+		<tr>
+			<td>Sand Light</td>
+			<td>iol2_sand_light</td>
+			<td>ffd66c</td>
+			<td style="padding: 0px; width: 10px; background-color: #ffd66c"></td>
+		</tr>
+		<tr>
+			<td>Sand Medium</td>
+			<td>iol2_sand_medium</td>
+			<td>dcb95f</td>
+			<td style="padding: 0px; width: 10px; background-color: #dcb95f"></td>
+		</tr>
+		<tr>
+			<td>Sand Dark</td>
+			<td>iol2_sand_dark</td>
+			<td>a37f49</td>
+			<td style="padding: 0px; width: 10px; background-color: #a37f49"></td>
+		</tr>
+		<tr>
+			<td>Skin</td>
+			<td>iol2_skin</td>
+			<td>a78979</td>
+			<td style="padding: 0px; width: 10px; background-color: #a78979"></td>
+		</tr>
+		<tr>
+			<td>Skyblue Light</td>
+			<td>iol2_skyblue_light</td>
+			<td>50b1d8</td>
+			<td style="padding: 0px; width: 10px; background-color: #50b1d8"></td>
+		</tr>
+		<tr>
+			<td>Skyblue Medium</td>
+			<td>iol2_skyblue_medium</td>
+			<td>3979bc</td>
+			<td style="padding: 0px; width: 10px; background-color: #3979bc"></td>
+		</tr>
+		<tr>
+			<td>Smoke</td>
+			<td>iol2_smoke</td>
+			<td>4a4a4a</td>
+			<td style="padding: 0px; width: 10px; background-color: #4a4a4a"></td>
+		</tr>
+		<tr>
+			<td>Snow Light</td>
+			<td>iol2_snow_light</td>
+			<td>a2e9de</td>
+			<td style="padding: 0px; width: 10px; background-color: #a2e9de"></td>
+		</tr>
+		<tr>
+			<td>Snow Medium</td>
+			<td>iol2_snow_medium</td>
+			<td>4b8588</td>
+			<td style="padding: 0px; width: 10px; background-color: #4b8588"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Snow Dark</td>
+			<td>iol2_snow_dark</td>
+			<td>28434b</td>
+			<td style="padding: 0px; width: 10px; background-color: #28434b"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Stone</td>
+			<td>iol2_stone</td>
+			<td>a78979</td>
+			<td style="padding: 0px; width: 10px; background-color: #a78979"></td>
+		</tr>
+		<tr>
+			<td>Water Light</td>
+			<td>iol2_water_light</td>
+			<td>51c4b9</td>
+			<td style="padding: 0px; width: 10px; background-color: #51c4b9"></td>
+		</tr>
+		<tr>
+			<td>Water Medium</td>
+			<td>iol2_water_medium</td>
+			<td>35a1a0</td>
+			<td style="padding: 0px; width: 10px; background-color: #35a1a0"></td>
+		</tr>
+		<tr>
+			<td>Water Dark</td>
+			<td>iol2_water_dark</td>
+			<td>37838b</td>
+			<td style="padding: 0px; width: 10px; background-color: #37838b"></td>
+		</tr>
+		<tr>
+			<td>White</td>
+			<td>iol2_white</td>
+			<td>ffffff</td>
+			<td style="padding: 0px; width: 10px; background-color: #ffffff"></td>
+		</tr>
+		<tr>
+			<td>Yellow</td>
+			<td>iol2_yellow</td>
+			<td>edc95e</td>
+			<td style="padding: 0px; width: 10px; background-color: #edc95e"></td>
+		</tr>
+		<tr>
+			<td>Wood</td>
+			<td>iol2_wood</td>
+			<td>e6c488</td>
+			<td style="padding: 0px; width: 10px; background-color: #e6c488"></td>
+		</tr>
+		<tr>
+			<td>Wood Dark</td>
+			<td>iol2_wood_dark</td>
+			<td>c5996c</td>
+			<td style="padding: 0px; width: 10px; background-color: #c5996c"></td>
+		</tr>
+	</table>
+	
+	<p></p><a name="SpecificationSizes"></a><div class="divBuffer"></div>
+	<h3>Sizes</h3>
+	
+	<table>
+		<tr>
+			<th>Entity</th>
+			<th>Size (px)</th>
+		</tr>
+		<tr>
+			<td>Icons</td>
+			<td>1024x1024</td>
+		</tr>
+		<tr>
+			<td>Icons with Outline</td>
+			<td>1144x1144</td>
+		</tr>
+	</table>
+	
+	<p></p><a name="SpecificationPencils"></a><div class="divBuffer"></div>
+	<h3>Pencils</h3>
+	
+	<p>The icons were drawn in <a href="https://krita.org/" target="_blank">Krita</a>. The outline was generated by selecting the opaque and growing the selection by 60 pixels. Little holes within the outline where filled, if applicable.</p>
+	
+	<table>
+		<tr>
+			<th>Application</th>
+			<th>Pencil</th>
+			<th>Size</th>
+		</tr>
+		<tr>
+			<td>Linework Icons</td>
+			<td>Basic-1</td>
+			<td>38px</td>
+		</tr>
+		<tr>
+			<td>Outlines</td>
+			<td>via selection</td>
+			<td>60px</td>
+		</tr>
+	</table>
+	
+	<p></p><a name="Changelog"></a><div class="divBuffer"></div>
+	<h2>Changelog</h2>
+	
+	<p><span class="spanChangelogVersion">1.0</span> <span class="spanCode">22. Nov 2023</span> Release.</p>
+	
+</div>
+</body>
+</html>

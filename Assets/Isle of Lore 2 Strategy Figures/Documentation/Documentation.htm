@@ -1,0 +1,1167 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="files\style.css">
+<title>Isle of Lore 2: Strategy Figures</title>
+</head>
+<body>
+<div id="divNavi">
+	<a class="aNavi" href="#Introduction">Introduction</a>
+	<a class="aNavi" href="#ContentStructure">Content Structure</a>
+	<a class="aNavi" href="#Figures">Figures</a>
+	<a class="aNavi" href="#ColorMapper">Color Mapper</a>
+	<a class="aNavi" href="#Specification">Specification</a>
+	<a class="aNavi" href="#Changelog">Changelog</a>
+</div>
+<div id="divMain">
+
+	<div class="divLogo"><img style="max-width: 562px; padding-top: 50px;" src="files\logo.png"></div>
+	
+	<p></p><a name="Introduction"></a><div class="divBuffer"></div>
+	<h2>Introduction</h2>
+	
+	<p>The asset pack <b>Isle of Lore 2: Strategy Figures</b> is a set of 125 figures compatible with my hex tile set <a href="https://assetstore.unity.com/packages/2d/environments/isle-of-lore-2-hex-tiles-regular-158781" target="_blank">Isle of Lore 2: Hex Tiles</a>. The figures are available as png files as well as both Krita (.kra) and Photoshop (.psd) source files. Every figure comes in 3 variants: without a white outline (or border), with a fully encompassing outline and an outline which leaves out the bottom part of the figure. The asset pack is compatible with my batch image editing tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a>, so that you can batch edit the figures and change their color palette with minimal effort; the required <b>Color Mapper Files</b> are included!</p>
+
+	<p>If you bought the pack when it came out, you may notice some differences. First and foremost, the color palette is a bit darker and more saturated, making it compatible with the <b>Isle of Lore 2: Hex Tiles</b> update. The figures were completely re-drawn in a higher resolution (250% the size), too! Some semi-official figures like dwarves and halflings are now included and some further figures were added, like the catapult, trebuchet and ballista.</p>
+
+	<p>Special thanks to all the people providing ideas for figures as well as Dave Mauro and Conscir, who commissioned additional figures with non-exclusivity, allowing me to add these figures to the pack for everyone to use! Through Dave Mauro, the following figures got added: Villager Female, Princess, Queen, Boy, Girl, Harpy, Sleeping Dragon, Eyeball, Giant Worm, Gnoll, Dwarf, Elf and Halfling. Conscir's commission contributed the Beast Tamer, Jester and Ringmaster.</p>
+	
+	<p>This documentation will go into more detail on how to find the files you want and how to change and re-export them to fit your needs.</p>
+	
+	<p>Please keep the license in mind, which is available as a <span class="spanCode">License.txt</span>-file in the folder you downloaded. If you have questions or feedback, you can reach me through the following channels. I especially recommend the mailing list and my Discord server to stay up-to-date respectively to chat about your and my projects!</p>
+	
+	<ul>
+		<li>E-Mail: <a href="mailto:info@stevencolling.com">info@stevencolling.com</a></li>
+		<li>Mailing List (get news and exclusive discounts!): <a href="https://mailinglist.stevencolling.com/game_assets/" target="_blank">https://mailinglist.stevencolling.com/game_assets/</a></li>
+		<li>Discord Server (connect with others using my software and assets!): <a href="https://stevencolling.com/discord.php" target="_blank">https://stevencolling.com/discord.php</a></li>
+		<li>Discord Profile: <a href="https://discordapp.com/users/171308170038214656/" target="_blank">https://discordapp.com/users/171308170038214656/</a></li>
+		<li>General Help: <a href="https://stevencolling.com/help.htm" target="_blank">https://stevencolling.com/help.htm</a></li>
+		<li>Website: <a href="https://stevencolling.com" target="_blank">https://stevencolling.com</a></li>
+	</ul>
+	
+	<p></p><a name="ContentStructure"></a><div class="divBuffer"></div>
+	<h2>Content Structure</h2>
+
+	<p>On the top level, the asset pack contains the folders <span class="spanCode">Assets</span>, <span class="spanCode">Documentation</span>, <span class="spanCode">Scenes</span> and <span class="spanCode">Sources</span>.</p>
+
+<p>If you want to use the assets as they are, head over to the <span class="spanCode">Assets</span>-folder and use the files in there. The folder <span class="spanCode">Scenes</span> provides a very basic but exemplary setup.</p>
+
+<p>In the <span class="spanCode">Assets</span> folder, you'll find the figures separated by the type of outline: <span class="spanCode">figures.standard_full</span> (full outline), <span class="spanCode">figures_standard_none</span> (no outline) and <span class="spanCode">figures.standard_semi</span> (outline except at the bottom). They contain a meta file <span class="spanCode">meta.txt</span> providing the distance of the figures from the bottom of the image file, which is useful if you want to render them in a game engine with proper sorting.</p>
+
+<p>In case you want to edit the assets, unpack the <span class="spanCode">Sources.zip</span> in the <span class="spanCode">Sources</span>-folder. There you find 3 sub-folders called <span class="spanCode">input</span>, <span class="spanCode">output</span> and <span class="spanCode">misc</span>, a folder which contains a list of the figure names written out, sorted by ID. The <span class="spanCode">output</span>-folder is empty, as these files were already moved to the <span class="spanCode">Assets</span> folder we discussed earlier. The <span class="spanCode">input</span>-folder though contains the source files, including Krita (.kra) and Photoshop (.psd) files from which the images were created as well as single png-exports of all the layers, which can be used with my tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a> to setup a regeneration of all the assets, which allows you to change colors and other properties of the assets automatically. A dedicated section further down will go into more detail. The <b>Color Mapper Files</b> <span class="spanCode">standard_full<b>.colormapper.txt</b></span> (etc.) tell <b>Color Mapper</b> how to assemble the figures. Special composite files ending on <span class="spanCode">.composite.colormapper.txt</span> represent groups of figures, like a group of people, and they tell <b>Color Mapper</b> how to assemble these group figures.</p>
+	
+	<p></p><a name="Figures"></a><div class="divBuffer"></div>
+	<h2>Figures</h2>
+	
+	<p>The following table provides an overview of all the figures included.</p>
+
+	<table class="tableFigures">
+		<tr>
+			<th>Image</th>
+			<th>ID</th>
+			<th>Name</th>
+			<th>File</th>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_villager_0.png"></td>
+			<td>0</td>
+			<td>Villager</td>
+			<td>figure_villager_0.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_elder_1.png"></td>
+			<td>1</td>
+			<td>Elder</td>
+			<td>figure_elder_1.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_worker_2.png"></td>
+			<td>2</td>
+			<td>Worker</td>
+			<td>figure_worker_2.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_miner_3.png"></td>
+			<td>3</td>
+			<td>Miner</td>
+			<td>figure_miner_3.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_farmer_4.png"></td>
+			<td>4</td>
+			<td>Farmer</td>
+			<td>figure_farmer_4.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_adventurer_5.png"></td>
+			<td>5</td>
+			<td>Adventurer</td>
+			<td>figure_adventurer_5.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_hero_6.png"></td>
+			<td>6</td>
+			<td>Hero</td>
+			<td>figure_hero_6.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_trader_7.png"></td>
+			<td>7</td>
+			<td>Trader</td>
+			<td>figure_trader_7.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_priest_8.png"></td>
+			<td>8</td>
+			<td>Priest</td>
+			<td>figure_priest_8.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_druid_9.png"></td>
+			<td>9</td>
+			<td>Druid</td>
+			<td>figure_druid_9.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_warrior_10.png"></td>
+			<td>10</td>
+			<td>Warrior</td>
+			<td>figure_warrior_10.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_pikeman_11.png"></td>
+			<td>11</td>
+			<td>Pikeman</td>
+			<td>figure_pikeman_11.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_archer_12.png"></td>
+			<td>12</td>
+			<td>Archer</td>
+			<td>figure_archer_12.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_knight_13.png"></td>
+			<td>13</td>
+			<td>Knight</td>
+			<td>figure_knight_13.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_paladin_14.png"></td>
+			<td>14</td>
+			<td>Paladin</td>
+			<td>figure_paladin_14.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_mage_15.png"></td>
+			<td>15</td>
+			<td>Mage</td>
+			<td>figure_mage_15.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_barbarian_16.png"></td>
+			<td>16</td>
+			<td>Barbarian</td>
+			<td>figure_barbarian_16.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bandit_17.png"></td>
+			<td>17</td>
+			<td>Bandit</td>
+			<td>figure_bandit_17.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_rogue_18.png"></td>
+			<td>18</td>
+			<td>Rogue</td>
+			<td>figure_rogue_18.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_cat_19.png"></td>
+			<td>19</td>
+			<td>Cat</td>
+			<td>figure_cat_19.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_dog_20.png"></td>
+			<td>20</td>
+			<td>Dog</td>
+			<td>figure_dog_20.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_wolf_21.png"></td>
+			<td>21</td>
+			<td>Wolf</td>
+			<td>figure_wolf_21.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_rat_22.png"></td>
+			<td>22</td>
+			<td>Rat</td>
+			<td>figure_rat_22.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_sheep_23.png"></td>
+			<td>23</td>
+			<td>Sheep</td>
+			<td>figure_sheep_23.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_chicken_24.png"></td>
+			<td>24</td>
+			<td>Chicken</td>
+			<td>figure_chicken_24.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_turkey_25.png"></td>
+			<td>25</td>
+			<td>Turkey</td>
+			<td>figure_turkey_25.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_cow_26.png"></td>
+			<td>26</td>
+			<td>Cow</td>
+			<td>figure_cow_26.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bull_27.png"></td>
+			<td>27</td>
+			<td>Bull</td>
+			<td>figure_bull_27.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_pig_28.png"></td>
+			<td>28</td>
+			<td>Pig</td>
+			<td>figure_pig_28.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_boar_29.png"></td>
+			<td>29</td>
+			<td>Boar</td>
+			<td>figure_boar_29.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_rabbit_30.png"></td>
+			<td>30</td>
+			<td>Rabbit</td>
+			<td>figure_rabbit_30.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_stag_31.png"></td>
+			<td>31</td>
+			<td>Stag</td>
+			<td>figure_stag_31.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bear_32.png"></td>
+			<td>32</td>
+			<td>Bear</td>
+			<td>figure_bear_32.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_frog_33.png"></td>
+			<td>33</td>
+			<td>Frog</td>
+			<td>figure_frog_33.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_snake_34.png"></td>
+			<td>34</td>
+			<td>Snake</td>
+			<td>figure_snake_34.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bat_35.png"></td>
+			<td>35</td>
+			<td>Bat</td>
+			<td>figure_bat_35.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_crow_36.png"></td>
+			<td>36</td>
+			<td>Crow</td>
+			<td>figure_crow_36.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_horse_37.png"></td>
+			<td>37</td>
+			<td>Horse</td>
+			<td>figure_horse_37.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_saddled_horse_38.png"></td>
+			<td>38</td>
+			<td>Saddled Horse</td>
+			<td>figure_saddled_horse_38.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_armored_horse_39.png"></td>
+			<td>39</td>
+			<td>Armored Horse</td>
+			<td>figure_armored_horse_39.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_donkey_40.png"></td>
+			<td>40</td>
+			<td>Donkey</td>
+			<td>figure_donkey_40.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_saddled_donkey_41.png"></td>
+			<td>41</td>
+			<td>Saddled Donkey</td>
+			<td>figure_saddled_donkey_41.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_cart_42.png"></td>
+			<td>42</td>
+			<td>Cart</td>
+			<td>figure_cart_42.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_wagon_43.png"></td>
+			<td>43</td>
+			<td>Wagon</td>
+			<td>figure_wagon_43.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_carriage_44.png"></td>
+			<td>44</td>
+			<td>Carriage</td>
+			<td>figure_carriage_44.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_balloon_45.png"></td>
+			<td>45</td>
+			<td>Balloon</td>
+			<td>figure_balloon_45.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_orc_46.png"></td>
+			<td>46</td>
+			<td>Orc</td>
+			<td>figure_orc_46.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_goblin_47.png"></td>
+			<td>47</td>
+			<td>Goblin</td>
+			<td>figure_goblin_47.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_slime_48.png"></td>
+			<td>48</td>
+			<td>Slime</td>
+			<td>figure_slime_48.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_zombie_49.png"></td>
+			<td>49</td>
+			<td>Zombie</td>
+			<td>figure_zombie_49.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_mummy_50.png"></td>
+			<td>50</td>
+			<td>Mummy</td>
+			<td>figure_mummy_50.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_skeleton_51.png"></td>
+			<td>51</td>
+			<td>Skeleton</td>
+			<td>figure_skeleton_51.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_skeleton_warrior_52.png"></td>
+			<td>52</td>
+			<td>Skeleton Warrior</td>
+			<td>figure_skeleton_warrior_52.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_skeleton_archer_53.png"></td>
+			<td>53</td>
+			<td>Skeleton Archer</td>
+			<td>figure_skeleton_archer_53.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_ghost_54.png"></td>
+			<td>54</td>
+			<td>Ghost</td>
+			<td>figure_ghost_54.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_spider_55.png"></td>
+			<td>55</td>
+			<td>Spider</td>
+			<td>figure_spider_55.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_troll_56.png"></td>
+			<td>56</td>
+			<td>Troll</td>
+			<td>figure_troll_56.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_yeti_57.png"></td>
+			<td>57</td>
+			<td>Yeti</td>
+			<td>figure_yeti_57.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_cyclops_58.png"></td>
+			<td>58</td>
+			<td>Cyclops</td>
+			<td>figure_cyclops_58.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_fen_fire_59.png"></td>
+			<td>59</td>
+			<td>Fen Fire</td>
+			<td>figure_fen_fire_59.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_werewolf_60.png"></td>
+			<td>60</td>
+			<td>Werewolf</td>
+			<td>figure_werewolf_60.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_witch_61.png"></td>
+			<td>61</td>
+			<td>Witch</td>
+			<td>figure_witch_61.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_dragon_62.png"></td>
+			<td>62</td>
+			<td>Dragon</td>
+			<td>figure_dragon_62.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_kraken_63.png"></td>
+			<td>63</td>
+			<td>Kraken</td>
+			<td>figure_kraken_63.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_people_64.png"></td>
+			<td>64</td>
+			<td>People</td>
+			<td>figure_people_64.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_workers_65.png"></td>
+			<td>65</td>
+			<td>Workers</td>
+			<td>figure_workers_65.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_trader_with_donkey_66.png"></td>
+			<td>66</td>
+			<td>Trader with Donkey</td>
+			<td>figure_trader_with_donkey_66.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_trader_with_wagon_67.png"></td>
+			<td>67</td>
+			<td>Trader with Wagon</td>
+			<td>figure_trader_with_wagon_67.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_adventurer_with_horse_68.png"></td>
+			<td>68</td>
+			<td>Adventurer with Horse</td>
+			<td>figure_adventurer_with_horse_68.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_hero_with_horse_69.png"></td>
+			<td>69</td>
+			<td>Hero with Horse</td>
+			<td>figure_hero_with_horse_69.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_party_70.png"></td>
+			<td>70</td>
+			<td>Party</td>
+			<td>figure_party_70.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_soldiers_71.png"></td>
+			<td>71</td>
+			<td>Soldiers</td>
+			<td>figure_soldiers_71.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bandits_72.png"></td>
+			<td>72</td>
+			<td>Bandits</td>
+			<td>figure_bandits_72.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_knight_with_horse_73.png"></td>
+			<td>73</td>
+			<td>Knight with Horse</td>
+			<td>figure_knight_with_horse_73.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_paladin_with_horse_74.png"></td>
+			<td>74</td>
+			<td>Paladin with Horse</td>
+			<td>figure_paladin_with_horse_74.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_livestock_75.png"></td>
+			<td>75</td>
+			<td>Livestock</td>
+			<td>figure_livestock_75.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_orcs_76.png"></td>
+			<td>76</td>
+			<td>Orcs</td>
+			<td>figure_orcs_76.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_goblins_77.png"></td>
+			<td>77</td>
+			<td>Goblins</td>
+			<td>figure_goblins_77.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_zombies_78.png"></td>
+			<td>78</td>
+			<td>Zombies</td>
+			<td>figure_zombies_78.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_skeletons_79.png"></td>
+			<td>79</td>
+			<td>Skeletons</td>
+			<td>figure_skeletons_79.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_plague_doctor_80.png"></td>
+			<td>80</td>
+			<td>Plague Doctor</td>
+			<td>figure_plague_doctor_80.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_king_81.png"></td>
+			<td>81</td>
+			<td>King</td>
+			<td>figure_king_81.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_frogman_82.png"></td>
+			<td>82</td>
+			<td>Frogman</td>
+			<td>figure_frogman_82.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_merfolk_83.png"></td>
+			<td>83</td>
+			<td>Merfolk</td>
+			<td>figure_merfolk_83.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_boat_84.png"></td>
+			<td>84</td>
+			<td>Boat</td>
+			<td>figure_boat_84.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_trading_ship_85.png"></td>
+			<td>85</td>
+			<td>Trading Ship</td>
+			<td>figure_trading_ship_85.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_warship_86.png"></td>
+			<td>86</td>
+			<td>Warship</td>
+			<td>figure_warship_86.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_pirate_ship_87.png"></td>
+			<td>87</td>
+			<td>Pirate Ship</td>
+			<td>figure_pirate_ship_87.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_cargo_88.png"></td>
+			<td>88</td>
+			<td>Cargo</td>
+			<td>figure_cargo_88.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_jellyfish_89.png"></td>
+			<td>89</td>
+			<td>Jellyfish</td>
+			<td>figure_jellyfish_89.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_fish_90.png"></td>
+			<td>90</td>
+			<td>Fish</td>
+			<td>figure_fish_90.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_turtle_91.png"></td>
+			<td>91</td>
+			<td>Turtle</td>
+			<td>figure_turtle_91.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_whale_92.png"></td>
+			<td>92</td>
+			<td>Whale</td>
+			<td>figure_whale_92.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_shark_93.png"></td>
+			<td>93</td>
+			<td>Shark</td>
+			<td>figure_shark_93.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_crab_94.png"></td>
+			<td>94</td>
+			<td>Crab</td>
+			<td>figure_crab_94.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_crocodile_95.png"></td>
+			<td>95</td>
+			<td>Crocodile</td>
+			<td>figure_crocodile_95.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_parrot_96.png"></td>
+			<td>96</td>
+			<td>Parrot</td>
+			<td>figure_parrot_96.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_monkey_97.png"></td>
+			<td>97</td>
+			<td>Monkey</td>
+			<td>figure_monkey_97.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_bee_98.png"></td>
+			<td>98</td>
+			<td>Bee</td>
+			<td>figure_bee_98.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_meteoroid_99.png"></td>
+			<td>99</td>
+			<td>Meteoroid</td>
+			<td>figure_meteoroid_99.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_villager_female_100.png"></td>
+			<td>100</td>
+			<td>Villager Female</td>
+			<td>figure_villager_female_100.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_princess_101.png"></td>
+			<td>101</td>
+			<td>Princess</td>
+			<td>figure_princess_101.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_queen_102.png"></td>
+			<td>102</td>
+			<td>Queen</td>
+			<td>figure_queen_102.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_boy_103.png"></td>
+			<td>103</td>
+			<td>Boy</td>
+			<td>figure_boy_103.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_girl_104.png"></td>
+			<td>104</td>
+			<td>Girl</td>
+			<td>figure_girl_104.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_harpy_105.png"></td>
+			<td>105</td>
+			<td>Harpy</td>
+			<td>figure_harpy_105.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_sleeping_dragon_106.png"></td>
+			<td>106</td>
+			<td>Sleeping Dragon</td>
+			<td>figure_sleeping_dragon_106.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_eyeball_107.png"></td>
+			<td>107</td>
+			<td>Eyeball</td>
+			<td>figure_eyeball_107.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_giant_worm_108.png"></td>
+			<td>108</td>
+			<td>Giant Worm</td>
+			<td>figure_giant_worm_108.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_gnoll_109.png"></td>
+			<td>109</td>
+			<td>Gnoll</td>
+			<td>figure_gnoll_109.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_dwarf_110.png"></td>
+			<td>110</td>
+			<td>Dwarf</td>
+			<td>figure_dwarf_110.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_dwarves_111.png"></td>
+			<td>111</td>
+			<td>Dwarves</td>
+			<td>figure_dwarves_111.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_elf_112.png"></td>
+			<td>112</td>
+			<td>Elf</td>
+			<td>figure_elf_112.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_elves_113.png"></td>
+			<td>113</td>
+			<td>Elves</td>
+			<td>figure_elves_113.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_halfling_114.png"></td>
+			<td>114</td>
+			<td>Halfling</td>
+			<td>figure_halfling_114.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_halflings_115.png"></td>
+			<td>115</td>
+			<td>Halflings</td>
+			<td>figure_halflings_115.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_mixed_party_116.png"></td>
+			<td>116</td>
+			<td>Mixed Party</td>
+			<td>figure_mixed_party_116.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_gorilla_117.png"></td>
+			<td>117</td>
+			<td>Gorilla</td>
+			<td>figure_gorilla_117.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_beast_tamer_118.png"></td>
+			<td>118</td>
+			<td>Beast Tamer</td>
+			<td>figure_beast_tamer_118.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_jester_119.png"></td>
+			<td>119</td>
+			<td>Jester</td>
+			<td>figure_jester_119.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_ringmaster_120.png"></td>
+			<td>120</td>
+			<td>Ringmaster</td>
+			<td>figure_ringmaster_120.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_mouse_121.png"></td>
+			<td>121</td>
+			<td>Mouse</td>
+			<td>figure_mouse_121.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_catapult_122.png"></td>
+			<td>122</td>
+			<td>Catapult</td>
+			<td>figure_catapult_122.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_trebuchet_123.png"></td>
+			<td>123</td>
+			<td>Trebuchet</td>
+			<td>figure_trebuchet_123.png</td>
+		</tr>
+		<tr>
+			<td><img src=".\files\examples\figures\figure_ballista_124.png"></td>
+			<td>124</td>
+			<td>Ballista</td>
+			<td>figure_ballista_124.png</td>
+		</tr>
+		
+	</table>
+	
+	<p></p><a name="ColorMapper"></a><div class="divBuffer"></div>
+	<h2>Re-exporting the Figures with Color Mapper</h2>
+	
+	<p>If you already used <b>Color Mapper</b> before, please get the update before using it with the <b>Strategy Figures</b> pack. First, because there are two new colors which have to be added to <b>Color Mapper's</b> configuration file, namely <span class="spanCode">iol2_skin</span> and <span class="spanCode">iol2_smoke</span>, secondly because the pack uses a new feature for creating figure groups, which the previous version of <b>Color Mapper</b> didn't have.</p>
+
+	<p>If you want to use the figures the way they are, refer to the <span class="spanCode">Sources\output</span>-folder. But if you want to change the figures, for example replace some or all of the colors, you can use my batch image editing tool <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">Color Mapper</a>. It can also re-size, re-scale and re-position figures and even create figure compositions, like a group of people, all in one go.</p>
+
+	<div class="divImage"><img src="files\colormapper_0.png"><p><b>Color Mapper</b> assembling a villager from its single parts.</p></div>
+	
+	<div class="divImage"><img src="files\colormapper_1.png"><p><b>Color Mapper</b> assembling a villager, but also switching out the color of one of its parts.</p></div>
+	
+	<p>To make <b>Color Mapper</b> work, the <b>Isle of Lore 2: Strategy Figures</b> download includes a folder <span class="spanCode">Sources\input\figures</span> containing the <a href="https://krita.org" target="_blank">Krita</a> (.kra) and Photoshop (.psd) source files as well as png exports of the single layers, <b>Color Mapper Files</b> (.colormapper.txt) containing information on how <b>Color Mapper</b> is going to assemble the files and <b>Composite Files</b> (.composite.colormapper.txt) telling <b>Color Mapper</b> how to assemble composites like a group of people from single figures.</p>
+	
+	<p><b>Color Mapper</b> isn't a part of this asset pack and instead has to be downloaded <a href="https://stevencolling.com/asset_packs.htm#Color_Mapper" target="_blank">here</a>, which allows me to release updates for <b>Color Mapper</b> independently of the projects it is used in. The download includes a <span class="spanCode">Documentation</span>-folder with exact instructions on how to use <b>Color Mapper</b>, but the workflow in general is at follows:</p>
+	
+	<ol>
+		<li>Setup <b>Color Mapper's</b> configuration file so it knows where to find the <span class="spanCode">Sources\input</span> and <span class="spanCode">Sources\output</span> folders.</li>
+		<li>Running <b>Color Mapper</b>, which will gather all the <span class="spanCode">*.colormapper.txt</span>-files in the input folder and assemble the png files (and composites) from the single layer files with colors referenced in the <span class="spanCode">*.colormapper.txt</span>-file and defined in <b>Color Mapper's</b> configuration file. The assembled png files will be put in the <span class="spanCode">output</span>-folder.</li>
+		<li>After checking the results, the files from the <span class="spanCode">output</span>-folder can be used or copied over to their corresponding <span class="spanCode">HexMapMaker</span>-folder (see section <a href="#ContentStructure">Content Structure</a>).</li>
+	</ol>
+	
+	<p><b>Color Mapper</b> already comes with a configuration file <span class="spanCode">config.txt</span> properly setup with the colors from my <b>Isle of Lore 2</b> asset packs, but for the sake of completeness, here are the proper color entries for a <b>Color Mapper</b> configuration file.</p>
+	
+	<p class="pCode">
+		color: iol2_white -> #ffffff<br>
+		color: iol2_cloud_light -> #dadada<br>
+		color: iol2_cloud_dark -> #797979<br>
+		color: iol2_dark -> #161616<br>
+		color: iol2_gray_light -> #262626<br>
+		color: iol2_gray_dark -> #1f1f1f<br>
+		color: iol2_blue_light -> #56837f<br>
+		color: iol2_blue_medium -> #3c5858<br>
+		color: iol2_blue_dark -> #263236<br>
+		color: iol2_brown_light -> #92744d<br>
+		color: iol2_brown_dark -> #644939<br>
+		color: iol2_green_light -> #e8df63<br>
+		color: iol2_green_medium -> #889954<br>
+		color: iol2_green_dark -> #3a5241<br>
+		color: iol2_red_dark -> #662c2d<br>
+		color: iol2_red -> #9c4741<br>
+		color: iol2_orange -> #d09a54<br>
+		color: iol2_yellow -> #edc95e<br>
+		color: iol2_water_light -> #51c4b9<br>
+		color: iol2_water_medium -> #35a1a0<br>
+		color: iol2_water_dark -> #37838b<br>
+		color: iol2_stone -> #a78979<br>
+		color: iol2_fire -> #ba433a<br>
+		color: iol2_fire_yellow -> #fbd050<br>
+		color: iol2_fire_orange -> #df9c45<br>
+		color: iol2_sand_light -> #ffd66c<br>
+		color: iol2_sand_medium -> #dcb95f<br>
+		color: iol2_sand_dark -> #a37f49<br>
+		color: iol2_snow_light -> #a2e9de<br>
+		color: iol2_snow_medium -> #4b8588<br>
+		color: iol2_snow_dark -> #28434b<br>
+		color: iol2_skin -> #a78979<br>
+		color: iol2_smoke -> #4a4a4a<br>
+		color: iol2_skyblue_light -> #50b1d8<br>
+		color: iol2_skyblue_medium -> #3979bc<br>
+		color: iol2_purple -> #5e40a3
+	</p>
+	
+	<p>If you want to make changes to the figures themselves, you can open the <a href="https://krita.org" target="_blank">Krita</a> or Photoshop files, edit them and export the single layers accordingly. Make sure to keep the naming scheme <span class="spanCode">figure_(name)_(id)_(layer).png</span> intact, for example <span class="spanCode">figure_villager_0_line.png</span> for the <span class="spanCode">line</span>-layer of the villager figure which has the id <span class="spanCode">0</span>.</p>
+	
+	<p></p><a name="Specification"></a><div class="divBuffer"></div>
+	<h2>Specification</h2>
+	
+	<p></p><a name="SpecificationColors"></a><div class="divBuffer"></div>
+	<h3>Colors</h3>
+
+	<p>The following colors are used across all of my <b>Isle of Lore 2</b> packs. Every color except the ones grayed out are used in <b>Isle of Lore 2: Strategy Figures</b>.</p>
+	
+	<table>
+		<tr>
+			<th>Color Name</th>
+			<th>Color Mapper Code</th>
+			<th>Hex Color Code</th>
+			<th style="padding: 0px; width: 10px"></th>
+		</tr>
+		<tr>
+			<td>Blue Light</td>
+			<td>iol2_blue_light</td>
+			<td>56837f</td>
+			<td style="padding: 0px; width: 10px; background-color: #56837f"></td>
+		</tr>
+		<tr>
+			<td>Blue Medium</td>
+			<td>iol2_blue_medium</td>
+			<td>3c5858</td>
+			<td style="padding: 0px; width: 10px; background-color: #3c5858"></td>
+		</tr>
+		<tr>
+			<td>Blue Dark</td>
+			<td>iol2_blue_dark</td>
+			<td>263236</td>
+			<td style="padding: 0px; width: 10px; background-color: #263236"></td>
+		</tr>
+		<tr>
+			<td>Brown Light</td>
+			<td>iol2_brown_light</td>
+			<td>92744d</td>
+			<td style="padding: 0px; width: 10px; background-color: #92744d"></td>
+		</tr>
+		<tr>
+			<td>Brown Dark</td>
+			<td>iol2_brown_dark</td>
+			<td>644939</td>
+			<td style="padding: 0px; width: 10px; background-color: #644939"></td>
+		</tr>
+		<tr>
+			<td>Cloud Light</td>
+			<td>iol2_cloud_light</td>
+			<td>dadada</td>
+			<td style="padding: 0px; width: 10px; background-color: #dadada"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Cloud Dark</td>
+			<td>iol2_cloud_dark</td>
+			<td>797979</td>
+			<td style="padding: 0px; width: 10px; background-color: #797979"></td>
+		</tr>
+		<tr>
+			<td>Dark</td>
+			<td>iol2_dark</td>
+			<td>161616</td>
+			<td style="padding: 0px; width: 10px; background-color: #161616"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Fire</td>
+			<td>iol2_fire</td>
+			<td>ba433a</td>
+			<td style="padding: 0px; width: 10px; background-color: #ba433a"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Fire Orange</td>
+			<td>iol2_fire_orange</td>
+			<td>df9c45</td>
+			<td style="padding: 0px; width: 10px; background-color: #df9c45"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Fire Yellow</td>
+			<td>iol2_fire_yellow</td>
+			<td>fbd050</td>
+			<td style="padding: 0px; width: 10px; background-color: #fbd050"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Gray Light</td>
+			<td>iol2_gray_light</td>
+			<td>262626</td>
+			<td style="padding: 0px; width: 10px; background-color: #262626"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Gray Dark</td>
+			<td>iol2_gray_dark</td>
+			<td>1f1f1f</td>
+			<td style="padding: 0px; width: 10px; background-color: #1f1f1f"></td>
+		</tr>
+		<tr>
+			<td>Green Light</td>
+			<td>iol2_green_light</td>
+			<td>e8df63</td>
+			<td style="padding: 0px; width: 10px; background-color: #e8df63"></td>
+		</tr>
+		<tr>
+			<td>Green Medium</td>
+			<td>iol2_green_medium</td>
+			<td>889954</td>
+			<td style="padding: 0px; width: 10px; background-color: #889954"></td>
+		</tr>
+		<tr>
+			<td>Green Dark</td>
+			<td>iol2_green_dark</td>
+			<td>3a5241</td>
+			<td style="padding: 0px; width: 10px; background-color: #3a5241"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Orange</td>
+			<td>iol2_orange</td>
+			<td>d09a54</td>
+			<td style="padding: 0px; width: 10px; background-color: #d09a54"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Purple</td>
+			<td>iol2_purple</td>
+			<td>5e40a3</td>
+			<td style="padding: 0px; width: 10px; background-color: #5e40a3"></td>
+		</tr>
+		<tr>
+			<td>Red</td>
+			<td>iol2_red</td>
+			<td>9c4741</td>
+			<td style="padding: 0px; width: 10px; background-color: #9c4741"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Red Dark</td>
+			<td>iol2_red_dark</td>
+			<td>662c2d</td>
+			<td style="padding: 0px; width: 10px; background-color: #662c2d"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Sand Light</td>
+			<td>iol2_sand_light</td>
+			<td>ffd66c</td>
+			<td style="padding: 0px; width: 10px; background-color: #ffd66c"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Sand Medium</td>
+			<td>iol2_sand_medium</td>
+			<td>dcb95f</td>
+			<td style="padding: 0px; width: 10px; background-color: #dcb95f"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Sand Dark</td>
+			<td>iol2_sand_dark</td>
+			<td>a37f49</td>
+			<td style="padding: 0px; width: 10px; background-color: #a37f49"></td>
+		</tr>
+		<tr>
+			<td>Skin</td>
+			<td>iol2_skin</td>
+			<td>a78979</td>
+			<td style="padding: 0px; width: 10px; background-color: #a78979"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Skyblue Light</td>
+			<td>iol2_skyblue_light</td>
+			<td>50b1d8</td>
+			<td style="padding: 0px; width: 10px; background-color: #50b1d8"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Skyblue Medium</td>
+			<td>iol2_skyblue_medium</td>
+			<td>3979bc</td>
+			<td style="padding: 0px; width: 10px; background-color: #3979bc"></td>
+		</tr>
+		<tr>
+			<td>Smoke</td>
+			<td>iol2_smoke</td>
+			<td>4a4a4a</td>
+			<td style="padding: 0px; width: 10px; background-color: #4a4a4a"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Snow Light</td>
+			<td>iol2_snow_light</td>
+			<td>a2e9de</td>
+			<td style="padding: 0px; width: 10px; background-color: #a2e9de"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Snow Medium</td>
+			<td>iol2_snow_medium</td>
+			<td>4b8588</td>
+			<td style="padding: 0px; width: 10px; background-color: #4b8588"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Snow Dark</td>
+			<td>iol2_snow_dark</td>
+			<td>28434b</td>
+			<td style="padding: 0px; width: 10px; background-color: #28434b"></td>
+		</tr>
+		<tr>
+			<td>Stone</td>
+			<td>iol2_stone</td>
+			<td>a78979</td>
+			<td style="padding: 0px; width: 10px; background-color: #a78979"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Water Light</td>
+			<td>iol2_water_light</td>
+			<td>51c4b9</td>
+			<td style="padding: 0px; width: 10px; background-color: #51c4b9"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Water Medium</td>
+			<td>iol2_water_medium</td>
+			<td>35a1a0</td>
+			<td style="padding: 0px; width: 10px; background-color: #35a1a0"></td>
+		</tr>
+		<tr class="trDisabled">
+			<td>Water Dark</td>
+			<td>iol2_water_dark</td>
+			<td>37838b</td>
+			<td style="padding: 0px; width: 10px; background-color: #37838b"></td>
+		</tr>
+		<tr>
+			<td>White</td>
+			<td>iol2_white</td>
+			<td>ffffff</td>
+			<td style="padding: 0px; width: 10px; background-color: #ffffff"></td>
+		</tr>
+		<tr>
+			<td>Yellow</td>
+			<td>iol2_yellow</td>
+			<td>edc95e</td>
+			<td style="padding: 0px; width: 10px; background-color: #edc95e"></td>
+		</tr>
+	</table>
+	
+	<p></p><a name="SpecificationSizes"></a><div class="divBuffer"></div>
+	<h3>Sizes</h3>
+	
+	<table>
+		<tr>
+			<th>Entity</th>
+			<th>Size (px)</th>
+		</tr>
+		<tr>
+			<td>Figures</td>
+			<td>800x500</td>
+		</tr>
+		<tr>
+			<td>Tile Overlays</td>
+			<td>840x840</td>
+		</tr>
+	</table>
+	
+	<p></p><a name="SpecificationPencils"></a><div class="divBuffer"></div>
+	<h3>Pencils</h3>
+	
+	<p>The figures were drawn in <a href="https://krita.org/" target="_blank">Krita</a>.</p>
+	
+	<table>
+		<tr>
+			<th>Application</th>
+			<th>Pencil</th>
+			<th>Size</th>
+		</tr>
+		<tr>
+			<td>Linework</td>
+			<td>Basic-1</td>
+			<td>12px</td>
+		</tr>
+		<tr>
+			<td>Figure Outline</td>
+			<td>Basic-1</td>
+			<td>24px</td>
+		</tr>
+	</table>
+	
+	<p></p><a name="Changelog"></a><div class="divBuffer"></div>
+	<h2>Changelog</h2>
+	
+	<p><span class="spanChangelogVersion">2.2</span> <span class="spanCode">21. Sep 2023</span> Updated color config example entries and color palette table in the documentation.</p>
+	<p><span class="spanChangelogVersion">2.1</span> <span class="spanCode">24. Aug 2023</span> Fixed missing misc-folder containing a list of figure names. Fixed typos in the documentation.</p>
+	<p><span class="spanChangelogVersion">2.0</span> <span class="spanCode">05. Aug 2023</span> Complete overhaul and redrawing of all the images. Adapted color palette. They are scaled up by 250% in comparison to the previous version. Added support for <b>Color Mapper</b>. Re-designed the Rat-figure. Horse saddles use a light brown instead of a skin color. The blue color for equipment like swords is darker than the blue for body armour now, instead of having the same blue. Changed the composition of figure groups. No "cut"-variant for hex tiles and no spritesheets anymore.</p>
+	<p><span class="spanChangelogVersion">1.1</span> <span class="spanCode">18. Apr 2020</span> Added 16 new figures (Plague Doctor, King, Frogman, Merfolk, Boat, Trading Ship, Warship, Pirate Ship, Cargo, Jellyfish, Fish, Turtle, Whale, Shark, Crab, Crocodile), moved sources out of showcase file into own source files, restructured directory and file naming, fixed white border and its positioning of the Bear figure, updated the readme file to reflect the changes</p>
+	<p><span class="spanChangelogVersion">1.0</span> <span class="spanCode">08. Feb 2020</span> Release.</p>
+	
+</div>
+</body>
+</html>
