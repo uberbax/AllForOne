@@ -10,7 +10,10 @@ using Random = UnityEngine.Random;
 public class MainCycleDung : MonoBehaviour
 {
     public GameObject player;
+    
     public Button endTurn;
+    public Button drawAnother;
+    
     private void Awake()
     {
         EventManager.SUB("PARSE_ENDED", B);

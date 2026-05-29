@@ -48,10 +48,15 @@ public class XDdrop : ComponentBehavior
                 if (mon.GetPar("drop_pick") > 0)
                 {
                     a.AddViz("pick");
+                    a.AddViz("shiny");
                     a.visuals["pick"].GetComponent<XDpick>().Pick(a, deathFrom);
                 }
                 else
-                    UtilsControl.Instance.StartRandomDrop(a.main.transform, a, () => { a.AddViz("take"); }, mm.main.transform);
+                    UtilsControl.Instance.StartRandomDrop(a.main.transform, a, () =>
+                    {
+                        a.AddViz("take");
+                        a.AddViz("shiny");
+                    }, mm.main.transform);
             }
             else
             {

@@ -1859,7 +1859,19 @@ public class MainStates : MonoBehaviour
             wasCrit = true;
             atk *= (1 + skl.GetPar("crit_dmg"));
         }
-        
+
+        if (sh > 0 && a.RID == "main_player")
+        {
+            var gg = a.main.GetComponent<MainEffector>();
+            if (gg != null && gg.effects.ContainsKey("shield"))
+            {
+                gg.effects["shield"].SetActive(true);
+                FunctionTimer.Create(() =>
+                {
+                    gg.effects["shield"].SetActive(false);
+                }, 1);
+            }
+        }
         
         if (atk > 0)
         {
