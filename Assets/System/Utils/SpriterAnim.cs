@@ -23,7 +23,7 @@ public class SpriterAnim : MonoBehaviour
     
     void Start()
     {
-        spAnimator = GetComponent<SpriteRenderer>();
+        spAnimator = GetComponentInChildren<SpriteRenderer>();
         imAnimator = GetComponent<Image>();
 
         CrossFade(defaultAnim, 0);

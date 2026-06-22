@@ -44,9 +44,11 @@ public class XDcombat : ComponentBehavior
     }
     
     // Update is called once per frame
+    
     private void Update()
     {
-        Iteration();
+        if (MainStates.allowAutoIterate)
+            Iteration();
     }
 
     private float lastIterationTm = -1;

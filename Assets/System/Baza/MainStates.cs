@@ -111,6 +111,13 @@ public class MainStates : MonoBehaviour
 
     public long lastAutoRewardTime = 0;
     
+    //params !!!
+    public static bool lootTakeShowReward = false;
+    public static bool disappearLootOnTake = false;
+    public static bool allowAutoIterate = true;
+    
+    
+    
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
         if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
@@ -559,6 +566,17 @@ public class MainStates : MonoBehaviour
         }
     }
 
+    public List<Bon> GetInventoryBon(RObj mon)
+    {
+        List<Bon> res = new List<Bon>();
+        foreach (var v in mon.inventory)
+        {
+            res.Add(new Bon{Key = v.dbObj.ID, Value = (int)v.GetPar("amount")});
+        }
+
+        return res;
+    }
+    
     public void ExecuteDone(string id)
     {
         ExecuteDone(ConfigLoader.Instance.allDynamic[id]);
@@ -2161,8 +2179,9 @@ public class MainStates : MonoBehaviour
     public bool InIteration = false;
     public string lastBattle;
 
-    public IEnumerator OneIteration(bool exceptMain = false)
+    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "")
     {
+        if (InIteration) yield break;
         InIteration = true;
         /*
         foreach (var v in all)
@@ -2176,6 +2195,7 @@ public class MainStates : MonoBehaviour
         {
             if (exceptMain && combats[i].RID == "main_player") continue;
             
+            
             if (!combats[i].HasVis("combat")) continue;
             if (combats[i].GetPar("do_nothing") > 0) continue;
             
@@ -2183,7 +2203,7 @@ public class MainStates : MonoBehaviour
             if (gg == null) continue;
             
             gg.Iteration(true); 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(tm);
         }
 
         InIteration = false;

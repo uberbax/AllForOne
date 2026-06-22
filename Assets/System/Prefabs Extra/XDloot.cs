@@ -52,8 +52,28 @@ public class XDloot : ComponentBehavior
          {
              mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("open");
          }
-         MainStates.instance.curLoot = mon;
-         MainStates.instance.UI_second.SetActive(true);
-         SoundManager.instance.PlayAny("chest_open");
+         
+         SoundManager.instance.PlayAny("chest_open");      
+         
+         if (MainStates.lootTakeShowReward)
+         {
+             
+             var ss = MainStates.instance.GetInventoryBon(mon);
+             MainStates.instance.AddItems(ss);
+             PopupoManager.instance.ShowRewards(ss);
+         }
+         else
+         {
+             MainStates.instance.curLoot = mon;
+             MainStates.instance.UI_second.SetActive(true);
+         }
+
+
+         if (MainStates.disappearLootOnTake)
+         {
+             Destroy(mon.main);
+         }
+
+
     }
 }
