@@ -13,6 +13,7 @@ public class MainCycleSword : MonoBehaviour
     public bool AlwaysMove = true;
     public Button moveSkill;
     private RObj main;
+    private RObj secondMain;
 
     private bool inBattle = false;
     
@@ -35,7 +36,71 @@ public class MainCycleSword : MonoBehaviour
         {
             inBattle = true;
         });
+        EventManager.SUB("battle_press", BattleClicked);
         
+        EventManager.SUB("after_battle", (x) =>
+        {
+            Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+            secondMain.Destroy();
+            MainStates.instance.UI_skills.SetActive(true);
+            if (MainStates.instance.lastBattleResult == 0)
+            {
+                Destroy(MainStates.instance.lastBattleTrigger);
+                MainStates.instance.inBattle = false;
+                inBattle = false;
+            }
+            else
+            {
+                MainStates.instance.inBattle = false;
+                inBattle = false;
+            }
+        });
+        
+        
+    }
+
+    public Transform battlePoint;
+    public Transform playerPos;
+    
+    private void BattleClicked(ArgPass obj)
+    {
+        MainStates.instance.UI_battleSelect.SetActive(false);
+        WaveSpawner.ClearExcept("sword");
+
+        MainStates.instance.lastBattle = obj.what;
+        //WaveSpawner.instance.DoSpawnAll(MainStates.instance.lastBattle);
+        
+        MainStates.instance.UI_squadList.SetActive(false);
+        MainStates.instance.UI_skills.SetActive(false);
+        
+        Camera.main.GetComponent<CameraFollow>().target = battlePoint;
+        MainStates.instance.mainPlayer.ResetCDs();
+
+        //we need to create player clone basically, but with available skills
+        
+        secondMain = new RObj("hero", 1, 1, true, Vector3.zero,true, ItemType.monster, "second_main");
+        MainStates.instance.ApplyPlayerConfigParams(secondMain);
+        secondMain.AddViz("shadow");
+        secondMain.AddViz("combat#no:1");
+        secondMain.AddViz("hp");
+        secondMain.AddViz("coll#scale:0.5");
+        secondMain.AddViz("animator#pr:1");
+        
+        secondMain.AdjustPosition();
+        secondMain.AddMeta("my_side");
+        secondMain.AddMeta("sword");
+        
+        secondMain.main.transform.position = playerPos.position;
+        secondMain.Position = playerPos.position;
+        secondMain.AdjustPosition();
+        
+        secondMain.actSkills.Clear();
+        MainStates.instance.AcquireSkill(secondMain, "basic_melee");
+        
+        //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
+        //MainStates.instance.mainPlayer.Position = playerPos.position;
+        //MainStates.instance.mainPlayer.AdjustPosition();
+
     }
 
     public void StartGame()
@@ -114,7 +179,8 @@ public class MainCycleSword : MonoBehaviour
         MainStates.lootTakeShowReward = true;
         MainStates.disappearLootOnTake = true;
         MainStates.allowAutoIterate = false;
-
+        MainStates.metaCreateLevel = "sword";
+        BattleController.reqTag = "sword";
     }
 
     public void HandleAutomove()
@@ -152,7 +218,7 @@ public class MainCycleSword : MonoBehaviour
 
         if (inBattle)
         {
-            StartCoroutine(MainStates.instance.OneIteration(false, 2));
+            StartCoroutine(MainStates.instance.OneIteration(false, 1, "sword"));
         }
 
     }

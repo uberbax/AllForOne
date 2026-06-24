@@ -8,6 +8,7 @@ public class BattleController : MonoBehaviour
     public string winTag = "wave";
     public string loseTag = "my_side";
     public bool startDo = false;
+    public static string reqTag = "";
     
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class BattleController : MonoBehaviour
 
         foreach (var v in MainStates.instance.combats)
         {
+            if (reqTag != "" && !v.META_TAGS.Contains(reqTag)) continue; 
             if (v.META_TAGS.Contains(winTag) && v.GetPar("health") >= 0) cntEnemy++;
             if (v.META_TAGS.Contains(loseTag) && v.GetPar("health") >= 0) cntMy++;
         }
@@ -41,12 +43,13 @@ public class BattleController : MonoBehaviour
         {
             startDo = false;
             ModelStatistics.instance.IncreaseStatValue("finish_" + MainStates.instance.lastBattle, 1);
+            MainStates.instance.lastBattleResult = 0;
             FunctionTimer.Create(() => { EventManager.INV("battle_ended", new ArgPass { num = 0 }); }, 1);
         }
         else if (cntMy == 0)
         {
             startDo = false;
-            
+            MainStates.instance.lastBattleResult = 1;
             FunctionTimer.Create(() => { EventManager.INV("battle_ended", new ArgPass { num = 1 }); }, 1);
         }
         

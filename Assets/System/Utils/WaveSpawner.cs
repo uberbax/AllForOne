@@ -60,12 +60,19 @@ public class WaveSpawner : MonoBehaviour
         }
     }
     
-    public static void ClearExcept()
+    public static void ClearExcept(string only = "")
     {
         List<RObj> keysToRemove = new List<RObj>();
         foreach (var v in MainStates.instance.combats)
         {
-            if (v.RID != "main_player")
+            if (only != "" && v.META_TAGS.Contains(only))
+            {
+                keysToRemove.Add(v);
+                Destroy(v.main);
+                continue;
+            }
+            
+            if (v.RID != "main_player" && only == "")
             {
                 keysToRemove.Add(v);
                 Destroy(v.main);

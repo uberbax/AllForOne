@@ -54,7 +54,7 @@ public class XDcombat : ComponentBehavior
     private float lastIterationTm = -1;
     private float iterationTime = 0;
     
-    public void Iteration(bool ignoreTag = false, bool ignoreState = false, RObj overTarget = null)
+    public void Iteration(bool ignoreTag = false, bool ignoreState = false, RObj overTarget = null, string reqTag = "")
     {
         if (curTg != MainStates.instance.tgBattle && !ignoreTag) return;
         if (mon.GetPar("health") <= 0) return;
@@ -67,7 +67,7 @@ public class XDcombat : ComponentBehavior
             return;
         }        
         
-        var c = MainStates.instance.GetClosestEnemy(mon, out float d);
+        var c = MainStates.instance.GetClosestEnemy(mon, out float d, reqTag: reqTag);
         var d1 = MainStates.instance.GetLowestDistanceSkills(mon);
 
         if (overTarget != null) c = overTarget;
@@ -89,7 +89,7 @@ public class XDcombat : ComponentBehavior
             if (skl.GetPar("cd") <= 0)
             {
                 //can cast
-                var res = SkillExecutor.instance.ExecuteSkill(mon, skl);
+                var res = SkillExecutor.instance.ExecuteSkill(mon, skl, reqTag:reqTag);
                 if (res == ExecReso.OK) sucCast = true;
                 if (res == ExecReso.NO_SIGHT) noSight = true;
             }

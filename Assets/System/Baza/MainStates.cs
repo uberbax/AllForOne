@@ -57,10 +57,12 @@ public class MainStates : MonoBehaviour
     public RObj curClick;
     public RObj curLoot;
     public RObj lastAllySelected;
+    public GameObject lastBattleTrigger;
     
     public List<RObj> curSmalls;
     public Transform posClick;
     public bool isPaused;
+    public bool inBattle;
 
     public List<WaveSpawner> spawners = new List<WaveSpawner>();
     public RObj mainPlayer => all["main_player"];
@@ -115,6 +117,7 @@ public class MainStates : MonoBehaviour
     public static bool lootTakeShowReward = false;
     public static bool disappearLootOnTake = false;
     public static bool allowAutoIterate = true;
+    public static string metaCreateLevel = "";
     
     
     
@@ -398,8 +401,14 @@ public class MainStates : MonoBehaviour
                 {
                     var jj = PositionSetter.instance.floors[x + a.n - i - 1, y + j].transform;
                     var gg = a.map[i][j].pars;
-                    WaveSpawner.instance.DoSpawnAny(new List<Bon> { new Bon { Key = gg[0], Value = 1 } }, "enemy",
+                    var ll = WaveSpawner.instance.DoSpawnAny(new List<Bon> { new Bon { Key = gg[0], Value = 1 } }, "enemy",
                         null, null, false, jj.position, jj.position);
+
+                    if (metaCreateLevel != "")
+                    {
+                        for (int h = 0 ; h < ll.Count; h++)
+                            ll[h].META_TAGS.Add(metaCreateLevel);
+                    }
                 }
                 
             }
@@ -2178,7 +2187,8 @@ public class MainStates : MonoBehaviour
     
     public bool InIteration = false;
     public string lastBattle;
-
+    public int lastBattleResult = 0;
+    
     public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "")
     {
         if (InIteration) yield break;
@@ -2194,7 +2204,10 @@ public class MainStates : MonoBehaviour
         for (int i = 0; i < combats.Count; i++)
         {
             if (exceptMain && combats[i].RID == "main_player") continue;
-            
+            if (metaContain != "" && !combats[i].META_TAGS.Contains(metaContain))
+            {
+                continue;
+            }
             
             if (!combats[i].HasVis("combat")) continue;
             if (combats[i].GetPar("do_nothing") > 0) continue;
@@ -2202,7 +2215,7 @@ public class MainStates : MonoBehaviour
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;
             
-            gg.Iteration(true); 
+            gg.Iteration(true, reqTag: metaContain); 
             yield return new WaitForSeconds(tm);
         }
 

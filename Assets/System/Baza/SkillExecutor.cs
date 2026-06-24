@@ -148,13 +148,13 @@ public class SkillExecutor : MonoBehaviour
         return ExecuteSkill(who, h0, target);
     }
     
-    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false)
+    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false, string reqTag = "")
     {
         float d = 1e+10f;
         //cur weapon skill ?
         skl = who.GetSKillReplace(skl);
         
-        var targ = GetAllTargets(who, skl, "", "", null, overPos, except);
+        var targ = GetAllTargets(who, skl, reqTag, "", null, overPos, except);
         if (targ.Count == 0) return ExecReso.NO_TARGETS;
         else
         {
@@ -164,7 +164,7 @@ public class SkillExecutor : MonoBehaviour
         
         if (target == null)
         {
-            target = MainStates.instance.GetClosestEnemy(who, out d);
+            target = MainStates.instance.GetClosestEnemy(who, out d, reqTag:reqTag);
         }
         else
         {

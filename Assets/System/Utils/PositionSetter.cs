@@ -112,6 +112,7 @@ public class PositionSetter : MonoBehaviour
     public float height;
 
     public Transform wallRoot;
+    public Transform wallRootOther;
     public Transform fogRoot;
     public UnoDir[,] floors = new UnoDir[100,100];
     public Transform[,] walls = new Transform[100,100];
@@ -119,9 +120,12 @@ public class PositionSetter : MonoBehaviour
 
     public void ClearWalls()
     {
-        for (int i = wallRoot.childCount - 1; i >= 0; i--)
+        if (wallRootOther != null)
         {
-            DestroyImmediate(wallRoot.GetChild(i).gameObject);
+            for (int i = wallRootOther.childCount - 1; i >= 0; i--)
+            {
+                DestroyImmediate(wallRootOther.GetChild(i).gameObject);
+            }
         }
 
         Pathfinding2D.instance.Reinit();

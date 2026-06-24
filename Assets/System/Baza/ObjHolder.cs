@@ -84,4 +84,9 @@ public class ObjHolder : MonoBehaviour
     {
         
     }
+
+    public void OnDisable()
+    {
+        Debug.Log("TTTT");
+    }
 }
