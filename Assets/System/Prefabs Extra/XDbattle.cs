@@ -56,6 +56,7 @@ public class XDbattle : ComponentBehavior
             MainStates.instance.CreateLevelAtPos(2, 30, level);
             MainStates.instance.lastBattleTrigger = mon.main;
             
+            Transitioner.instance.DoFade(1, 1, null, null);
             //mon.Destroy();
 
         }
