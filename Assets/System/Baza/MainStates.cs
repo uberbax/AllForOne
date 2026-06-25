@@ -2211,6 +2211,11 @@ public class MainStates : MonoBehaviour
             
             if (!combats[i].HasVis("combat")) continue;
             if (combats[i].GetPar("do_nothing") > 0) continue;
+
+            while (combats[i].main.name.IndexOf("_move") >= 0)
+            {
+                yield return null;
+            }
             
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;

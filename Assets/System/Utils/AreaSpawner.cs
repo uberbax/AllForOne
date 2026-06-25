@@ -9,6 +9,7 @@ public class AreaSpawner : MonoBehaviour
     public Transform lo;
     public Transform hi;
     public int num = 100;
+    public int layerNm = 0;
     
     [ContextMenu("SpawnArea")]
     public void SpawnArea()

@@ -32,10 +32,23 @@ public class XDbattle : ComponentBehavior
     
     void Update()
     {
-        var a = MainStates.instance.lastAllySelected == null ? MainStates.instance.all["main_player"] :  MainStates.instance.lastAllySelected;
+        bool wasClick = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            {
+                var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var hit = Physics2D.Raycast(pos, new Vector2(0, 1), 0.1f, 1 << LayerMask.NameToLayer("Click"));
+                //
+                if (hit.collider == null || hit.collider.gameObject != this.gameObject) return;
+                wasClick = true;
+            }
+        }
         
+        var a = MainStates.instance.lastAllySelected == null ? MainStates.instance.all["main_player"] :  MainStates.instance.lastAllySelected;
         var rr = MainStates.instance.GetDistance(mon, a, out float tt);
-        if (rr <= dstTake && !MainStates.instance.inBattle)
+        
+        if (rr <= dstTake && !MainStates.instance.inBattle && wasClick)
         {
             MainStates.instance.inBattle = true;
             //we do battle

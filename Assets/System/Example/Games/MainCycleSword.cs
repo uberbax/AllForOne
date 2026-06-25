@@ -61,6 +61,8 @@ public class MainCycleSword : MonoBehaviour
 
     public Transform battlePoint;
     public Transform playerPos;
+    public Transform basePos;
+    
     
     private void BattleClicked(ArgPass obj)
     {
@@ -85,6 +87,7 @@ public class MainCycleSword : MonoBehaviour
         secondMain.AddViz("hp");
         secondMain.AddViz("coll#scale:0.5");
         secondMain.AddViz("animator#pr:1");
+        secondMain.AddViz("drag");
         
         secondMain.AdjustPosition();
         secondMain.AddMeta("my_side");
@@ -97,6 +100,7 @@ public class MainCycleSword : MonoBehaviour
         secondMain.actSkills.Clear();
         MainStates.instance.AcquireSkill(secondMain, "basic_melee");
         
+        secondMain.SetScale(true);
         //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
         //MainStates.instance.mainPlayer.Position = playerPos.position;
         //MainStates.instance.mainPlayer.AdjustPosition();
@@ -218,7 +222,7 @@ public class MainCycleSword : MonoBehaviour
 
         if (inBattle)
         {
-            StartCoroutine(MainStates.instance.OneIteration(false, 1, "sword"));
+            StartCoroutine(MainStates.instance.OneIteration(false, 0.5f, "sword"));
         }
 
     }
