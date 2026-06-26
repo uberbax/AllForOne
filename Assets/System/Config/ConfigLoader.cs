@@ -660,6 +660,15 @@ public class ConfigLoader : MonoBehaviour
                         mm.statsInc.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
+                else if (columns[j].ToUpper() == "STATS_EXACT")
+                {
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.statsExact.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
                 else if (columns[j].ToUpper() == "ITEMS_GET")
                 {
                     var yh = tt[j].Split("#");
@@ -2848,6 +2857,7 @@ public class FormatDynamic
     public List<Bon1> conds1 = new List<Bon1>();
     
     public List<Bon> statsInc = new List<Bon>();
+    public List<Bon> statsExact = new List<Bon>();
     public List<Bon> itemsGet = new List<Bon>();
     public List<Bon> parUpgrade = new List<Bon>();
     public List<Bon> parentUpgrade = new List<Bon>();

@@ -54,17 +54,18 @@ public class XDcombat : ComponentBehavior
     private float lastIterationTm = -1;
     private float iterationTime = 0;
     
-    public void Iteration(bool ignoreTag = false, bool ignoreState = false, RObj overTarget = null, string reqTag = "")
+    public string Iteration(bool ignoreTag = false, bool ignoreState = false, RObj overTarget = null, string reqTag = "")
     {
-        if (curTg != MainStates.instance.tgBattle && !ignoreTag) return;
-        if (mon.GetPar("health") <= 0) return;
-        if (pars.ContainsKey("main")) return;
-        if (mon.GetPar("do_nothing") > 0) return;  
+        string reso = "no";
+        if (curTg != MainStates.instance.tgBattle && !ignoreTag) return reso;
+        if (mon.GetPar("health") <= 0) return reso;
+        if (pars.ContainsKey("main")) return reso;
+        if (mon.GetPar("do_nothing") > 0) return reso;  
         
         if (mon.HasVis("stater") && !ignoreState)
         {
             mon.visuals["stater"].GetComponent<XDstater>().Iteration(this);
-            return;
+            return reso;
         }        
         
         var c = MainStates.instance.GetClosestEnemy(mon, out float d, reqTag: reqTag);
@@ -74,7 +75,7 @@ public class XDcombat : ComponentBehavior
         
         if (c == null)
         {
-            return;
+            return reso;
         }
         
         bool sucCast = false;
@@ -90,7 +91,11 @@ public class XDcombat : ComponentBehavior
             {
                 //can cast
                 var res = SkillExecutor.instance.ExecuteSkill(mon, skl, reqTag:reqTag);
-                if (res == ExecReso.OK) sucCast = true;
+                if (res == ExecReso.OK)
+                {
+                    sucCast = true;
+                    reso = skl.dbObj.ID;
+                }
                 if (res == ExecReso.NO_SIGHT) noSight = true;
             }
         }
@@ -103,8 +108,10 @@ public class XDcombat : ComponentBehavior
             
             //get path ?
             MainStates.instance.MovePath(mon, c);
-            
+            reso = "move";
         }
+
+        return reso;
     }
 
 

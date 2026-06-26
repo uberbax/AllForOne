@@ -55,6 +55,7 @@ public class XDbattle : ComponentBehavior
             EventManager.INV("battle_press", new ArgPass{what = "battle9"});
             MainStates.instance.CreateLevelAtPos(2, 30, level);
             MainStates.instance.lastBattleTrigger = mon.main;
+            ModelStatistics.instance.SetStatValue("battle",2);
             
             Transitioner.instance.DoFade(1, 1, null, null);
             //mon.Destroy();

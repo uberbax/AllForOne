@@ -40,6 +40,7 @@ public class MainCycleSword : MonoBehaviour
         
         EventManager.SUB("after_battle", (x) =>
         {
+            ModelStatistics.instance.SetStatValueForce("battle",1);
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(true);
@@ -56,6 +57,15 @@ public class MainCycleSword : MonoBehaviour
             }
         });
         
+        EventManager.SUB("go_home", (x) =>
+        {
+            Camera.main.GetComponent<CameraFollow>().target = basePos;
+        });
+        
+        EventManager.SUB("go_map", (x) =>
+        {
+            Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+        });
         
     }
 

@@ -118,7 +118,7 @@ public class MainStates : MonoBehaviour
     public static bool disappearLootOnTake = false;
     public static bool allowAutoIterate = true;
     public static string metaCreateLevel = "";
-    
+    public static int maxMove = 1;
     
     
     public Vector3 GetRndFree(Vector3 pos, float range)
@@ -638,6 +638,14 @@ public class MainStates : MonoBehaviour
             }
         }
         
+        for (int i = 0; i < res.statsExact.Count; i++)
+        {
+            if (res.statsExact[i].Val2 != "")
+            {
+                res.statsExact[i].Value = (int)CalculateValueFloat(res.statsExact[i].Val2);
+            }
+        }
+        
         
         if (res.itemsGet.Count > 0)
             AddItems(res.itemsGet, who);
@@ -645,6 +653,11 @@ public class MainStates : MonoBehaviour
         if (res.statsInc.Count > 0)
         {
             IncStats(res.statsInc, mainPlayer);
+        }
+        
+        if (res.statsExact.Count > 0)
+        {
+            SetStats(res.statsExact, mainPlayer);
         }
         
         if (res.parUpgrade.Count > 0)
@@ -1721,6 +1734,14 @@ public class MainStates : MonoBehaviour
         foreach (var stat in stats)
         {
             ModelStatistics.instance.IncreaseStatValue(stat.Key, stat.Value);
+        }
+    }
+    
+    public void SetStats(List<Bon> stats, RObj who)
+    {
+        foreach (var stat in stats)
+        {
+            ModelStatistics.instance.SetStatValue(stat.Key, stat.Value);
         }
     }
     
