@@ -143,6 +143,8 @@ public class RObj
     public FormatDynamic dynamic;
 
     public string decreaseStatOnDeath = "";
+
+    public string shardID = "";
     
     [NonSerialized]
     public RObj weaponSKill;

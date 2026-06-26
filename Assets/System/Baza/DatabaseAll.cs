@@ -233,7 +233,14 @@ public class DatabaseAll : MonoBehaviour
 
     public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false)
     {
+        string other = "";
+        if (id.IndexOf("shard_") >= 0)
+        {
+            other = id.Substring(6);
+            id = "shard";
+        }
         var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, ItemType.item);
+        r.shardID = other;
         return r;
     }
     

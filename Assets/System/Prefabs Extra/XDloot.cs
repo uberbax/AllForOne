@@ -60,6 +60,7 @@ public class XDloot : ComponentBehavior
              
              var ss = MainStates.instance.GetInventoryBon(mon);
              MainStates.instance.AddItems(ss);
+             //MainStates.instance.AddItems(mon.inventory);
              PopupoManager.instance.ShowRewards(ss);
          }
          else

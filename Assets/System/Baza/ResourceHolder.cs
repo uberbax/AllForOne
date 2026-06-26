@@ -114,7 +114,7 @@ public class ResourceHolder : MonoBehaviour
         return null;
     }
     
-    public Sprite GetIcon(RObj r)
+    public Sprite GetIcon(RObj r, bool shard = false)
     {
         if (r.dynamic != null)
         {
@@ -122,22 +122,25 @@ public class ResourceHolder : MonoBehaviour
             if (dynamics.ContainsKey(g))
                 return dynamics[g];
         }
+
+        string ww = r.dbObj.ID;
+        if (shard && r.shardID != "") ww = r.shardID;
         
         if (r.it == ItemType.item)
         {
-            return items[r.dbObj.ID];
+            return items[ww];
         }
         else if (r.it == ItemType.monster)
         {
-            return avas[r.dbObj.ID];
+            return avas[ww];
         }
         else if (r.it == ItemType.projectile)
         {
-            return skills[r.dbObj.ID];
+            return skills[ww];
         }
         else if (r.it == ItemType.building)
         {
-            return buildings[r.dbObj.ID];
+            return buildings[ww];
         }
         else if (r.it == ItemType.task)
         {
@@ -241,6 +244,11 @@ public class ResourceHolder : MonoBehaviour
             if (a.param == "id")
             {
                 img.sprite = GetIcon(r);
+            }
+            if (a.param == "shard_id")
+            {
+                img.sprite = GetIcon(r, true);
+                img.enabled = true;
             }
             else if (a.param == "cd")
             {

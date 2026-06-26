@@ -580,7 +580,11 @@ public class MainStates : MonoBehaviour
         List<Bon> res = new List<Bon>();
         foreach (var v in mon.inventory)
         {
-            res.Add(new Bon{Key = v.dbObj.ID, Value = (int)v.GetPar("amount")});
+            if (v.shardID != "")
+            {
+                res.Add(new Bon{Key = "shard_" + v.shardID, Value = (int)v.GetPar("amount")});
+            }
+            else res.Add(new Bon{Key = v.dbObj.ID, Value = (int)v.GetPar("amount")});
         }
 
         return res;
@@ -1476,12 +1480,19 @@ public class MainStates : MonoBehaviour
     {
         if (what == "exp")
         {
-            
             who.ChangePar("exp", amount, true);
             return null;
         }
+
+        string other = "";
+        if (what.IndexOf("shard_") >= 0)
+        {
+            other = what.Substring(6);
+            what = "shard";
+        }
         
         var f = DatabaseAll.instance.CreateItem(what, amount);
+        if (other != "") f.shardID = other;
         if (f.it == ItemType.item && randomizeStats)
         {
             RandomizeItemStats(f);
@@ -1496,7 +1507,7 @@ public class MainStates : MonoBehaviour
         while (true)
         {
             var a = who.inventory.Find(x =>
-                x.dbObj.ID == what.dbObj.ID && x.upgradePars["amount"] < x.dbObj.pars["max_stack"]);
+                x.dbObj.ID == what.dbObj.ID && x.shardID == what.shardID && x.upgradePars["amount"] < x.dbObj.pars["max_stack"]);
 
             if (a == null)
             {
