@@ -83,6 +83,11 @@ public class GBind : MonoBehaviour
     }
     */
 
+    public bool HasKey(string val)
+    {
+        return m_images.ContainsKey(val);
+    }
+    
     public Image GetImage(string val)
     {
         return m_images[val].GetComponent<Image>();

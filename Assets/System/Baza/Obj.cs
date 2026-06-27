@@ -433,10 +433,18 @@ public class RObj
         
         if (upgradePars.ContainsKey("registered_damage"))
             curPars.TryAdd("registered_damage", upgradePars["registered_damage"]);
+        
     }
 
     public float GetPar(string val)
     {
+        //battle_power
+        if (val == "battle_power")
+        {
+            curPars["battle_power"] = curPars["attack"] + curPars["health"] + curPars["def"];
+        }
+        
+        
         if (curPars.ContainsKey(val))
         {
             if (val == "health")

@@ -12,6 +12,8 @@ public class ObjHolder : MonoBehaviour
     public bool noTrack = false;
     
     public bool inDrag = false;
+    
+    public bool asMain = false;
     public void OnEnable()
     {
         UISystem.instance.FillItem(this);
@@ -41,6 +43,14 @@ public class ObjHolder : MonoBehaviour
 
     private void Update()
     {
+        if (asMain)
+        {
+            if (MainStates.instance.mainPlayer != null && obj == null)
+            {
+                obj = MainStates.instance.mainPlayer;
+            }
+        }
+        
         if (obj == null || obj.RID == "") return;
         
         if (ConfigLoader.GetMetaParamValue("auto_track_pos") > 0 && !noTrack)
@@ -53,7 +63,7 @@ public class ObjHolder : MonoBehaviour
         }
         
         //basically ui ?
-        if (noTrack && !inDrag && !filler.noScale)
+        if (noTrack && !inDrag && filler && !filler.noScale)
         {
             var sx = obj.dbObj.sizeX;
             var sy = obj.dbObj.sizeY;
