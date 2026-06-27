@@ -677,7 +677,7 @@ public class MainStates : MonoBehaviour
 
         if (res.eventTrigger != "")
         {
-            EventManager.INV(res.eventTrigger, new ArgPass{what = res.eventVal, what1 = res.id});
+            EventManager.INV(res.eventTrigger, new ArgPass{what = res.eventVal, what1 = res.id, num = res.eventNum});
         }
 
         if (res.skillUnlock.Count > 0)

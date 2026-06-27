@@ -731,6 +731,9 @@ public class ConfigLoader : MonoBehaviour
                     }
                 }
                 else if (columns[j].ToUpper() == "EVENT_TRIGGER") mm.eventTrigger = tt[j];
+                else if (columns[j].ToUpper() == "EVENT_VAL") mm.eventVal = tt[j];
+                else if (columns[j].ToUpper() == "EVENT_NUM") mm.eventNum = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "SUBSCRIBE") mm.subscribe = tt[j];
                 else if (columns[j].ToUpper() == "CREATE") mm.create = tt[j];
                 else if (columns[j].ToUpper() == "REWARD") mm.reward = tt[j];
@@ -2869,6 +2872,9 @@ public class FormatDynamic
     public List<string> skillPasUnlock = new List<string>();
     public string eventTrigger = string.Empty;
     public string eventVal = string.Empty;
+    public int eventNum = 0;
+    
+    
     public string subscribe = string.Empty;
     public string create = string.Empty;
     public string reward = string.Empty;

@@ -159,7 +159,11 @@ public class DatabaseAll : MonoBehaviour
             
             o.pars.Add("level", 1);
             
-            o.pars.Add("max_stack", 1000000);
+            if (v.SLOT == "none")
+                o.pars.Add("max_stack", 1000000);
+            else 
+                o.pars.Add("max_stack", 1);
+            
             o.refSkill = v.REF_SKILL;
             
             o.sizeX = v.size / 10;

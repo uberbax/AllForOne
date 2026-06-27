@@ -18,11 +18,18 @@ public class ModelSet : MonoBehaviour
         return GetMeItems(tt);
     }
 
-    public static List<Bon> GetMeItemsBon(string setName)
+    public static List<Bon> GetMeItemsBon(string setName, int num = 1)
     {
         var tt = ConfigLoader.Instance.dictSets[setName];
         //var t0 = tt.Find(x => x.name == setName);
-        return GetMeItemsBon(tt);
+        if (num <= 0) num = 1;
+        List<Bon> res = new List<Bon>();
+        for (int i = 0; i < num; i++)
+        {
+            var b = GetMeItemsBon(tt);
+            res = res.Concat(b).ToList();
+        }
+        return res;
     }
 
     public static List<Bon> GetMeItemsRefined(List<Bon> someItems, int mult = 1)

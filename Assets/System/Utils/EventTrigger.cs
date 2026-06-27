@@ -10,6 +10,7 @@ public class EventTrigger : MonoBehaviour
     public ArgPass arg;
 
     public bool is3D = false;
+    public bool isMouseDown = false;
     
     //dynamic
     public FormatDynamic dyno;
@@ -56,7 +57,7 @@ public class EventTrigger : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (is3D)
+        if (is3D || isMouseDown)
         {
             EventManager.INV(evtName, arg);
             if (dyno.id != "")
