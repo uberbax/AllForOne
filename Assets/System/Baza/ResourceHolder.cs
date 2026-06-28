@@ -228,7 +228,8 @@ public class ResourceHolder : MonoBehaviour
             {
                 if (g)
                 {
-                    g.GetImage("fill").fillAmount = r.GetPar(a.param) / r.GetPar("max_" + a.param);
+                    if (g.HasKey("fill"))
+                        g.GetImage("fill").fillAmount = r.GetPar(a.param) / r.GetPar("max_" + a.param);
                 }
                 else
                 {
