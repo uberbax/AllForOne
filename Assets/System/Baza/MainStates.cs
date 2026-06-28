@@ -19,6 +19,8 @@ public class MainStates : MonoBehaviour
     public Transform cancelLine;
     public Transform lastCard;
     
+    public GameObject UI_skillsAssign;
+    
     public GameObject UI_inventory;
     public GameObject UI_inventorySell;
     public GameObject UI_descr;
@@ -1080,6 +1082,27 @@ public class MainStates : MonoBehaviour
                 {
                     res = res.FindAll(x => x.it == ItemType.monster);
                 }
+                
+                if (gk[l] == "skills")
+                {
+                    res = res.FindAll(x => x.it == ItemType.projectile);
+                }
+                
+                if (gk[l] == "act_skills")
+                {
+                    res = res.FindAll(x => x.it == ItemType.projectile && x.dbObj.ID.IndexOf("pass_") < 0);
+                }
+                
+                if (gk[l] == "pas_skills")
+                {
+                    res = res.FindAll(x => x.it == ItemType.projectile && x.dbObj.ID.IndexOf("pass_") >= 0);
+                }
+                
+                if (gk[l] == "not_skills")
+                {
+                    res.RemoveAll(x => x.it == ItemType.projectile);
+                }
+                
             }
             //ok but now (!) if the inventory is SPARSE, we need to do something
             var flr = t.GetComponent<UIfiller>();
@@ -1310,6 +1333,40 @@ public class MainStates : MonoBehaviour
             if (b4 == null) o.SetPar("used_slot", 23);
             
         }
+        else if (u.param == "equip_skills")
+        {
+            //bad shit
+            if (o.dynamic != null)
+            {
+                var h1 = UtilsControl.GetLowest(o.dynamic.id);
+                if (h1 == o.dynamic.id) return;
+            }
+            
+            var a1 = all["main_player"];
+
+            if (o.dbObj.ID.IndexOf("pass") < 0)
+            {
+                var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 50);
+                if (b1 == null) o.SetPar("used_slot", 50);
+                var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 51);
+                if (b2 == null) o.SetPar("used_slot", 51);
+                var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 52);
+                if (b3 == null) o.SetPar("used_slot", 52);
+                var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 53);
+                if (b4 == null) o.SetPar("used_slot", 53);
+            }
+            else
+            {
+                var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 60);
+                if (b1 == null) o.SetPar("used_slot", 60);
+                var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 61);
+                if (b2 == null) o.SetPar("used_slot", 61);
+                var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 62);
+                if (b3 == null) o.SetPar("used_slot", 62);
+                var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 63);
+                if (b4 == null) o.SetPar("used_slot", 63);
+            }
+        }
         else if (u.param == "placing")
         {
             //we clone it ?
@@ -1528,7 +1585,8 @@ public class MainStates : MonoBehaviour
                 }
 
                 who.inventory.Add(what);
-                if (what.owner != null)
+                //ne nravitsya chast c projectile thwbbb
+                if (what.owner != null && what.it != ItemType.projectile)
                 {
                     what.owner.inventory.Remove(what);
                 }

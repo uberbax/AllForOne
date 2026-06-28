@@ -118,6 +118,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("bounce", v.bounce);
             
             o.pars.Add("level", 1);
+            o.pars.Add("max_stack",1);
             
             o.second = v.SECOND;
             
@@ -235,6 +236,19 @@ public class DatabaseAll : MonoBehaviour
 
     }
 
+    public ItemType GetItemType(string id, string other)
+    {
+        if (other != "") id = other;
+        if (skills.ContainsKey(id))
+            return ItemType.projectile;
+        else if (heroes.ContainsKey(id))
+            return ItemType.monster;
+        else
+        {
+            return ItemType.item;
+        }
+    }
+
     public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false)
     {
         string other = "";
@@ -243,7 +257,7 @@ public class DatabaseAll : MonoBehaviour
             other = id.Substring(6);
             id = "shard";
         }
-        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, ItemType.item);
+        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other));
         r.shardID = other;
         return r;
     }

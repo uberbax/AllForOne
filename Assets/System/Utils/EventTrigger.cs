@@ -15,6 +15,9 @@ public class EventTrigger : MonoBehaviour
     //dynamic
     public FormatDynamic dyno;
     public List<GameObject> reverts = new List<GameObject>();
+    public List<GameObject> toActivate = new List<GameObject>();
+    public List<GameObject> toDeactivate = new List<GameObject>();
+    
     public string soundTrigger = "";
 
     public bool paramAsHolder = false;
@@ -49,10 +52,9 @@ public class EventTrigger : MonoBehaviour
 
     public void HandleReverts()
     {
-        foreach (var revert in reverts)
-            {
-                revert.SetActive(!revert.activeSelf);
-            }
+        foreach (var revert in reverts) revert.SetActive(!revert.activeSelf);
+        foreach (var revert in toActivate) revert.SetActive(true);
+        foreach (var revert in toDeactivate) revert.SetActive(false);
     }
 
     private void OnMouseUp()

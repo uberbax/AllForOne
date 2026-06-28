@@ -264,7 +264,7 @@ public class ResourceHolder : MonoBehaviour
             }
             else if (a.param == "slot")
             {
-                if (r.dbObj.pars["slot"] < 0)
+                if (!r.dbObj.pars.ContainsKey("slot") || r.dbObj.pars["slot"] < 0)
                 {
                     img.color = Color.clear;
                 }

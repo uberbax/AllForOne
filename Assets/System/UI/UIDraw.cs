@@ -18,6 +18,8 @@ public class UIDraw : MonoBehaviour
         EventManager.SUB(whatDraw, (x) =>
         {
             var res = ModelSet.GetMeItemsBon(x.what, x.num);
+            //we can prepare res if its shards
+            
             filler.selfReward = res;
             filler.OnEnable();
             MainStates.instance.AddItems(res);

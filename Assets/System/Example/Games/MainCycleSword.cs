@@ -224,6 +224,13 @@ public class MainCycleSword : MonoBehaviour
             MainStates.instance.UI_charEq.SetActive(!u1);
         }
         
+        if (Input.GetKeyDown("j"))
+        {
+            var u0 = MainStates.instance.UI_skillsAssign.activeSelf;
+            
+            MainStates.instance.UI_skillsAssign.SetActive(!u0);
+        }
+        
         if (Input.GetKeyDown("h"))
         {
             var rr = ResourceHolder.instance.skillsWorld["whirl"];

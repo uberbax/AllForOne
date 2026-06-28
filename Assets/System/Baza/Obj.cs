@@ -349,7 +349,14 @@ public class RObj
     {
         if (it == ItemType.projectile && dbObj.pars["instant"] == 1)
         {
+            if (owner == null)
+            {
+                Debug.LogError("NO OWNER");
+                owner = MainStates.instance.mainPlayer;
+            }
             curPars.TryAdd("attack", owner.GetPar("attack") * dbObj.pars["attack_prc"] + dbObj.pars["attack"]);
+
+
             upgradePars.TryAdd("cd", 0);
             return;
         }
@@ -383,7 +390,8 @@ public class RObj
                 v.upgradePars.Add("used_slot", -1);    
             }
             
-            if (v.upgradePars["used_slot"] < 0) continue;
+            //thwbbb
+            if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
@@ -808,6 +816,11 @@ public class RObj
             List<string> adds = new List<string>();
             List<Bon> parsToAdd = new List<Bon>();
             bool isWeaponSkill = false;
+            
+            //thwbbb
+            if (owner == null)
+                owner = MainStates.instance.mainPlayer;
+            
             if (owner.weaponSKill != null && dbObj.ID == owner.weaponSKill.dbObj.ID)
                 isWeaponSkill = true;
             
