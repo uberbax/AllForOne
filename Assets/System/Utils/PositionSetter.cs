@@ -176,11 +176,24 @@ public class PositionSetter : MonoBehaviour
             UtilsControl.CalculateLayer(g.gameObject, lo, high);
         }
     }
-        
+
+    public Transform loDrag1;
+    public Transform hiDrag1;
+    public GameObject dragTile;
+    public Transform dragRoot;
+    
+    [ContextMenu("Recreate Drags")]
+    public void RecreateDragsField()
+    {
+        //clear at first ?
+        for (int i = dragRoot.childCount - 1; i >= 0; i--) DestroyImmediate(dragRoot.GetChild(i).gameObject);
+        RecreatePointsByTile(dragRoot, null, false, null, loDrag1, hiDrag1, dragTile, 10, 3, 0);
+    }
+    
     
     public void RecreatePointsByTile(Transform root = null, GameObject tl = null, bool noFog = true, GameObject tl2 = null,
         
-        Transform lo1 = null, Transform high1 = null, GameObject frame1 = null
+        Transform lo1 = null, Transform high1 = null, GameObject frame1 = null, int n1 = -1, int m1 = -1, float shft = 1
         )
     {
         if (lo1 == null) lo1 = lo;
@@ -189,27 +202,35 @@ public class PositionSetter : MonoBehaviour
         
         
         if (root == null) root = transform;
-        if (tl == null) tl = frame;
-        if (tl2 == null) tl2 = frame;
+        if (tl == null) tl = frame1;
+        if (tl2 == null) tl2 = frame1;
         
         
-        float width = frame.GetComponent<SpriteRenderer>().bounds.size.x;
-        float height = frame.GetComponent<SpriteRenderer>().bounds.size.y;
+        float width = frame1.GetComponent<SpriteRenderer>().bounds.size.x;
+        float height = frame1.GetComponent<SpriteRenderer>().bounds.size.y;
+
+        if (n1 > 0 && m1 > 0)
+        {
+            width = (high1.position.x - lo1.position.x) / (m1-1);
+            height = (high1.position.y - lo1.position.y) / (n1-1);
+        }
         
-        float lox = lo.position.x;
+        Debug.Log(width + " " + height);
+        
+        float lox = lo1.position.x;
         float loy = 0;
             
-        loy = lo.position.y;
+        loy = lo1.position.y;
         if (coordMode == CoordMode.XZ)
-            loy = lo.position.z;
+            loy = lo1.position.z;
 
         n = 0;
         int cur = 0;
         
-        float MaxY = high.position.y;
-        float MaxX = high.position.x;
+        float MaxY = high1.position.y;
+        float MaxX = high1.position.x + (1-shft) * width ;
         if (coordMode == CoordMode.XZ)
-            MaxY = high.position.z;
+            MaxY = high1.position.z;
         
         
         //while (true)
@@ -220,7 +241,7 @@ public class PositionSetter : MonoBehaviour
             if (lox + width > MaxX)
             {
                 m = cur;
-                lox = lo.position.x;
+                lox = lo1.position.x;
                 
                 if (tileMode == TileMode.Manhattan)
                     loy += height;
@@ -243,24 +264,24 @@ public class PositionSetter : MonoBehaviour
                 if (n % 2 == 1)
                 {
                     if (tileMode == TileMode.Isometric ||  tileMode == TileMode.Hex)
-                        go.transform.position = new Vector3(lox + width/2 + width, loy, lo.position.z);
+                        go.transform.position = new Vector3(lox + width/2 + width, loy, lo1.position.z);
                     else
-                        go.transform.position = new Vector3(lox + width, loy, lo.position.z);
+                        go.transform.position = new Vector3(lox + width * shft, loy, lo1.position.z);
                 }
                 else 
-                    go.transform.position = new Vector3(lox + width, loy, lo.position.z);
+                    go.transform.position = new Vector3(lox + width * shft, loy, lo1.position.z);
             }
             else
             {
                 if (n % 2 == 1)
                 {
                     if (tileMode == TileMode.Isometric ||  tileMode == TileMode.Hex)
-                        go.transform.position = new Vector3(lox + width/2 + width, loy, lo.position.z);
+                        go.transform.position = new Vector3(lox + width/2 + width, loy, lo1.position.z);
                     else
-                        go.transform.position = new Vector3(lox + width, loy, lo.position.z);
+                        go.transform.position = new Vector3(lox + width, loy, lo1.position.z);
                 }
                 else 
-                    go.transform.position = new Vector3(lox + width, lo.position.y, loy);
+                    go.transform.position = new Vector3(lox + width, lo1.position.y, loy);
             }
 
             go.name = "floor" + (n + 1) + "x" + (cur + 1);

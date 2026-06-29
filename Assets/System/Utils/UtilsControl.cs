@@ -3327,6 +3327,12 @@ public class UtilsControl : MonoBehaviour
         {
             for (int i = 0; i < root[j].childCount; i++)
             {
+                var hh = root[j].GetChild(i);
+                if (hh.name.IndexOf("1x4") >= 0 || hh.name.IndexOf("1x3") >= 0)
+                {
+                    int kk = 1;
+                }
+                
                 if (check != null)
                 {
                     if (!check(root[j].GetChild(i))) continue;

@@ -836,6 +836,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "COST") mm.cost = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "ARMOR") mm.armor = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "ATTACK") mm.attack = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                
                 
                 else if (columns[j].ToUpper() == "ASPEED") mm.attackSpeed = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "LIFESTEAL_PRC") mm.lifestealPrc = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2459,6 +2461,8 @@ public class FormatHero
     public float attackSpeed = 0;
     
     public float speed = 3;
+
+    public int size = 11;
     
     public float dodge = 0;
     public float accuracy = 0;

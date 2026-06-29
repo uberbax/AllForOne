@@ -223,6 +223,9 @@ public class DatabaseAll : MonoBehaviour
             o.skills.Add(v.skillBasic);
             o.skills.AddRange(v.skillOthers);
             o.pars.Add("level", 1);
+            
+            o.sizeX = v.size / 10;
+            o.sizeY = v.size % 10;
 
             if (v.level <= 1)
             {
