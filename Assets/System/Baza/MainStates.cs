@@ -2384,7 +2384,7 @@ public class MainStates : MonoBehaviour
         }
         else
         {
-            var v = PositionSetter.instance.GetPath(mon.Position, c.Position);
+            var v = PositionSetter.instance.GetPath(mon.Position, c.Position, mon.dbObj.sizeX, mon.dbObj.sizeY, mon);
             if (v.Count > 0)
             {
                 //move to first

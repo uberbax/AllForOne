@@ -700,7 +700,7 @@ public class PositionSetter : MonoBehaviour
         return point;
     }
     
-    public List<(int, int, int)> GetPath(Vector3 from, Vector3 to)
+    public List<(int, int, int)> GetPath(Vector3 from, Vector3 to, int szx, int szy, RObj mon, float dstCheck = 1)
     {
         List<(int, int, int)> path = new List<(int, int, int)>();
         var g0 = GetClosestPos(from);
@@ -730,15 +730,24 @@ public class PositionSetter : MonoBehaviour
                     //check if already in array ?
                     //optimization
                     if (visited.Contains( (b.x, b.y) )) continue;
-                    //var hh = que.Find(c => c.Item1 == b.x && c.Item2 == b.y);
-                    //if (hh != default) continue;
-                    if (walls[b.x, b.y] != null && walls[b.x,b.y].gameObject.activeSelf) continue;
-                    var ee = MainStates.instance.combats.Find(x => x.ref_pos_x == b.x && x.ref_pos_y == b.y);
-                    if (ee != null && ee.GetPar("passable") < 1)
-                    {
-                        continue;
-                    }
+
+                    //well we need to check all sizes i suppose
+
+                    bool chc = true;
+                    for (int i1 = 0; i1 < szx; i1++)
+                        for (int j1 = 0; j1 < szy; j1++)
+                        {
+                            if (walls[b.x + i1, b.y + j1] != null && walls[b.x + i1, b.y + j1].gameObject.activeSelf) chc = false;
+                            var ee = MainStates.instance.combats.Find(x => x.ref_pos_x == b.x + i1 && x.ref_pos_y == b.y + j1);
+                            if (ee == mon) continue;
+                            if (ee != null && ee.GetPar("passable") < 1)
+                            {
+                                chc = false;
+                            }
+                        }
                     
+                    if (!chc) continue;
+
                     float newD = MainStates.instance.GetDistance(b.x, b.y, g1.Item1, g1.Item2);
                     if (newD < iniD)
                     {
@@ -749,7 +758,7 @@ public class PositionSetter : MonoBehaviour
                     visited.Add((b.x, b.y));
                     que.Add((b.x, b.y, yk2, que[yk1].Item4 + 1));
                     yk1++;
-                    if (b.x == g1.Item1 && b.y == g1.Item2)
+                    if ((b.x == g1.Item1 && b.y == g1.Item2) || newD <= dstCheck)
                     {
                         find = true;
                         break;
@@ -785,8 +794,14 @@ public class PositionSetter : MonoBehaviour
             }
         }
         
-        path.Reverse();
-
+        path.Reverse();  
+        
+        if (szx > 1 && szy > 1)
+        {
+            int p = 0;
+            //PathChecker.instance.ShowPath(path, 2);
+        }
+        
         return path;
     }
 
