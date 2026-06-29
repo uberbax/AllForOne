@@ -122,6 +122,8 @@ public class MainStates : MonoBehaviour
     public static string metaCreateLevel = "";
     public static int maxMove = 1;
     
+    //
+    public Transform trashRoot;
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
@@ -236,6 +238,15 @@ public class MainStates : MonoBehaviour
         DragObject.onEndDragGlobal = OnEndDrag;
         EventManager.SUB("next_hero", NextHero);
         EventManager.SUB("battle_start", BattleStarted);
+
+        if (trashRoot == null)
+        {
+            var g = new GameObject();
+            g.name = "TrahsRoot";
+            g.transform.parent = transform;
+            g.transform.localPosition = Vector3.zero;
+            trashRoot = g.transform;
+        }
     }
 
     private void BattleStarted(ArgPass obj)

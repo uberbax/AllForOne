@@ -178,8 +178,16 @@ public class PositionSetter : MonoBehaviour
     }
         
     
-    public void RecreatePointsByTile(Transform root = null, GameObject tl = null, bool noFog = true, GameObject tl2 = null )
+    public void RecreatePointsByTile(Transform root = null, GameObject tl = null, bool noFog = true, GameObject tl2 = null,
+        
+        Transform lo1 = null, Transform high1 = null, GameObject frame1 = null
+        )
     {
+        if (lo1 == null) lo1 = lo;
+        if (high1 == null) high1 = high;
+        if (frame1 == null) frame1 = frame;
+        
+        
         if (root == null) root = transform;
         if (tl == null) tl = frame;
         if (tl2 == null) tl2 = frame;

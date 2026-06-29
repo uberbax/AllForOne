@@ -40,6 +40,7 @@ public class MainCycleSword : MonoBehaviour
         
         EventManager.SUB("after_battle", (x) =>
         {
+            BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle",1);
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();

@@ -10,14 +10,25 @@ public class BattleController : MonoBehaviour
     public bool startDo = false;
     public static string reqTag = "";
     
+    public static BattleController instance;
+    
     private void Awake()
     {
+        instance = this;
         EventManager.SUB("battle_start", (x) =>
         {
             startDo = true;
         });
     }
 
+    public void Clean()
+    {
+        for (int i = MainStates.instance.trashRoot.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(MainStates.instance.trashRoot.transform.GetChild(i).gameObject);
+        }
+    }
+    
     private void Update()
     {
         if (!startDo) return;

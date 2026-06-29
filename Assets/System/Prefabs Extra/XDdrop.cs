@@ -45,6 +45,11 @@ public class XDdrop : ComponentBehavior
                 a.main.transform.localScale *= ConfigLoader.GetMetaParamValue("drop_scale");
                 a.main.name += "LOOT";
 
+                if (BattleController.instance.startDo)
+                {
+                    a.main.transform.parent = MainStates.instance.trashRoot;
+                }
+
                 if (mon.GetPar("drop_pick") > 0)
                 {
                     a.AddViz("pick");

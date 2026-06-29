@@ -100,7 +100,7 @@ public class XDdeath : ComponentBehavior
                 ss = "blood3D";
                 dlt = new Vector3(0, 0.1f, 0);
             }
-            var gz = Instantiate(ResourceHolder.instance.XD[ss]);
+            var gz = Instantiate(ResourceHolder.instance.XD[ss], MainStates.instance.trashRoot);
             gz.transform.position = mon.main.transform.position - dlt;
         }
         

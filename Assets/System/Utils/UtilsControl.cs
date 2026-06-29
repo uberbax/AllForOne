@@ -2700,7 +2700,7 @@ public class UtilsControl : MonoBehaviour
 
     public Color GetColor(GameObject who)
     {
-        var rend = who.GetComponent<Renderer>();
+        var rend = who.GetComponentInChildren<Renderer>();
         var rend1 = who.GetComponent<Image>();
 
         if (rend1) return rend1.color;
