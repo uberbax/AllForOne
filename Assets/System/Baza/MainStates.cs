@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -88,6 +89,16 @@ public class MainStates : MonoBehaviour
         { "epic", 2},
         { "legendary", 3},
         { "mythic", 4}
+    };
+    
+    public static List<int> rarityShards = new List<int>
+    {
+        { 20},
+        { 30},
+        { 40},
+        { 50},
+        { 60},
+        { 70}
     };
 
     public Dictionary<string, RObj> all = new Dictionary<string, RObj>();
@@ -1112,6 +1123,11 @@ public class MainStates : MonoBehaviour
                 if (gk[l] == "not_skills")
                 {
                     res.RemoveAll(x => x.it == ItemType.projectile);
+                }
+                
+                if (gk[l] == "not_shard")
+                {
+                    res.RemoveAll(x => x.dbObj.ID == "shard");
                 }
                 
             }

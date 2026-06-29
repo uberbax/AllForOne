@@ -954,6 +954,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "SPEED") mm.SPEED = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "TAG_APPLY") mm.TAG_APPLY = tt[j];
                 else if (columns[j].ToUpper() == "PEN_CNT") mm.PEN_CNT = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                else if (columns[j].ToUpper() == "RARITY") mm.RARITY = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "DODGE") mm.dodge = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DODGE_PRC") mm.dodge_prc = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2687,6 +2688,7 @@ public class FormatSkill
     public float PEN_CNT;
     public float CRIT_CHANCE = 0;
     public float CRIT_DMG = 0;
+    public int RARITY = 0;
 
     public float dodge = 0;
     public float dodge_prc = 0;
