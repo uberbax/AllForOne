@@ -109,7 +109,14 @@ public class MainCycleSword : MonoBehaviour
         secondMain.AdjustPosition();
         
         secondMain.actSkills.Clear();
-        MainStates.instance.AcquireSkill(secondMain, "basic_melee");
+
+        for (int i = 0; i < main.inventory.Count; i++)
+        {
+            if (main.inventory[i].it != ItemType.projectile) continue;
+            if (main.inventory[i].GetPar("used_slot") < 0) continue;
+            MainStates.instance.AcquireAnySkill(secondMain, main.inventory[i].dbObj.ID);    
+        }
+        //MainStates.instance.AcquireSkill(secondMain, "basic_melee");
         
         secondMain.SetScale(true);
         //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
@@ -146,38 +153,11 @@ public class MainCycleSword : MonoBehaviour
         main.AdjustPosition();
         main.AddMeta("my_side");
         
-            
-        /*
-        //alyy low hp
-        //check same place ? hp is lowering ???
-        var ally = new RObj("militia", 1, 1, true, new Vector3(-1,0,0),true, ItemType.monster);
-        ally.AddViz("shadow");
-        ally.AddViz("combat");
-        ally.AddViz("hp");
-        ally.AddViz("coll#val:0.5");
-        ally.AddViz("animator#pr:1");
-        
-        ally.AdjustPosition();
-        ally.AddMeta("my_side");
-        
-        ally.SetPar("registered_damage", 50);
+        //equipping basic melee
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 }});
+        var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
+        MainStates.instance.Equip(main, skl, 50);
         //
-        
-        ModelStatistics.instance.UpdateAllTasks();
-     
-        
-        var ll = WaveSpawner.instance.DoSpawnAny(
-            new List<Bon>{ 
-                new Bon{Key = "insect", Value = 5},
-                 new Bon{Key = "archer", Value = 5} }, "enemy", 
-            MainStates.instance.minT, MainStates.instance.maxT, false, Vector3.zero, Vector3.zero );
-
-        foreach (var v in ll)
-        {
-            v.AdjustPosition();
-        }
-        */
-        
         
         MainStates.instance.UI_skills.SetActive(true);
         foreach (var v in  main.actSkills)

@@ -546,7 +546,19 @@ public class MainStates : MonoBehaviour
         return f;
     }
 
-    public void AcquireSkill(RObj who, string sklName)
+    public void AcquireAnySkill(RObj who, string sklName)
+    {
+        if (sklName.IndexOf("pass_") >= 0)
+        {
+            AcquirePasSkill(who, sklName);
+        }
+        else
+        {
+            AcquireActSkill(who, sklName);
+        }
+    }
+    
+    public void AcquireActSkill(RObj who, string sklName)
     {
         var tt = sklName[sklName.Length - 1];
         if (tt >= '0' && tt <= '9')
@@ -708,7 +720,7 @@ public class MainStates : MonoBehaviour
         {
             foreach (var v in res.skillUnlock)
             {
-                AcquireSkill(mainPlayer, v);
+                AcquireActSkill(mainPlayer, v);
             }
 
         }
@@ -1648,7 +1660,7 @@ public class MainStates : MonoBehaviour
         }
         
     }
-    public void Equip(RObj who, RObj what)
+    public void Equip(RObj who, RObj what, int overSlot = -1)
     {
         if (!who.inventory.Contains(what))
         {
@@ -1657,7 +1669,7 @@ public class MainStates : MonoBehaviour
         }
 
         var b = who.inventory.Find(
-            x => x.curPars["used_slot"] >= 0 && x.curPars["used_slot"] == what.dbObj.pars["slot"]);
+            x => x.curPars.ContainsKey("used_slot") && x.curPars["used_slot"] >= 0 && x.curPars["used_slot"] == what.dbObj.pars["slot"]);
 
         if (b != null)
         {
@@ -1671,7 +1683,7 @@ public class MainStates : MonoBehaviour
             return;
         }
         
-        what.SetPar("used_slot", what.dbObj.pars["slot"]);
+        what.SetPar("used_slot", overSlot < 0 ? what.dbObj.pars["slot"] : overSlot);
         what.RecalcPars();
         who.RecalcPars();
         

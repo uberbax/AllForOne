@@ -40,6 +40,7 @@ public class ObjHolder : MonoBehaviour
             Debug.Log(v);
         }
         Debug.Log("index: " + obj.index);
+        Debug.Log("used slot: " + obj.GetPar("used_slot"));
     }
 
     private void Update()
