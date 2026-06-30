@@ -59,6 +59,8 @@ public class EventTrigger : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (UtilsControl.IsPointerOverUIElement()) return;
+        
         if (is3D || isMouseDown)
         {
             EventManager.INV(evtName, arg);

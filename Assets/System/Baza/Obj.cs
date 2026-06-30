@@ -194,6 +194,8 @@ public class RObj
         foreach (var v in inventory)
         {
             if (v == who) continue;
+            //thwbbb
+            if (v.GetPar("used_slot") >= 0) continue;
             int x1 = v.index / szy;
             int y1 = v.index % szy;
             var inter = !(
@@ -397,6 +399,8 @@ public class RObj
             {
                 if (a.Key == "amount") continue;
                 if (a.Key == "rarity") continue;
+                if (a.Key == "level") continue;
+                
                 AddFinal(a.Key, v.GetPar(a.Key));
             }
         }
@@ -407,6 +411,9 @@ public class RObj
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
+                if (a.Key == "level") continue;
+                if (a.Key == "rarity") continue;
+                
                 AddFinal(a.Key, v.GetPar(a.Key));
             }
         }
@@ -417,6 +424,9 @@ public class RObj
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
+                if (a.Key == "rarity") continue;
+                if (a.Key == "level") continue;
+                
                 AddFinal(a.Key, v.GetPar(a.Key));
             }
         }
@@ -433,6 +443,9 @@ public class RObj
                     foreach (var v1 in  v.dbObj.pars)
                     {
                         if (v1.Key == "amount") continue;
+                        if (v1.Key == "level") continue;
+                        if (v1.Key == "rarity") continue;
+                        
                         AddFinal(v1.Key, v.GetPar(v1.Key));
                     }
                     

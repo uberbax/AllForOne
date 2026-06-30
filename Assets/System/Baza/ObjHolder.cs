@@ -39,6 +39,7 @@ public class ObjHolder : MonoBehaviour
         {
             Debug.Log(v);
         }
+        Debug.Log("index: " + obj.index);
     }
 
     private void Update()
