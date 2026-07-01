@@ -255,6 +255,16 @@ public class DatabaseAll : MonoBehaviour
             return ItemType.item;
         }
     }
+    
+    public Obj GetDBItemByID(string id)
+    {
+        if (DatabaseAll.instance.items.ContainsKey(id))
+            return DatabaseAll.instance.items[id];    
+        else if (DatabaseAll.instance.skills.ContainsKey(id))
+            return DatabaseAll.instance.skills[id];
+        else 
+            return DatabaseAll.instance.buildings[id];
+    }
 
     public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false)
     {

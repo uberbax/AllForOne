@@ -62,7 +62,11 @@ public class Buyable : ComponentBehavior
         if (btn == null) btn = GetComponentInChildren<Button>();
         if (btn) btn.onClick.AddListener(() =>
             {
-                MainStates.instance.Buy(curDynamic.price, null,() =>
+                //on fail we try exchange ?
+                MainStates.instance.Buy(curDynamic.price, () =>
+                {
+                    MainStates.instance.TryExchange(curDynamic.price);
+                },() =>
                 {
                     //can be time
                     if (curDynamic.time > 0)

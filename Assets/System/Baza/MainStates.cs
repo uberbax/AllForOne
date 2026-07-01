@@ -258,6 +258,12 @@ public class MainStates : MonoBehaviour
             g.transform.localPosition = Vector3.zero;
             trashRoot = g.transform;
         }
+        
+        EventManager.SUB("do_exchange", (x) =>
+        {
+            DelItems(u2.selfReward);
+            AddItems(u1.selfReward);
+        });
     }
 
     private void BattleStarted(ArgPass obj)
@@ -466,6 +472,22 @@ public class MainStates : MonoBehaviour
         return res;
     }
 
+    public List<Bon> GetDiffItems(List<Bon> what)
+    {
+        List<Bon> res = new List<Bon>();
+        foreach (var v in what)
+        {
+            var g = new Bon();
+            g.Key = v.Key;
+            g.Value = v.Value;
+            var h = GetItemsCount(g.Key);
+            g.Value -= h;
+            res.Add(g);
+        }
+
+        return res;
+    }
+
     public bool HaveDynamic(string id)
     {
         return (playerData.dynTaken.Contains(id));
@@ -556,6 +578,33 @@ public class MainStates : MonoBehaviour
         {
             AcquireActSkill(who, sklName);
         }
+    }
+
+    public UIfiller u1;
+    public UIfiller u2;
+    public GameObject UI_exchange;
+    public void TryExchange(List<Bon> price)
+    {
+        var f = GetDiffItems(price);
+        u1.selfReward = f;
+        var f1 = GetConvertPrice(f);
+        u2.selfReward = f1;
+        UI_exchange.SetActive(true);
+    }
+
+    public List<Bon> GetConvertPrice(List<Bon> what)
+    {
+        List<Bon> res = new List<Bon>();
+        foreach (var v in what)
+        {
+            var d = DatabaseAll.instance.GetDBItemByID(v.Key);
+            foreach (var v1 in d.price)
+            {
+                res.Add(new Bon{Key = v1.Key, Value = v1.Value * Mathf.Abs(v.Value)});
+            }
+        }
+        
+        return res;
     }
     
     public void AcquireActSkill(RObj who, string sklName)
