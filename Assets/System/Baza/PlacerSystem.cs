@@ -16,6 +16,12 @@ public class PlacerSystem : MonoBehaviour
     public Action<RObj> onDragEach = null;
     
     public bool allow = false;
+    public float placingZ = -0.1f;
+
+    //
+    public bool facingRight = true;
+    public bool attachDrag = true;
+    
     private void Awake()
     {
         instance = this;
@@ -27,6 +33,7 @@ public class PlacerSystem : MonoBehaviour
         RObj o = p.Clone();
         attachedRo = o;
         attach = DatabaseAll.instance.CreateOnlyVizual(o, Vector3.zero);
+        attach.name += "_placing";
     }
 
     private void Update()
@@ -50,7 +57,7 @@ public class PlacerSystem : MonoBehaviour
         }
 
         var ps = UtilsControl.GetMousePoint();
-        attach.transform.position = new Vector3(ps.x, ps.y, ps.z);
+        attach.transform.position = new Vector3(ps.x, ps.y, placingZ);
         
         if (onDragEach != null)
             onDragEach(attachedRo);
@@ -62,6 +69,11 @@ public class PlacerSystem : MonoBehaviour
             attach = null;
             isAttached = false;
             allow = false;
+
+            if (attachDrag)
+            {
+                attachedRo.AddViz("drag");
+            }
             
             if (MainStates.instance.highlight)
                 MainStates.instance.highlight.transform.position = new Vector3(1000, 1000, 1000);

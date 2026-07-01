@@ -122,6 +122,8 @@ public class MainCycleSword : MonoBehaviour
         //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
         //MainStates.instance.mainPlayer.Position = playerPos.position;
         //MainStates.instance.mainPlayer.AdjustPosition();
+        
+        MainStates.instance.UI_unitsPlaced.SetActive(true);
 
     }
 
@@ -178,6 +180,11 @@ public class MainCycleSword : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        
+        PlacerSystem.instance.onDragEach = (x) =>
+        {
+            XDdrag.Boogey(x.main.transform);
+        };
     }
 
     public void HandleAutomove()

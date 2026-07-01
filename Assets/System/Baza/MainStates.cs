@@ -1459,6 +1459,7 @@ public class MainStates : MonoBehaviour
         }
         else if (u.param == "placing")
         {
+            Debug.Log("---Placing---");
             //we clone it ?
             PlacerSystem.instance.Attach(h.obj);
         }
