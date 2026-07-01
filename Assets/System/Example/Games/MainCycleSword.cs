@@ -176,6 +176,8 @@ public class MainCycleSword : MonoBehaviour
         MainStates.allowAutoIterate = false;
         MainStates.metaCreateLevel = "sword";
         BattleController.reqTag = "sword";
+        MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
+        MainStates.pickOverHead = true;
     }
 
     public void HandleAutomove()

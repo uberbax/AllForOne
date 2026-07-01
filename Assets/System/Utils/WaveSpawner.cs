@@ -383,6 +383,7 @@ public class WaveSpawner : MonoBehaviour
                 if (isSummon)
                 {
                     enm1.SetPar("is_summon", 1);
+                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
                 }
             }
             

@@ -21,11 +21,16 @@ public class SpriterAnim : MonoBehaviour
     private SpriteRenderer spAnimator;
     private Image imAnimator;
     
+    Vector3 savedScale = Vector3.one;
+    
     void Start()
     {
         spAnimator = GetComponentInChildren<SpriteRenderer>();
         imAnimator = GetComponent<Image>();
 
+        if (spAnimator)
+            savedScale = spAnimator.transform.localScale;
+        
         CrossFade(defaultAnim, 0);
     }
 
@@ -54,6 +59,10 @@ public class SpriterAnim : MonoBehaviour
         
         curAnim = anim;
         curUanim = anims.Find(x => x.nm == anim);
+        
+        if (spAnimator)
+            spAnimator.transform.localScale = savedScale * curUanim.scale;
+        
         curFrame = 0;
         SetFrame(0);
         lastTm = Time.time;
@@ -117,4 +126,6 @@ public class UnoAnim
 
     public string endAnim = "";
     public bool doEffect = false;
+
+    public float scale = 1;
 }

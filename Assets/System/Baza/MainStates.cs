@@ -132,6 +132,8 @@ public class MainStates : MonoBehaviour
     public static bool allowAutoIterate = true;
     public static string metaCreateLevel = "";
     public static int maxMove = 1;
+    public static Bon anyPickAdd = null;
+    public static bool pickOverHead = false;
     
     //
     public Transform trashRoot;
