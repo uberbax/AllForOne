@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameDevWare.Dynamic.Expressions.CSharp;
 using UnityEngine;
 
 public class UpgradeSystem : MonoBehaviour
@@ -18,6 +19,22 @@ public class UpgradeSystem : MonoBehaviour
         if (who.dynamic != null)
         {
             return who.dynamic.price;
+        }
+
+        if (what == "upgrade")
+        {
+            List<Bon> res = new List<Bon>();
+            var str = ConfigLoader.GetMetaParamValueString("upgrade_cost");
+            var s1 = str.Split('#');
+            foreach (var item in s1)
+            {
+                var s2 = item.Split(',');
+                var s0 = s2[1].Replace("{level}", who.GetPar("level").ToString());
+                var v1 = CSharpExpression.Evaluate<int>(s0);
+                res.Add(new Bon{Key = s2[0], Value = v1});
+            }
+            
+            return res;
         }
 
         return who.dbObj.price;

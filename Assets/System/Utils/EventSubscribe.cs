@@ -9,6 +9,9 @@ public class EventSubscribe : MonoBehaviour
     public string wh1 = "";
 
     public ObjHolder toInject;
+    public ObjHolder toInjectUpgrade;
+    public ObjHolder toInjectAscend;
+    
     public GameObject toActivate;
     
     public void Start()
@@ -24,8 +27,17 @@ public class EventSubscribe : MonoBehaviour
             if (toActivate != null)
                 toActivate.SetActive(true);
 
-            if (toInject != null)
-                toInject.obj = x.who;
+            if (toInjectUpgrade != null)
+            {
+                var a = MainStates.instance.GenerateUpgrade(x.who);
+                toInjectUpgrade.obj = a;    
+            }
+            
+            if (toInjectAscend != null)
+            {
+                var a = MainStates.instance.GenerateAscend(x.who);
+                toInjectAscend.obj = a;    
+            }
 
         });
     }

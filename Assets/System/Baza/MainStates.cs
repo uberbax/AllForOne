@@ -1360,6 +1360,20 @@ public class MainStates : MonoBehaviour
         return null;
     }
 
+    public RObj GenerateUpgrade(RObj who)
+    {
+        RObj res = who.Clone();
+        res.ChangePar("level",1);
+        return res;
+    }
+    
+    public RObj GenerateAscend(RObj who)
+    {
+        RObj res = who.Clone();
+        res.ChangePar("ascend",1);
+        return res;
+    }
+
     public List<RObj> GetSkillsRoll()
     {
 
@@ -1380,60 +1394,9 @@ public class MainStates : MonoBehaviour
 
         return new List<RObj> {h0, h1, h2};
     }
-    
 
-    public void ClickedSome(RObj o, UnoAll u, ObjHolder h)
+    public void EquipSkills(RObj a1, RObj o)
     {
-        
-        Debug.Log("BOM");
-        if (h.filler != null && h.filler.replaceClick.Length > 1)
-        {
-            u.param = h.filler.replaceClick;
-        }
-
-        if (h.filler != null)
-        {
-            curClick = o;
-            EventManager.INV("clicked", new ArgPass { what = h.filler.nm, what1 = u.param });
-        }
-
-        //changed
-        if (u.param == "click")
-        {
-            UI_descr.GetComponent<UIfiller>().otherContext = h.filler;
-            UI_descr.SetActive(true);
-        }
-        else if (u.param == "equip_exp")
-        {
-            //bad shit
-            if (o.dynamic != null)
-            {
-                var h1 = UtilsControl.GetLowest(o.dynamic.id);
-                if (h1 == o.dynamic.id) return;
-            }
-            
-            var a1 = all["main_player"];
-            var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 20);
-            if (b1 == null) o.SetPar("used_slot", 20);
-            var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 21);
-            if (b2 == null) o.SetPar("used_slot", 21);
-            var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 22);
-            if (b3 == null) o.SetPar("used_slot", 22);
-            var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 23);
-            if (b4 == null) o.SetPar("used_slot", 23);
-            
-        }
-        else if (u.param == "equip_skills")
-        {
-            //bad shit
-            if (o.dynamic != null)
-            {
-                var h1 = UtilsControl.GetLowest(o.dynamic.id);
-                if (h1 == o.dynamic.id) return;
-            }
-            
-            var a1 = all["main_player"];
-
             if (o.dbObj.ID.IndexOf("pass") < 0)
             {
                 var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 50);
@@ -1455,103 +1418,177 @@ public class MainStates : MonoBehaviour
                 if (b3 == null) o.SetPar("used_slot", 62);
                 var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 63);
                 if (b4 == null) o.SetPar("used_slot", 63);
-            }
-        }
-        else if (u.param == "placing")
-        {
-            Debug.Log("---Placing---");
-            //we clone it ?
-            PlacerSystem.instance.Attach(h.obj);
-        }
-        else if (u.param == "unequip_exp")
-        {
-            o.SetPar("used_slot", -1);
-        }
-        else if (u.param == "buy")
-        {
-            var gg = UpgradeSystem.instance.GetPrice(o, u.param);
-            var q = HaveAmount(gg);
-            if (q)
-            {
-                DelItems(gg);
-                if (o.it == ItemType.projectile)
-                    AddBuff(all["main_player"], o);
-                    else AddItem(all["main_player"], o);
-                
-                all["main_player"].RecalcPars();
-                OnBuy(o);
-            }
-            else
-            {
-                UI_noMoney.SetActive(true);
-            }
-        }
-        else if (u.param == "upgrade")
-        {
-            var gg = UpgradeSystem.instance.GetPrice(o, u.param, u.param2);
-            var q = HaveAmount(gg);
+            }        
+    }
 
-            var str = "level";
-            if (u.param2 != "") str = u.param2;
-            
-            if (q)
+    public void ClickedSome(RObj o, UnoAll u, ObjHolder h, bool parsed = false)
+    {
+        
+
+        if (h.filler != null && h.filler.replaceClick.Length > 1)
+        {
+            u.param = h.filler.replaceClick;
+        }
+        
+        
+        Debug.Log("BOM");        
+        //okok here
+
+        if (h.filler != null)
+        {
+            curClick = o;
+            EventManager.INV("clicked", new ArgPass { what = h.filler.nm, what1 = u.param });
+        }
+        
+        var SVA = u.param.Split(',');
+        for (int i = 0; i < SVA.Length; i++)
+        {
+            var SV = SVA[i];
+            //changed
+            if (SV == "click")
             {
+                UI_descr.GetComponent<UIfiller>().otherContext = h.filler;
+                UI_descr.SetActive(true);
+            }
+            else if (SV == "equip_exp")
+            {
+                //bad shit
                 if (o.dynamic != null)
                 {
-                    var g0 = UtilsControl.GetNext(o.dynamic.id);
-                    if (ConfigLoader.Instance.allDynamic.ContainsKey(o.dynamic.id))
-                    {
-                        DelItems(gg);
-                        ExecuteDone(o.dynamic);
-                        if (!ConfigLoader.Instance.allDynamic.ContainsKey(g0))
-                        {
-                            o.SetPar("max", 1);
-                            return;
-                        }
-                        o.dynamic = ConfigLoader.Instance.allDynamic[g0];
-                    }
-                    
+                    var h1 = UtilsControl.GetLowest(o.dynamic.id);
+                    if (h1 == o.dynamic.id) return;
+                }
+
+                var a1 = all["main_player"];
+                var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 20);
+                if (b1 == null) o.SetPar("used_slot", 20);
+                var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 21);
+                if (b2 == null) o.SetPar("used_slot", 21);
+                var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 22);
+                if (b3 == null) o.SetPar("used_slot", 22);
+                var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 23);
+                if (b4 == null) o.SetPar("used_slot", 23);
+
+            }
+            else if (SV == "equip_skills")
+            {
+                //bad shit
+                if (o.dynamic != null)
+                {
+                    var h1 = UtilsControl.GetLowest(o.dynamic.id);
+                    if (h1 == o.dynamic.id) return;
+                }
+
+                var a1 = all["main_player"];
+                EquipSkills(a1, o);
+            }
+            else if (SV == "placing")
+            {
+                Debug.Log("---Placing---");
+                //we clone it ?
+                PlacerSystem.instance.Attach(h.obj);
+            }
+            else if (SV == "unequip_exp")
+            {
+                o.SetPar("used_slot", -1);
+            }
+            else if (SV == "buy")
+            {
+                var gg = UpgradeSystem.instance.GetPrice(o, u.param);
+                var q = HaveAmount(gg);
+                if (q)
+                {
+                    DelItems(gg);
+                    if (o.it == ItemType.projectile)
+                        AddBuff(all["main_player"], o);
+                    else AddItem(all["main_player"], o);
+
+                    all["main_player"].RecalcPars();
+                    OnBuy(o);
                 }
                 else
-                    o.ChangePar(str, 1);
+                {
+                    UI_noMoney.SetActive(true);
+                }
+            }
+            else if (SV == "upgrade")
+            {
+                var gg = UpgradeSystem.instance.GetPrice(o, u.param, u.param2);
+                var q = HaveAmount(gg);
+
+                var str = "level";
+                if (u.param2 != "") str = u.param2;
+
+                if (q)
+                {
+                    if (o.dynamic != null)
+                    {
+                        var g0 = UtilsControl.GetNext(o.dynamic.id);
+                        if (ConfigLoader.Instance.allDynamic.ContainsKey(o.dynamic.id))
+                        {
+                            DelItems(gg);
+                            ExecuteDone(o.dynamic);
+                            if (!ConfigLoader.Instance.allDynamic.ContainsKey(g0))
+                            {
+                                o.SetPar("max", 1);
+                                return;
+                            }
+
+                            o.dynamic = ConfigLoader.Instance.allDynamic[g0];
+                        }
+
+                    }
+                    else
+                        o.ChangePar(str, 1);
+                }
+                else
+                {
+                    UI_noMoney.SetActive(true);
+                }
+            }
+            else if (SV == "sell")
+            {
+                var gg = UpgradeSystem.instance.GetPrice(o, u.param);
+                AddItems(gg);
+                //?
+                if (ConfigLoader.GetMetaParamValue("buyback") > 0)
+                    AddItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } },
+                        curLoot);
+
+                DelItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } });
+            }
+            else if (SV == "take_skill")
+            {
+                AddBuff(all["main_player"], o);
+            }
+            else if (SV == "equip")
+            {
+                Equip(all["main_player"], o);
+            }
+            else if (SV == "cast")
+            {
+                SkillExecutor.instance.CastSkill(lastAllySelected == null ? mainPlayer : lastAllySelected, o);
+            }
+            else if (SV == "select")
+            {
+                XDselect.Select(o);
+            }
+            else if (SV == "close")
+            {
+                h.gameObject.SetActive(false);
+            }
+            else if (SV == "close_par")
+            {
+                h.transform.parent.gameObject.SetActive(false);
             }
             else
             {
-                UI_noMoney.SetActive(true);
+                EventManager.INV(u.param, new ArgPass
+                {
+                    who = o
+                });
             }
-        }
-        else if (u.param == "sell")
-        {
-            var gg = UpgradeSystem.instance.GetPrice(o, u.param);
-            AddItems(gg);
-            //?
-            if (ConfigLoader.GetMetaParamValue("buyback") > 0)
-                AddItems(new List<Bon>{new Bon{Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"]}}, curLoot);
-            
-            DelItems(new List<Bon>{new Bon{Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"]}});
-        }
-        else if (u.param == "take_skill")
-        {
-            AddBuff(all["main_player"], o);
-        }
-        else if (u.param == "equip")
-        {
-            Equip(all["main_player"], o);
-        }
-        else if (u.param == "cast")
-        {
-            SkillExecutor.instance.CastSkill(lastAllySelected == null ? mainPlayer : lastAllySelected, o);
-        }
-        else if (u.param == "select")
-        {
-            XDselect.Select(o);
-        }
-        else
-        {
-            EventManager.INV(u.param, new ArgPass
-            {
-                who = o
-            });
+
         }
     }
 
@@ -1741,8 +1778,18 @@ public class MainStates : MonoBehaviour
             who.RecalcPars();
             return;
         }
+
+        if (what.it == ItemType.projectile)
+        {
+            EquipSkills(who, what);
+            UIfiller.GlobalRefresh();
+        }
+        else
+        {
+            what.SetPar("used_slot", overSlot < 0 ? what.dbObj.pars["slot"] : overSlot);            
+        }
         
-        what.SetPar("used_slot", overSlot < 0 ? what.dbObj.pars["slot"] : overSlot);
+
         what.RecalcPars();
         who.RecalcPars();
         

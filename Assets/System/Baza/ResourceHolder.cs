@@ -191,12 +191,26 @@ public class ResourceHolder : MonoBehaviour
             }
             
             
+            //red color should be only exact items
+            for (int i = 0; i < 3; i++)
+            {
+                var ss = (i == 0 ? "" : i.ToString());
+                oo.GetImage("icon" + ss).gameObject.SetActive(false);
+                oo.GetText("price"  + ss).gameObject.SetActive(false);
+            }
             
-            var bb = MainStates.instance.HaveAmount(gg);
-            oo.GetImage("icon").sprite = items[gg[0].Key];
-            oo.GetText("price").text = (bb ? "" : "<color=red>") + gg[0].Value + (bb ? "" : "</color>");        
-            //a.transform.Find("icon").GetComponent<Image>().sprite = items[gg[0].Key];
-            //a.transform.Find("icon/price").GetComponent<TextMeshProUGUI>().text = gg[0].Value.ToString();
+            for (int i = 0; i < gg.Count; i++)
+            {
+                var bb = MainStates.instance.HaveAmount(new List<Bon>{gg[i]});
+                var ss = (i == 0 ? "" : i.ToString());
+                oo.GetImage("icon" + ss).gameObject.SetActive(true);
+                oo.GetText("price"  + ss).gameObject.SetActive(true);
+                
+                oo.GetImage("icon" + ss).sprite = items[gg[i].Key];
+                oo.GetText("price"  + ss).text = (bb ? "" : "<color=red>") + gg[i].Value + (bb ? "" : "</color>");
+                
+            }
+            
             return;
         }
 

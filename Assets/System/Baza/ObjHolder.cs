@@ -14,6 +14,8 @@ public class ObjHolder : MonoBehaviour
     public bool inDrag = false;
     
     public bool asMain = false;
+
+    public ObjHolder redirect;
     public void OnEnable()
     {
         UISystem.instance.FillItem(this);
@@ -45,6 +47,13 @@ public class ObjHolder : MonoBehaviour
 
     private void Update()
     {
+        if (obj == null && redirect)
+        {
+            obj = redirect.obj;
+            return;
+        }
+        
+        
         if (asMain)
         {
             if (MainStates.instance.mainPlayer != null && obj == null)

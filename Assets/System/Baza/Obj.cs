@@ -358,8 +358,8 @@ public class RObj
                 owner = MainStates.instance.mainPlayer;
             }
             curPars.TryAdd("attack", owner.GetPar("attack") * dbObj.pars["attack_prc"] + dbObj.pars["attack"]);
-
-
+            curPars.TryAdd("level", dbObj.pars["level"] + upgradePars["level"]);
+            
             upgradePars.TryAdd("cd", 0);
             return;
         }
