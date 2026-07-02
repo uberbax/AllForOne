@@ -7,7 +7,9 @@ public class EventSubscribe : MonoBehaviour
     public string eventName = "";
     public string wh = "";
     public string wh1 = "";
-    
+
+    public ObjHolder toInject;
+    public GameObject toActivate;
     
     public void Start()
     {
@@ -19,6 +21,12 @@ public class EventSubscribe : MonoBehaviour
             gameObject.SetActive(false);
             gameObject.SetActive(true);
             
+            if (toActivate != null)
+                toActivate.SetActive(true);
+
+            if (toInject != null)
+                toInject.obj = x.who;
+
         });
     }
 }

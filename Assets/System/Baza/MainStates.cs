@@ -1546,6 +1546,13 @@ public class MainStates : MonoBehaviour
         {
             XDselect.Select(o);
         }
+        else
+        {
+            EventManager.INV(u.param, new ArgPass
+            {
+                who = o
+            });
+        }
     }
 
     public string GetGeneratedDynamicDescr(string id)
