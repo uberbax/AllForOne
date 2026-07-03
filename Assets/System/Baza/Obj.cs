@@ -357,7 +357,9 @@ public class RObj
                 Debug.LogError("NO OWNER");
                 owner = MainStates.instance.mainPlayer;
             }
+            //naverno ne sovsem tak
             curPars.TryAdd("attack", owner.GetPar("attack") * dbObj.pars["attack_prc"] + dbObj.pars["attack"]);
+            
             curPars.TryAdd("level", dbObj.pars["level"] + upgradePars["level"]);
             
             upgradePars.TryAdd("cd", 0);
@@ -373,7 +375,7 @@ public class RObj
             foreach (var v in dbObj.pars)
             {
                 float vv = v.Value;
-                if (v.Key == "attack" || v.Key == "health" || v.Key == "max_health")
+                if (v.Key == "attack" || v.Key == "health" || v.Key == "max_health" || v.Key == "def")
                 {
                     vv = vv * MathF.Pow(1.1f, lvl - 1);
                 }
@@ -455,6 +457,8 @@ public class RObj
         
         if (upgradePars.ContainsKey("registered_damage"))
             curPars.TryAdd("registered_damage", upgradePars["registered_damage"]);
+        
+        //maybe here ?
         
     }
 

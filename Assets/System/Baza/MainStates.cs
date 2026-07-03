@@ -1364,6 +1364,7 @@ public class MainStates : MonoBehaviour
     {
         RObj res = who.Clone();
         res.ChangePar("level",1);
+        //res.RecalcPars();
         return res;
     }
     
@@ -1371,6 +1372,7 @@ public class MainStates : MonoBehaviour
     {
         RObj res = who.Clone();
         res.ChangePar("ascend",1);
+        //res.RecalcPars();
         return res;
     }
 
