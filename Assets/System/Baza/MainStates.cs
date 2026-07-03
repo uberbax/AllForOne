@@ -1216,21 +1216,28 @@ public class MainStates : MonoBehaviour
         }
         else if (command == "GET_ITEMS_OTHER")
         {
+            var n = t.GetComponentInParent<UIfiller>(true);
+            RObj ww = curLoot;
+            if (n.nm != "CHEST")
+            {
+                ww = all[n.nm];
+            }
+            
             if (extra == "add")
             {
-                AddItem(curLoot, rr, overIndex);
+                AddItem(ww, rr, overIndex);
                 return null;
             }
 
             if (extra == "del")
             {
-                curLoot.inventory.Remove(rr);
+                ww.inventory.Remove(rr);
                 rr.owner = null;
                 return null;
             }
             
             
-            var res = curLoot.inventory.FindAll(x => x.GetPar("amount") > 0);
+            var res = ww.inventory.FindAll(x => x.GetPar("amount") > 0);
             var gk = param.Split(',');
 
             for (int l = 0; l < gk.Length; l++)
@@ -1541,7 +1548,11 @@ public class MainStates : MonoBehaviour
 
                     }
                     else
+                    {
+                        DelItems(gg);
                         o.ChangePar(str, 1);
+                        EventManager.INV("evt_full_upgrade", new ArgPass{who = o});
+                    }
                 }
                 else
                 {
@@ -1677,17 +1688,9 @@ public class MainStates : MonoBehaviour
             who.ChangePar("exp", amount, true);
             return null;
         }
-
-        string other = "";
-        if (what.IndexOf("shard_") >= 0)
-        {
-            other = what.Substring(6);
-            what = "shard";
-        }
         
         var f = DatabaseAll.instance.CreateItem(what, amount);
-        if (other != "") f.shardID = other;
-        if (f.it == ItemType.item && randomizeStats)
+        if (f.it == ItemType.item && f.GetPar("slot") >= 0 && randomizeStats)
         {
             RandomizeItemStats(f);
         }

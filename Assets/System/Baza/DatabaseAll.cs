@@ -132,6 +132,8 @@ public class DatabaseAll : MonoBehaviour
             o.extraPars = v.PARS;
             o.labelis = v.affected;
             
+            o.pars.Add("slot", -1);
+            
             skills.Add(o.ID, o);
         }
     }

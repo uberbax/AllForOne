@@ -152,18 +152,7 @@ public class ResourceHolder : MonoBehaviour
     public void GetResult(UnoAll a, RObj r)
     {
         //prices ?
-        if (a.param == "buy")
-        {
-            var gg = UpgradeSystem.instance.GetPrice(r, a.param);
-            var oo = a.GetComponent<GBind>();
-            var bb = MainStates.instance.HaveAmount(gg);
-            oo.GetImage("icon").sprite = items[gg[0].Key];
-            oo.GetText("price").text = (bb ? "" : "<color=red>") + gg[0].Value + (bb ? "" : "</color>");
-            //a.transform.Find("icon").GetComponent<Image>().sprite = items[gg[0].Key];
-            //a.transform.Find("icon/price").GetComponent<TextMeshProUGUI>().text = gg[0].Value.ToString();
-            return;
-        }
-        else if (a.param == "sell")
+        if (a.param == "sell")
         {
             var gg = UpgradeSystem.instance.GetPrice(r, a.param);
             var oo = a.GetComponent<GBind>();
@@ -173,7 +162,7 @@ public class ResourceHolder : MonoBehaviour
             //a.transform.Find("icon/price").GetComponent<TextMeshProUGUI>().text = gg[0].Value.ToString();
             return;
         }
-        else if (a.param == "upgrade")
+        else if (a.param == "upgrade" || a.param == "buy")
         {
             var oo = a.GetComponent<GBind>();
             var gg = UpgradeSystem.instance.GetPrice(r, a.param);
