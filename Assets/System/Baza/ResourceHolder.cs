@@ -220,7 +220,9 @@ public class ResourceHolder : MonoBehaviour
             var g = a.GetComponent<GBind>();
             if (g)
             {
-                var rr = r.GetPar(a.param);
+                float rr = 0;
+                if (a.isMainPar) rr = r.GetMainPar(a.param);
+                else rr = r.GetPar(a.param);
                 if (g.HasKey("icon"))  g.GetImage("icon").sprite = pars[a.param];
                 g.GetText("value").text = rr.ToString();
                 if (a.hideEmpty)

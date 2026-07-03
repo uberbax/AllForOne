@@ -22,7 +22,7 @@ public class UIBattlePower : MonoBehaviour
         if (mon == null)
             mon = MainStates.instance.mainPlayer;
 
-        var f = (int)mon.GetPar("battle_power");
+        var f = (int)mon.GetMainPar("battle_power");
         
         if (prevBP < 0) prevBP = f;
 

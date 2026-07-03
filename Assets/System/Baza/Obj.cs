@@ -348,25 +348,26 @@ public class RObj
             v.upgradePars["cd"] = 0;
         }
     }
+
+    public static List<string> scalablePars = new List<string>
+    {
+        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc"
+    };
+        
+    
     public void RecalcPars()
     {
-        if (it == ItemType.projectile && dbObj.pars["instant"] == 1)
-        {
-            if (owner == null)
-            {
-                Debug.LogError("NO OWNER");
-                owner = MainStates.instance.mainPlayer;
-            }
-            //naverno ne sovsem tak
-            curPars.TryAdd("attack", owner.GetPar("attack") * dbObj.pars["attack_prc"] + dbObj.pars["attack"]);
-            
-            curPars.TryAdd("level", dbObj.pars["level"] + upgradePars["level"]);
-            
-            upgradePars.TryAdd("cd", 0);
-            return;
-        }
 
         curPars.Clear();
+        if (dbObj != null)
+        {
+            curPars.Add("level", dbObj.pars["level"] + upgradePars["level"]);
+        }
+        else
+        {
+            curPars.Add("level", 1 + upgradePars["level"]);
+        }
+
         if (dbObj != null)
         {
             var lvl = GetPar("level");
@@ -374,19 +375,21 @@ public class RObj
             
             foreach (var v in dbObj.pars)
             {
+                if (v.Key == "level") continue;
                 float vv = v.Value;
-                if (v.Key == "attack" || v.Key == "health" || v.Key == "max_health" || v.Key == "def")
+                if (scalablePars.Contains(v.Key))
                 {
                     vv = vv * MathF.Pow(1.1f, lvl - 1);
                 }
-                curPars.TryAdd(v.Key, vv);
+                AddFinal(v.Key, vv);
             }
         }
 
         foreach (var v in upgradePars)
         {
-            AddFinal(v.Key, v.Value);
-        }
+            if (v.Key != "level")
+                AddFinal(v.Key, v.Value);
+        }   
 
         foreach (var v in inventory)
         {
@@ -459,9 +462,63 @@ public class RObj
             curPars.TryAdd("registered_damage", upgradePars["registered_damage"]);
         
         //maybe here ?
-        
+        if (it == ItemType.projectile && dbObj.pars["instant"] == 1)
+        {
+            if (owner == null)
+            {
+                Debug.LogError("NO OWNER");
+                owner = MainStates.instance.mainPlayer;
+            }
+            //naverno ne sovsem tak, thwbbb
+            //curPars.TryAdd("attack", owner.GetPar("attack") * GetPar("attack_prc") + GetPar("attack"));
+            
+            //curPars.TryAdd("level", dbObj.pars["level"] + upgradePars["level"]);
+            
+            upgradePars.TryAdd("cd", 0);
+            return;
+        }
     }
 
+    public float GetMainPar(string val)
+    {
+        if (val == "battle_power")
+        {
+            return GetMainPar("attack") + GetMainPar("max_health") + GetMainPar("def");
+        }
+        
+        if (val == "attack")
+        {
+            if (it == ItemType.projectile)
+            {
+                if (owner != null)
+                {
+                    return owner.GetMainPar("attack") * (1 + GetPar("attack_prc")) + GetPar("attack");
+                }
+            }
+            
+            return GetPar("attack") * (1 + GetPar("attack_prc"));
+        }
+        
+        if (val == "health")
+        {
+            return GetPar("health") * (1 + GetPar("health_prc"));
+        }
+        
+        if (val == "max_health")
+        {
+            return GetPar("max_health") * (1 + GetPar("max_health_prc"));
+        }
+        
+        if (val == "def")
+        {
+            return GetPar("def") * (1 + GetPar("def_prc"));
+        }
+
+        return GetPar(val);
+
+
+    }
+    
     public float GetPar(string val)
     {
         //battle_power

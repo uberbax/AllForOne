@@ -2040,7 +2040,7 @@ public class MainStates : MonoBehaviour
     public void DealDamage(RObj a, RObj skl)
     {
         Debug.Log("DAMAGE: " +skl.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
-        var atk = skl.GetPar("attack");
+        var atk = skl.GetMainPar("attack");
         var sh = skl.GetPar("shield");
         
         var h = a.GetPar("registered_damage");

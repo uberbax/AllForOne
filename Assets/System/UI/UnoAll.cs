@@ -12,6 +12,7 @@ public class UnoAll : MonoBehaviour
     
     public bool isStat;
     public bool isPar;
+    public bool isMainPar = false;
     public bool hideEmpty;
     
     public bool ignoreOnce = false;

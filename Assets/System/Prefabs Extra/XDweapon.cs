@@ -99,7 +99,7 @@ public class XDweapon : ComponentBehavior
             //depends of owner tagss 
             cProj.SetPar("target", 0);
             cProj.SetPar("pen_cnt", 10);
-            cProj.SetPar("attack", weapon.GetPar("attack"));
+            cProj.SetPar("attack", weapon.GetMainPar("attack"));
             
             
             cProj.owner = mon;
