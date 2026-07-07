@@ -9,7 +9,7 @@ namespace DamageNumbersPro.Demo
 {
     public static class DNP_InputHandler
     {
-        //Directions:
+        // Directions
         public static bool GetRight()
         {
             if(Keyboard.current == null)
@@ -55,7 +55,7 @@ namespace DamageNumbersPro.Demo
             }
         }
 
-        //Vertical:
+        // Vertical
         public static bool GetJump()
         {
             if (Keyboard.current == null)
@@ -90,7 +90,7 @@ namespace DamageNumbersPro.Demo
             }
         }
 
-        //Mouse:
+        // Mouse
         public static bool GetLeftClick()
         {
             if (Mouse.current == null)
@@ -158,7 +158,7 @@ namespace DamageNumbersPro.Demo
             }
         }
 
-        //Escape:
+        // Escape
         public static bool GetEscape()
         {
             if (Mouse.current == null)
@@ -177,7 +177,7 @@ namespace DamageNumbersPro.Demo
 {
     public static class DNP_InputHandler
     {
-        //Directions:
+        // Directions
         public static bool GetRight()
         {
             return Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
@@ -195,7 +195,7 @@ namespace DamageNumbersPro.Demo
             return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
         }
 
-        //Vertical:
+        // Vertical
         public static bool GetJump()
         {
             return Input.GetKey(KeyCode.Space);
@@ -209,7 +209,7 @@ namespace DamageNumbersPro.Demo
             return Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftShift);
         }
 
-        //Other:
+        // Other
         public static bool GetLeftClick()
         {
             return Input.GetMouseButtonDown(0);
@@ -235,7 +235,7 @@ namespace DamageNumbersPro.Demo
             return Input.mouseScrollDelta.y;
         }
 
-        //Escape:
+        // Escape
         public static bool GetEscape()
         {
             return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.I);

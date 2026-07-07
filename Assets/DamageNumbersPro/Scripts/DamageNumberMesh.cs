@@ -13,10 +13,10 @@ namespace DamageNumbersPro
         /* 
          * Contact me if you need any support.
          * Email: ekincantascontact@gmail.com
-         * Discord: https://discord.com/invite/nWbRkN8Zxr
+         * Discord: https://discordcom/invite/nWbRkN8Zxr
          * 
          * Check the manual for more information.
-         * Manual: https://ekincantas.com/damage-numbers-pro/
+         * Manual: https://ekincantascom/damage-numbers-pro/
          * 
          * Thank you for using my asset.
          * If you want to add your own code please use the functions below.
@@ -25,31 +25,5 @@ namespace DamageNumbersPro
          * 
          * Good Luck on your Project
          */
-
-        //Custom Events:
-        protected override void OnStart()
-        {
-            
-        }
-        protected override void OnStop()
-        {
-            
-        }
-        protected override void OnUpdate(float deltaTime)
-        {
-            
-        }
-        protected override void OnFade(float currentFade)
-        {
-            
-        }
-        protected override void OnTextUpdate()
-        {
-
-        }
-        protected override void OnAbsorb(float number, float newSum)
-        {
-
-        }
     }
 }

@@ -6,16 +6,16 @@ namespace DamageNumbersPro.Demo
 {
     public class DNP_Camera : MonoBehaviour
     {
-        //Instance:
+        // Instance
         public static DNP_Camera instance;
 
-        //Shooting:
+        // Shooting
         GameObject cubeHighlight;
         float nextShotTime;
         float nextRaycastTime;
         float lookTime;
 
-        //Movement:
+        // Movement
         Vector3 velocity;
 
         void Awake()
@@ -30,7 +30,7 @@ namespace DamageNumbersPro.Demo
             HandleMovement();
             HandleShooting();
 
-            //Escape:
+            // Escape
             if(DNP_InputHandler.GetEscape())
             {
                 ShowMouse();
@@ -66,7 +66,7 @@ namespace DamageNumbersPro.Demo
             HandleLooking();
         }
 
-        //Functions:
+        // Functions
         void HandleShooting()
         {
             if(DNP_InputHandler.GetLeftClick())
@@ -79,7 +79,7 @@ namespace DamageNumbersPro.Demo
                 nextShotTime = Time.time + 0.06f;
             }
 
-            //Detection:
+            // Detection
             if (Time.time > nextRaycastTime)
             {
                 nextRaycastTime = Time.time + 0.11f;
@@ -107,7 +107,7 @@ namespace DamageNumbersPro.Demo
 
             if(Physics.Raycast(transform.position, transform.forward, out raycast, 100))
             {
-                //Create Damage Number:
+                // Create Damage Number
                 DNP_PrefabSettings settings = DNP_DemoManager.instance.GetSettings();
                 DamageNumber prefab = DNP_DemoManager.instance.GetCurrent();
 
@@ -120,10 +120,10 @@ namespace DamageNumbersPro.Demo
 
                 DamageNumber newDamageNumber = prefab.Spawn(raycast.point, number);
 
-                //Apply Demo Settings:
+                // Apply Demo Settings
                 settings.Apply(newDamageNumber);
 
-                //Create Cube:
+                // Create Cube
                 if (raycast.collider.gameObject.layer != 1)
                 {
                     Vector3 cubePosition = raycast.point - raycast.normal * 0.1f;
@@ -146,7 +146,7 @@ namespace DamageNumbersPro.Demo
                     {
                         if(newDamageNumber.spamGroup != "")
                         {
-                            newDamageNumber.spamGroup += target.GetInstanceID();
+                            newDamageNumber.spamGroup += EntityId.ToULong(target.GetEntityId()); ;
                         }
 
                         newDamageNumber.enableFollowing = true;
@@ -215,7 +215,7 @@ namespace DamageNumbersPro.Demo
             Vector3 clampedPosition = new Vector3(Mathf.Clamp(position.x, -4f, 4f), Mathf.Clamp(position.y, 1f, 6f), Mathf.Clamp(position.z, -12f, 4f));
             position = Vector3.Lerp(position, clampedPosition, Time.deltaTime * 15f) + velocity * Time.deltaTime;
 
-            //Apply:
+            // Apply
             transform.position = position;
         }
     }

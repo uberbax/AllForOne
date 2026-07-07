@@ -8,12 +8,12 @@ namespace Plugins.Baedrick.ColoredHeaderCreator.Editor
 	{
 		static ColoredHeaderRenderer()
 		{
-			EditorApplication.hierarchyWindowItemOnGUI += DisplayHeader;
+			EditorApplication.hierarchyWindowItemByEntityIdOnGUI += DisplayHeader;
 		}
 
-		private static void DisplayHeader(int instanceID, Rect selectionRect)
+		private static void DisplayHeader(EntityId entityId, Rect selectionRect)
 		{
-			var sceneObject = (GameObject)EditorUtility.InstanceIDToObject(instanceID);
+			var sceneObject = (GameObject)EditorUtility.EntityIdToObject(entityId);
 
 			if (sceneObject == null) {
 				return;

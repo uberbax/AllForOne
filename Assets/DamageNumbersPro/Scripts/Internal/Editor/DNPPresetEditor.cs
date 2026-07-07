@@ -12,12 +12,12 @@ namespace DamageNumbersPro.Internal
     {
         public override void OnInspectorGUI()
         {
-            //Prepare:
+            // Prepare
             GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
             labelStyle.richText = true;
 
 
-            //Copying:
+            // Copying
             EditorGUILayout.Space(4);
             DamageNumber dn = (DamageNumber) EditorGUILayout.ObjectField(null, typeof(DamageNumber), true,GUILayout.Height(80));
             GUIStyle dropStyle = new GUIStyle(GUI.skin.box);
@@ -34,10 +34,10 @@ namespace DamageNumbersPro.Internal
             }
 
 
-            //Get First Property:
+            // Get First Property
             SerializedProperty currentProperty = serializedObject.FindProperty("changeFontAsset");
 
-            //Display Properties:
+            // Display Properties
             EditorGUILayout.BeginVertical();
             bool visible = true;
             do
@@ -80,7 +80,7 @@ namespace DamageNumbersPro.Internal
 
             EditorGUILayout.EndVertical();
 
-            //Save Changes:
+            // Save Changes
             serializedObject.ApplyModifiedProperties();
         }
     }

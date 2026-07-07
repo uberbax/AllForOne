@@ -13,10 +13,10 @@ namespace DamageNumbersPro
         /* 
          * Contact me if you need any support.
          * Email: ekincantascontact@gmail.com
-         * Discord: https://discord.com/invite/nWbRkN8Zxr
+         * Discord: https://discordcom/invite/nWbRkN8Zxr
          * 
          * Check the manual for more information.
-         * Manual: https://ekincantas.com/damage-numbers-pro/
+         * Manual: https://ekincantascom/damage-numbers-pro/
          * 
          * Thank you for using my asset.
          * If you want to add your own code please use the functions below.
@@ -26,31 +26,31 @@ namespace DamageNumbersPro
          * Good Luck
          */
 
-        //Custom Events:
-        protected override void OnPreSpawn()
+        // Custom Events
+        protected override void InternalOnPreSpawn()
         {
-            //Fixes an issue where the previous mesh was visible for 1 frame.
+            // Fixes an issue where the previous mesh was visible for 1 frame
             if (textMeshProA != null)
             {
                 textMeshProA.enabled = textMeshProB.enabled = false;
             }
         }
-        protected override void OnStart()
+        protected override void InternalOnSpawn()
         {
-            //Only damage numbers of the same parent can interact with each other.
-            if(spamGroup != "" && transform.parent != null)
+            // Only damage numbers of the same parent can interact with each other
+            if (spamGroup != "" && transform.parent != null)
             {
-                spamGroup += transform.parent.GetInstanceID();
+                spamGroup += EntityId.ToULong(transform.parent.GetEntityId());
             }
 
-            //GUI Alpha Fix:
+            // GUI Alpha Fix
             skippedFrames = 0;
             skipFrames = true;
             realStartTime = Time.unscaledTime;
         }
         protected override void OnLateUpdate()
         {
-            //GUI Alpha Fix:
+            // GUI Alpha Fix
             if (skipFrames)
             {
                 transform.localScale = Vector3.one * 0.0001f;
@@ -64,22 +64,11 @@ namespace DamageNumbersPro
                 }
             }
         }
-        protected override void OnStop()
-        {
 
-        }
-        protected override void OnUpdate(float deltaTime)
+        protected override void InternalUpdate(float deltaTime)
         {
-            //GUI Alpha Fix:
+            // GUI Alpha Fix
             skippedFrames++;
-        }
-        protected override void OnAbsorb(float number, float newSum)
-        {
-
-        }
-        protected override void OnTextUpdate()
-        {
-
         }
 
         /*
@@ -88,7 +77,7 @@ namespace DamageNumbersPro
          * But you can use the events above to add your custom behavior.
          */
 
-        //References:
+        // References
         RectTransform myRect;
         TextMeshProUGUI textMeshProA;
         TextMeshProUGUI textMeshProB;
@@ -96,12 +85,12 @@ namespace DamageNumbersPro
         RectTransform textRectB;
         List<TMP_SubMeshUI> subMeshs;
 
-        //Internal:
+        // Internal
         float realStartTime;
         bool skipFrames;
         int skippedFrames;
 
-        //Components:
+        // Components
         public override void GetReferencesIfNecessary()
         {
             if(textMeshProA == null)
@@ -113,6 +102,7 @@ namespace DamageNumbersPro
         {
             baseAlpha = 0.9f;
 
+            myTransform = transform;
             myRect = GetComponent<RectTransform>();
             transformA = transform.Find("TMPA");
             transformB = transform.Find("TMPB");
@@ -130,7 +120,7 @@ namespace DamageNumbersPro
             return textMeshProA;
         }
 
-        //Materials:
+        // Materials
         public override Material[] GetSharedMaterials()
         {
             return textMeshProA.fontSharedMaterials;
@@ -148,7 +138,7 @@ namespace DamageNumbersPro
             return textMeshProA.fontMaterial;
         }
 
-        //Text:
+        // Text
         protected override void SetTextString(string fullString)
         {
             textMeshProA.text = textMeshProB.text = fullString;
@@ -167,7 +157,7 @@ namespace DamageNumbersPro
             meshs.Add(textMeshProA.mesh);
             meshs.Add(textMeshProB.mesh);
 
-            //Sub Meshs:
+            // Sub Meshs
             subMeshs = new List<TMP_SubMeshUI>();
             foreach(TMP_SubMeshUI subMesh in textMeshProA.GetComponentsInChildren<TMP_SubMeshUI>())
             {
@@ -181,7 +171,7 @@ namespace DamageNumbersPro
             }
         }
 
-        //Position:
+        // Position
         public override Vector3 GetPosition()
         {
             return myRect.anchoredPosition3D;
@@ -191,34 +181,44 @@ namespace DamageNumbersPro
             GetReferencesIfNecessary();
             position = myRect.anchoredPosition3D = newPosition;
         }
+        protected override void SetFinalPosition(Vector3 newPosition)
+        {
+            GetReferencesIfNecessary();
+            myRect.anchoredPosition3D = newPosition;
+        }
         public override void SetAnchoredPosition(Transform rectParent, Vector2 anchoredPosition)
         {
-            //Old Transform:
+            // Old Transform
             Vector3 oldScale = transform.localScale;
 
-            //Set Parent and Position:
+            // Set Parent and Position
             GetReferencesIfNecessary();
             myRect.SetParent(rectParent, false);
             myRect.anchoredPosition3D = anchoredPosition;
 
-            //New Transform:
+            // New Transform
             transform.localScale = oldScale;
             transform.eulerAngles = textMeshProA.canvas.transform.eulerAngles;
         }
         public override void SetAnchoredPosition(Transform rectParent, Transform rectPosition, Vector2 relativeAnchoredPosition)
         {
-            //Old Transform:
+            // Old Transform
             Vector3 oldScale = transform.localScale;
 
-            //Set Parent and Position:
+            // Set Parent and Position
             GetReferencesIfNecessary();
             myRect.SetParent(rectParent, false);
             myRect.position = rectPosition.position;
             myRect.anchoredPosition += relativeAnchoredPosition;
 
-            //New Transform:
+            // New Transform
             transform.localScale = oldScale;
             transform.eulerAngles = textMeshProA.canvas.transform.eulerAngles;
+        }
+        protected override Vector3 GetOtherPosition(Transform target)
+        {
+            RectTransform targetRectTransform = followedTarget.GetComponent<RectTransform>();
+            return targetRectTransform != null ? targetRectTransform.anchoredPosition3D : target.position;
         }
 
         protected override void SetLocalPositionA(Vector3 localPosition)
@@ -234,8 +234,8 @@ namespace DamageNumbersPro
             return 100f;
         }
 
-        //Other:
-        protected override void OnFade(float currentFade)
+        // Other
+        protected override void InternalUpdateFade(float currentFade)
         {
             textMeshProA.canvasRenderer.SetMesh(textMeshProA.mesh);
             textMeshProB.canvasRenderer.SetMesh(textMeshProB.mesh);

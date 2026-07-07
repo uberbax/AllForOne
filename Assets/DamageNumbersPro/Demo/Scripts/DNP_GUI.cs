@@ -43,26 +43,26 @@ namespace DamageNumbersPro.Demo
 
         void Shoot()
         {
-            //Select Damage Number:
+            // Select Damage Number
             DNP_PrefabSettings settings = DNP_DemoManager.instance.GetSettings();
             DamageNumber prefab = DNP_DemoManager.instance.GetCurrent();
             DNP_UIArea.OnSpawn();
 
-            //Number:
+            // Number
             float number = 1 + Mathf.Pow(Random.value, 2.2f) * settings.numberRange;
             if (prefab.digitSettings.decimals == 0)
             {
                 number = Mathf.Floor(number);
             }
 
-            //Get Parent:
+            // Get Parent
             RectTransform rectParent = DNP_UIArea.GetRect();
             if (rectParent == null)
             {
                 rectParent = canvasRect;
             }
 
-            //Create Damage Number:
+            // Create Damage Number
             DamageNumber newDamageNumber = prefab.Spawn(Vector3.zero, number);
             newDamageNumber.SetToMousePosition(rectParent, Camera.main);
 
@@ -72,7 +72,7 @@ namespace DamageNumbersPro.Demo
                 newDamageNumber.followedTarget = rectParent;
             }
 
-            //Apply Demo Settings:
+            // Apply Demo Settings
             settings.Apply(newDamageNumber);
         }
     }

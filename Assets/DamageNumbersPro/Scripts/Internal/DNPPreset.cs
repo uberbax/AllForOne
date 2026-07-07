@@ -9,38 +9,38 @@ namespace DamageNumbersPro.Internal
     [CreateAssetMenu(fileName = "Preset", menuName = "TextMeshPro/Preset for DNP", order = -1)]
     public class DNPPreset : ScriptableObject
     {
-        //Font:
+        // Font
         public bool changeFontAsset;
         public TMP_FontAsset fontAsset;
 
-        //Color:
+        // Color
         public bool changeColor;
         public Color color = Color.white;
         public bool enableGradient;
         public VertexGradient gradient = new VertexGradient(Color.white, Color.white, Color.white, Color.white);
 
-        //Number:
+        // Number
         public bool changeNumber;
         public bool enableNumber = true;
         public TextSettings numberSettings = new TextSettings(0);
         public DigitSettings digitSettings = new DigitSettings(0);
 
-        //Left Text:
+        // Left Text
         public bool changeLeftText;
         public bool enableLeftText = true;
         public string leftText;
         public TextSettings leftTextSettings = new TextSettings(0f);
 
-        //Right Text:
+        // Right Text
         public bool changeRightText;
         public bool enableRightText = true;
         public string rightText;
         public TextSettings rightTextSettings = new TextSettings(0f);
 
-        //Vertical Text:
+        // Vertical Text
         public bool hideVerticalTexts = false;
 
-        //Fade In:
+        // Fade In
         public bool changeFadeIn = false;
         public float durationFadeIn = 0.2f;
         public bool enableOffsetFadeIn = true;
@@ -58,7 +58,7 @@ namespace DamageNumbersPro.Internal
         [Tooltip("Shakes in at this frequency.")]
         public float shakeFrequencyFadeIn = 4f;
 
-        //Fade Out:
+        // Fade Out
         public bool changeFadeOut = false;
         public float durationFadeOut = 0.2f;
         public bool enableOffsetFadeOut = true;
@@ -76,7 +76,7 @@ namespace DamageNumbersPro.Internal
         [Tooltip("Shakes out at this frequency.")]
         public float shakeFrequencyFadeOut = 4f;
 
-        //Movement:
+        // Movement
         public bool changeMovement = false;
         public bool enableLerp = true;
         public LerpSettings lerpSettings = new LerpSettings(0);
@@ -88,7 +88,7 @@ namespace DamageNumbersPro.Internal
         public bool enableFollowing = false;
         public FollowSettings followSettings = new FollowSettings(0);
 
-        //Rotation:
+        // Rotation
         public bool changeRotation = false;
         public bool enableStartRotation = false;
         [Tooltip("The minimum z-angle for the random spawn rotation.")]
@@ -103,7 +103,7 @@ namespace DamageNumbersPro.Internal
         [Tooltip("Defines rotation speed over lifetime.")]
         public AnimationCurve rotateOverTime = new AnimationCurve(new Keyframe[] { new Keyframe(0, 1), new Keyframe(0.4f, 1), new Keyframe(0.8f, 0), new Keyframe(1, 0) });
 
-        //Scaling:
+        // Scaling
         public bool changeScaling = false;
         public bool enableScaleByNumber = false;
         public ScaleByNumberSettings scaleByNumberSettings = new ScaleByNumberSettings(0);
@@ -111,7 +111,7 @@ namespace DamageNumbersPro.Internal
         [Tooltip("Will scale over it's lifetime using this curve.")]
         public AnimationCurve scaleOverTime = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0.7f));
 
-        //Spam Control:
+        // Spam Control
         public bool changeSpamControl = false;
         public string spamGroup = "";
         public bool enableCombination = false;
@@ -135,7 +135,7 @@ namespace DamageNumbersPro.Internal
 
             bool isApplied = true;
 
-            //Font:
+            // Font
             if (changeFontAsset)
             {
                 foreach(TMP_Text tmp in textMeshs)
@@ -147,7 +147,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Color:
+            // Color
             if (changeColor)
             {
                 foreach (TMP_Text tmp in textMeshs)
@@ -159,7 +159,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Number:
+            // Number
             if(changeNumber)
             {
                 if(enableNumber != dn.enableNumber || !numberSettings.Equals(dn.numberSettings) || !digitSettings.Equals(dn.digitSettings))
@@ -168,7 +168,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Left Text:
+            // Left Text
             if(changeLeftText)
             {
                 if(enableLeftText != dn.enableLeftText || !leftTextSettings.Equals(dn.leftTextSettings) || leftText != dn.leftText)
@@ -177,7 +177,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Right Text:
+            // Right Text
             if (changeRightText)
             {
                 if (enableRightText != dn.enableRightText || !rightTextSettings.Equals(dn.rightTextSettings) || rightText != dn.rightText)
@@ -186,7 +186,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Vertical Texts:
+            // Vertical Texts
             if (hideVerticalTexts)
             {
                 if(dn.enableTopText || dn.enableBottomText)
@@ -195,7 +195,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Fade In:
+            // Fade In
             if(changeFadeIn)
             {
                 if(durationFadeIn != dn.durationFadeIn || enableOffsetFadeIn != dn.enableOffsetFadeIn || offsetFadeIn != dn.offsetFadeIn ||
@@ -207,7 +207,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Fade Out:
+            // Fade Out
             if (changeFadeOut)
             {
                 if (durationFadeOut != dn.durationFadeOut || enableOffsetFadeOut != dn.enableOffsetFadeOut || offsetFadeOut != dn.offsetFadeOut ||
@@ -219,7 +219,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Movement:
+            // Movement
             if(changeMovement)
             {
                 if(enableLerp != dn.enableLerp || !lerpSettings.Equals(dn.lerpSettings) ||
@@ -231,7 +231,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Rotation:
+            // Rotation
             if(changeRotation)
             {
                 if(enableStartRotation != dn.enableStartRotation || minRotation != dn.minRotation || maxRotation != dn.maxRotation ||
@@ -241,7 +241,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Scale:
+            // Scale
             if(changeScaling)
             {
                 if(enableScaleByNumber != dn.enableScaleByNumber || !scaleByNumberSettings.Equals(dn.scaleByNumberSettings) ||
@@ -251,7 +251,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Spam Group:
+            // Spam Group
             if(changeSpamControl)
             {
                 if(enableCombination != dn.enableCombination || !combinationSettings.Equals(dn.combinationSettings) ||
@@ -270,7 +270,7 @@ namespace DamageNumbersPro.Internal
         {
             TMP_Text[] textMeshs = dn.GetTextMeshs();
 
-            //Font:
+            // Font
             if (changeFontAsset)
             {
                 foreach(TMP_Text tmp in textMeshs)
@@ -279,7 +279,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Color:
+            // Color
             if (changeColor)
             {
                 foreach (TMP_Text tmp in textMeshs)
@@ -290,7 +290,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Number:
+            // Number
             if (changeNumber)
             {
                 dn.enableNumber = enableNumber;
@@ -298,7 +298,7 @@ namespace DamageNumbersPro.Internal
                 dn.digitSettings = digitSettings;
             }
 
-            //Left Text:
+            // Left Text
             if (changeLeftText)
             {
                 dn.enableLeftText = enableLeftText;
@@ -306,7 +306,7 @@ namespace DamageNumbersPro.Internal
                 dn.leftTextSettings = leftTextSettings;
             }
 
-            //Right Text:
+            // Right Text
             if (changeRightText)
             {
                 dn.enableRightText = enableRightText;
@@ -314,13 +314,13 @@ namespace DamageNumbersPro.Internal
                 dn.rightTextSettings = rightTextSettings;
             }
 
-            //Hide Vertical Texts:
+            // Hide Vertical Texts
             if(hideVerticalTexts)
             {
                 dn.enableTopText = dn.enableBottomText = false;
             }
 
-            //Fade In:
+            // Fade In
             if(changeFadeIn)
             {
                 dn.durationFadeIn = durationFadeIn;
@@ -335,7 +335,7 @@ namespace DamageNumbersPro.Internal
                 dn.shakeFrequencyFadeIn = shakeFrequencyFadeIn;
             }
 
-            //Fade Out:
+            // Fade Out
             if (changeFadeOut)
             {
                 dn.durationFadeOut = durationFadeOut;
@@ -350,7 +350,7 @@ namespace DamageNumbersPro.Internal
                 dn.shakeFrequencyFadeOut = shakeFrequencyFadeOut;
             }
 
-            //Movement:
+            // Movement
             if(changeMovement)
             {
                 dn.enableLerp = enableLerp;
@@ -363,7 +363,7 @@ namespace DamageNumbersPro.Internal
                 dn.followSettings = followSettings;
             }
 
-            //Rotation:
+            // Rotation
             if(changeRotation)
             {
                 dn.enableStartRotation = enableStartRotation;
@@ -375,7 +375,7 @@ namespace DamageNumbersPro.Internal
                 dn.rotateOverTime = rotateOverTime;
             }
 
-            //Scale:
+            // Scale
             if(changeScaling)
             {
                 dn.enableScaleByNumber = enableScaleByNumber;
@@ -384,7 +384,7 @@ namespace DamageNumbersPro.Internal
                 dn.scaleOverTime = scaleOverTime;
             }
 
-            //Spam Control:
+            // Spam Control
             if(changeSpamControl)
             {
                 if(dn.spamGroup == null || dn.spamGroup == "")
@@ -407,7 +407,7 @@ namespace DamageNumbersPro.Internal
         {
             TMP_Text[] textMeshs = dn.GetTextMeshs();
 
-            //Font:
+            // Font
             changeFontAsset = true;
             foreach (TMP_Text tmp in textMeshs)
             {
@@ -417,7 +417,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Color:
+            // Color
             changeColor = true;
             foreach (TMP_Text tmp in textMeshs)
             {
@@ -429,7 +429,7 @@ namespace DamageNumbersPro.Internal
                 }
             }
 
-            //Fade In:
+            // Fade In
             changeFadeIn = true;
             durationFadeIn = dn.durationFadeIn;
             enableOffsetFadeIn = dn.enableOffsetFadeIn;
@@ -442,7 +442,7 @@ namespace DamageNumbersPro.Internal
             shakeOffsetFadeIn = dn.shakeOffsetFadeIn;
             shakeFrequencyFadeIn = dn.shakeFrequencyFadeIn;
 
-            //Fade Out:
+            // Fade Out
             changeFadeOut = true;
             durationFadeOut = dn.durationFadeOut;
             enableOffsetFadeOut = dn.enableOffsetFadeOut;
@@ -455,7 +455,7 @@ namespace DamageNumbersPro.Internal
             shakeOffsetFadeOut = dn.shakeOffsetFadeOut;
             shakeFrequencyFadeOut = dn.shakeFrequencyFadeOut;
 
-            //Movement:
+            // Movement
             changeMovement = true;
             enableLerp = dn.enableLerp;
             lerpSettings = dn.lerpSettings;
@@ -466,7 +466,7 @@ namespace DamageNumbersPro.Internal
             enableFollowing = dn.enableFollowing;
             followSettings = dn.followSettings;
 
-            //Rotation:
+            // Rotation
             changeRotation = true;
             enableStartRotation = dn.enableStartRotation;
             minRotation = dn.minRotation;
@@ -476,14 +476,14 @@ namespace DamageNumbersPro.Internal
             maxRotationSpeed = dn.maxRotationSpeed;
             rotateOverTime = dn.rotateOverTime;
 
-            //Scale:
+            // Scale
             changeScaling = true;
             enableScaleByNumber = dn.enableScaleByNumber;
             scaleByNumberSettings = dn.scaleByNumberSettings;
             enableScaleOverTime = dn.enableScaleOverTime;
             scaleOverTime = dn.scaleOverTime;
 
-            //Spam Group:
+            // Spam Group
             changeSpamControl = true;
             spamGroup = dn.spamGroup != "" ? "Default" : "";
             enableCombination = dn.enableCombination;

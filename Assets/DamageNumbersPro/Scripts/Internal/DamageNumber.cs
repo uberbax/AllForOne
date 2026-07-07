@@ -16,7 +16,7 @@ namespace DamageNumbersPro
     public abstract class DamageNumber : MonoBehaviour
     {
         #region Main Settings
-        //Lifetime:
+        // Lifetime
         [Tooltip("Damage number will not fade out on it's own.")]
         public bool permanent = false;
         [Tooltip("The lifetime after which this fades out.")]
@@ -24,7 +24,7 @@ namespace DamageNumbersPro
         [Tooltip("Ignores slow motion or game pause.")]
         public bool unscaledTime = false;
 
-        //3D Settings:
+        // 3D Settings
         public bool enable3DGame = false;
         [Tooltip("Faces the camera at all times.")]
         public bool faceCameraView = true;
@@ -46,14 +46,14 @@ namespace DamageNumbersPro
         #endregion
 
         #region Text Settings
-        //Number:
+        // Number
         public bool enableNumber = true;
         [Tooltip("The number displayed in the text.\nCan be disabled if you only need text.")]
         public float number = 1;
         public TextSettings numberSettings = new TextSettings(0);
         public DigitSettings digitSettings = new DigitSettings(0);
 
-        //Left Text:
+        // Left Text
         [FormerlySerializedAs("enablePrefix")]
         public bool enableLeftText = false;
         [Tooltip("Text displayed to the left of the number.")]
@@ -62,7 +62,7 @@ namespace DamageNumbersPro
         [FormerlySerializedAs("prefixSettings")]
         public TextSettings leftTextSettings = new TextSettings(0);
 
-        //Right Text:
+        // Right Text
         [FormerlySerializedAs("enableSuffix")]
         public bool enableRightText = false;
         [Tooltip("Text displayed to the right of the number.")]
@@ -71,25 +71,25 @@ namespace DamageNumbersPro
         [FormerlySerializedAs("suffixSettings")]
         public TextSettings rightTextSettings = new TextSettings(0);
 
-        //Top Text:
+        // Top Text
         public bool enableTopText = false;
         [Tooltip("Text displayed above the number.")]
         public string topText = "";
         public TextSettings topTextSettings = new TextSettings(0f);
 
-        //Bottom Text:
+        // Bottom Text
         public bool enableBottomText = false;
         [Tooltip("Text displayed below the number.")]
         public string bottomText = "";
         public TextSettings bottomTextSettings = new TextSettings(0f);
 
-        //Color by Number:
+        // Color by Number
         public bool enableColorByNumber = false;
         public ColorByNumberSettings colorByNumberSettings = new ColorByNumberSettings(0f);
         #endregion
 
         #region Fade Settings
-        //Fade In:
+        // Fade In
         public float durationFadeIn = 0.2f;
         public bool enableOffsetFadeIn = true;
         [Tooltip("TextA and TextB move together from this offset.")]
@@ -106,7 +106,7 @@ namespace DamageNumbersPro
         [Tooltip("Shakes in at this frequency.")]
         public float shakeFrequencyFadeIn = 4f;
 
-        //Fade Out:
+        // Fade Out
         public float durationFadeOut = 0.2f;
         public bool enableOffsetFadeOut = true;
         [Tooltip("TextA and TextB move apart to this offset.")]
@@ -125,20 +125,20 @@ namespace DamageNumbersPro
         #endregion
 
         #region Movement Settings
-        //Lerping:
+        // Lerping
         public bool enableLerp = true;
         public LerpSettings lerpSettings = new LerpSettings(0);
 
-        //Velocity:
+        // Velocity
         public bool enableVelocity = false;
         public VelocitySettings velocitySettings = new VelocitySettings(0);
 
-        //Shaking:
+        // Shaking
         public bool enableShaking = false;
         [Tooltip("Shake settings during idle.")]
         public ShakeSettings shakeSettings = new ShakeSettings(new Vector2(0.005f, 0.005f));
 
-        //Following:
+        // Following
         public bool enableFollowing = false;
         [Tooltip("Transform that will be followed.\nTries to maintain the position relative to the target.")]
         public Transform followedTarget;
@@ -146,7 +146,7 @@ namespace DamageNumbersPro
         #endregion
 
         #region Rotation & Scale Settings
-        //Start Rotation:
+        // Start Rotation
         public bool enableStartRotation = false;
         [Tooltip("The minimum z-angle for the random spawn rotation.")]
         public float minRotation = -4f;
@@ -154,7 +154,7 @@ namespace DamageNumbersPro
         public float maxRotation = 4f;
         public bool rotationRandomFlip = false;
 
-        //Rotate By Time:
+        // Rotate By Time
         public bool enableRotateOverTime = false;
         [Tooltip("The minimum rotation speed for the z-angle.")]
         public float minRotationSpeed = -15f;
@@ -164,16 +164,16 @@ namespace DamageNumbersPro
         [Tooltip("Defines rotation speed over lifetime.")]
         public AnimationCurve rotateOverTime = new AnimationCurve(new Keyframe[] { new Keyframe(0, 1), new Keyframe(0.4f, 1), new Keyframe(0.8f, 0), new Keyframe(1, 0) });
 
-        //Scale By Number:
+        // Scale By Number
         public bool enableScaleByNumber = false;
         public ScaleByNumberSettings scaleByNumberSettings = new ScaleByNumberSettings(0);
 
-        //Scale By Time:
+        // Scale By Time
         public bool enableScaleOverTime = false;
         [Tooltip("Will scale over it's lifetime using this curve.")]
         public AnimationCurve scaleOverTime = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0.7f));
 
-        //Scale By Orthographic Size:
+        // Scale By Orthographic Size
         public bool enableOrthographicScaling = false;
         [Tooltip("The base orthographic size of the camera, where the popup will use it's default scale.")]
         public float defaultOrthographicSize = 5f;
@@ -187,33 +187,38 @@ namespace DamageNumbersPro
         [Tooltip("The group of numbers which will affect each other using the features bellow.")]
         public string spamGroup = "";
 
-        //Combination:
+        // Combination
         public bool enableCombination = false;
         public CombinationSettings combinationSettings = new CombinationSettings(0);
 
-        //Destruction:
+        // Destruction
         public bool enableDestruction = false;
         public DestructionSettings destructionSettings = new DestructionSettings(0);
 
-        //Collision:
+        // Collision
         public bool enableCollision = false;
         public CollisionSettings collisionSettings = new CollisionSettings(0);
 
-        //Push:
+        // Push
         public bool enablePush = false;
         public PushSettings pushSettings = new PushSettings(0);
         #endregion
 
         #region Performance Settings
-        //Update Delay:
+        // Update Delay
         public float updateDelay = 0.0125f;
 
-        //Pooling:
+        // Pooling
         public bool enablePooling = false;
         [Tooltip("Maximum of damage numbers stored in pool.")]
-        public int poolSize = 50;
+        public int poolSize = 100;
         [Tooltip("Pooled damage numbers are not destroyed on load.\nThis option will fade them out on load.\nSo you don't see popups from the previous scene.")]
         public bool disableOnSceneLoad = true;
+
+
+        [Tooltip("Amount of active damage numbers is limited to the pool size.\nThis option will fade out the oldest popup when a new one spawns and all popups in the pool are active.")]
+        public bool limitActiveInstances = false;
+        public int maxActiveInstances = 50;
         #endregion
 
         #region Editor Variables
@@ -223,7 +228,8 @@ namespace DamageNumbersPro
         public string editorLastFont;
         #endregion
 
-        //References:
+        // References
+        protected Transform myTransform;
         TextMeshPro textMeshPro;
         MeshRenderer textMeshRenderer;
         MeshRenderer meshRendererA;
@@ -235,10 +241,10 @@ namespace DamageNumbersPro
         List<System.Tuple<MeshRenderer, MeshRenderer>> subMeshRenderers;
         List<System.Tuple<MeshFilter, MeshFilter>> subMeshFilters;
         protected List<Mesh> meshs;
-        protected List<Color[]> colors;
-        protected List<float[]> alphas;
+        protected List<List<Color>> meshColors;
+        protected List<List<float>> meshAlphas;
 
-        //Fading:
+        // Fading
         protected float currentFade;
         protected float startTime;
         float startLifeTime;
@@ -249,13 +255,13 @@ namespace DamageNumbersPro
         Vector2 currentScaleInOffset;
         Vector2 currentScaleOutOffset;
 
-        //Position:
+        // Position
         public Vector3 position;
         Vector3 finalPosition;
         protected Vector3 remainingOffset;
         protected Vector2 currentVelocity;
 
-        //Scaling:
+        // Scaling
         protected Vector3 originalScale;
         float numberScale;
         float combinationScale;
@@ -264,60 +270,66 @@ namespace DamageNumbersPro
         float lastScaleFactor = 1f;
         bool firstFrameScale;
 
-        //Rotation:
+        // Rotation
         float currentRotationSpeed;
         float currentRotation;
 
-        //Following:
+        // Following
         Vector3 lastTargetPosition;
         Vector3 targetOffset;
         float currentFollowSpeed;
+        bool followingInitialized;
 
-        //Spam Control:
+        // Spam Control
         static Dictionary<string, HashSet<DamageNumber>> spamGroupDictionary;
         bool removedFromDictionary;
 
-        //Combination:
+        // Combination
         DamageNumber myAbsorber;
         bool givenNumber;
         float absorbStartTime;
         Vector3 absorbStartPosition;
 
-        //3D:
+        // 3D
         Transform targetCamera;
         Camera targetFovCamera;
         float simulatedScale;
         float lastFOV;
 
-        //Orthographic Sclaing:
+        // Orthographic Sclaing
         Camera targetOrthographicCamera;
 
-        //Destruction:
+        // Destruction
         bool isDestroyed;
         float destructionStartTime;
 
-        //Collision & Push:
+        // Collision & Push
         bool collided;
         bool pushed;
 
-        //Pooling:
+        // Pooling
         DamageNumber originalPrefab;
+        ulong prefabID = 0;
         public static Transform poolParent;
-        static Dictionary<int, HashSet<DamageNumber>> pools;
-        public static HashSet<DamageNumber> activeInstances;
-        int poolingID;
+        static Dictionary<ulong, HashSet<DamageNumber>> pools;
+        ulong poolingID;
         bool performRestart;
         bool destroyAfterSpawning;
 
-        //Fallback font fix.
+        // Active instances
+        public static HashSet<DamageNumber> activeInstances = new HashSet<DamageNumber>();
+        static Dictionary<ulong, Queue<DamageNumber>> activeInstancesQueue = new Dictionary<ulong, Queue<DamageNumber>>();
+        bool removedFromActiveInstanceQueue;
+
+        // Fallback font fix
         static Dictionary<TMP_FontAsset, GameObject> fallbackDictionary;
 
-        //Custom Events:
+        // Custom Events
         protected bool isFadingOut;
 
         void Start()
         {
-            //Once:
+            // Once
             GetReferencesIfNecessary();
 
             if(enablePooling && disableOnSceneLoad)
@@ -325,13 +337,13 @@ namespace DamageNumbersPro
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
 
-            //Repeated for Pooling:
+            // Repeated for pooling
             Restart();
         }
 
         void Update()
         {
-            //For Pooling:
+            // For Pooling
             if (performRestart)
             {
                 Restart();
@@ -355,8 +367,8 @@ namespace DamageNumbersPro
         /// </summary>
         public void UpdateDamageNumber(float delta, float time)
         {
-            //Check activity.
-            if(isActiveAndEnabled == false)
+            // Check activity
+            if (isActiveAndEnabled == false)
             {
                 startTime += delta;
                 startLifeTime += delta;
@@ -365,13 +377,13 @@ namespace DamageNumbersPro
                 return;
             }
 
-            //Vectors:
+            // Vectors
             if(DNPUpdater.vectorsNeedUpdate)
             {
                 DNPUpdater.UpdateVectors(transform);
             }
 
-            //Fading:
+            // Fading
             if (IsAlive(time))
             {
                 HandleFadeIn(delta);
@@ -381,10 +393,10 @@ namespace DamageNumbersPro
                 HandleFadeOut(delta);
             }
 
-            //Custom Event:
-            OnUpdate(delta);
+            // Custom Event
+            InternalUpdate(delta);
 
-            //Movement:
+            // Movement
             if (enableLerp)
             {
                 HandleLerp(delta);
@@ -398,34 +410,34 @@ namespace DamageNumbersPro
                 HandleFollowing(delta);
             }
 
-            //Rotation:
+            // Rotation
             if (enableRotateOverTime)
             {
                 HandleRotateOverTime(delta, time);
                 UpdateRotationZ();
             }
 
-            //Combination:
+            // Combination
             if (enableCombination)
             {
                 HandleCombination(delta, time);
             }
 
-            //Destruction:
+            // Destruction
             if (enableDestruction)
             {
                 HandleDestruction(time);
             }
 
-            //Offset:
+            // Offset
             finalPosition = position;
             if (enableShaking)
             {
                 finalPosition = ApplyShake(finalPosition, shakeSettings, time);
             }
 
-            //Apply Transform:
-            SetPosition(finalPosition);
+            // Apply Transform
+            SetFinalPosition(finalPosition);
         }
 
         #region Spawn Functions
@@ -435,42 +447,73 @@ namespace DamageNumbersPro
         /// <returns>The spawned popup, which can be modified at runtime.</returns>
         public DamageNumber Spawn()
         {
-            DamageNumber newDN = default;
-            int instanceID = GetInstanceID();
+            // Declare new popup
+            DamageNumber newPopup = default;
 
-            //Check Pool:
-            if (enablePooling && PoolAvailable(instanceID))
+            // Get instance ID
+            if (prefabID == 0)
             {
-                //Get from Pool:
-                foreach (DamageNumber dn in pools[instanceID])
+                prefabID = EntityId.ToULong(GetEntityId());
+            }
+
+            // Check Pool
+            if (enablePooling && PoolAvailable(prefabID))
+            {
+                // Get from Pool
+                foreach (DamageNumber dn in pools[prefabID])
                 {
-                    newDN = dn; //This is the only way I can get a unknown element from a hashset, using a single loop iteration.
+                    newPopup = dn;
                     break;
                 }
-                pools[instanceID].Remove(newDN);
+                pools[prefabID].Remove(newPopup);
             }
             else
             {
-                //Create New:
+                // Create New
                 GameObject newGO = Instantiate<GameObject>(gameObject);
-                newDN = newGO.GetComponent<DamageNumber>();
+                newPopup = newGO.GetComponent<DamageNumber>();
 
                 if (enablePooling)
                 {
-                    newDN.originalPrefab = this;
+                    newPopup.originalPrefab = this;
+                    newPopup.prefabID = prefabID;
                 }
             }
 
-            newDN.gameObject.SetActive(true); //Active Gameobject
-            newDN.OnPreSpawn();
+            // Activate
+            newPopup.gameObject.SetActive(true);
+            newPopup.InternalOnPreSpawn();
 
+            // Update pooling id
             if (enablePooling)
             {
-                newDN.SetPoolingID(instanceID);
-                newDN.destroyAfterSpawning = false;
+                newPopup.SetPoolingID(prefabID);
+                newPopup.destroyAfterSpawning = false;
             }
 
-            return newDN;
+            // Limit active instances
+            if (limitActiveInstances)
+            {
+                // Initialize
+                if (activeInstancesQueue.ContainsKey(prefabID) == false)
+                {
+                    activeInstancesQueue.Add(prefabID, new Queue<DamageNumber>());
+                }
+
+                // Fade out oldest popups
+                Queue<DamageNumber> activeQueue = activeInstancesQueue[prefabID];
+                while (activeQueue.Count > maxActiveInstances)
+                {
+                    DamageNumber activePopup = activeQueue.Dequeue();
+                    if (activePopup != null)
+                    {
+                        activePopup.removedFromActiveInstanceQueue = true;
+                        activePopup.FadeOut();
+                    }
+                }
+            }
+
+            return newPopup;
         }
 
         /// <summary>
@@ -482,7 +525,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetPosition(newPosition);
 
             return newDN;
@@ -499,7 +542,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition);
 
-            //Number:
+            // Number
             newDN.enableNumber = true;
             newDN.number = newNumber;
 
@@ -518,7 +561,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition, newNumber);
 
-            //Following:
+            // Following
             newDN.SetFollowedTarget(followedTransform);
 
             return newDN;
@@ -535,7 +578,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition);
 
-            //Following:
+            // Following
             newDN.SetFollowedTarget(followedTransform);
 
             return newDN;
@@ -552,10 +595,10 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition);
 
-            //Disable Number:
+            // Disable Number
             newDN.enableNumber = false;
 
-            //Text:
+            // Text
             newDN.enableLeftText = true;
             newDN.leftText = newText;
 
@@ -575,7 +618,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition, newText);
 
-            //Following:
+            // Following
             newDN.SetFollowedTarget(followedTransform);
 
             return newDN;
@@ -594,7 +637,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, anchoredPosition);
 
             return newDN;
@@ -612,7 +655,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, rectPosition, anchoredPosition);
 
             return newDN;
@@ -630,7 +673,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = SpawnGUI(rectParent, anchoredPosition);
 
-            //Number:
+            // Number
             newDN.enableNumber = true;
             newDN.number = newNumber;
 
@@ -650,7 +693,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = SpawnGUI(rectParent, rectPosition, anchoredPosition);
 
-            //Number:
+            // Number
             newDN.enableNumber = true;
             newDN.number = newNumber;
 
@@ -669,10 +712,10 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = SpawnGUI(rectParent, anchoredPosition);
 
-            //Disable Number:
+            // Disable Number
             newDN.enableNumber = false;
 
-            //Text:
+            // Text
             newDN.enableLeftText = true;
             newDN.leftText = newText;
 
@@ -692,10 +735,10 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = SpawnGUI(rectParent, rectPosition, anchoredPosition);
 
-            //Disable Number:
+            // Disable Number
             newDN.enableNumber = false;
 
-            //Text:
+            // Text
             newDN.enableLeftText = true;
             newDN.leftText = newText;
 
@@ -709,13 +752,13 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn(newPosition, newNumber);
 
-            //Position:
+            // Position
             newDN.SetPosition(newPosition);
 
-            //Number:
+            // Number
             newDN.number = newNumber;
 
-            //Color:
+            // Color
             newDN.SetColor(newColor);
 
             return newDN;
@@ -725,14 +768,14 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetPosition(newPosition);
 
-            //Number:
+            // Number
             newDN.enableLeftText = true;
             newDN.leftText = newLeftText;
 
-            //Color:
+            // Color
             newDN.SetColor(newColor);
 
             return newDN;
@@ -742,16 +785,16 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetPosition(newPosition);
 
-            //Text:
+            // Text
             newDN.number = newNumber;
 
-            //Following:
+            // Following
             newDN.SetFollowedTarget(followedTransform);
 
-            //Color:
+            // Color
             newDN.SetColor(newColor);
 
             return newDN;
@@ -761,17 +804,17 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetPosition(newPosition);
 
-            //Text:
+            // Text
             newDN.enableLeftText = true;
             newDN.leftText = newLeftText;
 
-            //Following:
+            // Following
             newDN.SetFollowedTarget(followedTransform);
 
-            //Color:
+            // Color
             newDN.SetColor(newColor);
 
             return newDN;
@@ -781,7 +824,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, anchoredPosition);
 
             return newDN;
@@ -791,10 +834,10 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Number:
+            // Number
             newDN.number = number;
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, anchoredPosition);
 
             return newDN;
@@ -804,10 +847,10 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Number:
+            // Number
             newDN.number = number;
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, rectPosition, anchoredPosition);
 
             return newDN;
@@ -817,7 +860,7 @@ namespace DamageNumbersPro
         {
             DamageNumber newDN = Spawn();
 
-            //Position:
+            // Position
             newDN.SetAnchoredPosition(rectParent, rectPosition, anchoredPosition);
 
             return newDN;
@@ -828,23 +871,26 @@ namespace DamageNumbersPro
         #region Public Functions
         /// <summary>
         /// Makes the damage number follow a transform.
-        /// Will also modify the spamGroup so that only damage numbers following this taget interact with each other.
+        /// Can also modify the spamGroup so that only damage numbers following this taget interact with each other.
         /// </summary>
-        public void SetFollowedTarget(Transform followedTransform)
+        public void SetFollowedTarget(Transform followedTransform, bool modifySpamGroup = true)
         {
-            //Following:
+            // Following
             enableFollowing = true;
             followedTarget = followedTransform;
 
-            //Spam Group:
-            spamGroup += followedTransform.GetInstanceID();
+            // Spam Group
+            if (modifySpamGroup)
+            {
+                spamGroup += EntityId.ToULong(followedTransform.GetEntityId());
+            }
         }
         public void SetColor(Color newColor)
         {
-            //References:
+            // References
             GetReferencesIfNecessary();
 
-            //Set Color:
+            // Set Color
             foreach (TMP_Text tmp in GetTextMeshs())
             {
                 tmp.color = newColor;
@@ -852,10 +898,10 @@ namespace DamageNumbersPro
         }
         public void SetGradientColor(VertexGradient newGradient)
         {
-            //References:
+            // References
             GetReferencesIfNecessary();
 
-            //Set Gradient:
+            // Set Gradient
             foreach (TMP_Text tmp in GetTextMeshs())
             {
                 tmp.enableVertexGradient = true;
@@ -882,10 +928,10 @@ namespace DamageNumbersPro
         }
         public void SetFontMaterial(TMP_FontAsset font)
         {
-            //References:
+            // References
             GetReferencesIfNecessary();
 
-            //Set Font:
+            // Set Font
             foreach (TMP_Text tmp in GetTextMeshs())
             {
                 tmp.font = font;
@@ -893,20 +939,16 @@ namespace DamageNumbersPro
         }
         public TMP_FontAsset GetFontMaterial()
         {
-            //References:
+            // References
             GetReferencesIfNecessary();
 
-            //Get Font:
-            foreach (TMP_Text tmp in GetTextMeshs())
-            {
-                if (tmp.font != null)
-                {
-                    return tmp.font;
-                }
-            }
+            // Get Font
+            TMP_Text tmp = GetTextMesh();
 
-            return null;
+            // Return font
+            return tmp != null ? tmp.font : null;
         }
+
         public void SetScale(float newScale)
         {
             originalScale = transform.localScale = new Vector3(newScale, newScale, newScale);
@@ -922,11 +964,11 @@ namespace DamageNumbersPro
         }
         public virtual Vector3 GetFreshUpVector()
         {
-            return transform.up;
+            return myTransform.up;
         }
         public virtual Vector3 GetFreshRightVector()
         {
-            return transform.right;
+            return myTransform.right;
         }
 
         #endregion
@@ -936,10 +978,11 @@ namespace DamageNumbersPro
         {
             baseAlpha = 1f;
 
-            textMeshPro = transform.Find("TMP").GetComponent<TextMeshPro>();
+            myTransform = transform;
+            textMeshPro = myTransform.Find("TMP").GetComponent<TextMeshPro>();
             textMeshRenderer = textMeshPro.GetComponent<MeshRenderer>();
-            transformA = transform.Find("MeshA");
-            transformB = transform.Find("MeshB");
+            transformA = myTransform.Find("MeshA");
+            transformB = myTransform.Find("MeshB");
             meshRendererA = transformA.GetComponent<MeshRenderer>();
             meshRendererB = transformB.GetComponent<MeshRenderer>();
             meshFilterA = transformA.GetComponent<MeshFilter>();
@@ -984,6 +1027,12 @@ namespace DamageNumbersPro
         public void FadeIn()
         {
             currentFade = 0;
+            startLifeTime = unscaledTime ? Time.unscaledTime : Time.time;
+
+            if(originalPrefab != null)
+            {
+                permanent = originalPrefab.permanent;
+            }
         }
 
         /// <summary>
@@ -1045,39 +1094,45 @@ namespace DamageNumbersPro
         /// </summary>
         public void DestroyDNP()
         {
-            //Pooling / Destroying:
+            // Event
+            OnDespawn?.Invoke();
+
+            // Pooling / Destroying
             if (enablePooling && originalPrefab != null)
             {
+                // Initialize
                 if (pools == null)
                 {
-                    pools = new Dictionary<int, HashSet<DamageNumber>>();
+                    pools = new Dictionary<ulong, HashSet<DamageNumber>>();
                 }
-
                 if (!pools.ContainsKey(poolingID))
                 {
                     pools.Add(poolingID, new HashSet<DamageNumber>());
                 }
 
-                //Static Reference:
+                // Static references
                 if (activeInstances != null && activeInstances.Contains(this))
                 {
                     activeInstances.Remove(this);
                 }
 
-                //Updater:
+                // Updater
                 DNPUpdater.UnregisterPopup(unscaledTime, updateDelay, this);
 
-                //Remove from dictionaries.
+                // Remove from dictionaries
                 RemoveFromDictionary();
 
-                //Pooling:
+                // Remove from active popups queue
+                RemoveFromActivePoolQueue();
+
+                // Pooling
                 if (pools[poolingID].Count < poolSize)
                 {
                     PreparePooling();
                 }
                 else
                 {
-                    Destroy(gameObject); //Not enough pool space.
+                    Destroy(gameObject); // Not enough pool space
                 }
             }
             else
@@ -1085,9 +1140,10 @@ namespace DamageNumbersPro
                 Destroy(gameObject);
             }
         }
+
         public virtual void CheckAndEnable3D()
         {
-            //Dimension Check:
+            // Dimension Check
             Camera camera = Camera.main;
 
             if (camera == null)
@@ -1114,12 +1170,12 @@ namespace DamageNumbersPro
         }
         public static GameObject NewMesh(string tmName, Transform parent)
         {
-            //GameObject:
+            // GameObject
             GameObject newTM = new GameObject();
             newTM.name = tmName;
             newTM.layer = parent.gameObject.layer;
 
-            //Mesh:
+            // Mesh
             MeshRenderer mr = newTM.AddComponent<MeshRenderer>();
             newTM.AddComponent<MeshFilter>();
             mr.receiveShadows = false;
@@ -1128,7 +1184,7 @@ namespace DamageNumbersPro
             mr.lightProbeUsage = LightProbeUsage.Off;
             mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
 
-            //Transform:
+            // Transform
             Transform transform = newTM.transform;
             transform.SetParent(parent, true);
             transform.localPosition = Vector3.zero;
@@ -1148,22 +1204,23 @@ namespace DamageNumbersPro
         {
             if (enablePooling)
             {
-                int instanceId = GetInstanceID();
+                // Get instance ID
+                prefabID = EntityId.ToULong(GetEntityId());
 
-                //Initialize Dictionary:
+                // Initialize Dictionary
                 if (pools == null)
                 {
-                    pools = new Dictionary<int, HashSet<DamageNumber>>();
+                    pools = new Dictionary<ulong, HashSet<DamageNumber>>();
                 }
 
-                //Initialize Pool:
-                if (!pools.ContainsKey(instanceId))
+                // Initialize Pool
+                if (!pools.ContainsKey(prefabID))
                 {
-                    pools.Add(instanceId, new HashSet<DamageNumber>());
+                    pools.Add(prefabID, new HashSet<DamageNumber>());
                 }
 
-                //Fill Pool:
-                int amount = poolSize - pools[instanceId].Count;
+                // Fill Pool
+                int amount = poolSize - pools[prefabID].Count;
                 if(amount > poolSize * 0.5f)
                 {
                     for (int n = 0; n < amount; n++)
@@ -1181,22 +1238,22 @@ namespace DamageNumbersPro
         /// <param name="type">The type of pooled popups to clear. All by default.</param>
         public static void ClearPooled(DNPType type = DNPType.All)
         {
-            //Check if pools exist.
+            // Check if pools exist
             if(pools != null)
             {
-                //Iterate through pools.
-                foreach (KeyValuePair<int, HashSet<DamageNumber>> entry in pools)
+                // Iterate through pools
+                foreach (KeyValuePair<ulong, HashSet<DamageNumber>> entry in pools)
                 {
-                    //Check if pool contains popups.
+                    // Check if pool contains popups
                     if (entry.Value != null)
                     {
-                        //Iterate through the pool's popups.
+                        // Iterate through the pool's popups
                         foreach (DamageNumber popup in entry.Value)
                         {
-                            //Check type.
+                            // Check type
                             if (type == DNPType.All || (popup.IsMesh() == (type == DNPType.Mesh)))
                             {
-                                //Destroy pooled popup.
+                                // Destroy pooled popup
                                 Destroy(popup.gameObject);
                             }
                         }
@@ -1215,7 +1272,7 @@ namespace DamageNumbersPro
         {
             if (allowPooling)
             {
-                //Get all active popups.
+                // Get all active popups
                 List<DamageNumber> popups = new List<DamageNumber>();
                 foreach (DamageNumber dn in activeInstances)
                 {
@@ -1225,13 +1282,13 @@ namespace DamageNumbersPro
                     }
                 }
 
-                //Destroy all active popups with potential pooling.
+                // Destroy all active popups with potential pooling
                 foreach(DamageNumber popup in popups)
                 {
-                    //Check permanent.
+                    // Check permanent
                     if (!ignorePermanent || !popup.permanent)
                     {
-                        //Check type.
+                        // Check type
                         if (type == DNPType.All || (popup.IsMesh() == (type == DNPType.Mesh)))
                         {
                             popup.DestroyDNP();
@@ -1245,10 +1302,10 @@ namespace DamageNumbersPro
                 {
                     if (popup != null)
                     {
-                        //Check permanent.
+                        // Check permanent
                         if (!ignorePermanent || !popup.permanent)
                         {
-                            //Check type.
+                            // Check type
                             if (type == DNPType.All || (popup.IsMesh() == (type == DNPType.Mesh)))
                             {
                                 Destroy(popup.gameObject);
@@ -1270,10 +1327,10 @@ namespace DamageNumbersPro
             {
                 if (popup != null)
                 {
-                    //Check permanent.
+                    // Check permanent
                     if (!ignorePermanent || !popup.permanent)
                     {
-                        //Check type.
+                        // Check type
                         if (type == DNPType.All || (popup.IsMesh() == (type == DNPType.Mesh)))
                         {
                             popup.FadeOut();
@@ -1285,60 +1342,65 @@ namespace DamageNumbersPro
 
         protected void Restart()
         {
-            //Static Reference:
-            if(activeInstances == null)
-            {
-                activeInstances = new HashSet<DamageNumber>();
-            }
+            // Static Reference
             if (activeInstances.Contains(this) == false)
             {
                 activeInstances.Add(this);
             }
 
-            //Updater:
+            // Updater
             DNPUpdater.RegisterPopup(unscaledTime, updateDelay, this);
 
-            //Get Scale:
+            // Get Scale
             if (originalScale.x < 0.02f)
             {
-                originalScale = transform.localScale;
+                originalScale = myTransform.localScale;
             }
 
-            //Fix Fading Scale:
+            // Fix fading scale
             transformA.localScale = transformB.localScale = Vector3.one;
 
-            //Custom Event:
-            OnStart();
+            // Enable second mesh renderer during fade in
+            if (meshRendererB != null)
+            {
+                meshRendererB.gameObject.SetActive(true);
+            }
+
+            // Event
+            OnSpawn?.Invoke();
+
+            // Custom Event
+            InternalOnSpawn();
 
             #region Fallback Fix
             if (IsMesh())
             {
-                //Create fallback dictionary.
+                // Create fallback dictionary
                 if (fallbackDictionary == null)
                 {
                     fallbackDictionary = new Dictionary<TMP_FontAsset, GameObject>();
                 }
 
-                //Get font material.
+                // Get font material
                 TMP_FontAsset fontAsset = GetFontMaterial();
 
-                //Check if in dictionary.
+                // Check if in dictionary
                 if (!fallbackDictionary.ContainsKey(fontAsset) && fontAsset != null)
                 {
                     bool usesFallbackFonts = fontAsset.fallbackFontAssetTable != null && fontAsset.fallbackFontAssetTable.Count > 0;
                     if (fontAsset.isMultiAtlasTexturesEnabled || usesFallbackFonts)
                     { 
-                        //New tmp for fallback assets.
+                        // New tmp for fallback assets
                         GameObject fallbackAsset = Instantiate<GameObject>(textMeshPro.gameObject);
                         fallbackAsset.transform.localScale = Vector3.zero;
                         fallbackAsset.SetActive(true);
                         fallbackAsset.hideFlags = HideFlags.HideAndDontSave;
                         DontDestroyOnLoad(fallbackAsset);
 
-                        //Create base string containing a single character of the base font.
+                        // Create base string containing a single character of the base font
                         string textString = System.Char.ConvertFromUtf32((int) fontAsset.characterTable[0].unicode);
 
-                        //Add all characters to support multi-atlas fonts.
+                        // Add all characters to support multi-atlas fonts
                         if (fontAsset.isMultiAtlasTexturesEnabled)
                         {
                             foreach (TMP_Character character in fontAsset.characterTable)
@@ -1350,12 +1412,13 @@ namespace DamageNumbersPro
                             }
                         }
 
-                        //Create a new string containing various unicode characters of the fallback fonts.
+                        // Create a new string containing various unicode characters of the fallback fonts
                         if (usesFallbackFonts)
                         {
                             for (int f = 0; f < fontAsset.fallbackFontAssetTable.Count; f++)
                             {
                                 TMP_FontAsset fallbackFont = fontAsset.fallbackFontAssetTable[f];
+                                int charCount = 0; // Add multiple characters due avoid issues on some fonts
 
                                 if (fallbackFont != null && fallbackFont.characterTable != null)
                                 {
@@ -1367,21 +1430,31 @@ namespace DamageNumbersPro
                                         {
                                             if (AddFallbackCharacterToString(ref textString, fallbackCharacter.unicode, fontAsset, f))
                                             {
-                                                success = true;
-                                                break;
+                                                charCount++;
+
+                                                if(charCount > 20)
+                                                {
+                                                    success = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
 
-                                    if (!success && fallbackFont.atlasPopulationMode == AtlasPopulationMode.Dynamic)
+                                    if (!success && fallbackFont.atlasPopulationMode != AtlasPopulationMode.Static)
                                     {
                                         for (int unicode = 0; unicode < 40959; unicode++)
                                         {
-                                            if (fallbackFont.TryAddCharacters(new uint[] { (uint) unicode }))
+                                            if (fallbackFont.TryAddCharacters(new uint[] { (uint)unicode }))
                                             {
                                                 if (AddFallbackCharacterToString(ref textString, (uint)unicode, fontAsset, f))
                                                 {
-                                                    break;
+                                                    charCount++;
+
+                                                    if (charCount > 20)
+                                                    {
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }
@@ -1390,7 +1463,7 @@ namespace DamageNumbersPro
                             }
                         }
 
-                        //Assign text and add to dictionary.
+                        // Assign text and add to dictionary
                         fallbackAsset.GetComponent<TextMeshPro>().text = textString;
                         fallbackDictionary.Add(fontAsset, fallbackAsset);
                     }
@@ -1402,20 +1475,14 @@ namespace DamageNumbersPro
             }
             #endregion
 
-            //Called right after spawn:
+            // Called right after spawn
             float time = unscaledTime ? Time.unscaledTime : Time.time;
             Initialize(time);
 
-            //Spam Control:
-            if (spamGroup != "")
-            {
-                TryCombination(time);
-                TryDestruction(time);
-                TryCollision();
-                TryPush();
-            }
+            // Spam Control
+            TriggerSpamControl();
 
-            //Scale to Zero:
+            // Scale to Zero
             firstFrameScale = true;
             if(destroyAfterSpawning)
             {
@@ -1426,15 +1493,15 @@ namespace DamageNumbersPro
 
         bool AddFallbackCharacterToString(ref string textString, uint unicode, TMP_FontAsset mainFontAsset, int fallbackIndex)
         {
-            //The unicode 0 can cause issues.
-            if(unicode < 1)
+            // The unicode 0 can cause issues
+            if (unicode < 1)
             {
                 return false;
             }
 
-            if (mainFontAsset.characterLookupTable.ContainsKey(unicode) || (mainFontAsset.atlasPopulationMode == AtlasPopulationMode.Dynamic && mainFontAsset.TryAddCharacters(new uint[] { unicode })))
+            if (mainFontAsset.characterLookupTable.ContainsKey(unicode) || (mainFontAsset.atlasPopulationMode != AtlasPopulationMode.Static && mainFontAsset.TryAddCharacters(new uint[] { unicode })))
             {
-                //Character already in main font.
+                // Character already in main font
             }
             else
             {
@@ -1445,9 +1512,9 @@ namespace DamageNumbersPro
                     TMP_FontAsset previousFallbackFont = mainFontAsset.fallbackFontAssetTable[pF];
                     if (previousFallbackFont != null)
                     {
-                        if (previousFallbackFont.characterLookupTable.ContainsKey(unicode) || (previousFallbackFont.atlasPopulationMode == AtlasPopulationMode.Dynamic && previousFallbackFont.TryAddCharacters(new uint[] { unicode })))
+                        if (previousFallbackFont.characterLookupTable.ContainsKey(unicode) || (previousFallbackFont.atlasPopulationMode != AtlasPopulationMode.Static && previousFallbackFont.TryAddCharacters(new uint[] { unicode })))
                         {
-                            //Character already in a higher priority fallback font.
+                            // Character already in a higher priority fallback font
                             addCharacter = false;
                             break;
                         }
@@ -1466,14 +1533,16 @@ namespace DamageNumbersPro
 
         void Initialize(float time)
         {
+            // Reset variables
             numberScale = destructionScale = combinationScale = currentFollowSpeed = 1f;
             baseAlpha = 1f;
             finalPosition = position = GetPosition();
             startLifeTime = startTime = time;
             currentLifetime = lifetime;
             isFadingOut = false;
+            followingInitialized = false;
 
-            //3D Game:
+            // 3D Game
             if (enable3DGame)
             {
                 if (cameraOverride != null)
@@ -1489,7 +1558,7 @@ namespace DamageNumbersPro
                     targetCamera = Camera.current.transform;
                 }
 
-                //Scale with FOV:
+                // Scale with FOV
                 if (scaleWithFov)
                 {
                     if (fovCamera != null)
@@ -1507,7 +1576,7 @@ namespace DamageNumbersPro
                 }
             }
 
-            //Orthographic Scaling:
+            // Orthographic Scaling
             if (enableOrthographicScaling)
             {
                 if (orthographicCamera != null)
@@ -1524,10 +1593,10 @@ namespace DamageNumbersPro
                 }
             }
 
-            //Scale:
+            // Scale
             UpdateScaleAnd3D(true);
 
-            //Rotation:
+            // Rotation
             if (enableRotateOverTime)
             {
                 currentRotationSpeed = Random.Range(minRotationSpeed, maxRotationSpeed);
@@ -1538,10 +1607,10 @@ namespace DamageNumbersPro
                 }
             }
 
-            //Spam Groups:
+            // Spam Groups
             AddToDictionary();
 
-            //Lerp:
+            // Lerp
             if (enableLerp)
             {
                 float xOffset = Random.Range(lerpSettings.minX, lerpSettings.maxX) * GetPositionFactor();
@@ -1553,7 +1622,7 @@ namespace DamageNumbersPro
                 remainingOffset = GetFreshRightVector() * xOffset + GetFreshUpVector() * (Random.Range(lerpSettings.minY, lerpSettings.maxY) * GetPositionFactor());
             }
 
-            //Velocity:
+            // Velocity
             if (enableVelocity)
             {
                 currentVelocity = new Vector2(Random.Range(velocitySettings.minX, velocitySettings.maxX), Random.Range(velocitySettings.minY, velocitySettings.maxY)) * GetPositionFactor();
@@ -1564,7 +1633,7 @@ namespace DamageNumbersPro
                 }
             }
 
-            //Start Rotation:
+            // Start Rotation
             if (enableStartRotation)
             {
                 currentRotation = Random.Range(minRotation, maxRotation);
@@ -1579,10 +1648,10 @@ namespace DamageNumbersPro
                 currentRotation = 0;
             }
 
-            //Fading:
+            // Fading
             currentFade = durationFadeIn > 0f ? 0f : 1f;
 
-            //Fade In:
+            // Fade In
             fadeInSpeed = 1f / Mathf.Max(0.0001f, durationFadeIn);
             if (enableCrossScaleFadeIn)
             {
@@ -1591,7 +1660,7 @@ namespace DamageNumbersPro
                 if (currentScaleInOffset.y == 0) currentScaleInOffset.y += 0.001f;
             }
 
-            //Fade Out:
+            // Fade Out
             fadeOutSpeed = 1f / Mathf.Max(0.0001f, durationFadeOut);
             if (enableCrossScaleFadeOut)
             {
@@ -1602,32 +1671,32 @@ namespace DamageNumbersPro
 
             lastTargetPosition = Vector3.zero;
 
-            //Update Text:
+            // Update Text
             UpdateText();
 
-            //Update Rotation:
+            // Update Rotation
             UpdateRotationZ();
         }
 
         void PreparePooling()
         {
-            //Add to Pool:
+            // Add to Pool
             pools[poolingID].Add(this);
 
-            //Disable GameObject:
+            // Disable GameObject
             gameObject.SetActive(false);
 
-            //Queue Restart:
+            // Queue Restart
             performRestart = true;
 
-            //Reset Runtime Variables:
-            transform.localScale = originalScale;
+            // Reset Runtime Variables
+            myTransform.localScale = originalScale;
             lastTargetPosition = targetOffset = Vector3.zero;
 
-            //Clear Combination Targets:
+            // Clear Combination Targets
             myAbsorber = null;
 
-            //Reset some Setting Variables:
+            // Reset some Setting Variables
             permanent = originalPrefab.permanent;
             spamGroup = originalPrefab.spamGroup;
             leftText = originalPrefab.leftText;
@@ -1637,7 +1706,7 @@ namespace DamageNumbersPro
             enablePush = originalPrefab.enablePush;
         }
 
-        bool PoolAvailable(int id)
+        bool PoolAvailable(ulong id)
         {
             if (pools != null && pools.ContainsKey(id))
             {
@@ -1650,17 +1719,17 @@ namespace DamageNumbersPro
             return false;
         }
 
-        void SetPoolingID(int id)
+        void SetPoolingID(ulong id)
         {
             poolingID = id;
 
-            //Initiate Dictionaries:
+            // Initiate Dictionaries
             if (pools == null)
             {
-                pools = new Dictionary<int, HashSet<DamageNumber>>();
+                pools = new Dictionary<ulong, HashSet<DamageNumber>>();
             }
 
-            //Initiate Pool Parent:
+            // Initiate Pool Parent
             if (poolParent == null)
             {
                 GameObject poolGameobject = new GameObject("Damage Number Pool");
@@ -1671,15 +1740,24 @@ namespace DamageNumbersPro
                 poolParent.eulerAngles = poolParent.position = Vector3.zero;
             }
 
-            //Parent:
+            // Parent
             transform.SetParent(poolParent, true);
+        }
+
+        void RemoveFromActivePoolQueue()
+        {
+            if (limitActiveInstances && removedFromActiveInstanceQueue == false && activeInstancesQueue[prefabID].Count > 0)
+            {
+                removedFromActiveInstanceQueue = true;
+                activeInstancesQueue[prefabID].Dequeue();
+            }
         }
         #endregion
 
         #region Text
         public void UpdateText()
         {
-            //Number:
+            // Number
             string numberText = "";
             if (enableNumber)
             {
@@ -1688,24 +1766,21 @@ namespace DamageNumbersPro
 
                 if (digitSettings.decimals <= 0)
                 {
-                    numberString = ProcessIntegers(Mathf.RoundToInt(number).ToString(), out shortened);
+                    numberString = ProcessIntegers(Mathf.Round(number).ToString("F0"), out shortened);
                 }
                 else
                 {
-                    //Digits:
-                    string allDigits = Mathf.RoundToInt(Mathf.Abs(number) * Mathf.Pow(10, digitSettings.decimals)).ToString();
+                    // Digits
+                    string allDigits = (Mathf.Abs(number) * Mathf.Pow(10, digitSettings.decimals)).ToString("F0");
 
                     bool hasMinus = number < 0;
 
-                    //Add zeros to the left to fix numbers less than 1.
+                    // Add zeros to the left to fix numbers less than 1
                     int usedDecimals = digitSettings.decimals;
                     int currentLength = allDigits.Length;
-                    if(currentLength < usedDecimals)
+                    if (currentLength < usedDecimals)
                     {
-                        for(int i = 0; i < usedDecimals - currentLength; i++)
-                        {
-                            allDigits = "0" + allDigits;
-                        }
+                        allDigits = new string('0', usedDecimals - currentLength) + allDigits;
                     }
 
                     while (digitSettings.hideZeros && allDigits.EndsWith("0") && usedDecimals > 0)
@@ -1726,7 +1801,7 @@ namespace DamageNumbersPro
                     int digitLength = allDigits.Length;
                     while (digitLength < usedDecimals)
                     {
-                        if(digitSettings.hideZeros)
+                        if (digitSettings.hideZeros)
                         {
                             usedDecimals--;
                         }
@@ -1761,13 +1836,13 @@ namespace DamageNumbersPro
                     numberScale = scaleByNumberSettings.fromScale + (scaleByNumberSettings.toScale - scaleByNumberSettings.fromScale) * Mathf.Clamp01((number - scaleByNumberSettings.fromNumber) / (scaleByNumberSettings.toNumber - scaleByNumberSettings.fromNumber));
                 }
 
-                if(enableColorByNumber)
+                if (enableColorByNumber)
                 {
                     SetColor(colorByNumberSettings.colorGradient.Evaluate(Mathf.Clamp01((number - colorByNumberSettings.fromNumber) / (colorByNumberSettings.toNumber - colorByNumberSettings.fromNumber))));
                 }
             }
 
-            //Prefix:
+            // Prefix
             string prefixText = "";
             if (enableTopText)
             {
@@ -1778,7 +1853,7 @@ namespace DamageNumbersPro
                 prefixText += ApplyTextSettings(leftText, leftTextSettings);
             }
 
-            //Suffix:
+            // Suffix
             string suffixText = "";
             if (enableRightText)
             {
@@ -1791,9 +1866,9 @@ namespace DamageNumbersPro
 
             GetReferencesIfNecessary();
 
-            //Scale Fix:
-            Vector3 currentLocalScale = transform.localScale;
-            if(!enable3DGame || !renderThroughWalls)
+            // Scale Fix
+            Vector3 currentLocalScale = myTransform.localScale;
+            if (!enable3DGame || !renderThroughWalls)
             {
                 renderThroughWallsScale = 1f;
             }
@@ -1804,103 +1879,134 @@ namespace DamageNumbersPro
             float minScale = renderThroughWallsScale * lastScaleFactor;
             if (currentLocalScale.x < minScale)
             {
-                transform.localScale = new Vector3(minScale, minScale, minScale);
+                myTransform.localScale = new Vector3(minScale, minScale, minScale);
             }
 
-            //Update Text:
+            // Update Text
             SetTextString(prefixText + numberText + suffixText);
-            transform.localScale = currentLocalScale;
+            myTransform.localScale = currentLocalScale;
 
-            //Get Colors:
-            colors = new List<Color[]>();
-            alphas = new List<float[]>();
+            // Initialize colors
+            if (meshColors == null)
+            {
+                meshColors = new List<List<Color>>(meshs.Count);
+                for (int m = 0; m < meshs.Count; m++)
+                {
+                    meshColors.Add(new List<Color>());
+                }
+            }
+            for (int c = meshColors.Count; c < meshs.Count; c++)
+            {
+                meshColors.Add(new List<Color>());
+            }
 
+            // Initialize alphas
+            if (meshAlphas == null)
+            {
+                meshAlphas = new List<List<float>>(meshs.Count);
+                for (int m = 0; m < meshs.Count; m++)
+                {
+                    meshAlphas.Add(new List<float>());
+                }
+            }
+            for (int a = meshAlphas.Count; a < meshs.Count; a++)
+            {
+                meshAlphas.Add(new List<float>());
+            }
+
+            // Update colors and alphas
             for (int n = 0; n < meshs.Count; n++)
             {
                 Mesh mesh = meshs[n];
+                List<Color> colors = meshColors[n];
+                List<float> alphas = meshAlphas[n];
 
-                if(mesh != null)
+                if (mesh != null)
                 {
-                    Color[] color = mesh.colors;
-                    float[] alpha = new float[color.Length];
+                    mesh.GetColors(colors);
 
-                    for (int c = 0; c < color.Length; c++)
+                    alphas.Clear();
+                    for (int c = 0; c < colors.Count; c++)
                     {
-                        alpha[c] = color[c].a;
+                        alphas.Add(colors[c].a);
                     }
-
-                    alphas.Add(alpha);
-                    colors.Add(color);
                 }
                 else
                 {
-                    colors.Add(new Color[0]);
-                    alphas.Add(new float[0]);
+                    colors.Clear();
+                    alphas.Clear();
                 }
             }
 
-            //Finish:
+            // Finish
             UpdateAlpha(currentFade);
-            OnTextUpdate();
+
+            // Event
+            OnUpdateText?.Invoke();
         }
 
         protected virtual void SetTextString(string fullString)
         {
-            //Generate Mesh:
+            // Generate new mesh
             textMeshPro.gameObject.SetActive(true);
             textMeshPro.text = fullString;
-            textMeshPro.ForceMeshUpdate();
+            textMeshPro.ForceMeshUpdate(true);
+            TMP_MeshInfo[] meshInfos = textMeshPro.textInfo.meshInfo;
+            int meshInfoCount = meshInfos.Length;
 
-            //Clear Meshs:
-            ClearMeshs();
+            // Initialize meshs
+            if (meshs == null)
+            {
+                meshs = new List<Mesh>();
+            }
 
-            meshs = new List<Mesh>();
-            meshs.Add(Instantiate<Mesh>(textMeshPro.mesh));
+            // Add required meshs
+            for (int m = meshs.Count; m < meshInfos.Length; m++)
+            {
+                meshs.Add(new Mesh());
+            }
+
+            // Copy mesh datas
+            for (int meshIndex = 0; meshIndex < meshInfoCount; meshIndex++)
+            {
+                CopyMeshInfo(meshInfos[meshIndex], meshs[meshIndex]);
+            }
+
+            // Update main mesh
             meshFilterA.mesh = meshFilterB.mesh = meshs[0];
-            meshRendererA.sharedMaterials = meshRendererB.sharedMaterials = textMeshRenderer.sharedMaterials;
+            meshRendererA.sharedMaterial = meshRendererB.sharedMaterial = meshInfos[0].material;
 
-            //Submeshes:
-            int usedSubMeshes = 0;
-            for (int c = 0; c < textMeshPro.transform.childCount; c++)
+            // Update submeshs
+            for (int m = 1; m < meshInfos.Length; m++)
             {
-                MeshRenderer subMeshRenderer = textMeshPro.transform.GetChild(c).GetComponent<MeshRenderer>();
-
-                if (subMeshRenderer != null)
+                // Create submesh
+                if (subMeshRenderers.Count < m)
                 {
-                    MeshFilter subMeshFilter = subMeshRenderer.GetComponent<MeshFilter>();
-
-                    //Create new Submesh:
-                    if (subMeshRenderers.Count <= c)
-                    {
-                        GameObject subMeshA = NewMesh("Sub", meshRendererA.transform);
-                        GameObject subMeshB = NewMesh("Sub", meshRendererB.transform);
-                        subMeshRenderers.Add(new System.Tuple<MeshRenderer, MeshRenderer>(subMeshA.GetComponent<MeshRenderer>(), subMeshB.GetComponent<MeshRenderer>()));
-                        subMeshFilters.Add(new System.Tuple<MeshFilter, MeshFilter>(subMeshA.GetComponent<MeshFilter>(), subMeshB.GetComponent<MeshFilter>()));
-                    }
-
-                    //Apply:
-                    System.Tuple<MeshRenderer, MeshRenderer> subRenderers = subMeshRenderers[c];
-                    System.Tuple<MeshFilter, MeshFilter> subFilters = subMeshFilters[c];
-                    subRenderers.Item1.sharedMaterials = subRenderers.Item2.sharedMaterials = subMeshRenderer.sharedMaterials;
-
-                    Mesh newSubMesh = Instantiate<Mesh>(subMeshFilter.sharedMesh);
-                    subFilters.Item1.mesh = subFilters.Item2.mesh = newSubMesh;
-                    meshs.Add(newSubMesh);
-
-                    //Enable:
-                    subRenderers.Item1.transform.localScale = subRenderers.Item2.transform.localScale = Vector3.one;
-
-                    usedSubMeshes++;
+                    string subMeshName = "Sub" + m;
+                    GameObject subMeshA = NewMesh(subMeshName, meshRendererA.transform);
+                    GameObject subMeshB = NewMesh(subMeshName, meshRendererB.transform);
+                    subMeshRenderers.Add(new System.Tuple<MeshRenderer, MeshRenderer>(subMeshA.GetComponent<MeshRenderer>(), subMeshB.GetComponent<MeshRenderer>()));
+                    subMeshFilters.Add(new System.Tuple<MeshFilter, MeshFilter>(subMeshA.GetComponent<MeshFilter>(), subMeshB.GetComponent<MeshFilter>()));
                 }
+
+                // Apply submesh
+                int subMeshIndex = m - 1;
+                System.Tuple<MeshRenderer, MeshRenderer> subRenderers = subMeshRenderers[subMeshIndex];
+                System.Tuple<MeshFilter, MeshFilter> subFilters = subMeshFilters[subMeshIndex];
+                subRenderers.Item1.sharedMaterial = subRenderers.Item2.sharedMaterial = meshInfos[m].material;
+                subFilters.Item1.mesh = subFilters.Item2.mesh = meshs[m];
+
+                // Enable submesh
+                subRenderers.Item1.transform.localScale = subRenderers.Item2.transform.localScale = Vector3.one;
             }
 
-            //Hide Unused Meshs:
-            for (int n = usedSubMeshes; n < subMeshRenderers.Count; n++)
+            // Disable unused submeshs
+            for(int m = meshInfos.Length; m < subMeshRenderers.Count; m++)
             {
-                subMeshRenderers[n].Item1.transform.localScale = subMeshRenderers[n].Item2.transform.localScale = Vector3.zero;
+                subMeshRenderers[m].Item1.transform.localScale = subMeshRenderers[m].Item2.transform.localScale = Vector3.zero;
             }
 
-            //Disable TMP:
+            // Disable TMP
             textMeshPro.gameObject.SetActive(false);
         }
 
@@ -1908,26 +2014,54 @@ namespace DamageNumbersPro
         {
             shortened = false;
 
-            //Short Suffix:
+            // Short Suffix
             if (digitSettings.suffixShorten)
             {
                 int currentSuffix = -1;
-
-                while (integers.Length > digitSettings.maxDigits && currentSuffix < digitSettings.suffixes.Count - 1 && integers.Length - digitSettings.suffixDigits[currentSuffix + 1] > 0)
+                int integerLength = integers.Length;
+                while (integerLength > digitSettings.maxDigits && currentSuffix < digitSettings.suffixes.Count - 1 && integerLength - digitSettings.suffixDigits[currentSuffix + 1] > 0)
                 {
                     currentSuffix++;
-                    integers = integers.Substring(0, integers.Length - digitSettings.suffixDigits[currentSuffix]);
+                    integerLength -= digitSettings.suffixDigits[currentSuffix];
                 }
 
                 if (currentSuffix >= 0)
                 {
-                    integers += digitSettings.suffixes[currentSuffix];
+                    // Get shortened integers
+                    string shortenedIntegers = integers.Substring(0, integerLength);
+
+                    if (digitSettings.suffixDecimals > 0)
+                    {
+                        // Get decimals after the shortened integers
+                        string decimals = integers.Substring(integerLength, digitSettings.suffixDecimals);
+
+                        // Hide zeros
+                        while(digitSettings.suffixHideZeros && decimals.EndsWith("0"))
+                        {
+                            decimals = decimals.Substring(0, decimals.Length - 1);
+                        }
+
+                        // Combine
+                        if(decimals.Length > 0)
+                        {
+                            integers = shortenedIntegers + digitSettings.suffixDecimalChar + decimals + digitSettings.suffixes[currentSuffix];
+                        }
+                        else
+                        {
+                            integers = shortenedIntegers + digitSettings.suffixes[currentSuffix];
+                        }
+                    }
+                    else
+                    {
+                        integers = shortenedIntegers + digitSettings.suffixes[currentSuffix];
+                    }
+
                     shortened = true;
                     return integers;
                 }
             }
 
-            //Dots:
+            // Dots
             if (digitSettings.dotSeparation && digitSettings.dotDistance > 0)
             {
                 char[] chars = integers.ToCharArray();
@@ -1954,7 +2088,7 @@ namespace DamageNumbersPro
                 return "";
             }
 
-            //Formatting:
+            // Formatting
             if (settings.bold)
             {
                 newString = "<b>" + newString + "</b>";
@@ -1972,7 +2106,7 @@ namespace DamageNumbersPro
                 newString = "<s>" + newString + "</s>";
             }
 
-            //Custom Color:
+            // Custom Color
             if (settings.customColor)
             {
                 newString = "<color=#" + ColorUtility.ToHtmlStringRGBA(settings.color) + ">" + newString + "</color>";
@@ -1988,7 +2122,7 @@ namespace DamageNumbersPro
                 newString = "<alpha=#" + ColorUtility.ToHtmlStringRGBA(new Color(1, 1, 1, settings.alpha)).Substring(6) + ">" + newString + "<alpha=#FF>";
             }
 
-            //Change Size:
+            // Change Size
             if (settings.size > 0)
             {
                 newString = "<size=+" + settings.size.ToString().Replace(',', '.') + ">" + newString + "</size>";
@@ -1998,13 +2132,13 @@ namespace DamageNumbersPro
                 newString = "<size=-" + Mathf.Abs(settings.size).ToString().Replace(',', '.') + ">" + newString + "</size>";
             }
 
-            //Character Spacing:
+            // Character Spacing
             if (settings.characterSpacing != 0)
             {
                 newString = "<cspace=" + settings.characterSpacing.ToString().Replace(',', '.') + ">" + newString + "</cspace>";
             }
 
-            //Spacing:
+            // Spacing
             if (settings.horizontal > 0)
             {
                 string space = "<space=" + settings.horizontal.ToString().Replace(',', '.') + "em>";
@@ -2016,26 +2150,42 @@ namespace DamageNumbersPro
                 newString = "<voffset=" + settings.vertical.ToString().Replace(',', '.') + "em>" + newString + "</voffset>";
             }
 
-            //Return:
+            // Return
             return newString;
         }
 
+        private void CopyMeshInfo(TMP_MeshInfo meshInfo, Mesh mesh)
+        {
+            // Get mesh info
+            int vCount = meshInfo.vertexCount;
+            int tCount = vCount / 4 * 6;
+
+            // Apply mesh info
+            mesh.Clear();
+            mesh.SetVertices(meshInfo.vertices, 0, vCount);
+            mesh.SetUVs(0, meshInfo.uvs0, 0, vCount);
+            mesh.SetUVs(1, meshInfo.uvs2, 0, vCount);
+            mesh.SetColors(meshInfo.colors32, 0, vCount);
+            mesh.SetTriangles(meshInfo.triangles, 0, tCount, 0, false);
+            mesh.bounds = new Bounds(Vector3.zero, Vector3.one);
+        }
+        
         private void ClearMeshs()
         {
             if (meshs != null)
             {
                 if (Application.isPlaying)
                 {
-                    foreach (Mesh mesh in meshs)
+                    for (int m = 1; m < meshs.Count; m++)
                     {
-                        Destroy(mesh);
+                        Destroy(meshs[m]);
                     }
                 }
                 else
                 {
-                    foreach (Mesh mesh in meshs)
+                    for (int m = 1; m < meshs.Count; m++)
                     {
-                        DestroyImmediate(mesh);
+                        DestroyImmediate(meshs[m]);
                     }
                 }
             }
@@ -2047,29 +2197,59 @@ namespace DamageNumbersPro
         {
             if (currentFade < 1)
             {
+                // Update fade
                 currentFade = Mathf.Min(1, currentFade + delta * fadeInSpeed);
                 UpdateFade(enableOffsetFadeIn, offsetFadeIn, enableCrossScaleFadeIn, currentScaleInOffset, enableScaleFadeIn, scaleFadeIn, enableShakeFadeIn, shakeOffsetFadeIn, shakeFrequencyFadeIn);
+
+                if (currentFade >= 1f)
+                {
+                    // Disable second mesh renderer after fading in
+                    if(meshRendererB != null)
+                    {
+                        meshRendererB.gameObject.SetActive(false);
+                    }
+
+                    // Add to active queue
+                    if (activeInstancesQueue.ContainsKey(prefabID) == false)
+                    {
+                        activeInstancesQueue.Add(prefabID, new Queue<DamageNumber>());
+                    }
+                    Queue<DamageNumber> activeQueue = activeInstancesQueue[prefabID];
+                    activeQueue.Enqueue(this);
+                    removedFromActiveInstanceQueue = false;
+                }
             }
         }
         void HandleFadeOut(float delta)
         {
+            // Event
             if (isFadingOut == false)
             {
                 isFadingOut = true;
-                OnStop();
+
+                // Enable second mesh renderer during fade out
+                if (meshRendererB != null)
+                {
+                    meshRendererB.gameObject.SetActive(true);
+                }
+                OnFadeOut?.Invoke();
+
+                // Remove from active popups queue
+                RemoveFromActivePoolQueue();
             }
 
+            // Update fade value
             currentFade = Mathf.Max(0, currentFade - delta * fadeOutSpeed);
-
             UpdateFade(enableOffsetFadeOut, offsetFadeOut, enableCrossScaleFadeOut, currentScaleOutOffset, enableScaleFadeOut, scaleFadeOut, enableShakeFadeOut, shakeOffsetFadeOut, shakeFrequencyFadeOut);
 
+            // Remove from dictionaries
             RemoveFromDictionary();
-
             if (currentFade <= 0)
             {
                 DestroyDNP();
             }
         }
+
         void UpdateFade(bool enablePositionOffset, Vector2 positionOffset, bool enableScaleOffset, Vector2 scaleOffset, bool enableScale, Vector2 scale, bool enableShake, Vector2 shakeOffset, float shakeFrequency)
         {
             Vector2 basePosition = Vector2.zero;
@@ -2080,7 +2260,7 @@ namespace DamageNumbersPro
                 basePosition = shakeOffset * Mathf.Sin(inverseFade * shakeFrequency) * inverseFade;
             }
 
-            //Position Offset:
+            // Position Offset
             if (enablePositionOffset)
             {
                 Vector2 posOffset = positionOffset * inverseFade;
@@ -2093,7 +2273,7 @@ namespace DamageNumbersPro
                 SetLocalPositionB(basePosition);
             }
 
-            //Scale & Scale Offset:
+            // Scale & Scale Offset
             if (enableScaleOffset)
             {
                 if (enableScale)
@@ -2124,68 +2304,86 @@ namespace DamageNumbersPro
                 transformA.localScale = transformB.localScale = newScale;
             }
 
-            //Alpha:
+            // Alpha
             UpdateAlpha(currentFade);
         }
+
         public void UpdateAlpha(float progress)
         {
             float alphaFactor = progress * progress * baseAlpha * baseAlpha;
 
-            if(meshs != null)
+            if (meshs != null)
             {
                 for (int n = 0; n < meshs.Count; n++)
                 {
-                    if (colors[n] != null && meshs[n] != null)
+                    if (meshs[n] != null)
                     {
-                        Color[] color = colors[n];
-                        float[] alpha = alphas[n];
+                        List<Color> colors = meshColors[n];
+                        List<float> alphas = meshAlphas[n];
 
-                        for (int c = 0; c < color.Length; c++)
+                        for (int c = 0; c < colors.Count; c++)
                         {
-                            color[c].a = alphaFactor * alpha[c];
+                            Color newColor = colors[c];
+                            newColor.a = alphaFactor * alphas[c];
+                            colors[c] = newColor;
                         }
 
-                        meshs[n].colors = color;
+                        meshs[n].SetColors(colors);
                     }
                 }
             }
             
-            OnFade(progress);
+            // Event
+            OnUpdateFade?.Invoke(progress);
+
+            // Abstract
+            InternalUpdateFade(progress);
         }
         #endregion
 
         #region Movement
         void HandleFollowing(float deltaTime)
         {
-            //No Target:
-            if (followedTarget == null)
+            // Cancel if there is no target
+            if(followedTarget == null)
             {
-                lastTargetPosition = Vector3.zero;
+                followingInitialized = false;
                 return;
             }
 
-            //Get Offset:
-            if (lastTargetPosition != Vector3.zero)
-            {
-                targetOffset += followedTarget.position - lastTargetPosition;
-            }
-            lastTargetPosition = followedTarget.position;
+            // Get target position
+            Vector3 targetPosition = GetOtherPosition(followedTarget);
 
-            //Apply Drag:
-            if (followSettings.drag > 0 && currentFollowSpeed > 0)
+            // Check if initialized
+            if (followingInitialized)
             {
-                currentFollowSpeed -= followSettings.drag * deltaTime;
+                // Get offset to target
+                targetOffset += targetPosition - lastTargetPosition;
 
-                if (currentFollowSpeed < 0)
+                // Apply drag
+                if (followSettings.drag > 0 && currentFollowSpeed > 0)
                 {
-                    currentFollowSpeed = 0;
+                    currentFollowSpeed -= followSettings.drag * deltaTime;
+
+                    if (currentFollowSpeed < 0)
+                    {
+                        currentFollowSpeed = 0;
+                    }
                 }
+
+                // Move to target
+                Vector3 followMovement = targetOffset * Mathf.Min(deltaTime * followSettings.speed * currentFollowSpeed, 1f);
+                position += followMovement;
+                targetOffset -= followMovement;
+            }
+            else
+            {
+                // Following will initialize after a single frame
+                followingInitialized = true;
             }
 
-            //Move to Target:
-            Vector3 oldOffset = targetOffset;
-            targetOffset = Vector3.Lerp(targetOffset, Vector3.zero, deltaTime * followSettings.speed * currentFollowSpeed);
-            position += oldOffset - targetOffset;
+            // Cache last target position to calculate offset
+            lastTargetPosition = targetPosition;
         }
 
         void HandleLerp(float deltaTime)
@@ -2254,6 +2452,20 @@ namespace DamageNumbersPro
             position = transform.position = newPosition;
         }
 
+        protected virtual Vector3 GetOtherPosition(Transform other)
+        {
+            return other.position;
+        }
+
+        /// <summary>
+        /// Updates position without changing the position variable.
+        /// Used for temporary position changes like shaking movement.
+        /// </summary>
+        protected virtual void SetFinalPosition(Vector3 newPosition)
+        {
+            myTransform.position = newPosition;
+        }
+
         /// <summary>
         /// This function is for the GUI version of damage numbers pro.
         /// It will position the damage number at your mouse position.
@@ -2280,17 +2492,17 @@ namespace DamageNumbersPro
         /// </summary>
         public virtual void SetAnchoredPosition(Transform rectParent, Vector2 anchoredPosition)
         {
-            //Old Transform:
-            Vector3 oldScale = transform.localScale;
-            Vector3 oldRotation = transform.eulerAngles;
+            // Old Transform
+            Vector3 oldScale = myTransform.localScale;
+            Vector3 oldRotation = myTransform.eulerAngles;
 
-            //Set Parent and Position:
-            transform.SetParent(rectParent, false);
-            transform.position = anchoredPosition;
+            // Set Parent and Position
+            myTransform.SetParent(rectParent, false);
+            myTransform.position = anchoredPosition;
 
-            //New Transform:
-            transform.localScale = oldScale;
-            transform.eulerAngles = oldRotation;
+            // New Transform
+            myTransform.localScale = oldScale;
+            myTransform.eulerAngles = oldRotation;
         }
 
         /// <summary>
@@ -2298,17 +2510,17 @@ namespace DamageNumbersPro
         /// </summary>
         public virtual void SetAnchoredPosition(Transform rectParent, Transform rectPosition, Vector2 relativeAnchoredPosition)
         {
-            //Old Transform:
-            Vector3 oldScale = transform.localScale;
-            Vector3 oldRotation = transform.eulerAngles;
+            // Old Transform
+            Vector3 oldScale = myTransform.localScale;
+            Vector3 oldRotation = myTransform.eulerAngles;
 
-            //Set Parent and Position:
-            transform.SetParent(rectParent, false);
-            transform.position = rectPosition.position + (Vector3)relativeAnchoredPosition;
+            // Set Parent and Position
+            myTransform.SetParent(rectParent, false);
+            myTransform.position = rectPosition.position + (Vector3)relativeAnchoredPosition;
 
-            //New Transform:
-            transform.localScale = oldScale;
-            transform.eulerAngles = oldRotation;
+            // New Transform
+            myTransform.localScale = oldScale;
+            myTransform.eulerAngles = oldRotation;
         }
 
         protected virtual float GetPositionFactor()
@@ -2329,23 +2541,39 @@ namespace DamageNumbersPro
             AddToDictionary();
         }
 
+        /// <summary>
+        /// Use this function to manually trigger spam control features like Combination, Destruction, Collision and Push.
+        /// </summary>
+        public void TriggerSpamControl()
+        {
+            if (spamGroup != "")
+            {
+                float time = unscaledTime ? Time.unscaledTime : Time.time;
+
+                TryCombination(time);
+                TryDestruction(time);
+                TryCollision();
+                TryPush();
+            }
+        }
+
         void AddToDictionary()
         {
             if (spamGroup != "")
             {
-                //Create Dictionary:
+                // Create Dictionary
                 if (spamGroupDictionary == null)
                 {
                     spamGroupDictionary = new Dictionary<string, HashSet<DamageNumber>>();
                 }
 
-                //Create HashSet:
+                // Create HashSet
                 if (spamGroupDictionary.ContainsKey(spamGroup) == false)
                 {
                     spamGroupDictionary.Add(spamGroup, new HashSet<DamageNumber>());
                 }
 
-                //Add to HashSet:
+                // Add to HashSet
                 if (spamGroupDictionary[spamGroup].Contains(this) == false)
                 {
                     spamGroupDictionary[spamGroup].Add(this);
@@ -2391,22 +2619,22 @@ namespace DamageNumbersPro
                     return;
                 }
 
-                //Reset Lifetime:
+                // Reset Lifetime
                 startLifeTime = time;
 
-                //Combination Progress:
+                // Combination Progress
                 float combinationProgress = combinationSettings.absorbDuration > 0 ? (time - absorbStartTime) / combinationSettings.absorbDuration : 1f;
 
-                //Move:
+                // Move
                 if (combinationSettings.moveToAbsorber)
                 {
                     position = Vector3.Lerp(absorbStartPosition, myAbsorber.position, combinationProgress);
                 }
 
-                //Scale:
+                // Scale
                 combinationScale = combinationSettings.scaleCurve.Evaluate(combinationProgress);
 
-                //Alpha:
+                // Alpha
                 baseAlpha = 1f * combinationSettings.alphaCurve.Evaluate(combinationProgress);
                 UpdateAlpha(currentFade);
 
@@ -2425,11 +2653,11 @@ namespace DamageNumbersPro
 
         void TryCombination(float time)
         {
-            if (enableCombination == false) return; //No Combination
+            if (enableCombination == false) return; // No Combination
 
             myAbsorber = null;
 
-            //Combination Methods:
+            // Combination Methods
             switch (combinationSettings.method)
             {
                 case (CombinationMethod.ABSORB_NEW):
@@ -2511,21 +2739,21 @@ namespace DamageNumbersPro
                 return;
             }
 
-            //Disable Other Features:
+            // Disable Other Features
             otherNumber.enablePush = otherNumber.enableCollision = false;
 
-            //Set Absorber:
+            // Set Absorber
             myAbsorber = otherNumber;
 
-            //Initialize Variables:
+            // Initialize Variables
             absorbStartPosition = position;
             absorbStartTime = time;
             givenNumber = false;
 
-            //Reset Lifetime:
+            // Reset Lifetime
             myAbsorber.startLifeTime = time;
 
-            //Spawn in Absorber:
+            // Spawn in Absorber
             if (combinationSettings.teleportToAbsorber)
             {
                 position = otherNumber.position;
@@ -2548,17 +2776,10 @@ namespace DamageNumbersPro
                 }
 
                 myAbsorber.UpdateText();
-                myAbsorber.OnAbsorb(number, myAbsorber.number);
+
+                // Event
+                myAbsorber.OnAbsorb?.Invoke(number, myAbsorber.number);
             }
-        }
-
-        /// <summary>
-        /// Called when a damage number absorbs of another damage number.
-        /// If instant gain is enabled this will be called right when the absorption starts.
-        /// </summary>
-        protected virtual void OnAbsorb(float number, float newSum)
-        {
-
         }
         #endregion
 
@@ -2613,12 +2834,15 @@ namespace DamageNumbersPro
         #region Collision
         void TryCollision()
         {
-            foreach (DamageNumber otherNumber in spamGroupDictionary[spamGroup])
+            if (enableCollision)
             {
-                otherNumber.collided = false;
-            }
+                foreach (DamageNumber otherNumber in spamGroupDictionary[spamGroup])
+                {
+                    otherNumber.collided = false;
+                }
 
-            TryCollision(GetTargetPosition());
+                TryCollision(GetTargetPosition());
+            }
         }
         void TryCollision(Vector3 sourcePosition)
         {
@@ -2662,12 +2886,15 @@ namespace DamageNumbersPro
         #region Push
         void TryPush()
         {
-            foreach (DamageNumber otherNumber in spamGroupDictionary[spamGroup])
+            if (enablePush)
             {
-                otherNumber.pushed = false;
-            }
+                foreach (DamageNumber otherNumber in spamGroupDictionary[spamGroup])
+                {
+                    otherNumber.pushed = false;
+                }
 
-            TryPush(GetTargetPosition());
+                TryPush(GetTargetPosition());
+            }
         }
         void TryPush(Vector3 sourcePosition)
         {
@@ -2730,67 +2957,67 @@ namespace DamageNumbersPro
             Vector3 appliedScale = originalScale;
             lastScaleFactor = 1f;
 
-            //Scale Down from Combination:
+            // Scale Down from Combination
             if (enableCombination)
             {
                 combinationScale = Mathf.Lerp(combinationScale, 1f, Time.deltaTime * combinationSettings.absorberScaleFade);
                 lastScaleFactor *= combinationScale;
             }
 
-            //Scale by Number Size:
+            // Scale by Number Size
             if (enableScaleByNumber)
             {
                 lastScaleFactor *= numberScale;
             }
 
-            //Scale over Lifetime:
+            // Scale over Lifetime
             if (enableScaleOverTime)
             {
                 float time = unscaledTime ? Time.unscaledTime : Time.time;
                 appliedScale *= scaleOverTime.Evaluate((time - startTime) / (currentLifetime + durationFadeOut));
             }
 
-            //Destruction Scale:
+            // Destruction Scale
             if (enableDestruction)
             {
                 appliedScale *= destructionScale;
             }
 
-            //Orthographic Scale:
-            if (enableOrthographicScaling && !beforeMeshBuild)
+            // Orthographic Scale
+            if (enableOrthographicScaling && !beforeMeshBuild && targetOrthographicCamera != null)
             {
                 appliedScale *= Mathf.Min(maxOrthographicSize, targetOrthographicCamera.orthographicSize / defaultOrthographicSize);
             }
 
-            //Perspective:
+            // Perspective
             #region Perspective
             if (enable3DGame && targetCamera != null)
             {
-                //Face Camera:
+                // Face Camera
                 if(faceCameraView)
                 {
                     if(lookAtCamera)
                     {
-                        transform.LookAt(transform.position + (transform.position - targetCamera.position));
+                        myTransform.LookAt(myTransform.position + (myTransform.position - targetCamera.position));
                     }
                     else
                     {
-                        transform.rotation = targetCamera.rotation;
+                        myTransform.rotation = targetCamera.rotation;
                     }
                 }
 
-                //Initialize Offset:
+                // Initialize Offset
                 Vector3 offset = default;
                 float distance = default;
 
-                //Consistent Screen Size:
+                // Consistent Screen Size
                 if (consistentScreenSize)
                 {
-                    //Calculate Offset:
+                    // Calculate Offset
                     offset = finalPosition - targetCamera.position;
                     distance = Mathf.Max(0.004f, offset.magnitude);
 
-                    //Calculate Scale:
+                    // Calculate Scale
                     lastScaleFactor *= distance / distanceScalingSettings.baseDistance;
 
                     if (distance < distanceScalingSettings.closeDistance)
@@ -2807,17 +3034,17 @@ namespace DamageNumbersPro
                     }
                 }
 
-                //FOV Scaling.
+                // FOV Scaling
                 if (scaleWithFov && !beforeMeshBuild)
                 {
                     lastScaleFactor *= targetFovCamera.fieldOfView / defaultFov;
                 }
 
-                //Apply scale.
+                // Apply scale
                 appliedScale *= lastScaleFactor;
                 simulatedScale = appliedScale.x;
 
-                //Render Through Walls:
+                // Render Through Walls
                 if (renderThroughWalls)
                 {
                     float near = 0.3f;
@@ -2826,7 +3053,7 @@ namespace DamageNumbersPro
                         near = Camera.main.nearClipPlane;
                     }
 
-                    //Move close to camera:
+                    // Move close to camera
                     if (!consistentScreenSize)
                     {
                         offset = finalPosition - targetCamera.position;
@@ -2834,9 +3061,9 @@ namespace DamageNumbersPro
                     }
                     near += 0.0005f * distance + 0.02f + near * 0.02f * Vector3.Angle(offset, targetCamera.forward);
 
-                    transform.position = offset.normalized * near + targetCamera.position;
+                    myTransform.position = offset.normalized * near + targetCamera.position;
 
-                    //Adjust Scale:
+                    // Adjust Scale
                     renderThroughWallsScale = near / distance;
                     appliedScale *= renderThroughWallsScale;
                 }
@@ -2848,37 +3075,61 @@ namespace DamageNumbersPro
             }
             #endregion
 
-            //Apply:
-            transform.localScale = appliedScale;
+            // Apply
+            myTransform.localScale = appliedScale;
 
-            //First Frame Fix:
+            // First Frame Fix
             if (firstFrameScale)
             {
                 if(durationFadeIn > 0)
                 {
-                    transform.localScale = Vector3.zero;
+                    myTransform.localScale = Vector3.zero;
                 }
                 firstFrameScale = false;
             }
         }
         #endregion
 
-        #region Custom Events
+        #region C# Events
+        /// <summary>
+        /// This event is called during fade in and fade out.
+        /// The float value of the event determines the fade progress (0 = invisible, 1 = fully faded in).
+        /// </summary>
+        public event System.Action<float> OnUpdateFade;
 
+        /// <summary>
+        /// This event is called when the text content of the damage number has been updated.
+        /// </summary>
+        public event System.Action OnUpdateText;
+
+        /// <summary>
+        /// This event is called when the damage number starts fading out.
+        /// </summary>
+        public event System.Action OnFadeOut;
+
+        /// <summary>
+        /// This event is called when the damage number starts fading in.
+        /// </summary>
+        public event System.Action OnSpawn;
+
+        /// <summary>
+        /// This event is called when the damage number has fully faded out.
+        /// </summary>
+        public event System.Action OnDespawn;
+
+        /// <summary>
+        /// Called when a damage number absorbs another damage number.
+        /// The first float value is the absorbed number and the second float value is the new sum.
+        /// </summary>
+        public event System.Action<float, float> OnAbsorb;
+        #endregion
+
+        #region Internal Events
         /// <summary>
         /// This function is called while fading in or out.
         /// </summary>
         /// <param name="currentFade">The current fade and alpha factor meaning 0 = 0% and 1 = 100% faded in.</param>
-        protected virtual void OnFade(float currentFade)
-        {
-
-        }
-
-        /// <summary>
-        /// This function is called whenever the text is updated.
-        /// Including when the damage number spawns.
-        /// </summary>
-        protected virtual void OnTextUpdate()
+        protected virtual void InternalUpdateFade(float currentFade)
         {
 
         }
@@ -2887,8 +3138,7 @@ namespace DamageNumbersPro
         /// This function is called on every update interval.
         /// Frequency can be configured under performance settings.
         /// </summary>
-        /// <param name="deltaTime"></param>
-        protected virtual void OnUpdate(float deltaTime)
+        protected virtual void InternalUpdate(float deltaTime)
         {
 
         }
@@ -2896,31 +3146,23 @@ namespace DamageNumbersPro
         /// <summary>
         /// This function is called whenever a damage number is spawned.
         /// </summary>
-        protected virtual void OnStart()
+        protected virtual void InternalOnSpawn()
         {
 
         }
 
         /// <summary>
-        /// This function is called whenever a damage number starts fading out.
-        /// So this is called a bit earlier than OnDestroy.
+        /// Called every late update.
         /// </summary>
-        protected virtual void OnStop()
-        {
-
-        }
-
         protected virtual void OnLateUpdate()
         {
 
         }
 
-
         /// <summary>
         /// This event was created to fix a GUI specific issue.
-        /// I recommend using the OnStart() method for custom code.
         /// </summary>
-        protected virtual void OnPreSpawn()
+        protected virtual void InternalOnPreSpawn()
         {
             
         }
@@ -2930,22 +3172,22 @@ namespace DamageNumbersPro
         #region Unity Events
         void OnDestroy()
         {
-            //Static Reference:
+            // Static Reference
             if (activeInstances != null && activeInstances.Contains(this))
             {
                 activeInstances.Remove(this);
             }
 
-            //Updater:
+            // Updater
             DNPUpdater.UnregisterPopup(unscaledTime, updateDelay, this);
 
-            //Remove from dictionaries.
+            // Remove from dictionaries
             RemoveFromDictionary();
 
-            //Clear Mesh:
+            // Clear Mesh
             ClearMeshs();
 
-            //Remove from Pool:
+            // Remove from Pool
             if (enablePooling && pools != null)
             {
                 if (pools.ContainsKey(poolingID))

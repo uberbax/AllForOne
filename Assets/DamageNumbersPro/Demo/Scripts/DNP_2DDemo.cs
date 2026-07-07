@@ -11,6 +11,7 @@ namespace DamageNumbersPro.Demo
     public class DNP_2DDemo : MonoBehaviour
     {
         float nextShotTime;
+        float shootingStartTime;
 
         void Start()
         {
@@ -35,7 +36,14 @@ namespace DamageNumbersPro.Demo
             else if (DNP_InputHandler.GetRightHeld() && Time.time > nextShotTime)
             {
                 Shoot();
-                nextShotTime = Time.time + 0.06f;
+
+                // Calculate shooting cooldown which decreases while shooting
+                if (Time.time > nextShotTime + 0.1f)
+                {
+                    shootingStartTime = Time.time;
+                }
+                float shootingCooldown = Mathf.Lerp(0.075f, Mathf.Max(0.01f, DNP_DemoManager.instance.GetSettings().lowestCooldown), (Time.time - shootingStartTime) / 2f);
+                nextShotTime = Time.time + shootingCooldown;
             }
         }
 
@@ -51,24 +59,24 @@ namespace DamageNumbersPro.Demo
             mousePosition = Input.mousePosition;
 #endif
 
-            //Raycast.
+            // Raycast
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
             worldPosition.z = -5;
             RaycastHit hit;
             Physics.Raycast(worldPosition, Vector3.forward, out hit, 10f);
 
-            //Select Damage Number:
+            // Select Damage Number
             DNP_PrefabSettings settings = DNP_DemoManager.instance.GetSettings();
             DamageNumber prefab = DNP_DemoManager.instance.GetCurrent();
 
-            //Number:
+            // Number
             float number = 1 + Mathf.Pow(Random.value, 2.2f) * settings.numberRange;
             if (prefab.digitSettings.decimals == 0)
             {
                 number = Mathf.Floor(number);
             }
 
-            //Create Damage Number:
+            // Create Damage Number
             DamageNumber newDamageNumber = prefab.Spawn(worldPosition, number);
 
             if (hit.collider != null)
@@ -82,7 +90,7 @@ namespace DamageNumbersPro.Demo
                 newDamageNumber.SetFollowedTarget(hit.collider.transform);
             }
 
-            //Apply Demo Settings:
+            // Apply Demo Settings
             settings.Apply(newDamageNumber);
         }
     }

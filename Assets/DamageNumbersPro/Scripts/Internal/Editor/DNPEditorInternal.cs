@@ -12,21 +12,21 @@ using UnityEditor.SceneManagement;
 namespace DamageNumbersPro.Internal {
     public static class DNPEditorInternal
     {
-        //Public:
+        // Public
         public static int currentTab;
         public static bool repaintViews;
         public static HashSet<string> hints;
         public static DamageNumber[] damageNumbers;
         public static TextMeshPro[] textMeshPros;
 
-        //Private:
+        // Private
         static Transform[] meshAs;
         static Transform[] meshBs;
 
-        //Presets:
+        // Presets
         static Dictionary<string,DNPPreset[]> allPresets;
 
-        //GUI Resources:
+        // GUI Resources
         public static GUIStyle labelStyle;
         public static GUIStyle buttonStyle;
         public static GUIStyle rightTextStyle;
@@ -38,7 +38,7 @@ namespace DamageNumbersPro.Internal {
         static Texture bannerTexture;
         public static float currentWidth;
 
-        //External Editor:
+        // External Editor
         static int currentEditor;
         static bool cleanEditor;
         static Material[] currentMaterials;
@@ -48,28 +48,28 @@ namespace DamageNumbersPro.Internal {
 
         public static void PrepareInspector(DamageNumberEditor damageNumberEditor)
         {
-            //Clean Editors:
+            // Clean Editors
             cleanEditor = true;
             generatedGUIStyles = false;
 
-            //Get Damage Numbers:
+            // Get Damage Numbers
             damageNumbers = new DamageNumber[damageNumberEditor.targets.Length];
             for (int i = 0; i < damageNumberEditor.targets.Length; i++)
             {
                 damageNumbers[i] = (DamageNumber)damageNumberEditor.targets[i];
             }
 
-            //Type:
+            // Type
             bool isMesh = damageNumbers[0].IsMesh();
 
-            //Get Presets:
+            // Get Presets
             allPresets = new Dictionary<string, DNPPreset[]>();
             allPresets.Add("Style", Resources.LoadAll<DNPPreset>("DNP/Style"));
             allPresets.Add("Fade In", Resources.LoadAll<DNPPreset>("DNP/Fade In"));
             allPresets.Add("Fade Out", Resources.LoadAll<DNPPreset>("DNP/Fade Out"));
             allPresets.Add("Behaviour", Resources.LoadAll<DNPPreset>("DNP/Behaviour"));
 
-            //Get Structural Objects:
+            // Get Structural Objects
             textMeshPros = new TextMeshPro[damageNumbers.Length];
             meshAs = new Transform[damageNumbers.Length];
             meshBs = new Transform[damageNumbers.Length];
@@ -79,28 +79,28 @@ namespace DamageNumbersPro.Internal {
                 {
                     Transform dnTransform = damageNumbers[n].transform;
 
-                    //TMP:
+                    // TMP
                     Transform textMeshProTransform = dnTransform.Find("TMP");
                     if (textMeshProTransform != null)
                     {
                         textMeshPros[n] = textMeshProTransform.GetComponent<TextMeshPro>();
                     }
 
-                    //MeshA:
+                    // MeshA
                     meshAs[n] = dnTransform.Find("MeshA");
 
-                    //MeshB:
+                    // MeshB
                     meshBs[n] = dnTransform.Find("MeshB");
                 }
             }
 
-            //Get Banner Texture:
+            // Get Banner Texture
             if (damageNumbers != null && damageNumbers.Length > 0 && damageNumbers[0] != null)
             {
                 bannerTexture = Resources.Load<Texture>("DNP/Textures/DNP_Banner");
             }
 
-            //Create White Box Texture:
+            // Create White Box Texture
             Color[] pixels = new Color[4];
             for (int n = 0; n < pixels.Length; n++)
             {
@@ -110,22 +110,22 @@ namespace DamageNumbersPro.Internal {
             whiteBoxTexture.SetPixels(pixels);
             whiteBoxTexture.Apply();
 
-            //Close Hints:
+            // Close Hints
             hints = new HashSet<string>();
         }
 
         public static void OnInspectorGUI(DamageNumberEditor damageNumberEditor)
         {
-            //Prepare Inspector:
+            // Prepare Inspector
             if (damageNumbers == null || damageNumbers.Length == 0 || damageNumbers[0] == null)
             {
                 PrepareInspector(damageNumberEditor);
             }
 
-            //Prepare Styles:
+            // Prepare Styles
             PrepareStyles();
 
-            //Repaint:
+            // Repaint
             if (repaintViews)
             {
                 repaintViews = false;
@@ -136,13 +136,13 @@ namespace DamageNumbersPro.Internal {
         #region Inspector Top
         public static void DrawInspectorTop(bool isMesh)
         {
-            //Banner:
+            // Banner
             Rect bannerRect = DrawBanner(isMesh);
 
-            //Tabs:
+            // Tabs
             DrawTabs(bannerRect);
 
-            //Distance:
+            // Distance
             EditorGUILayout.Space(42);
         }
         static Rect DrawBanner(bool isMesh)
@@ -150,7 +150,7 @@ namespace DamageNumbersPro.Internal {
             Rect bannerRect = default;
             if (bannerTexture != null)
             {
-                //Banner:
+                // Banner
                 EditorGUILayout.BeginVertical();
                 GUILayout.Label("", GUILayout.Height(100 + 0.38f * Mathf.Min(0,EditorGUIUtility.currentViewWidth - 430)));
                 bannerRect = GUILayoutUtility.GetLastRect();
@@ -159,17 +159,17 @@ namespace DamageNumbersPro.Internal {
                 GUI.DrawTextureWithTexCoords(bannerRect, bannerTexture, clipRect, true);
                 EditorGUILayout.EndVertical();
 
-                //Version Info:
+                // Version Info
                 Rect infoRect = new Rect(bannerRect);
                 infoRect.width -= 3;
                 infoRect.y += 4;
                 infoRect.height -= 8;
-                GUI.Label(infoRect, "<color=FFFFFF><b><size=10>v</size>" + DamageNumberEditor.version + " </b></color>", bottomRightTextStyle);
+                GUI.Label(infoRect, "<color=#FFFFFF><b><size=10>v</size>" + DamageNumberEditor.version + " </b></color>", bottomRightTextStyle);
 
-                //Type Info:
-                GUI.Label(infoRect, "<color=FFFFFF><b>" + (isMesh ? "Mesh" : "GUI") + "<size=10> </size></b></color>", topRightTextStyle);
+                // Type Info
+                GUI.Label(infoRect, "<color=#FFFFFF><b>" + (isMesh ? "Mesh" : "GUI") + "<size=10> </size></b></color>", topRightTextStyle);
 
-                //Button:
+                // Button
                 Rect documentationRect = GUILayoutUtility.GetLastRect();
                 documentationRect.x += 9;
                 documentationRect.y += 9;
@@ -185,12 +185,12 @@ namespace DamageNumbersPro.Internal {
                     Application.OpenURL("https://discord.gg/nWbRkN8Zxr");
                 }
 
-                //Box:
+                // Box
                 BoxLastRect();
 
                 EditorGUILayout.Space();
 
-                //Calculate Width for GUI Scaling:
+                // Calculate Width for GUI Scaling
                 float newWidth = GUILayoutUtility.GetLastRect().width;
                 if(newWidth > 50)
                 {
@@ -202,11 +202,11 @@ namespace DamageNumbersPro.Internal {
         }
         static void DrawTabs(Rect lastRect)
         {
-            //Position:
+            // Position
             lastRect.y += lastRect.height - 3;
             lastRect.height = 29;
 
-            //Row 1:
+            // Row 1
             int lastTab = currentTab;
 
             currentTab = GUI.Toolbar(lastRect, currentTab, new string[] { "Main", "Text", "Fade In", "Fade Out" }, buttonStyle);
@@ -292,20 +292,20 @@ namespace DamageNumbersPro.Internal {
                 }
             }
 
-            //Row 2:
+            // Row 2
             lastRect.y += lastRect.height - 3;
             lastRect.height = 22;
             currentTab = 4 + GUI.Toolbar(lastRect, currentTab - 4, new string[] { movementText, rotAndScaleText, spamText, performanceText }, buttonStyle);
             lastRect.height += 2;
 
-            //On Switch:
+            // On Switch
             if (currentTab != lastTab)
             {
                 EditorGUIUtility.keyboardControl = EditorGUIUtility.hotControl = 0;
-                hints = new HashSet<string>(); //Clear Hints.
+                hints = new HashSet<string>(); // Clear Hints
             }
 
-            //Box:
+            // Box
             BoxRect(lastRect, true, false);
         }
         #endregion
@@ -345,7 +345,7 @@ namespace DamageNumbersPro.Internal {
             EditorGUILayout.BeginHorizontal();
             GUI.color = new Color(1, 1, 1, 1);
 
-            //Link Shrinking:
+            // Link Shrinking
             string docLink = "https://ekincantas.com/damage-numbers-pro/";
             if(currentWidth < 420f)
             {
@@ -452,11 +452,11 @@ namespace DamageNumbersPro.Internal {
             int previousEditor = currentEditor;
             if (cleanEditor)
             {
-                previousEditor = -1; //Force Clean
+                previousEditor = -1; // Force Clean
                 cleanEditor = false;
             }
 
-            //Tab Names:
+            // Tab Names
             string textMeshProTab = "TextMeshPro";
             string materialTab = "Material";
             if (damageNumbers != null && damageNumbers.Length > 1)
@@ -469,7 +469,7 @@ namespace DamageNumbersPro.Internal {
                 textMeshProTab = "<size=11>" + textMeshProTab + "</size>";
             }
 
-            //Tab Rect:
+            // Tab Rect
             GUILayout.BeginVertical();
             GUILayout.Space(13);
             GUILayout.EndVertical();
@@ -480,10 +480,10 @@ namespace DamageNumbersPro.Internal {
             tabRect.y -= 5;
             tabRect.height = 25;
 
-            //Draw Tab:
+            // Draw Tab
             currentEditor = GUI.Toolbar(tabRect, currentEditor, new string[] { "Presets", materialTab , textMeshProTab });
 
-            //Box Tab Rect:
+            // Box Tab Rect
             tabRect.y += 23;
             tabRect.height = 3;
             tabRect.width -= 3;
@@ -492,7 +492,7 @@ namespace DamageNumbersPro.Internal {
             {
                 EditorGUILayout.Space(14);
 
-                //Material:
+                // Material
                 if (previousEditor != 1)
                 {
                     ResetMaterials();
@@ -520,7 +520,7 @@ namespace DamageNumbersPro.Internal {
 
                 if (isMesh)
                 {
-                    //Text Mesh Pro:
+                    // Text Mesh Pro
                     if (previousEditor != 2)
                     {
                         if (textMeshProEditor != null)
@@ -530,7 +530,7 @@ namespace DamageNumbersPro.Internal {
                         textMeshProEditor = Editor.CreateEditor(textMeshPros, null);
                     }
 
-                    //Editor:
+                    // Editor
                     if (textMeshProEditor != null)
                     {
                         textMeshProEditor.DrawHeader();
@@ -546,7 +546,7 @@ namespace DamageNumbersPro.Internal {
                 }
                 else
                 {
-                    //Text Mesh Pro:
+                    // Text Mesh Pro
                     if (previousEditor != 2)
                     {
                         if (textMeshProEditor != null)
@@ -572,7 +572,7 @@ namespace DamageNumbersPro.Internal {
                         textMeshProEditor = Editor.CreateEditor(tmps, null);
                     }
 
-                    //Editor:
+                    // Editor
                     if (textMeshProEditor != null)
                     {
                         textMeshProEditor.DrawHeader();
@@ -585,7 +585,7 @@ namespace DamageNumbersPro.Internal {
                             textMeshProEditor.OnInspectorGUI();
                         }
 
-                        //Match both TMPs:
+                        // Match both TMPs
                         foreach(DamageNumber dn in damageNumbers)
                         {
                             TMP_Text[] tmps = dn.GetTextMeshs();
@@ -607,7 +607,7 @@ namespace DamageNumbersPro.Internal {
             GUI.backgroundColor = Color.white;
             CloseBox(externalInspectorColor);
 
-            //Line under Tabs:
+            // Line under Tabs
             GUI.color = externalInspectorColor;
             DrawOutlineBox(tabRect);
             tabRect.width += 3;
@@ -685,7 +685,7 @@ namespace DamageNumbersPro.Internal {
             int currentCount = 0;
             foreach (DNPPreset preset in presets)
             {
-                //Check Applied:
+                // Check Applied
                 bool isApplied = true;
                 foreach (DamageNumber dn in damageNumbers)
                 {
@@ -700,7 +700,7 @@ namespace DamageNumbersPro.Internal {
                     GUI.enabled = false;
                 }
 
-                //Increase Count:
+                // Increase Count
                 currentCount++;
                 if (currentCount % buttonsPerRow == 1)
                 {
@@ -713,7 +713,7 @@ namespace DamageNumbersPro.Internal {
                     GUILayout.Space(5);
                 }
 
-                //Apply Button:
+                // Apply Button
                 if (GUILayout.Button(preset.name))
                 {
                     if(isMesh)
@@ -754,7 +754,7 @@ namespace DamageNumbersPro.Internal {
                     }
                 }
 
-                //Reenable GUI:
+                // Reenable GUI
                 GUI.enabled = true;
             }
 
@@ -778,10 +778,10 @@ namespace DamageNumbersPro.Internal {
         #region Structure
         public static bool CheckStructure(DamageNumberEditor damageNumberEditor)
         {
-            //Type:
+            // Type
             bool isMesh = damageNumbers[0].IsMesh(); ;
 
-            //Check if structure is flawed.
+            // Check if structure is flawed
             bool isStructureFlawed = false;
             bool isOutdated = false;
             if(isMesh)
@@ -821,13 +821,13 @@ namespace DamageNumbersPro.Internal {
                 }
             }
 
-            //Create button to fix structure.
+            // Create button to fix structure
             if (isStructureFlawed)
             {
-                //Start Box:
+                // Start Box
                 StartBox(new Color(1, 1, 0.8f));
 
-                //Structure Build Button:
+                // Structure Build Button
                 GUI.color = new Color(1, 1, 0.8f);
                 if (GUILayout.Button(isOutdated ? "Upgrade Structure" : "Build Structure", GUILayout.Width(140)))
                 {
@@ -849,7 +849,7 @@ namespace DamageNumbersPro.Internal {
                     PrepareInspector(damageNumberEditor);
                 }
 
-                //Text:
+                // Text
                 GUI.color = new Color(1, 1, 1, 0.7f);
                 if (isOutdated)
                 {
@@ -862,7 +862,7 @@ namespace DamageNumbersPro.Internal {
                     EditorGUILayout.LabelField("Click the button above to <b>prepare</b> this damage number.", labelStyle);
                 }
 
-                //Close Box:
+                // Close Box
                 CloseBox(new Color(1, 1, 0.7f));
                 EditorGUILayout.Space();
                 return true;
@@ -874,49 +874,49 @@ namespace DamageNumbersPro.Internal {
         }
         public static void PrepareMeshStructure(GameObject go)
         {
-            //Add Sorting Group:
+            // Add Sorting Group
             if (go.GetComponent<SortingGroup>() == null)
             {
                 go.AddComponent<SortingGroup>().sortingOrder = 1000;
             }
 
-            //Rename TextA to TMP:
+            // Rename TextA to TMP
             Transform textA = go.transform.Find("TextA");
             if (textA != null)
             {
                 textA.gameObject.name = "TMP";
             }
 
-            //Destroy TextB:
+            // Destroy TextB
             if (go.transform.Find("TextB"))
             {
                 MonoBehaviour.DestroyImmediate(go.transform.Find("TextB").gameObject, true);
             }
 
-            //Create TMP:
+            // Create TMP
             if (go.transform.Find("TMP") == null)
             {
                 NewTextMesh("TMP", go.transform);
             }
 
-            //Create MeshA:
+            // Create MeshA
             if (go.transform.Find("MeshA") == null)
             {
                 DamageNumber.NewMesh("MeshA", go.transform);
             }
 
-            //Create MeshB:
+            // Create MeshB
             if (go.transform.Find("MeshB") == null)
             {
                 DamageNumber.NewMesh("MeshB", go.transform);
             }
 
-            //Undo:
+            // Undo
             Undo.RegisterCreatedObjectUndo(go, "Create new Damage Number (Mesh).");
         }
         public static void PrepareGUIStructure(GameObject go)
         {
-            //Create TMP:
+            // Create TMP
             if (go.transform.Find("TMPA") == null)
             {
                 NewTextGUI("TMPA", go.transform);
@@ -926,38 +926,39 @@ namespace DamageNumbersPro.Internal {
                 NewTextGUI("TMPB", go.transform);
             }
 
-            //Add Rect Component:
+            // Add Rect Component
             if(go.GetComponent<RectTransform>() == null)
             {
                 go.AddComponent<RectTransform>();
             }
 
-            //Undo:
+            // Undo
             Undo.RegisterCreatedObjectUndo(go, "Create new Damage Number (GUI).");
         }
 
         public static GameObject NewTextMesh(string tmName, Transform parent)
         {
-            //GameObject:
+            // GameObject
             GameObject newTM = new GameObject();
             newTM.name = tmName;
 
-            //TextMeshPro:
+            // TextMeshPro
             TextMeshPro tmp = newTM.AddComponent<TextMeshPro>();
             tmp.fontSize = 5;
             tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmp.horizontalAlignment = HorizontalAlignmentOptions.Center;
             tmp.text = "1";
-            tmp.enableWordWrapping = false;
+            tmp.textWrappingMode = TextWrappingModes.NoWrap;
+            tmp.font = Resources.Load<DNPPreset>("DNP/Style/Basic/Basic Default").fontAsset;
 
-            //Size Delta:
+            // Size Delta
             RectTransform rectTransform = tmp.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.sizeDelta = new Vector2(4, 2);
             }
 
-            //Transform:
+            // Transform
             newTM.transform.SetParent(parent, true);
             newTM.transform.localPosition = Vector3.zero;
             newTM.transform.localScale = Vector3.one;
@@ -968,27 +969,27 @@ namespace DamageNumbersPro.Internal {
 
         public static GameObject NewTextGUI(string tmName, Transform parent)
         {
-            //GameObject:
+            // GameObject
             GameObject newTM = new GameObject();
             newTM.name = tmName;
 
-            //TextMeshPro:
+            // TextMeshPro
             TextMeshProUGUI tmp = newTM.AddComponent<TextMeshProUGUI>();
             tmp.fontSize = 30;
             tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmp.horizontalAlignment = HorizontalAlignmentOptions.Center;
             tmp.text = "1";
-            tmp.enableWordWrapping = false;
+            tmp.textWrappingMode = TextWrappingModes.NoWrap;
             tmp.raycastTarget = false;
 
-            //Size Delta:
+            // Size Delta
             RectTransform rectTransform = tmp.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.sizeDelta = new Vector2(4, 2);
             }
 
-            //Transform:
+            // Transform
             newTM.transform.SetParent(parent, true);
             newTM.transform.localPosition = Vector3.zero;
             newTM.transform.localScale = Vector3.one;
@@ -1081,38 +1082,38 @@ namespace DamageNumbersPro.Internal {
                 return;
             }
 
-            //Label:
+            // Label
             labelStyle = new GUIStyle(GUI.skin.label);
             labelStyle.richText = true;
 
-            //Button:
+            // Button
             buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.richText = true;
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            //Right Anchor:
+            // Right Anchor
             rightTextStyle = new GUIStyle(labelStyle);
             rightTextStyle.alignment = TextAnchor.MiddleRight;
 
-            //Center Anchor:
+            // Center Anchor
             centerTextStyle = new GUIStyle(labelStyle);
             centerTextStyle.alignment = TextAnchor.MiddleCenter;
 
-            //Bottom Right Anchor:
+            // Bottom Right Anchor
             bottomRightTextStyle = new GUIStyle(labelStyle);
             bottomRightTextStyle.alignment = TextAnchor.LowerRight;
 
-            //Top Right Anchor:
+            // Top Right Anchor
             topRightTextStyle = new GUIStyle(labelStyle);
             topRightTextStyle.alignment = TextAnchor.UpperRight;
 
-            //White Box:
+            // White Box
             whiteBoxStyle = new GUIStyle(GUI.skin.box);
             whiteBoxStyle.normal.background = whiteBoxStyle.onNormal.background = whiteBoxStyle.active.background =
             whiteBoxStyle.onActive.background = whiteBoxStyle.focused.background = whiteBoxStyle.onFocused.background =
             whiteBoxStyle.hover.background = whiteBoxStyle.onHover.background = whiteBoxTexture;
 
-            //Rich Everything:
+            // Rich Everything
             for(int n = 0; n < GUI.skin.customStyles.Length; n++)
             {
                 if(GUI.skin.customStyles[n] != null)
@@ -1121,7 +1122,7 @@ namespace DamageNumbersPro.Internal {
                 }
             }
 
-            //Finish:
+            // Finish
             generatedGUIStyles = true;
         }
         public static bool HintButton(string category)
@@ -1221,7 +1222,7 @@ namespace DamageNumbersPro.Internal {
         }
         public static void StartBox(bool isActivated = true)
         {
-            //Start Box:
+            // Start Box
             if (EditorGUIUtility.isProSkin)
             {
                 if (isActivated)
@@ -1344,11 +1345,11 @@ namespace DamageNumbersPro.Internal {
         }
         static void DrawOutlineBox(Rect rectPosition, bool isActivated = true)
         {
-            //Adjust Position:
+            // Adjust Position
             rectPosition.width += 2;
             rectPosition.height += 2;
 
-            //Draw Box:
+            // Draw Box
             if (EditorGUIUtility.isProSkin)
             {
                 if (isActivated)

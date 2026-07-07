@@ -23,10 +23,10 @@ namespace DamageNumbersPro.Demo
 
         void Awake()
         {
-            //Reference Single Instance:
+            // Reference Single Instance
             instance = this;
 
-            //Get All Prefabs:
+            // Get All Prefabs
             Transform parent = GameObject.Find("Special").transform.Find("Prefabs/Damage Numbers");
             prefabs = new DamageNumber[parent.childCount];
             for(int n = 0; n < parent.childCount; n++)
@@ -35,7 +35,7 @@ namespace DamageNumbersPro.Demo
             }
             parent.gameObject.SetActive(false);
 
-            //Text Components:
+            // Text Components
             Transform guiParent = GameObject.Find("Special").transform.Find("GUI");
             currentPrefabText = guiParent.Find("Background/Current").GetComponent<Text>();
             currentIndexText = guiParent.Find("Background/Index").GetComponent<Text>();
@@ -46,7 +46,7 @@ namespace DamageNumbersPro.Demo
                 fade = fadeTransform.GetComponent<CanvasGroup>();
             }
 
-            //Reset Index:
+            // Reset Index
             currentIndex = 0;
             UpdateCurrent();
 
@@ -131,7 +131,7 @@ namespace DamageNumbersPro.Demo
                 DNP_Camera.instance.enabled = false;
             }
 
-            DNP_2DDemo demo2D = FindObjectOfType<DNP_2DDemo>();
+            DNP_2DDemo demo2D = FindAnyObjectByType<DNP_2DDemo>();
             if(demo2D) 
             {
                 demo2D.enabled = false;

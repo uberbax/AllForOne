@@ -29,7 +29,7 @@ namespace DamageNumbersPro.Demo
 
         void Update()
         {
-            //Move around.
+            // Move around
             transform.position = originalPosition + movementOffset * Mathf.Sin(Time.time);
         }
 
@@ -59,7 +59,7 @@ namespace DamageNumbersPro.Demo
 
             while( brightness < 3f)
             {
-                //Glow up.
+                // Glow up
                 brightness = Mathf.Min(3, Mathf.Lerp(brightness, 3 + 0.1f, Time.deltaTime * 20f));
                 mat.SetFloat("_Brightness", brightness);
 
@@ -68,7 +68,7 @@ namespace DamageNumbersPro.Demo
 
             while(brightness > defaultBrightness)
             {
-                //Glow down.
+                // Glow down
                 brightness = Mathf.Max(defaultBrightness, Mathf.Lerp(brightness, defaultBrightness - 0.1f, Time.deltaTime * 10f));
                 mat.SetFloat("_Brightness", brightness);
 

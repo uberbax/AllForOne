@@ -1,5 +1,5 @@
 // Made with Amplify Shader Editor
-// Available at the Unity Asset Store - http://u3d.as/y3X 
+// Available at the Unity Asset Store - http// u3das/y3X 
 Shader "Damage Numbers Pro/Target"
 {
 	Properties
@@ -23,7 +23,7 @@ Shader "Damage Numbers Pro/Target"
 			CGPROGRAM
 			
 			#ifndef UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX
-			//only defining to not throw compilation error over Unity 5.5
+			// only defining to not throw compilation error over Unity 55
 			#define UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input)
 			#endif
 
@@ -114,4 +114,4 @@ WireConnection;18;0;9;0
 WireConnection;18;3;6;4
 WireConnection;20;0;18;0
 ASEEND*/
-//CHKSM=57D84B8464CD9EE5814B931FE6297A17F5B99204
+// CHKSM=57D84B8464CD9EE5814B931FE6297A17F5B99204

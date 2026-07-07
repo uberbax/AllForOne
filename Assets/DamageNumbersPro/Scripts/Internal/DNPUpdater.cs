@@ -7,23 +7,27 @@ namespace DamageNumbersPro.Internal
 {
     public class DNPUpdater : MonoBehaviour
     {
-        //Dicitonary:
+        // Dicitonary
         static Dictionary<float, DNPUpdater> unscaledUpdaters;
         static Dictionary<float, DNPUpdater> scaledUpdaters;
 
-        //Static:
+        // Static
         public static Vector3 upVector;
         public static Vector3 rightVector;
         public static bool vectorsNeedUpdate;
         public static Quaternion cameraRotation;
 
-        //Settings:
+        // Settings
         public bool isUnscaled = false;
         public float updateDelay = 0.0125f;
+
+        [System.NonSerialized]
         public HashSet<DamageNumber> activePopups;
+
+        [System.NonSerialized]
         public HashSet<DamageNumber> removedPopups;
 
-        //Internal:
+        // Internal
         float lastUpdateTime = 0;
         float delta = 0;
         float time = 0;
@@ -35,15 +39,15 @@ namespace DamageNumbersPro.Internal
 
         IEnumerator UpdatePopups()
         {
-            //Delay:
+            // Delay
             WaitForSecondsRealtime delay = new WaitForSecondsRealtime(updateDelay);
 
             while(true)
             {
-                //Vector Update:
+                // Vector Update
                 vectorsNeedUpdate = true;
 
-                //Update:
+                // Update
                 foreach (DamageNumber popup in activePopups)
                 {
                     if(popup != null)
@@ -56,17 +60,17 @@ namespace DamageNumbersPro.Internal
                     }
                 }
 
-                //Clean Up:
-                if(removedPopups.Count > 0)
+                // Clean Up
+                if (removedPopups.Count > 0)
                 {
                     foreach (DamageNumber removed in removedPopups)
                     {
                         activePopups.Remove(removed);
                     }
-                    removedPopups = new HashSet<DamageNumber>();
+                    removedPopups.Clear();
                 }
 
-                //Wait:
+                // Wait
                 if (isUnscaled)
                 {
                     lastUpdateTime = Time.unscaledTime;
