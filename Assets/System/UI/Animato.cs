@@ -7,6 +7,9 @@ public class Animato : MonoBehaviour
     public bool fadeOnStart = false;
     public bool moveOnStart = false;
     
+    public bool scaleOnStart = true;
+    public bool descaleOnEnd = true;
+    
     public Transform p0;
     public Transform p1;
     
@@ -19,6 +22,7 @@ public class Animato : MonoBehaviour
     private float maxScale = -1;
 
     public float tm = 1;
+    
     private void OnEnable()
     {
         if (waitAsChildIndex)
@@ -47,15 +51,22 @@ public class Animato : MonoBehaviour
             maxScale = transform.localScale.x;
 
         transform.localScale = Vector3.zero;
-        
-        UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0,0,1,maxScale), UtilsControl.CurveType.ScaleAbs, null, tm, 1 / tm, 1, wait, Color.white );
+        if (scaleOnStart) 
+            UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0,0,1,maxScale), UtilsControl.CurveType.ScaleAbs, null, tm, 1 / tm, 1, wait, Color.white );
 
         if (fadeOnStart)
         {
             UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0,0,1,1), UtilsControl.CurveType.CanvasFade, null, tm, 1 / tm, 1, wait, Color.white );
         }
+        
     }
 
+    public void OnDisable1()
+    {
+        UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0,maxScale,1,0), UtilsControl.CurveType.ScaleAbs,
+            ()=>gameObject.SetActive(false), tm, 1 / tm, 1, wait, Color.white );
+    }
+    
     private void OnDisable()
     {
         //WE CAN ENABLE ON ONDISABLE
@@ -64,5 +75,38 @@ public class Animato : MonoBehaviour
         {
             cv.alpha = 0;
         }
+
+        /*
+        if (descaleOnEnd)
+        {
+            flagScaleDown = true;
+            ResourceHolder.instance.Reenable(gameObject);
+        }
+        */
+    }
+}
+
+public static class GameObjectExtensions
+{
+    /// <summary>
+    /// Sets the active state only if it actually changes.
+    /// Returns true if the state changed.
+    /// </summary>
+    public static bool SetActive1(this GameObject gameObject, bool active)
+    {
+        if (gameObject == null)
+            return false;
+
+        if (gameObject.activeSelf == active)
+            return false;
+
+        //
+        var b = gameObject.GetComponent<Animato>();
+        if (b != null && !active)
+            b.OnDisable1();
+        else
+            gameObject.SetActive(active);
+        
+        return true;
     }
 }

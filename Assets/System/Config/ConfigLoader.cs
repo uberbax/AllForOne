@@ -1912,13 +1912,21 @@ public class ConfigLoader : MonoBehaviour
                 }
                 else if (columns[j].ToUpper() == "REWARDS")
                 {
-                    var yp = tt[j].Split(",");
-                    mm.rewards.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});
+                    var jj = tt[j].Split('#');
+                    for (int k = 0; k < jj.Length; k++)
+                    {
+                        var yp = jj[k].Split(",");
+                        mm.rewards.Add(new Bon { Key = yp[0], Value = int.Parse(yp[1]) });
+                    }
                 }
                 else if (columns[j].ToUpper() == "REQITEMS")
                 {
-                    var yp = tt[j].Split(",");
-                    mm.reqItems.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});
+                    var jj = tt[j].Split('#');
+                    for (int k = 0; k < jj.Length; k++)
+                    {
+                        var yp = jj[k].Split(",");
+                        mm.reqItems.Add(new Bon { Key = yp[0], Value = int.Parse(yp[1]) });
+                    }
                 }
                 else if (columns[j].ToUpper() == "REQSTART")
                 {

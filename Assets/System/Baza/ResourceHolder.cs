@@ -53,6 +53,28 @@ public class ResourceHolder : MonoBehaviour
     {
         return null;
     }
+
+    public GameObject toAct;
+    public void Reenable(GameObject go)
+    {
+        toAct = go;
+        //StartCoroutine(Reenable1(go));
+    }
+
+    private void LateUpdate()
+    {
+        if (toAct != null)
+        {
+            toAct.SetActive(true);
+            toAct = null;
+        }
+    }
+
+    public IEnumerator Reenable1(GameObject go)
+    {
+        go.SetActive(true);
+        yield return null;
+    }
     
     private void Awake()
     {

@@ -1110,7 +1110,7 @@ public class UtilsControl : MonoBehaviour
             }
 
             var g1 = ac.Evaluate(time*speed) * evKoef;
-            //who.localScale = new Vector3(g1, g1, g1);
+            who.localScale = new Vector3(g1, g1, g1);
 
             if (pong)
             {

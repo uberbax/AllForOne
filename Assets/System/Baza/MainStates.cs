@@ -1750,6 +1750,16 @@ public class MainStates : MonoBehaviour
         }
     }
 
+    public void ReplaceVisual(RObj who, GameObject what)
+    {
+        if (who.visMain != null)
+        {
+            Destroy(who.visMain);
+            var g = Instantiate(what, who.main.transform);
+            who.visuals["vis_main"] = g;
+        }
+    }
+    
     public void AddBuff(RObj who, RObj what)
     {
         who.buffs.Add(what);
