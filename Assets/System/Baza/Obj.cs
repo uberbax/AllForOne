@@ -495,7 +495,10 @@ public class RObj
             {
                 if (owner != null)
                 {
-                    return owner.GetMainPar("attack") * (1 + GetPar("attack_prc")) + GetPar("attack");
+                    var f1 = owner.GetMainPar("attack");
+                    var f2 = GetPar("attack_prc");
+                    var f3 = GetPar("attack");
+                    return f1*f2 + f3;
                 }
             }
             
@@ -589,6 +592,10 @@ public class RObj
         {
             upgradePars.Add(key, val);
         }
+        
+        //we always redo cd ? thwbbb
+        if (key == "cd") curPars[key] = upgradePars[key];
+        
 
         if (key == "exp")
         {

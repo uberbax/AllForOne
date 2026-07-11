@@ -134,7 +134,9 @@ public class MainStates : MonoBehaviour
     public static int maxMove = 1;
     public static Bon anyPickAdd = null;
     public static bool pickOverHead = false;
-    
+
+    public static bool manualDt = false;
+    public static float manualTick = 1;
     //
     public Transform trashRoot;
     
@@ -1823,7 +1825,12 @@ public class MainStates : MonoBehaviour
         EventManager.INV("equip_change", new ArgPass{});
     }
 
-
+    List<UnoSub> allSubs  = new List<UnoSub>();
+    public void SubPar(RObj who, string what, Action<RObj, string, float, float> act)
+    {
+        allSubs.Add(new UnoSub{who = who, what = what, act = act});
+    }
+    
     public Transform minT;
     public Transform maxT;
     
@@ -2344,12 +2351,36 @@ public class MainStates : MonoBehaviour
             v.Updateo();
         }
         
+        if (!manualDt)
+            HandleCds();
+
+        for (int i = 0; i < allSubs.Count; i++)
+        {
+            if (allSubs[i].who == null) continue;
+            var g = allSubs[i].who.GetPar(allSubs[i].what);
+            if (g != allSubs[i].prev && allSubs[i].prev != -1)
+            {
+                allSubs[i].act(allSubs[i].who, allSubs[i].what, g, allSubs[i].prev);
+            }
+
+            allSubs[i].prev = g;
+        }
+
+        allSubs.RemoveAll(x => x.who == null);
+
+    }
+
+    public void HandleCds(float dt = -1)
+    {
+        if (dt > 0)
+            TimeManager.LAST_DT = dt;
         //decrease cds !    
         foreach (var v in all)
         {
             if (v.Value.it == ItemType.projectile && v.Value.upgradePars["cd"] >= 0)
             {
-                v.Value.upgradePars["cd"] -= TimeManager.LAST_DT;
+                //v.Value.upgradePars["cd"] -= TimeManager.LAST_DT;
+                v.Value.ChangePar("cd", -TimeManager.LAST_DT, false);
             }
 
             int cnt = 0;
@@ -2417,8 +2448,7 @@ public class MainStates : MonoBehaviour
                 v.Value.RemoveViz("shield");
             //
 
-        }
-        
+        }        
     }
 
     public void NextWeapon()
@@ -2481,9 +2511,26 @@ public class MainStates : MonoBehaviour
             
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;
+
+            //moving ? probably shoulf take from monster
+            for (int j = 0; j < maxMove; j++)
+            {
+                var h = gg.Iteration(true, reqTag: metaContain);
+                if (h != "move") break;
+                
+                while (combats[i].main.name.IndexOf("_move") >= 0)
+                {
+                    yield return null;
+                }
+            }
             
-            gg.Iteration(true, reqTag: metaContain); 
+
             yield return new WaitForSeconds(tm);
+        }
+
+        if (manualDt)
+        {
+            HandleCds(manualTick);
         }
 
         InIteration = false;
@@ -2583,4 +2630,12 @@ public class MainStates : MonoBehaviour
     {
         return 0;
     }
+}
+
+public class UnoSub
+{
+    public RObj who = null;
+    public string what = "";
+    public float prev = -1;
+    public Action<RObj, string, float, float> act = null;
 }

@@ -40,6 +40,7 @@ public class MainCycleSword : MonoBehaviour
         
         EventManager.SUB("after_battle", (x) =>
         {
+            MainStates.manualDt = false;
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle",1);
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
@@ -126,6 +127,9 @@ public class MainCycleSword : MonoBehaviour
         
         MainStates.instance.UI_unitsPlaced.SetActive(true);
 
+        MainStates.manualDt = true;
+        TimeManager.LAST_DT = 1;
+
     }
 
     public void StartGame()
@@ -181,6 +185,7 @@ public class MainCycleSword : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        MainStates.maxMove = 3;
         
         PlacerSystem.instance.onDragEach = (x) =>
         {
