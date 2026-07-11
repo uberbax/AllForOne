@@ -27,8 +27,10 @@ public class PlacerSystem : MonoBehaviour
         instance = this;
     }
 
+    private RObj iniO = null;
     public void Attach(RObj p)
     {
+        iniO = p;
         isAttached = true;
         RObj o = p.Clone();
         attachedRo = o;
@@ -69,6 +71,7 @@ public class PlacerSystem : MonoBehaviour
             attach = null;
             isAttached = false;
             allow = false;
+            iniO.attachedOther = attachedRo;
 
             if (attachDrag)
             {

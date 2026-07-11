@@ -45,6 +45,7 @@ public class MainCycleSword : MonoBehaviour
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(true);
+            MainStates.instance.UI_unitsPlaced.SetActive(false);
             if (MainStates.instance.lastBattleResult == 0)
             {
                 Destroy(MainStates.instance.lastBattleTrigger);
@@ -185,6 +186,37 @@ public class MainCycleSword : MonoBehaviour
         {
             XDdrag.Boogey(x.main.transform);
         };
+        
+        PlacerSystem.instance.onDragEnded = (x) =>
+        {
+            //add shit
+            x.SetPar("on_field", 1);
+                
+            x.AddViz("hp#notext:1");
+            x.AddViz("coll");
+            x.AddViz("dmg_track");
+            x.AddViz("death");
+            x.AddViz("combat");
+            x.AddViz("animator#pr:1");
+
+            foreach (var v in x.actSkills)
+            {
+                v.SetPar("action_req", -1);
+            }
+
+            if (x.dbObj.dynamic != "")
+            {
+                x.AddViz("timer");
+                var g = x.main.GetComponentInChildren<Xdtimer>();
+                g.onEnd = () =>
+                {
+                    x.AddViz("select");
+                };
+            }
+            
+            x.META_TAGS.Add("sword");
+        };
+        //
     }
 
     public void HandleAutomove()

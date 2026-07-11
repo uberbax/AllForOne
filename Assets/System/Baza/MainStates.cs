@@ -1497,6 +1497,18 @@ public class MainStates : MonoBehaviour
                 //we clone it ?
                 PlacerSystem.instance.Attach(h.obj);
             }
+            else if (SV == "placing_one")
+            {
+                Debug.Log("---Placing---");
+                //we clone it ?
+                if (h.obj.attachedOther != null)
+                {
+                    h.obj.attachedOther.Destroy();
+                    h.obj.attachedOther = null;
+                }
+                else
+                    PlacerSystem.instance.Attach(h.obj);
+            }
             else if (SV == "unequip_exp")
             {
                 o.SetPar("used_slot", -1);

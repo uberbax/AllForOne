@@ -1881,7 +1881,9 @@ public class ConfigLoader : MonoBehaviour
         Trymo(columns);
 
         string lastId = string.Empty; 
-        var mm = new ElTasko();  
+        var mm = new ElTasko();
+        string lastMeta = string.Empty;
+        
         for (int i = 1; i < str.Length; i++)
         {
             var tt = str[i].Split("\t", StringSplitOptions.RemoveEmptyEntries);

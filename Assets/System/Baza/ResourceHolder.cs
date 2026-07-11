@@ -235,7 +235,7 @@ public class ResourceHolder : MonoBehaviour
                 if (a.isMainPar) rr = r.GetMainPar(a.param);
                 else rr = r.GetPar(a.param);
                 if (g.HasKey("icon"))  g.GetImage("icon").sprite = pars[a.param];
-                g.GetText("value").text = rr.ToString();
+                g.GetText("value").text = ((int)rr).ToString();
                 if (a.hideEmpty)
                 {
                     if (rr == 0)

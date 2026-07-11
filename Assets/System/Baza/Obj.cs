@@ -97,6 +97,9 @@ public class RObj
     [NonSerialized]
     public RObj owner;
     
+    [NonSerialized]
+    public RObj attachedOther;
+    
     [JsonIgnore]
     public Dictionary<string, GameObject> visuals = new Dictionary<string, GameObject>();
     
