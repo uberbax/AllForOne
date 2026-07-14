@@ -13,6 +13,7 @@ namespace FunkyCode
 			Point,
 			Sprite, 
 			FreeForm,
+			Global
 		}
 
 		public enum LightSprite {Default, Custom};
@@ -36,6 +37,8 @@ namespace FunkyCode
 
 		public Color color = new Color(.5f, .5f, .5f, 1);
 
+		public float intensity = 1;
+		
 		public float size = 5f;
 
 		public float spotAngleInner = 360;

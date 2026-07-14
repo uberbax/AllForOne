@@ -51,6 +51,9 @@ namespace AnyPath.Examples
         private const float ExtraCostMul = 5;
         private const int reachZ = -2;
         private const int mouseZ = -3;
+
+        public Transform lo;
+        public Transform high;
         
         void Start()
         {
@@ -111,13 +114,22 @@ namespace AnyPath.Examples
         void CreateGrid()
         {
             // get our current screen / world bounds
+            
             int2 lower = ExampleUtil.GetMinWorldPos.RoundToInt2();
             int2 upper = ExampleUtil.GetMaxWorldPos.RoundToInt2();
-            
+
+            if (lo != null)
+            {
+                lower = lo.position.RoundToInt2();
+                upper = high.position.RoundToInt2();
+            }
+
             float2 perlinOffset = new float2(Random.Range(0, 100), Random.Range(0, 100));
             
             // fill the grid randomly
             this.grid = new SquareGrid(lower, upper, SquareGridType.FourNeighbours, 32, Allocator.Persistent);
+            //tileMap.gett
+            
             for (int x = lower.x; x <= upper.x; x++)
             {
                 for (int y = lower.y; y <= upper.y; y++)
@@ -211,6 +223,7 @@ namespace AnyPath.Examples
         
         void InitUI()
         {
+            if (settingsUI == null) return;
             settingsUI.AddButton("Reset", OnReset);
             settingsUI.AddSlider("Max Cost", 1f, 300f, dijkstraMaxCostBudget, false, OnMaxCostChanged);
         }

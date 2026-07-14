@@ -1,0 +1,228 @@
+Minimal World Demo Systems Guide
+Date: 2026-06-30
+
+Covered Systems
+- Weather System
+- Day/Night System
+- Foliage Wind System
+- Bridge Passage Generator
+
+This integrated guide explains how to set up and maintain weather, day/night lighting, foliage wind, and bridge passage colliders in the demo scene.
+
+
+1. Weather System
+
+Main Files
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/Weather/WeatherController.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/Weather/WeatherProfile.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/Weather/WeatherType.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/WeatherProfiles/
+
+Purpose
+- WeatherController applies rain, rain splash, snow, fog overlay, weather volume, and day/night lighting modifiers from the current WeatherProfile.
+- WeatherProfile is a ScriptableObject that stores particle emission, color, size, wind, fog, lighting modifiers, and transition duration for each weather type.
+- The DemoController compact bar calls WeatherController.SetWeather when the Clear, Rain, Snow, or Fog buttons are pressed.
+
+Runtime Flow
+1. WeatherController initializes the current weather from initialProfile or the first item in profiles.
+2. SetWeather or SetProfile stores the current profile, target profile, and transition duration.
+3. TickTransition updates the transition value every frame.
+4. ApplyProfileBlend interpolates particles, fog, weather volume, and lighting multipliers from the same transition value.
+5. FollowAndResizeRig moves weatherRig with the camera and scales particle shapes and the fog overlay to the visible screen.
+
+Setup Checklist
+- Register Clear, Rain, Snow, and Fog profiles in the WeatherController profiles array.
+- Assign rainParticles, rainSplashParticles, and snowParticles to WeatherController.
+- If a fog overlay is used, assign its SpriteRenderer and enable automatic scaling.
+- Assign weatherRig as the parent Transform that follows the camera.
+- To integrate with DayNightController, assign the WeatherController reference directly or let the scene auto-resolve it.
+
+Common Tuning Values
+- WeatherProfile.Transition Duration Seconds: weather transition speed.
+- Rain/Snow Emission Rate: precipitation amount.
+- Fog Alpha, Fog Color: fog density and color.
+- Particle Intensity: profile-wide particle strength multiplier.
+- Wind values: rain/snow particle direction and speed.
+- Light Color/Intensity Multiplier: weather-specific multiplier applied to the day/night lighting system.
+
+Notes
+- Snow can take time to appear when emission starts from zero, so WeatherController warm-starts snow particles when needed.
+- If multiple WeatherProfiles share the same WeatherType, DemoController button calls may use the first matching profile instead of the intended one.
+- Automatic particle shape scaling is designed around an orthographic camera.
+
+
+2. Day/Night System
+
+Main Files
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/DayNight/DayNightController.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/DayNight/DayNightBuilding.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/DayNight/DayNightLightGroup.cs
+
+Purpose
+- DayNightController evaluates the color and intensity of the Global Light 2D from timeOfDay.
+- During night hours, it enables or adjusts local lights, building lights, SpriteRenderers, and Light2D targets.
+- If WeatherController is connected, weather-specific lighting multipliers are applied to the final global light.
+- The DemoController UI changes time through the time slider and the Morning, Day, Evening, and Night buttons.
+
+Runtime Flow
+1. If autoAdvance is enabled, Update advances timeOfDay based on cycleDurationSeconds.
+2. SetTime or a preset button assigns a specific timeOfDay value.
+3. ApplyCurrentState applies global lighting first.
+4. If the local-light active state changes or a forced refresh is requested, reactive targets such as DayNightBuilding and DayNightLightGroup are updated.
+5. EvaluateGlobalLight calculates color and intensity across Dawn, Day, Dusk, and Night segments.
+
+Setup Checklist
+- Assign the scene Global Light 2D to globalLight.
+- Tune dawnStartTime, dayStartTime, duskStartTime, and nightStartTime for the scene mood.
+- Tune dayColor, nightColor, dawnColor, duskColor, and their matching intensity values.
+- Manage building and light group targets either through automatic collection or manual arrays.
+- When WeatherController integration is enabled, verify that dark weather does not make night scenes too dim.
+
+Common Tuning Values
+- timeOfDay: current time in the 0-24 range.
+- cycleDurationSeconds: real time required for one full day cycle.
+- morningPresetTime, dayPresetTime, eveningPresetTime, nightPresetTime: times used by the UI preset buttons.
+- localLightsOnTime, localLightsOffTime: active window for building and local lights.
+- nightIntensity, dayIntensity, and related values: final lighting intensity per time segment.
+
+Notes
+- Local-light targets are not fully refreshed every frame; they update only when the local-light state changes or a forced refresh is requested.
+- Keep time segment boundaries ordered as dawn < day < dusk < night when editing them.
+- Weather multipliers and Day/Night intensity are applied together, so low values in both systems can make the scene too dark.
+
+
+3. Foliage Wind System
+
+Main Files
+- Assets/Layer Lab/2D Minimal World/Common/Scripts/FoliageWind/FoliageWindController.cs
+- Assets/Layer Lab/2D Minimal World/Common/Scripts/FoliageWind/FoliageWind2D.cs
+- Assets/Layer Lab/2D Minimal World/Common/Scripts/FoliageWind/FoliageWindProfileSO.cs
+- Assets/Layer Lab/2D Minimal World/Common/Shaders/SpriteFoliageWind.shader
+- Assets/Layer Lab/2D Minimal World/Common/Shaders/SpriteFoliageWindShadow.shader
+- Assets/Layer Lab/2D Minimal World/Common/FoliageWindProfiles/
+
+Purpose
+- FoliageWindController publishes FoliageWindProfileSO values as global shader properties.
+- FoliageWindProfileSO stores wind strength, speed, scale, bend start, shadow strength, and shadow color.
+- FoliageWind2D applies the foliage material to each SpriteRenderer and sends per-sprite anchor, pivot, and height data through MaterialPropertyBlock.
+- The shader combines global wind values with per-sprite property block values to animate tree and grass sprites.
+
+Runtime Flow
+1. Place FoliageWindController in the scene and assign a profile.
+2. ApplyProfile updates global shader values through OnEnable, OnValidate, or applyEveryFrame.
+3. Add FoliageWind2D to objects that contain SpriteRenderers that should move with wind.
+4. FoliageWind2D collects the target renderer and shadow renderers, then applies foliage materials.
+5. ApplyTarget and ApplyShadows write sprite reference values into MaterialPropertyBlock so each object bends from its own height and pivot.
+
+Setup Checklist
+- Assign a profile asset such as DefaultFoliageWindProfile to FoliageWindController.profile.
+- Add FoliageWind2D to tree or grass sprites and confirm targetRenderer is assigned.
+- foliageMaterial must use the SpriteFoliageWind shader.
+- shadowMaterial must use the SpriteFoliageWindShadow shader.
+- Do not add FoliageWind2D to static decoration that does not need wind animation.
+
+Common Tuning Values
+- Wind Strength: bend amount.
+- Wind Speed: animation speed.
+- Wind Scale: noise pattern scale.
+- Bend Start: how far above the sprite bottom the bending starts.
+- Bend Power: bend curve response.
+- Shadow Strength/Color/Alpha Threshold: shadow motion and visibility behavior.
+
+Notes
+- Shader global values affect all foliage in the scene. If different wind zones are required, use a separate shader/property strategy.
+- FoliageWind2D uses MaterialPropertyBlock, so it does not create unnecessary per-renderer material instances.
+- Use applyEveryFrame only when profile values need to be pushed continuously at runtime. OnEnable/OnValidate is usually enough.
+
+
+4. Bridge Passage Generator
+
+Main Files
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/BridgePassage/Editor/BridgePassageGenerator.cs
+- Assets/Layer Lab/2D Minimal World/Common/DemoSources/Scripts/BridgePassage/BridgePassage2D.cs
+
+Purpose
+- BridgePassageGenerator is an Editor tool that finds connected bridge tile groups on the Bridge Tilemap and automatically creates passage triggers and side blockers.
+- BridgePassage2D ignores water or pit colliders while the player is on a bridge and helps keep the player inside the bridge width.
+
+How To Use
+1. Confirm that the Bridge Tilemap and Pit Tilemap names in the scene match the constants used by BridgePassageGenerator.
+2. The Pit Tilemap must have either CompositeCollider2D or TilemapCollider2D.
+3. Run Tools/Layer Lab/Generate Bridge Passages from the Unity menu.
+4. A Generated Bridge Passages root is created under the Bridge Tilemap, and previously generated passages are removed before regeneration.
+5. Each generated passage contains a center trigger, BridgePassage2D, and side blockers.
+
+Runtime Flow
+1. When the player enters a passage trigger, BridgePassage2D applies water collider ignore state.
+2. Based on bridge direction, ClampX or ClampY helps keep the player from leaving the bridge width.
+3. When the player exits the trigger, the water collider ignore state is cleared.
+
+Generation Flow
+1. Iterate through the Bridge Tilemap cellBounds and collect cells that contain tiles.
+2. Use flood-fill to group cells connected by up, down, left, or right neighbors into one bridge group.
+3. Calculate the world bounds of each group.
+4. Determine whether the bridge is vertical or horizontal from the bounds ratio.
+5. Create the center trigger and side blockers.
+6. Configure BridgePassage2D serialized properties for the water collider, bounds collider, and clamp axis.
+
+Notes
+- The generator is Editor-only. It does not create new bridges at runtime.
+- Manually edited objects under Generated Bridge Passages may be deleted the next time the generator runs.
+- If Bridge/Pit Tilemap names change, update the generator constants as well.
+- Bridge tiles connected only diagonally are not grouped together. Only up, down, left, and right connections count.
+
+
+5. Recommended Maintenance Order
+
+Adding Weather
+1. Create a WeatherProfile asset.
+2. Assign its WeatherType.
+3. Add it to WeatherController.profiles.
+4. If the DemoController UI needs access to it, add the matching button or enum mapping.
+5. Check Unity compile errors, then verify the transition in play mode.
+
+Adding A New Time-Of-Day Look
+1. Tune DayNightController time segments, colors, and intensities first.
+2. Add any required local light or building targets.
+3. Check the result with weather multipliers enabled to make sure the scene is not too dark or too bright.
+
+Adding A New Foliage Prefab
+1. Add FoliageWind2D to the SpriteRenderer object.
+2. Check the auto-collected targetRenderer and shadowRenderer values.
+3. Confirm that the material uses the foliage wind shader.
+4. Tune bendStart and bendPower in the profile.
+
+Adding A New Bridge
+1. Place bridge tiles on the Bridge Tilemap.
+2. Confirm that the Pit Tilemap collider is valid.
+3. Run Tools/Layer Lab/Generate Bridge Passages.
+4. In Scene View, verify that the generated trigger bounds are not too wide or too narrow for the bridge.
+
+
+6. Troubleshooting
+
+Weather Is Not Visible
+- Confirm that particle references are assigned on WeatherController.
+- Check whether WeatherProfile emission rate is set to 0.
+- Confirm that weatherRig is not outside the camera view and followCamera is not disabled.
+
+Fog Does Not Match Screen Size
+- Confirm that fogOverlay is assigned.
+- Check autoScaleFogOverlay and screenPadding.
+- Confirm that targetCamera points to the correct camera.
+
+Day/Night Lighting Does Not Change
+- Confirm that globalLight is assigned.
+- If autoAdvance is disabled, confirm that timeOfDay is being changed manually.
+- Check whether day and night intensity values are too similar.
+
+Trees Or Grass Do Not Move
+- Confirm that FoliageWindController exists in the scene and has a profile assigned.
+- Confirm that the sprite uses FoliageWind2D and a foliage wind material.
+- Check whether Wind Enabled is disabled or Wind Strength is 0.
+
+The Player Is Blocked By Water Colliders On Bridges
+- Run Tools/Layer Lab/Generate Bridge Passages again.
+- Confirm that the Pit Tilemap has CompositeCollider2D or TilemapCollider2D.
+- Confirm that generated triggers are placed at the bridge positions under Generated Bridge Passages.
+- Confirm that BridgePassage2D.waterColliders contains the correct collider.
