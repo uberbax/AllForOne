@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class PositionSetter : MonoBehaviour
 {
+    public int max = 15000;
     public GameObject frame;
+    //unwalkable
+    public GameObject wall;
     public GameObject frameBlack;
     
     public enum CoordMode
@@ -114,9 +118,9 @@ public class PositionSetter : MonoBehaviour
     public Transform wallRoot;
     public Transform wallRootOther;
     public Transform fogRoot;
-    public UnoDir[,] floors = new UnoDir[100,100];
-    public Transform[,] walls = new Transform[100,100];
-    public Transform[,] fog = new Transform[100,100];
+    public UnoDir[,] floors = new UnoDir[200,200];
+    public Transform[,] walls = new Transform[200,200];
+    public Transform[,] fog = new Transform[200,200];
 
     public void ClearWalls()
     {
@@ -181,6 +185,14 @@ public class PositionSetter : MonoBehaviour
     public Transform hiDrag1;
     public GameObject dragTile;
     public Transform dragRoot;
+
+
+    [Header("tilemap case")]
+    public Tilemap tileMapField;
+    public List<Tilemap> unwalkables;
+    //eg bridges // still walkables
+    public List<Transform> unwalkablesObjectRoots;
+    
     
     [ContextMenu("Recreate Drags")]
     public void RecreateDragsField()
@@ -192,9 +204,7 @@ public class PositionSetter : MonoBehaviour
     
     
     public void RecreatePointsByTile(Transform root = null, GameObject tl = null, bool noFog = true, GameObject tl2 = null,
-        
-        Transform lo1 = null, Transform high1 = null, GameObject frame1 = null, int n1 = -1, int m1 = -1, float shft = 1
-        )
+        Transform lo1 = null, Transform high1 = null, GameObject frame1 = null, int n1 = -1, int m1 = -1, float shft = 1)
     {
         if (lo1 == null) lo1 = lo;
         if (high1 == null) high1 = high;
@@ -234,7 +244,7 @@ public class PositionSetter : MonoBehaviour
         
         
         //while (true)
-        for (int o = 0; o < 2000; o++)
+        for (int o = 0; o < max; o++)
         {
             if (loy + height > MaxY) break;
             
@@ -293,6 +303,28 @@ public class PositionSetter : MonoBehaviour
         }
         //recreate fog ? 
         //if (!noFog) RecreatePointsByTile(fogRoot, frameBlack, false);
+    }
+
+    [ContextMenu("TileMap set")]
+    public void RecreatePointsByTilemap()
+    {
+        Awake();
+        //var tls = unwalkables[0].GetTiles(unwalkables[0].cellBounds);
+        //Debug.Log(tileMapField.cellBounds);
+        //Debug.Log(tls.Length);
+        var tileMap = unwalkables[0]; 
+        for (int n = tileMap.cellBounds.xMin; n < tileMap.cellBounds.xMax; n++)
+        {
+            for (int p = tileMap.cellBounds.yMin; p < tileMap.cellBounds.yMax; p++)
+            {
+                Vector3Int localPlace = (new Vector3Int(n, p, (int)tileMap.transform.position.y));
+                Vector3 place = tileMap.CellToWorld(localPlace);
+
+                var g = GetClosestPos(place);
+                
+            }
+        }
+        
     }
     
     public Transform b00, b01, b10;
@@ -620,6 +652,7 @@ public class PositionSetter : MonoBehaviour
         for (int i = 0; i < wallRoot.childCount; i++)
         {
             var s = wallRoot.GetChild(i);
+            if (!s.gameObject.activeInHierarchy) continue;
             var hh = GetClosestPos(s.position);
             walls[hh.Item1, hh.Item2] = s;
         }
