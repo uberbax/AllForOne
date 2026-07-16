@@ -45,7 +45,7 @@ public class MainCycleExp : MonoBehaviour
             ModelStatistics.instance.SetStatValueForce("battle",1);
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
-            MainStates.instance.UI_skills.SetActive(true);
+            MainStates.instance.UI_skills.SetActive(false);
             MainStates.instance.UI_unitsPlaced.SetActive(false);
             if (MainStates.instance.lastBattleResult == 0)
             {
@@ -86,7 +86,7 @@ public class MainCycleExp : MonoBehaviour
         //WaveSpawner.instance.DoSpawnAll(MainStates.instance.lastBattle);
         
         MainStates.instance.UI_squadList.SetActive(false);
-        MainStates.instance.UI_skills.SetActive(false);
+
         
         Camera.main.GetComponent<CameraFollow>().target = battlePoint;
         MainStates.instance.mainPlayer.ResetCDs();
@@ -129,7 +129,11 @@ public class MainCycleExp : MonoBehaviour
 
         MainStates.manualDt = true;
         TimeManager.LAST_DT = 1;
-
+        
+        MainStates.instance.UI_skills.SetActive(true);
+        //
+        MainStates.instance.awaitUnits.Clear();
+        MainStates.instance.awaitUnits.Add("second_main", 1);
     }
 
     public void StartGame()
@@ -160,7 +164,7 @@ public class MainCycleExp : MonoBehaviour
         main.AdjustPosition();
         main.AddMeta("my_side");
         //
-        main.AddViz("move");
+        main.AddViz("click_move");
         
         //equipping basic melee
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 }});
@@ -168,7 +172,7 @@ public class MainCycleExp : MonoBehaviour
         MainStates.instance.Equip(main, skl, 50);
         //
         
-        MainStates.instance.UI_skills.SetActive(true);
+        MainStates.instance.UI_skills.SetActive(false);
         foreach (var v in  main.actSkills)
         {
             v.SetPar("action_req", 1);
@@ -187,7 +191,12 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
-        MainStates.maxMove = 3;
+        MainStates.maxMove = 1;
+        //set all ranges to 100
+        foreach (var v in DatabaseAll.instance.skills)
+        {
+            v.Value.pars["range"] = 100;
+        }
         
         PlacerSystem.instance.onDragEach = (x) =>
         {
@@ -268,7 +277,7 @@ public class MainCycleExp : MonoBehaviour
 
         if (inBattle)
         {
-            StartCoroutine(MainStates.instance.OneIteration(false, 0.5f, "sword"));
+            StartCoroutine(MainStates.instance.OneIteration(false, 1f, "sword", true));
         }
 
     }

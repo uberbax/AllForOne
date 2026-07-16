@@ -37,6 +37,10 @@ public class WaveSpawner : MonoBehaviour
     public static WaveSpawner instance;
 
     public bool IsDone = false;
+
+    public Transform heroPosHolder;
+    public Transform enemyPosHolder;
+    
     private void Awake()
     {
         instance = this;
@@ -385,12 +389,79 @@ public class WaveSpawner : MonoBehaviour
                     enm1.SetPar("is_summon", 1);
                     if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
                 }
+                
             }
             
         }
 
         return res;
     }
+    
+    
+        public List<RObj> DoSpawnAnyPos(List<Bon> what, string tg, bool battle, bool isSummon = false,
+        List<(string, string)> overridesViz = null, bool applyExtra = false)
+    {
+        List<RObj> res = new List<RObj>();
+        //we choose root depending on tag
+        
+        foreach (var v in what)
+        {
+            for (int i = 0; i < v.Value; i++)
+            {
+                var enm1 = new RObj(v.Key, v.Value < 1 ? 1 : v.Value, v.Val3 < 1 ? 1 : v.Val3,
+                    true, transform.position, true, ItemType.monster, isEnemy: tg == "enemy");
+        
+
+                enm1.AddViz( GetOverride( "hp#notext:1", overridesViz));
+                enm1.AddViz(GetOverride("coll#val:0.5", overridesViz));
+                enm1.AddViz(GetOverride("dmg_track", overridesViz));
+                enm1.AddViz(GetOverride("flash", overridesViz));
+                enm1.AddViz(GetOverride("death", overridesViz));
+                enm1.AddViz(GetOverride("drop", overridesViz));
+                enm1.AddViz(GetOverride("combat", overridesViz));
+                enm1.AddViz(GetOverride("animator#pr:1", overridesViz));
+                enm1.AddViz(GetOverride("realcol#val:0.2", overridesViz));
+                
+                AddExtras(enm1, overridesViz);
+                
+                enm1.AddMeta(tg == "enemy" ? "wave" : "my_side");
+                res.Add(enm1);
+                
+                if (tg == "enemy")
+                {
+                    enm1.main.transform.position = enemyPosHolder.GetChild(i).position;
+                    enm1.Position = enm1.main.transform.position;
+                }
+                else
+                {
+                    enm1.main.transform.position = heroPosHolder.GetChild(i).position;
+                    enm1.Position = enm1.main.transform.position;
+                }
+
+                if (battle)
+                {
+                    enm1.visuals["combat"].GetComponent<XDcombat>().curTg = MainStates.instance.tgBattle;
+                }
+
+                if (isSummon)
+                {
+                    enm1.SetPar("is_summon", 1);
+                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                }
+
+                if (applyExtra)
+                {
+                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                }
+                
+            }
+            
+        }
+
+        return res;
+    }
+    
+    
 }
 
 [System.Serializable]

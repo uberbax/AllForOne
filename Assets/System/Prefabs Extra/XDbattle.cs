@@ -35,6 +35,7 @@ public class XDbattle : ComponentBehavior
         bool wasClick = false;
         if (Input.GetMouseButtonDown(0))
         {
+            if (UtilsControl.IsPointerOverUIElement()) return;
             if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
             {
                 var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

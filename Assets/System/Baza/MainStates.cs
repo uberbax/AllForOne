@@ -1066,6 +1066,7 @@ public class MainStates : MonoBehaviour
         if (command == "GET_SKILLS_SELECT")
         {
             RObj wha = lastAllySelected == null ? mainPlayer : lastAllySelected;
+            if (param != "") wha = all[param];
 
                 var g = wha.actSkills;
                 List<RObj> res = new List<RObj>();
@@ -1594,7 +1595,7 @@ public class MainStates : MonoBehaviour
             }
             else if (SV == "cast")
             {
-                SkillExecutor.instance.CastSkill(lastAllySelected == null ? mainPlayer : lastAllySelected, o);
+                SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o);
             }
             else if (SV == "select")
             {
@@ -2007,7 +2008,7 @@ public class MainStates : MonoBehaviour
     }
 
     public Dictionary<string, float> dmgTimes = new Dictionary<string, float>();
-    
+    public Dictionary<string, int> awaitUnits = new Dictionary<string, int>();
     public void DealHeal(RObj who, float val)
     {
         var h = who.GetPar("registered_damage");
@@ -2481,7 +2482,7 @@ public class MainStates : MonoBehaviour
     public string lastBattle;
     public int lastBattleResult = 0;
     
-    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "")
+    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false)
     {
         if (InIteration) yield break;
         InIteration = true;
@@ -2512,6 +2513,19 @@ public class MainStates : MonoBehaviour
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;
 
+            //we possibly wait
+            if (awaitUnits && this.awaitUnits.ContainsKey(combats[i].RID))
+            {
+                while (this.awaitUnits[combats[i].RID] > 0)
+                {
+                    yield return null;
+                }
+                
+                yield return new WaitForSeconds(tm);
+                this.awaitUnits[combats[i].RID] = 1;
+                continue;
+            }
+            
             //moving ? probably shoulf take from monster
             for (int j = 0; j < maxMove; j++)
             {

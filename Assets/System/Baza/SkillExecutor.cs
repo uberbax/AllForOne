@@ -321,6 +321,13 @@ public class SkillExecutor : MonoBehaviour
         
         lastSkl = skl;
         lastWho = who;
+        
+        if (MainStates.instance.awaitUnits.ContainsKey(who.RID))
+        {
+            MainStates.instance.awaitUnits[who.RID]--;
+        }
+        
+        //?
         var ss = skl.dbObj.extraPars;
         if (ss.Count > 0 && skl.GetPar("req2") < 1)
         {
@@ -338,6 +345,10 @@ public class SkillExecutor : MonoBehaviour
             
             reqAction = true;
             return;
+        }
+        else
+        {
+            ExecuteSkill(who, skl);
         }
         
     }
