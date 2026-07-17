@@ -156,7 +156,6 @@ public class MainCycleExp : MonoBehaviour
         MainStates.instance.ApplyPlayerConfigParams(main);
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
-        main.AddViz("hp");
         main.AddViz("coll#scale:0.5");
         main.AddViz("select");
         main.AddViz("animator#pr:1");
@@ -165,6 +164,7 @@ public class MainCycleExp : MonoBehaviour
         main.AddMeta("my_side");
         //
         main.AddViz("click_move");
+        Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
         
         //equipping basic melee
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 }});

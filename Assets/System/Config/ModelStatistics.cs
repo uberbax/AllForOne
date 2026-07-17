@@ -12,6 +12,17 @@ public partial class ModelStatistics : MonoBehaviour
     public Dictionary<string, BattleStat> battleStatsRound = new Dictionary<string, BattleStat>();
     public Dictionary<string, BattleStat> battleStats = new Dictionary<string, BattleStat>();
 
+    //CODEX
+    //codex_{id}_meet      //meet monster
+    //codex_{id}_loot_{id2}   //discovered loot
+    //codex_{id}_weak_{id2}   //discovered weakness
+    //codex_{id}_res_{id2}   //discovered resistance
+    //codex_{id}_immune_{id2}   //discovered immune
+    
+    //discovered locations
+    
+    
+    
     private void OnDestroy()
     {
         instance = null;
@@ -228,17 +239,17 @@ public partial class ModelStatistics : MonoBehaviour
     {
         (float, float, float, float) mm = (0,0,0,0);
 
-    foreach (var v in battleStats)
-        {
-            if (v.Value.damageDealt > mm.Item1) mm.Item1 = v.Value.damageDealt;
-            if (v.Value.damageHeal > mm.Item1) mm.Item1 = v.Value.damageHeal;
-            if (v.Value.damageShield > mm.Item1) mm.Item1 = v.Value.damageShield;
+        foreach (var v in battleStats)
+            {
+                if (v.Value.damageDealt > mm.Item1) mm.Item1 = v.Value.damageDealt;
+                if (v.Value.damageHeal > mm.Item1) mm.Item1 = v.Value.damageHeal;
+                if (v.Value.damageShield > mm.Item1) mm.Item1 = v.Value.damageShield;
 
-            if (v.Value.damageDealt > mm.Item2) mm.Item2 = v.Value.damageDealt;
-            if (v.Value.damageHeal > mm.Item3) mm.Item3 = v.Value.damageHeal;
-            if (v.Value.damageShield > mm.Item4) mm.Item4 = v.Value.damageShield;
+                if (v.Value.damageDealt > mm.Item2) mm.Item2 = v.Value.damageDealt;
+                if (v.Value.damageHeal > mm.Item3) mm.Item3 = v.Value.damageHeal;
+                if (v.Value.damageShield > mm.Item4) mm.Item4 = v.Value.damageShield;
 
-        }
+            }
 
         return mm;
     }
@@ -1156,3 +1167,4 @@ public class DLong
     public string Key = "";
     public long strt = 0;
 }
+

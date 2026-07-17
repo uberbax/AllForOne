@@ -33,6 +33,16 @@ public class XDclickMove : ComponentBehavior
             {
                 mon.visuals["animator"].GetComponent<XDanimator>().SetState("walk");
             }
+            
+            var h = endPos - mon.main.transform.position;
+            if (h.x > 0)
+            {
+                mon.SetScale(h.x > 0);
+            }
+            else if (h.x < 0)
+            {
+                mon.SetScale(h.x > 0);
+            }
         }
         
         if (!isMoving) return;

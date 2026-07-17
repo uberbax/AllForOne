@@ -42,6 +42,7 @@ public class AddedObject : MonoBehaviour
         GameObject nn = gameObject;
         if (recreateViz)
         {
+            Debug.Log("RECRE " + id);
             nn = Instantiate(ResourceHolder.instance.GetGameobject(id));
             nn.transform.position = transform.position;
             nn.transform.parent = gameObject.transform.parent;

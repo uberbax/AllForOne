@@ -30,6 +30,11 @@ public class CameraFollow : MonoBehaviour {
         savedIni = transform.position - target.position;
     }
 
+    public void SetTarget(Transform target)
+    {
+        
+    }
+
     void Update ()
     {
         if (target == null) return;
