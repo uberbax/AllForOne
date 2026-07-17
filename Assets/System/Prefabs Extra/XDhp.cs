@@ -17,19 +17,27 @@ public class XDhp : ComponentBehavior
 
     private Transform head;
     private float spd = 1;
-    
+
+    public string trackWhat = "health";
+    public string trackWhere = "head";
+    public float dlt = 0.3f;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
             notext = true;
         if (pars.ContainsKey("nofull"))
             nofull = true;
+        
+        if (pars.ContainsKey("track"))
+            trackWhat = pars["track"];
+        
+        
     }
     
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
-        head = mon.visMain.transform.Find("head");
+        head = mon.visMain.transform.Find(trackWhere);
         Update();
     }
 
@@ -38,10 +46,10 @@ public class XDhp : ComponentBehavior
         if (head != null)
         {
             fill.transform.parent.position = head.position;
-            hp.transform.position = head.position + new Vector3(0, 0.3f, 0);
+            hp.transform.position = head.position + new Vector3(0, dlt, 0);
         }
 
-        float ratio = mon.GetPar("health") / mon.GetPar("max_health");
+        float ratio = mon.GetPar(trackWhat) / mon.GetPar("max_" + trackWhat);
         fill.fillAmount = ratio;
         if (fillMed.fillAmount > ratio)
         {

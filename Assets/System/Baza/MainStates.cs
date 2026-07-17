@@ -137,6 +137,8 @@ public class MainStates : MonoBehaviour
 
     public static bool manualDt = false;
     public static float manualTick = 1;
+
+    public static List<(string, string)> overridesViz = null;
     //
     public Transform trashRoot;
     

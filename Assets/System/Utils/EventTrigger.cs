@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EventTrigger : MonoBehaviour
 {
+    public string explanation = "";
     public string keyCode = "";
     public string evtName = "";
     public ArgPass arg;
@@ -21,7 +22,7 @@ public class EventTrigger : MonoBehaviour
     public string soundTrigger = "";
 
     public bool paramAsHolder = false;
-    
+    public bool passRobjHolder = false;
     void Start()
     {
         var btn = GetComponent<Button>();
@@ -34,6 +35,11 @@ public class EventTrigger : MonoBehaviour
                 if (paramAsHolder)
                     bb = GetComponentInParent<AbsHolder>().id;
                 arg.what = bb;
+                if (passRobjHolder)
+                {
+                    var cc = GetComponentInParent<ObjHolder>().obj;
+                    arg.who = cc;
+                }
                     
                 EventManager.INV(evtName, arg);
                 if (dyno.id != "")

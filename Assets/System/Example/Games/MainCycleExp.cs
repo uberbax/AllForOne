@@ -98,6 +98,8 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("shadow");
         secondMain.AddViz("combat#no:1");
         secondMain.AddViz("hp");
+        secondMain.AddViz("mana");
+        
         secondMain.AddViz("coll#scale:0.5");
         secondMain.AddViz("animator#pr:1");
         secondMain.AddViz("drag");
@@ -192,6 +194,7 @@ public class MainCycleExp : MonoBehaviour
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
         MainStates.maxMove = 1;
+        MainStates.overridesViz = new List<(string, string)>{ ("hp","") };
         //set all ranges to 100
         foreach (var v in DatabaseAll.instance.skills)
         {

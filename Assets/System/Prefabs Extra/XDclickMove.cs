@@ -24,7 +24,10 @@ public class XDclickMove : ComponentBehavior
         if (Input.GetMouseButtonDown(0))
         {
             if (UtilsControl.IsPointerOverUIElement()) return;
+            if (UtilsControl.CheckClick()) return;
             //it also might be select or interactable
+            
+            //check click
             
             endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             endPos.z = 0;

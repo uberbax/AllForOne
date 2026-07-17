@@ -2353,6 +2353,19 @@ public class UtilsControl : MonoBehaviour
         return results.Count > 0 || EventSystem.current.IsPointerOverGameObject() ; //  results.Where(r => r.gameObject.layer == 5).Count() > 0;
     }
 
+    public static bool CheckClick()
+    {
+        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        {
+            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var hit = Physics2D.Raycast(pos, new Vector2(0, 1), 0.1f, 1 << LayerMask.NameToLayer("Click"));
+            //
+            if (hit.collider == null) return false;
+            return true;
+        }
+        return false;
+    }
+
     public static int CalculateLayer(GameObject o, Transform overLo = null, Transform overHi = null)
     {
         float dm = 1;

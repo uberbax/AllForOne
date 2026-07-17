@@ -32,6 +32,8 @@ Transform:
   m_Children:
   - {fileID: 5345860109971747863}
   - {fileID: 5740887133794858018}
+  - {fileID: 5314009864471963905}
+  - {fileID: 1609759982420335395}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8000539715760911422
@@ -65,6 +67,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d990336052be7a5409109fe227082ed7, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: attack
     loop: 0
     sprites:
@@ -87,6 +90,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b6a24bf7f0c119d49bd3695ffbc62b2c, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: walk
     loop: 1
     sprites:
@@ -102,6 +106,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2cde67a7a730c094abd84691f4b009e7, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: death
     loop: 0
     sprites:
@@ -115,6 +120,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f8cc49c90f210d14bacd4ba07b277c73, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: hit
     loop: 0
     sprites:
@@ -126,6 +132,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f93fe7ff9f768094f9b072acc5d055a0, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   defaultAnim: idle
   curAnim: 
   forceAnim: idle
@@ -155,6 +162,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.485, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6939798254224343657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2006747611072413194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1609759982420335395}
+  m_Layer: 0
+  m_Name: bot_mana
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1609759982420335395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006747611072413194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,7 +232,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8843089668777159582
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -251,3 +289,35 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
+--- !u!1 &3206777262115463292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5314009864471963905}
+  m_Layer: 0
+  m_Name: bot_health
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5314009864471963905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206777262115463292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6939798254224343657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

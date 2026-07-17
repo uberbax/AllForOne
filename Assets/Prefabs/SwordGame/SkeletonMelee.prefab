@@ -32,6 +32,8 @@ Transform:
   m_Children:
   - {fileID: 5345860109971747863}
   - {fileID: 5740887133794858018}
+  - {fileID: 4221801728125672955}
+  - {fileID: 4099321750313872778}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8000539715760911422
@@ -65,6 +67,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 107ea4eed6c4b9443bfa58a994c2e412, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: attack
     loop: 0
     sprites:
@@ -78,6 +81,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 87d6f122b87c04b49856d1e6be54f763, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: walk
     loop: 1
     sprites:
@@ -93,6 +97,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 2a29ee01eb26a9940854c5caf396ff09, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: death
     loop: 0
     sprites:
@@ -106,6 +111,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: c47f4041c38d68b4387f255e657d3449, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   - nm: hit
     loop: 0
     sprites:
@@ -117,6 +123,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 69ad64f1115ccc64c8d371427c30932a, type: 3}
     endAnim: 
     doEffect: 0
+    scale: 1
   defaultAnim: idle
   curAnim: 
   forceAnim: idle
@@ -146,6 +153,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.485, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6939798254224343657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2475698790201661021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4221801728125672955}
+  m_Layer: 0
+  m_Name: bot_health
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4221801728125672955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475698790201661021}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -185,7 +223,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8843089668777159582
 SpriteRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -242,3 +280,35 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
+--- !u!1 &8178914931587803151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4099321750313872778}
+  m_Layer: 0
+  m_Name: bot_mana
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4099321750313872778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8178914931587803151}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6939798254224343657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
