@@ -60,6 +60,21 @@ public class MainCycleExp : MonoBehaviour
             }
         });
         
+        EventManager.SUB("battle_leave", (x) =>
+        {
+            MainStates.manualDt = false;
+            BattleController.instance.Clean();
+            ModelStatistics.instance.SetStatValueForce("battle",1);
+            Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+            secondMain.Destroy();
+            MainStates.instance.UI_skills.SetActive(false);
+            //MainStates.instance.UI_unitsPlaced.SetActive(false);
+            {
+                MainStates.instance.inBattle = false;
+                inBattle = false;
+            }
+        });
+        
         EventManager.SUB("go_home", (x) =>
         {
             Camera.main.GetComponent<CameraFollow>().target = basePos;

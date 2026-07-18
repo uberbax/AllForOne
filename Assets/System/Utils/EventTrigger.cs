@@ -23,12 +23,13 @@ public class EventTrigger : MonoBehaviour
 
     public bool paramAsHolder = false;
     public bool passRobjHolder = false;
+    public bool addToBtn = true;
     void Start()
     {
         var btn = GetComponent<Button>();
         if (btn != null)
         {
-            btn.onClick.RemoveAllListeners();
+            if (!addToBtn) btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() =>
             {
                 string bb = arg.what;

@@ -25,6 +25,10 @@ public class Animato : MonoBehaviour
     
     private void OnEnable()
     {
+        //we override tm
+        tm = 0.33f;
+        //actually it depends on a game
+        
         if (waitAsChildIndex)
             wait = transform.GetSiblingIndex() * 0.33f;
         
