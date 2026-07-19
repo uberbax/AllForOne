@@ -56,6 +56,11 @@ public partial class ModelStatistics : MonoBehaviour
     {
         SetStatValue("codex_" + mon + "_loot_" + loot, 1);
     }
+    public void Codex_LootMet(string mon, List<Bon> loot)
+    {
+        foreach (var v in loot)
+            SetStatValue("codex_" + mon + "_loot_" + v.Key, 1);
+    }
     public void Codex_WeakMet(string mon, string weak)
     {
         SetStatValue("codex_" + mon + "_weak_" + weak, 1);

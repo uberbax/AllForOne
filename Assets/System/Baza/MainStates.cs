@@ -40,7 +40,7 @@ public class MainStates : MonoBehaviour
     public GameObject UI_squadList;
     public GameObject UI_unitsPlaced;
     public GameObject UI_buildingInterface;
-    
+    public GameObject UI_win;
     
     public StringObjectDictionary GLOBAL_OBJECTS;
     public GameObject MAIN_GAME;
@@ -139,6 +139,9 @@ public class MainStates : MonoBehaviour
     public static float manualTick = 1;
 
     public static List<(string, string)> overridesViz = null;
+
+    public Dictionary<string, List<Bon>> dropTables = new Dictionary<string, List<Bon>>();
+    
     //
     public Transform trashRoot;
     
@@ -270,6 +273,8 @@ public class MainStates : MonoBehaviour
             DelItems(u2.selfReward);
             AddItems(u1.selfReward);
         });
+        
+        dropTables.Add("battle_reward", new List<Bon>());
     }
 
     private void BattleStarted(ArgPass obj)
@@ -1050,6 +1055,13 @@ public class MainStates : MonoBehaviour
         {
             var n = t.GetComponentInParent<UIfiller>(true);
             var b = n.selfReward;
+            var h = CreateItems(b);
+            return h;
+        }
+        if (command == "BY_DROP_TABLE")
+        {
+            var n = t.GetComponentInParent<UIfiller>(true);
+            var b = dropTables[param];
             var h = CreateItems(b);
             return h;
         }

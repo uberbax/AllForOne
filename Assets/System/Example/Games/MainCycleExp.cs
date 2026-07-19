@@ -85,6 +85,7 @@ public class MainCycleExp : MonoBehaviour
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
         });
         
+        EventManager.SUB("battle_ended", BattleEnded);
     }
 
     public Transform battlePoint;
@@ -257,6 +258,25 @@ public class MainCycleExp : MonoBehaviour
         //
     }
 
+    public void BattleEnded(ArgPass obj)
+    {
+        var d1 = MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj;
+         var d = d1.dbObj.drop;
+        var aa = ModelSet.GetMeItemsBon(d);
+        //mark loot as taken
+        ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
+
+        MainStates.instance.UI_win.GetComponent<ObjHolder>().obj = d1; 
+        MainStates.instance.dropTables["battle_reward"] = aa;
+
+        inBattle = false;
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+    }
+
     public void HandleAutomove()
     {
         if (AlwaysMove)
@@ -269,6 +289,7 @@ public class MainCycleExp : MonoBehaviour
 
     }
 
+    Coroutine coroutine;
     private void Update()
     {
         
@@ -299,7 +320,10 @@ public class MainCycleExp : MonoBehaviour
 
         if (inBattle)
         {
-            StartCoroutine(MainStates.instance.OneIteration(false, 1f, "sword", true));
+            if (!MainStates.instance.InIteration)
+            {
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1f, "sword", true));
+            }
         }
 
     }

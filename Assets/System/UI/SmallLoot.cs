@@ -9,6 +9,8 @@ public class SmallLoot : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private ObjHolder other;
     private RObj mon;
+
+    public bool fillFull = false;
     
     private void OnEnable()
     {
@@ -17,7 +19,10 @@ public class SmallLoot : MonoBehaviour
             other = GetComponentInParent<ObjHolder>();
             mon = other.obj;
         }
-        Fill();
+        
+        if (fillFull)
+            FillFull();
+        else Fill();
     }
 
     public void Fill()
@@ -46,6 +51,28 @@ public class SmallLoot : MonoBehaviour
                 icon.color = Color.clear;
                 txt.text = "???";
             }
+
+        }
+    }
+
+    public void FillFull()
+    {
+        var all = MainStates.instance.dropTables["battle_reward"];
+        
+        for (int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).gameObject.SetActive(false);
+        
+        for (int i = 0; i < all.Count; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(true);
+            var g = transform.GetChild(i);
+            //check codex ?
+            var icon = g.Find("icon").GetComponent<Image>();
+            var txt = g.Find("icon/name").GetComponent<TextMeshProUGUI>();
+
+            icon.sprite = ResourceHolder.instance.items[all[i].Key];
+            txt.text = ConfigLoader.Instance.GetMeLocale(all[i].Key);
+
 
         }
     }
