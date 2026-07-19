@@ -20,8 +20,55 @@ public partial class ModelStatistics : MonoBehaviour
     //codex_{id}_immune_{id2}   //discovered immune
     
     //discovered locations
-    
-    
+
+    //
+    public bool Codex_IsMonsterMet(string mon)
+    {
+        var f = GetStatValue("codex_" + mon + "_meet");
+        return f > 0;
+    }
+    public bool Codex_IsLootMet(string mon, string loot)
+    {
+        var f = GetStatValue("codex_" + mon + "_loot_" + loot);
+        return f > 0;
+    }
+    public bool Codex_IsWeakMet(string mon, string weak)
+    {
+        var f = GetStatValue("codex_" + mon + "_weak_" + weak);
+        return f > 0;
+    }
+    public bool Codex_IsResMet(string mon, string res)
+    {
+        var f = GetStatValue("codex_" + mon + "_res_" + res);
+        return f > 0;
+    }
+    public bool Codex_IsImmuneMet(string mon, string immune)
+    {
+        var f = GetStatValue("codex_" + mon + "_immune_" + immune);
+        return f > 0;
+    }
+    //ok ok ok
+    public void Codex_MetMonster(string mon)
+    {
+        SetStatValue("codex_" + mon + "_meet", 1);
+    }
+    public void Codex_LootMet(string mon, string loot)
+    {
+        SetStatValue("codex_" + mon + "_loot_" + loot, 1);
+    }
+    public void Codex_WeakMet(string mon, string weak)
+    {
+        SetStatValue("codex_" + mon + "_weak_" + weak, 1);
+    }
+    public void Codex_ResMet(string mon, string res)
+    {
+        SetStatValue("codex_" + mon + "_res_" + res, 1);
+    }
+    public void Codex_ImmuneMet(string mon, string immune)
+    {
+        SetStatValue("codex_" + mon + "_immune_" + immune, 1);
+    }
+    //hhh
     
     private void OnDestroy()
     {

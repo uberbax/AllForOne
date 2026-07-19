@@ -151,6 +151,10 @@ public class MainCycleExp : MonoBehaviour
         //
         MainStates.instance.awaitUnits.Clear();
         MainStates.instance.awaitUnits.Add("second_main", 1);
+        
+        //and we do basically start battle
+        EventManager.INV("battle_start", null);
+        
     }
 
     public void StartGame()

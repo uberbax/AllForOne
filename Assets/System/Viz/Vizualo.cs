@@ -29,6 +29,9 @@ public class Vizualo : MonoBehaviour
     [Header("also IS NOT counted")]
     public GameObject asOther;
     public List<UnoReq> reqs = new List<UnoReq>();
+    
+    public GameObject forOther;
+    
     private void Start()
     {
         c = GetComponent<CanvasGroup>();
@@ -153,7 +156,9 @@ public class Vizualo : MonoBehaviour
 
     public void Activate(bool val)
     {
-        gameObject.SetActive(val);
+        if (forOther != null) forOther.SetActive(val);
+        else gameObject.SetActive(val);
+        
         if (relButton != null) relButton.interactable = isNot ? !val : val;
 
         //if (val) c.alpha = 1;

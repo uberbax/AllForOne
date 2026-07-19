@@ -38,6 +38,9 @@ public class XDinfo : ComponentBehavior
     
     private void OnClick()
     {
+        //met codex ?
+        ModelStatistics.instance.Codex_MetMonster(mon.dbObj.ID);
+        
         MainStates.instance.curClick = mon;
         MainStates.instance.UI_infoMon.SetActive(true);
     }

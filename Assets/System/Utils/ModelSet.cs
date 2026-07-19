@@ -58,17 +58,13 @@ public class ModelSet : MonoBehaviour
     }
 
     public static Dictionary<string, List<RObj>> calcSets = new Dictionary<string, List<RObj>>();
-    public static List<RObj> GetMeItemsAll(string setName)
+    public static List<string> GetMeItemsAll(string setName)
     {
-        if (calcSets.ContainsKey(setName))
-        {
-            return calcSets[setName];
-        }
-        
-        var tt = DatabaseAll.instance.GetComponentsInChildren<ModelSet>().ToList();
-        var t0 = tt.Find(x => x.name == setName);
-        calcSets.Add(setName, GetMeItemsAll(t0));
-        return calcSets[setName];
+        var tt = ConfigLoader.Instance.dictSets[setName];
+        List<string> res = new List<string>();
+        foreach (var v in tt)
+            res.Add(v.item);
+        return res;
     }
 
     public static List<RObj> GetMeItemsAll(ModelSet ms)
