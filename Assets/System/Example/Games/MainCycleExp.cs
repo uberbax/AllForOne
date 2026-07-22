@@ -16,6 +16,9 @@ public class MainCycleExp : MonoBehaviour
     private RObj secondMain;
 
     private bool inBattle = false;
+
+    [Header("Other")] 
+    public Button skipTurn;
     
     private void Awake()
     {
@@ -86,12 +89,19 @@ public class MainCycleExp : MonoBehaviour
         });
         
         EventManager.SUB("battle_ended", BattleEnded);
+        
+        skipTurn.onClick.AddListener(() => SkipTurn());
     }
 
     public Transform battlePoint;
     public Transform playerPos;
     public Transform basePos;
-    
+
+
+    public void SkipTurn()
+    {
+        MainStates.instance.awaitUnits["second_main"] = 0;
+    }
     
     private void BattleClicked(ArgPass obj)
     {
@@ -119,6 +129,10 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("coll#scale:0.5");
         secondMain.AddViz("animator#pr:1");
         secondMain.AddViz("drag");
+        
+        secondMain.AddViz("flash");
+        secondMain.AddViz("dmg_track");
+        
         
         secondMain.AdjustPosition();
         secondMain.AddMeta("my_side");
@@ -215,6 +229,9 @@ public class MainCycleExp : MonoBehaviour
         MainStates.pickOverHead = true;
         MainStates.maxMove = 1;
         MainStates.overridesViz = new List<(string, string)>{ ("hp","") };
+
+        Animato.GlobalTm = 0.33f;
+        
         //set all ranges to 100
         foreach (var v in DatabaseAll.instance.skills)
         {

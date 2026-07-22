@@ -23,10 +23,13 @@ public class Animato : MonoBehaviour
 
     public float tm = 1;
     
+    public static float GlobalTm = -1;
+    
     private void OnEnable()
     {
         //we override tm
-        tm = 0.33f;
+        if (GlobalTm > 0)
+            tm = GlobalTm;
         //actually it depends on a game
         
         if (waitAsChildIndex)

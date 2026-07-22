@@ -139,8 +139,17 @@ public class Transitioner : MonoBehaviour
         }
     }
     //
+    public static float GLobalSpd = -1;
+    public static float GLobalWait = -1;
+    
     public void DoFade(float spd, float wait, Action midAct, Action endAct = null)
     {
+        if (GLobalSpd > 0)
+            spd = GLobalSpd;
+        if (GLobalWait > 0)
+            wait = GLobalWait;
+        
+        
         ClearSteps();
         steps.gameObject.SetActive(false);
         pic.gameObject.SetActive(false);

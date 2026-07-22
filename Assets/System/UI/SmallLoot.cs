@@ -14,11 +14,11 @@ public class SmallLoot : MonoBehaviour
     
     private void OnEnable()
     {
-        if (other == null)
-        {
+        //if (other == null)
+        //{
             other = GetComponentInParent<ObjHolder>();
             mon = other.obj;
-        }
+        //}
         
         if (fillFull)
             FillFull();

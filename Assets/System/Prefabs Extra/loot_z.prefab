@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8443495209178172995}
   - component: {fileID: 1290195038797789721}
   - component: {fileID: 3193975503556321486}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: loot_z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,20 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15c17ad5438e4b4e94eea343f599768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mon:
-    it: 0
-    RID: 
-    dbObj:
-      ID: 
-      labels: []
-      skills: []
-    tags: []
-    allyTags: []
-    enemyTags: []
-    labels: []
-    inventory: []
-    position: {x: 0, y: 0, z: 0}
-    main: {fileID: 0}
+  price: []
 --- !u!58 &3193975503556321486
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -67,6 +54,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8730971984731954758}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -90,7 +78,7 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
   m_Radius: 0.5

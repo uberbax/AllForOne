@@ -21,27 +21,35 @@ public class XDloot : ComponentBehavior
         mon = GetComponentInParent<ObjHolder>().obj;
     }
 
-    void OnMouseUp()
+    void Update()
     {
-        Debug.Log("BOM");
-        var a = MainStates.instance.lastAllySelected == null ? MainStates.instance.all["main_player"] :  MainStates.instance.lastAllySelected;
-
-        var rr = MainStates.instance.GetDistance(mon, a, out float tt);
-        if (rr <= 1)
+        if (Input.GetMouseButtonUp(0))
         {
-            if (!opened && price.Count > 0)
-            {
-                var bb = MainStates.instance.UI_dynamikPrice.GetComponent<Buyable>();
-                bb.SetParams(true, price, "chest", "open_chest", () => Open(), true);
-                bb.gameObject.SetActive(true);
-            }
-            else
-            {
-                Open();
-            }
+            var d = UtilsControl.CheckClick();
+            if (d != gameObject) return;
+            
+            Debug.Log("BOM");
+            var a = MainStates.instance.lastAllySelected == null
+                ? MainStates.instance.all["main_player"]
+                : MainStates.instance.lastAllySelected;
 
+            var rr = MainStates.instance.GetDistance(mon, a, out float tt);
+            if (rr <= 1)
+            {
+                if (!opened && price.Count > 0)
+                {
+                    var bb = MainStates.instance.UI_dynamikPrice.GetComponent<Buyable>();
+                    bb.SetParams(true, price, "chest", "open_chest", () => Open(), true);
+                    bb.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Open();
+                }
+
+            }
         }
-        
+
 
     }
 
