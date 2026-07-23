@@ -259,7 +259,8 @@ public class Buyable : ComponentBehavior
         triggered = true;
     }
 
-    public void OnMouseUp()
+    //public void OnMouseUp()
+    public void WasClicked()
     {
         lastClickTime = Time.time;
     }

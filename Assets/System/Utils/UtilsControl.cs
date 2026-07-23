@@ -2605,9 +2605,21 @@ public class UtilsControl : MonoBehaviour
     public GameObject fadePanel;
     private bool inUlt = false;
 
+    public static GameObject lastClicked = null;
     private void Update()
     {
-        //Debug.Log(Time.time);
+        if (Input.GetMouseButtonDown(0))
+        {
+            lastClicked = CheckClick();
+            if (lastClicked != null)
+            {
+                lastClicked.SendMessage("WasClicked", SendMessageOptions.DontRequireReceiver);
+            }
+        }
+        else
+        {
+            lastClicked = null;
+        }
     }
 
     public void DoUlt(GameObject who)

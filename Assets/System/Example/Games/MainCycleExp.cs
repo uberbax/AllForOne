@@ -227,10 +227,12 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        //move legnth in turn based games
         MainStates.maxMove = 1;
         MainStates.overridesViz = new List<(string, string)>{ ("hp","") };
 
         Animato.GlobalTm = 0.33f;
+        XDloot.doMagnet = true;
         
         //set all ranges to 100
         foreach (var v in DatabaseAll.instance.skills)

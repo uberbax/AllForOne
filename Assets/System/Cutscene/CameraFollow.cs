@@ -19,6 +19,8 @@ public class CameraFollow : MonoBehaviour {
     public bool holdZ;
 
     public Vector3 delta =  Vector3.zero;
+    public bool smallify = false;
+    private float tm = 1;
     [ContextMenu("CalcDelta")]
     public void CalculateDelta()
     {
@@ -28,6 +30,7 @@ public class CameraFollow : MonoBehaviour {
     private void Start()
     {
         savedIni = transform.position - target.position;
+        tm = savedIni.magnitude / smoothSpeed;
     }
 
     public void SetTarget(Transform target)
@@ -64,6 +67,9 @@ public class CameraFollow : MonoBehaviour {
 
         if (look)
             transform.LookAt(target);
+
+        if (smallify)
+            transform.localScale -= (Time.deltaTime) * Vector3.one;
     }
 
 }

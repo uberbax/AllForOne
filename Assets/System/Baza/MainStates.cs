@@ -30,6 +30,7 @@ public class MainStates : MonoBehaviour
     public GameObject UI_noMoney;
     public GameObject UI_skilChose;
     public GameObject UI_infoMon;
+    public GameObject UI_infoItem;
     public GameObject UI_smalls;
     public GameObject UI_buildings;
     public GameObject UI_skills;

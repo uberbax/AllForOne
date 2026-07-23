@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,9 +17,19 @@ public class XDloot : ComponentBehavior
     public List<Bon> price;
 
     private bool opened = false;
+    
+    //GLOBAL overrides
+    public static bool doMagnet = false;
+    
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
+    }
+    
+    public void AfterSet(string par)
+    {
+        if (pars.ContainsKey("dst"))
+            dstTake = float.Parse(pars["dst"], CultureInfo.InvariantCulture);
     }
 
     void Update()
@@ -34,7 +45,7 @@ public class XDloot : ComponentBehavior
                 : MainStates.instance.lastAllySelected;
 
             var rr = MainStates.instance.GetDistance(mon, a, out float tt);
-            if (rr <= 1)
+            if (rr <= dstTake)
             {
                 if (!opened && price.Count > 0)
                 {
@@ -56,35 +67,59 @@ public class XDloot : ComponentBehavior
     public void Open()
     {
         opened = true;
-         if (mon.HasVis("animator"))
-         {
-             mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("open");
-         }
-         
-         if (mon.main.name.ToLower().IndexOf("chest") >= 0)
-            SoundManager.instance.PlayAny("chest_open");
-         else 
-             SoundManager.instance.PlayAny("pickup");
-         
-         if (MainStates.lootTakeShowReward)
-         {
-             
-             var ss = MainStates.instance.GetInventoryBon(mon);
-             MainStates.instance.AddItems(ss);
-             PopupoManager.instance.ShowRewards(ss);
-         }
-         else
-         {
-             MainStates.instance.curLoot = mon;
-             MainStates.instance.UI_second.SetActive(true);
-         }
+        //
+        if (doMagnet)
+        {
+            var a = MainStates.instance.lastAllySelected == null
+                ? MainStates.instance.all["main_player"]
+                : MainStates.instance.lastAllySelected;
+            
+            var b = mon.main.AddComponent<CameraFollow>();
+            b.smoothSpeed = 0.01f;
+            b.look = false;
+            b.smallify = true;
+            b.target = a.main.transform;
+            b.act = Open2;
 
-
-         if (MainStates.disappearLootOnTake)
-         {
-             Destroy(mon.main);
-         }
-
-
+        }
+        else
+        {
+            Open2();
+        }
+        
     }
+    
+    public void Open2()
+    {
+           if (mon.HasVis("animator"))
+           {
+               mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("open");
+           }
+           
+           if (mon.main.name.ToLower().IndexOf("chest") >= 0)
+              SoundManager.instance.PlayAny("chest_open");
+           else 
+               SoundManager.instance.PlayAny("pickup");
+           
+           if (MainStates.lootTakeShowReward)
+           {
+               
+               var ss = MainStates.instance.GetInventoryBon(mon);
+               MainStates.instance.AddItems(ss);
+               PopupoManager.instance.ShowRewards(ss);
+           }
+           else
+           {
+               MainStates.instance.curLoot = mon;
+               MainStates.instance.UI_second.SetActive(true);
+           }
+        
+        
+           if (MainStates.disappearLootOnTake)
+           {
+               Destroy(mon.main);
+           }
+    }
+    
 }
+
