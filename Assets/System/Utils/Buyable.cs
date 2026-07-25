@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Buyable : ComponentBehavior
 {
+    public bool disableOnNoCond = false;
     [Header("RuntimeGen")] 
     public bool addToDB = false;
     public bool runtimeGen = false;
@@ -127,7 +128,7 @@ public class Buyable : ComponentBehavior
           {
               buyed = false;
               taken = false;
-              btn.interactable = true;
+              if (btn) btn.interactable = true;
               if (fillLeft) fillLeft.fillAmount = 0;
               if (take) take.gameObject.SetActive(false);
           }
@@ -241,6 +242,12 @@ public class Buyable : ComponentBehavior
                 if (Time.time - lastClickTime > 0.2f) done = false;
             }
             
+        }
+
+        if (!done && disableOnNoCond)
+        {
+            if (curDynamic.toActivate.Count > 0)
+                curDynamic.toActivate[0].SetActive(false);
         }
 
         if (done && curDynamic.conds1.Count > 0 && (!taken || curDynamic.multi > 0))

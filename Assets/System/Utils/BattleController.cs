@@ -28,7 +28,12 @@ public class BattleController : MonoBehaviour
             Destroy(MainStates.instance.trashRoot.transform.GetChild(i).gameObject);
         }
     }
-    
+
+    public void Flee()
+    {
+        startDo = false;
+    }
+
     private void Update()
     {
         if (!startDo) return;

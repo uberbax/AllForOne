@@ -66,6 +66,7 @@ public class MainCycleExp : MonoBehaviour
         EventManager.SUB("battle_leave", (x) =>
         {
             MainStates.manualDt = false;
+            BattleController.instance.Flee();
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle",1);
             Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
