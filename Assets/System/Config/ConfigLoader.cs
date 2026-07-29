@@ -1930,6 +1930,10 @@ public class ConfigLoader : MonoBehaviour
                         mm.reqItems.Add(new Bon { Key = yp[0], Value = int.Parse(yp[1]) });
                     }
                 }
+                else if (columns[j].ToUpper() == "RARITY")
+                {
+                    mm.rarity = int.Parse(tt[j]);
+                }
                 else if (columns[j].ToUpper() == "REQSTART")
                 {
                     var yp = tt[j].Split(",");

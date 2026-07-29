@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AbsHolder : MonoBehaviour
+public class AbsHolder : MonoBehaviour, IReceive
 {
     public string id;
     public string condId;
@@ -86,4 +86,18 @@ public class AbsHolder : MonoBehaviour
             Recalc();
         }
     }
+
+    public void Receive(ArgPass arg)
+    {
+        Debug.Log("Hello " + arg.what);
+        id = arg.what;
+        //thwbbb we TAKE IT ? DID WE ?
+        MainStates.instance.playerData.playerTasks.Add(new TasksProg{completed = false, id = arg.what, taken = false, startTime = DateTimeOffset.Now.ToUnixTimeSeconds(), started = -1}); 
+        Start();
+    }
+}
+
+interface IReceive
+{
+    public void Receive(ArgPass arg);
 }

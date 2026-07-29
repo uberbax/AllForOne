@@ -66,6 +66,16 @@ public class UIfiller : MonoBehaviour
             for (int i = 0; i < slots.Count; i++)
             {
                 var f = slots[i].GetComponentInChildren<ObjHolder>();
+                if (i >= res.Count)
+                {
+                    f.gameObject.SetActive(false);
+                    continue;
+                }
+                else
+                {
+                    f.gameObject.SetActive(true);
+                }
+                
                 if (f != null)
                 {
                     f.obj = res[i];

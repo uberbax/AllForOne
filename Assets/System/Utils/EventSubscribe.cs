@@ -23,9 +23,13 @@ public class EventSubscribe : MonoBehaviour
             
             gameObject.SetActive(false);
             gameObject.SetActive(true);
-            
+
             if (toActivate != null)
+            {
+                toActivate.GetComponent<IReceive>().Receive(x);                
                 toActivate.SetActive(true);
+                //toActivate.SendMessage("Receive", x);
+            }
 
             if (toInjectUpgrade != null)
             {

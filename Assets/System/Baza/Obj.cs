@@ -731,6 +731,12 @@ public class RObj
     {
         RID = id;
         it = tp;
+
+        //thwbbb
+        if (tp == ItemType.task)
+        {
+            upgradePars.Add("level", 0);
+        }
     }
     
     public RObj(string id, int amount, int level, bool withEmpty, Vector3 position, bool withVisual, ItemType tp, string overID = "", RObj own = null, bool isEnemy = false, GameObject overVis = null, GameObject asMainViz = null)

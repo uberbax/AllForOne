@@ -170,6 +170,13 @@ public class Dialoguer : MonoBehaviour
                 
                 //ShopKeeper.instance.Set(lastNpc.GetComponent<Inventary>(), MainStates.instance.inventory);
             }
+            else if (uo.fd.action == "task")
+            {
+                //Debug.Log(uo.fd.cStart);
+                //show task/quest take !
+                Hide();
+                EventManager.INV("show_task",new ArgPass {what = uo.fd.ava1});
+            }
             else if (uo.fd.action == "dyn")
             {
                 Hide();

@@ -145,9 +145,13 @@ public class ResourceHolder : MonoBehaviour
                 return dynamics[g];
         }
 
-        string ww = r.dbObj.ID;
-        if (shard && r.shardID != "") ww = r.shardID;
-        
+        string ww = "";
+        if (r.it != ItemType.task)
+        {
+            ww = r.dbObj.ID;
+            if (shard && r.shardID != "") ww = r.shardID;
+        }
+
         if (r.it == ItemType.item)
         {
             return items[ww];
@@ -343,6 +347,10 @@ public class ResourceHolder : MonoBehaviour
             {
                 txt.text = rareString[(int)r.GetPar("rarity")];
                 txt.color = rareColors[(int)r.GetPar("rarity")];
+            }
+            else if (a.param == "rarity_num")
+            {
+               txt.text = ((int)r.GetPar("rarity")).ToString();
             }
             else if (a.isStat)
             {

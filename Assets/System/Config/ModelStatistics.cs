@@ -1080,6 +1080,7 @@ public class ElTasko
     public float freeEvery = -1;
     public bool startStatNew = false;
     public bool autoTake = false;
+    public int rarity = 0;
 }
 
 
@@ -1114,6 +1115,9 @@ public class TasksProg
     public int curNum = 0;
     
     public int startStat = 0;
+
+    //was the task really started ?
+    public int started = 1;
 }
 
 public class BattleStat
