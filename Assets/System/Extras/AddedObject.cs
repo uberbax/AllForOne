@@ -13,6 +13,8 @@ public class AddedObject : MonoBehaviour
     public int level = 1;
     
     public List<string> addedVis = new List<string>();
+    //to do it as lootset
+    public string addedInvLoot = "";
     public List<string> addedInv = new List<string>();
 
     public Action<RObj> onAdd = null;
@@ -54,7 +56,16 @@ public class AddedObject : MonoBehaviour
         {
             r.AddViz(v);
         }
-        
+
+        if (addedInvLoot != "")
+        {
+            var a = ModelSet.GetMeItemsBon(addedInvLoot);
+            for (int i = 0; i < a.Count; i++)
+            {
+                MainStates.instance.AddItem(r, a[i].Key, a[i].Value, randomizeItemsParams);
+            }
+        }
+
         foreach (var v in addedInv)
         {
             var hh = v.Split(',');

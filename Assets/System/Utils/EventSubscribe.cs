@@ -26,7 +26,8 @@ public class EventSubscribe : MonoBehaviour
 
             if (toActivate != null)
             {
-                toActivate.GetComponent<IReceive>().Receive(x);                
+                var b = toActivate.GetComponent<IReceive>();
+                if (b != null) b.Receive(x);                
                 toActivate.SetActive(true);
                 //toActivate.SendMessage("Receive", x);
             }
