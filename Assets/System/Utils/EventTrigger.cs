@@ -24,6 +24,8 @@ public class EventTrigger : MonoBehaviour
     public bool paramAsHolder = false;
     public bool passRobjHolder = false;
     public bool addToBtn = true;
+    //set cur click
+    public bool setAsCurLoot = false;
     void Start()
     {
         var btn = GetComponent<Button>();
@@ -40,6 +42,11 @@ public class EventTrigger : MonoBehaviour
                 {
                     var cc = GetComponentInParent<ObjHolder>().obj;
                     arg.who = cc;
+                }
+
+                if (setAsCurLoot)
+                {
+                    MainStates.instance.curLoot = arg.who;
                 }
                     
                 EventManager.INV(evtName, arg);
@@ -70,6 +77,21 @@ public class EventTrigger : MonoBehaviour
         
         if (is3D || isMouseDown)
         {
+            string bb = arg.what;
+            if (paramAsHolder)
+                bb = GetComponentInParent<AbsHolder>().id;
+            arg.what = bb;
+            if (passRobjHolder)
+            {
+                var cc = GetComponentInParent<ObjHolder>().obj;
+                arg.who = cc;
+            }
+
+            if (setAsCurLoot)
+            {
+                MainStates.instance.curLoot = arg.who;
+            }
+            
             EventManager.INV(evtName, arg);
             if (dyno.id != "")
             {

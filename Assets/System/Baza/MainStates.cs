@@ -693,7 +693,8 @@ public class MainStates : MonoBehaviour
     }
     public void ExecuteDone(FormatDynamic res, bool force = false, RObj who = null, GameObject whoActivate = null, Transform par = null)
     {
-        Debug.Log("Executing Resolve");
+        //prabably shouldnt be in update thwbbb
+        //Debug.Log("Executing Resolve");
         if (res.create != "" && !force) return;
         
         
@@ -1231,6 +1232,24 @@ public class MainStates : MonoBehaviour
 
             return res;            
             
+        }
+        else if (command == "GET_TASKS")
+        {
+            var n = t.GetComponentInParent<UIfiller>(true);
+            List<RObj> res = new List<RObj>();
+            for (int i = 0; i < playerData.playerTasks.Count; i++)
+            {
+                var a = playerData.playerTasks[i];
+                if (a.started < 1) continue;
+               // if (!all.ContainsKey(a.id))
+               //{
+               //     Debug.Log("No Task: " + a.id);
+               //     continue;
+               //}
+                var b = new RObj(a.id, ItemType.task);
+                res.Add(b);
+            }
+            return res;
         }
         else if (command == "GET_ITEMS_OTHER")
         {

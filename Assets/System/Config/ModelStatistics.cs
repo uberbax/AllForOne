@@ -1117,7 +1117,7 @@ public class TasksProg
     public int startStat = 0;
 
     //was the task really started ?
-    public int started = 1;
+    public int started = 0;
 }
 
 public class BattleStat

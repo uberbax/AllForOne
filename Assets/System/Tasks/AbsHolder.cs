@@ -17,7 +17,7 @@ public class AbsHolder : MonoBehaviour, IReceive
     public bool isTask = true;
     public bool isSkill = false;
     
-    private void Start()
+    public void Start()
     {
         if (!ConfigLoader.parseEnded)
         {

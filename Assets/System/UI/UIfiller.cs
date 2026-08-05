@@ -100,6 +100,14 @@ public class UIfiller : MonoBehaviour
                 if (i >= res.Count)
                 {
                     var g = jj.GetComponentInChildren<ObjHolder>();
+                    var g1 = jj.GetComponentInChildren<AbsHolder>();
+                    if (g1 != null)
+                    {
+                        g1.id = res[i].RID;
+                        g1.Start();
+                        continue;
+                    }
+                    
                     if (g != null)
                     {
                         g.filler = this;
@@ -114,6 +122,14 @@ public class UIfiller : MonoBehaviour
                 else
                 {
                     var g = jj.GetComponentInChildren<ObjHolder>();
+                    var g1 = jj.GetComponentInChildren<AbsHolder>();
+                    if (g1 != null)
+                    {
+                        g1.id = res[i].RID;
+                        g1.Start();
+                        continue;
+                    }
+                    
                     if (g != null)
                     {
                         g.filler = this;
@@ -127,6 +143,15 @@ public class UIfiller : MonoBehaviour
                     else
                     {
                         var a = GameObject.Instantiate(spawn, jj);
+
+                        var b1 = a.GetComponent<AbsHolder>();
+                        if (b1 != null)
+                        {
+                            b1.id = res[i].RID;
+                            a.transform.SetAsLastSibling();
+                            continue;
+                        }
+                        
                         a.GetComponent<ObjHolder>().obj = res[i];
                         a.GetComponent<ObjHolder>().noTrack = true;
                         a.GetComponent<ObjHolder>().filler = this;
