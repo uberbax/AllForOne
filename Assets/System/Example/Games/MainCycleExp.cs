@@ -38,6 +38,7 @@ public class MainCycleExp : MonoBehaviour
         EventManager.SUB("battle_start", (x) =>
         {
             inBattle = true;
+            MainStates.instance.InIteration = false;
         });
         EventManager.SUB("battle_press", BattleClicked);
         

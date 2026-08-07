@@ -1,0 +1,59 @@
+2D Simple Sidescroll Map - User Guide
+=====================================
+
+Overview
+--------
+This package provides side-scrolling 2D map prefabs with runtime block streaming support.
+The demo scene includes map switching, sample character movement, camera follow, and UI controls for previewing each map.
+
+
+Recommended Prefab Types
+------------------------
+Portrait_UIFocused
+- Recommended Aspect Ratio: 9:16
+- Recommended Camera FOV: 75
+- Best for portrait games where a large UI area is placed near the bottom half of the screen.
+
+Adaptive_MapFocused
+- Recommended Aspect Ratio: 16:9 and 9:16
+- Recommended Camera FOV: 60
+- Best when the map should remain clearly visible in both landscape and portrait layouts.
+
+
+Camera Setup
+------------
+- Use a Perspective camera for the demo and runtime preview.
+- Set Projection to Perspective.
+- For Portrait_UIFocused maps, set Field of View to 75.
+- For Adaptive_MapFocused maps, set Field of View to 60.
+- Keep the camera Z position based on your scene composition.
+- The demo camera follow script only changes the camera X position.
+
+
+Map Prefab Setup
+----------------
+Each map prefab is organized by numeric depth objects.
+
+- Numeric children represent depth layers.
+- Block children are streamed repeatedly by MapRuntimeStreamer.
+- The last depth can be fixed to the camera X position when Fix Last Depth To Camera X is enabled.
+- Object-only children can be placed under the appropriate depth when they should move with that layer.
+
+
+Demo Controls
+-------------
+- H: Hide or show all demo UI.
+- Left Arrow / Right Arrow: Switch maps.
+- A / D: Switch maps.
+- Left / Right buttons: Change sample character direction.
+- Speed slider: Change sample character movement speed.
+
+
+Runtime Scripts
+---------------
+- MapRuntimeStreamer: Streams map blocks based on the camera visible X range.
+- CameraFollowTargetX: Follows only the target X position and preserves camera Y/Z.
+- SampleCharacterMover: Moves the sample character and flips its visual direction.
+- PropellerRotator: Rotates decorative objects such as windmill propellers.
+- DemoControl: Provides demo-only map switching and preview UI.
+
