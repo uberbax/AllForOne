@@ -330,6 +330,10 @@ public class ResourceHolder : MonoBehaviour
                 else
                     txt.text = a.pref + ConfigLoader.Instance.GetMeLocale(r.RID);
             }
+            else if (a.param == "label")
+            {
+                txt.text = ConfigLoader.Instance.GetMeLocale(r.dbObj.labelis[0]);
+            }
             else if (a.param == "description")
             {
                 if (r.dynamic != null)

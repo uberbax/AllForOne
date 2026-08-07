@@ -1123,6 +1123,18 @@ public class MainStates : MonoBehaviour
             
             return new List<RObj> { a};
         }
+        else if (command == "GET_ITEMS_CODEX")
+        {
+            List<RObj> res = new List<RObj>();
+            var v1 = DatabaseAll.instance.heroes;
+            foreach (var v in v1)
+            {
+                if (v.Value.pars["used"] < 1) continue;
+                var b = DatabaseAll.instance.CreateMonster(v.Key, 1);
+                res.Add(b);
+            }
+            return res;
+        }
         else if (command == "GET_ITEMS")
         {
             if (extra == "add")

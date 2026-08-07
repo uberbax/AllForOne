@@ -198,6 +198,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("max_stack", 1);
             o.pars.Add("exp", 0);
             o.pars.Add("slot", -1);
+            o.pars.Add("used", v.used);
             
             o.pars.Add("lifesteal_prc", v.lifestealPrc);
             o.pars.Add("regen", v.regen);

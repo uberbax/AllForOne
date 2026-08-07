@@ -23,7 +23,8 @@ public class UIfiller : MonoBehaviour
 
     public List<Transform> slots = new List<Transform>();
     public Transform root;
-
+    public bool asGrid = false;
+    
     public GameObject spawn;
 
     public static List<UIfiller> instances = new List<UIfiller>();
@@ -89,7 +90,42 @@ public class UIfiller : MonoBehaviour
 
         if (root != null)
         {
-            for (int i = 0; i < root.childCount; i++)
+            if (asGrid)
+            {
+                for (int i = res.Count; i < root.childCount; i++)
+                {
+                    root.GetChild(i).gameObject.SetActive(false);
+                }
+
+                var d = res.Count - root.childCount;
+                for (int i = 0; i < d; i++)
+                {
+                    var a = GameObject.Instantiate(spawn, root);
+                }
+                
+                for (int i = 0; i < res.Count; i++)
+                {
+                    var a = root.GetChild(i).gameObject;
+                    var b1 = a.GetComponent<AbsHolder>();
+                    if (b1 != null)
+                    {
+                        b1.id = res[i].RID;
+                        a.transform.SetAsLastSibling();
+                        continue;
+                    }
+                        
+                    a.GetComponent<ObjHolder>().obj = res[i];
+                    a.GetComponent<ObjHolder>().noTrack = true;
+                    a.GetComponent<ObjHolder>().filler = this;
+                    a.GetComponent<ObjHolder>().OnEnable();
+                    if (res[i] == null)
+                        a.GetComponentInChildren<CanvasGroup>().alpha = 0;
+                    a.transform.SetAsLastSibling();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < root.childCount; i++)
             {
                 var jj = root.GetChild(i);
                 if (deactivateOverCnt)
@@ -162,7 +198,9 @@ public class UIfiller : MonoBehaviour
 
                     }
                 }
+            }                
             }
+
         }
 
         if (take != null)
