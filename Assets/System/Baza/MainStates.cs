@@ -1503,7 +1503,12 @@ public class MainStates : MonoBehaviour
         {
             var SV = SVA[i];
             //changed
-            if (SV == "click")
+            if (SV.IndexOf("evt_") >= 0)
+            {
+                var g = SV.Substring(4);
+                EventManager.INV(g, new ArgPass{who = o});
+            }
+            else if (SV == "click")
             {
                 UI_descr.GetComponent<UIfiller>().otherContext = h.filler;
                 UI_descr.SetActive(true);

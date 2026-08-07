@@ -120,7 +120,7 @@ public class UIfiller : MonoBehaviour
                     a.GetComponent<ObjHolder>().OnEnable();
                     if (res[i] == null)
                         a.GetComponentInChildren<CanvasGroup>().alpha = 0;
-                    a.transform.SetAsLastSibling();
+                    //a.transform.SetAsLastSibling();
                 }
             }
             else
