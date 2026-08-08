@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjHolder : MonoBehaviour
+public class ObjHolder : MonoBehaviour, IReceive
 {
     public RObj obj;
     public GameObject attachedVeh;
@@ -109,5 +109,10 @@ public class ObjHolder : MonoBehaviour
     public void OnDisable()
     {
         Debug.Log("TTTT");
+    }
+
+    public void Receive(ArgPass arg)
+    {
+        obj = arg.who;
     }
 }

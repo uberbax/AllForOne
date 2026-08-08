@@ -315,6 +315,13 @@ public class ResourceHolder : MonoBehaviour
             {
                 img.fillAmount = r.GetPar(a.param) / r.GetPar(a.param2);
             }
+
+            if (a.param2 == "is_met")
+            {
+                var ff = ModelStatistics.instance.Codex_IsMonsterMet(r.dbObj.ID);
+                if (!ff) img.color = Color.black;
+                else img.color = Color.white;
+            }
         }
         else if (a.GetComponent<TextMeshProUGUI>() != null)
         {
@@ -375,6 +382,13 @@ public class ResourceHolder : MonoBehaviour
                 var e = r.GetPar(a.param);
                 if (!a.ignoreOnce && e == 1 && a.param == "amount") txt.text = "";
                 else txt.text = a.pref + r.GetPar(a.param).ToString();
+            }
+            
+            if (a.param2 == "is_met")
+            {
+                var ff = ModelStatistics.instance.Codex_IsMonsterMet(r.dbObj.ID);
+                if (!ff) txt.text = "???";
+                //else txt.text = "???";
             }
         }
 

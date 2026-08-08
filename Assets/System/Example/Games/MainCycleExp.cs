@@ -195,7 +195,7 @@ public class MainCycleExp : MonoBehaviour
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
         main.AddViz("coll#scale:0.5");
-        main.AddViz("select");
+        //main.AddViz("select");
         main.AddViz("animator#pr:1");
         
         main.AdjustPosition();

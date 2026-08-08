@@ -43,5 +43,6 @@ public class XDinfo : ComponentBehavior
         
         MainStates.instance.curClick = mon;
         MainStates.instance.UI_infoMon.SetActive(true);
+        ModelStatistics.instance.Codex_MetMonster(mon.dbObj.ID);
     }
 }
