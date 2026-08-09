@@ -208,6 +208,11 @@ public class MainCycleExp : MonoBehaviour
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 }});
         var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
         MainStates.instance.Equip(main, skl, 50);
+        
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 }});
+        skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
+        MainStates.instance.Equip(main, skl, 51);
+        
         //
         
         MainStates.instance.UI_skills.SetActive(false);

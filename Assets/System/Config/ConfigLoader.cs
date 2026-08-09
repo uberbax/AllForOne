@@ -836,6 +836,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "COST") mm.cost = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "ARMOR") mm.armor = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "ATTACK") mm.attack = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "MAGIC") mm.magic = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "USED") mm.used = int.Parse(tt[j]);
@@ -892,6 +894,18 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "DROP_PER_HIT") mm.dropPerHit = tt[j];
                 
+                else if (columns[j].ToUpper() == "VULNERABLE" || columns[j].ToUpper() == "RESIST" || columns[j].ToUpper() == "IMMUNITIES" )
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.extras = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.extras.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
+                
             }
             //
             heroes.Add(mm);
@@ -939,9 +953,14 @@ public class ConfigLoader : MonoBehaviour
             for (int j = 0; j < tt.Length; j++)
             {
                 if (tt[j] == "x") continue;
+                if (columns.Length <= j) continue;
                 if (columns[j].ToUpper() == "NAME") mm.skillName = tt[j];
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+
+                else if (columns[j].ToUpper() == "MAGIC") mm.MAGIC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                else if (columns[j].ToUpper() == "MAGIC_PRC") mm.MAGIC_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
                 else if (columns[j].ToUpper() == "HEALTH") mm.HEALTH = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "HEALTH_PRC") mm.HEALTH_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF") mm.DEF = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -956,6 +975,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "TAG_APPLY") mm.TAG_APPLY = tt[j];
                 else if (columns[j].ToUpper() == "PEN_CNT") mm.PEN_CNT = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "RARITY") mm.RARITY = int.Parse(tt[j]);
+                
+                else if (columns[j].ToUpper() == "DMG_TYPE") mm.DMG_TYPE = tt[j];
                 
                 else if (columns[j].ToUpper() == "DODGE") mm.dodge = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DODGE_PRC") mm.dodge_prc = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -1010,7 +1031,17 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "MANA_REC") mm.MANA_REQ = int.Parse(tt[j]);
                 
-                
+                else if (columns[j].ToUpper() == "EXTRAS" )
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.extras = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.extras.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
                 
                 else if (columns[j].ToUpper() == "PARS")
                 {
@@ -1074,6 +1105,10 @@ public class ConfigLoader : MonoBehaviour
                 if (columns[j].ToUpper() == "NAME") mm.skillName = tt[j];
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
+                else if (columns[j].ToUpper() == "MAGIC") mm.MAGIC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                else if (columns[j].ToUpper() == "MAGIC_PRC") mm.MAGIC_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
                 else if (columns[j].ToUpper() == "HEALTH") mm.HEALTH = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "HEALTH_PRC") mm.HEALTH_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF") mm.DEF = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -1099,6 +1134,17 @@ public class ConfigLoader : MonoBehaviour
                     {
                         var yp = yh[o].Split(",");  
                         mm.price.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
+                else if (columns[j].ToUpper() == "EXTRAS" )
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.extras = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.extras.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
                 
@@ -2474,6 +2520,7 @@ public class FormatHero
     public float armor = 0;
     public float magicResist = 0;
     public float attack = 0;
+    public float magic = 0;
     public float attackSpeed = 0;
     public int difficulty = 0;
     
@@ -2506,7 +2553,8 @@ public class FormatHero
     public string onDeath = "";
     public string onDmg = "";
     public string dropPerHit = "";
-    
+
+    public List<Bon> extras = new List<Bon>();
     
     public float critChance = 0;
     public float critDamage = 0;
@@ -2537,7 +2585,7 @@ public class FormatHero
     {
         //"p_atk","p_def","m_def","max_health","atk_spd","mana","max_mana"
         if (parName == "p_atk") return attack;
-        if (parName == "m_atk") return 1f;
+        if (parName == "m_atk") return magic;
         if (parName == "p_def") return armor;
         if (parName == "mana") return mana;
         if (parName == "max_mana") return maxMana;
@@ -2587,8 +2635,13 @@ public class FormatArtefact_old
 public class FormatArtefact
 {
     public string skillName = string.Empty;
+    
     public float ATTACK_PRC;
     public float ATTACK;
+    public float MAGIC_PRC;
+    public float MAGIC;
+    
+    
     public float HEALTH;
     public float MAX_HEALTH;
     public float DEF;
@@ -2610,6 +2663,7 @@ public class FormatArtefact
 
     public int size = 11;
     public List<Bon> price = new List<Bon>();
+    public List<Bon> extras = new List<Bon>();
 
 }
 
@@ -2688,8 +2742,13 @@ public class FormatSkill_old
 public class FormatSkill
 {
     public string skillName = string.Empty;
+    
     public float ATTACK_PRC;
     public float ATTACK;
+    public float MAGIC_PRC;
+    public float MAGIC;
+    
+    
     public float HEALTH;
     public float MAX_HEALTH;
     public float DEF;
@@ -2706,6 +2765,7 @@ public class FormatSkill
     public float CRIT_CHANCE = 0;
     public float CRIT_DMG = 0;
     public int RARITY = 0;
+    public string DMG_TYPE = "";
 
     public float dodge = 0;
     public float dodge_prc = 0;
@@ -2750,6 +2810,9 @@ public class FormatSkill
     public string SECOND = "";
     
     public List<Bon> PARS = new List<Bon>();
+    public List<Bon> extras = new List<Bon>();
+    
+    
     public float aoe = 0;
     public int amount = 1;
     public int travel = 0;

@@ -91,6 +91,18 @@ public class MainStates : MonoBehaviour
         { "legendary", 3},
         { "mythic", 4}
     };
+
+    public static Dictionary<string, float> dmgTypes = new Dictionary<string, float>()
+    {
+        { "phys", 0},
+        { "mag", 1},
+        { "fire", 1},
+        { "water", 2},
+        { "earth", 3},
+        { "light", 4},
+        { "dark", 5},
+        
+    };
     
     public static List<int> rarityShards = new List<int>
     {
@@ -2124,12 +2136,15 @@ public class MainStates : MonoBehaviour
     public void DealDamage(RObj a, RObj skl)
     {
         Debug.Log("DAMAGE: " +skl.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
+        var magic = skl.GetMainPar("magic");
         var atk = skl.GetMainPar("attack");
         var sh = skl.GetPar("shield");
         
         var h = a.GetPar("registered_damage");
         var sha = a.GetPar("shield");
         dmgTimes[skl.owner.RID] = Time.time;
+
+        if (magic > 0) atk = magic;
 
         if (skl.GetPar("empty_req") > 0)
         {

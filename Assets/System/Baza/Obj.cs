@@ -354,7 +354,7 @@ public class RObj
 
     public static List<string> scalablePars = new List<string>
     {
-        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc"
+        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc","magic","magic_prc"
     };
         
     
@@ -503,6 +503,22 @@ public class RObj
             }
             
             return GetPar("attack") * (1 + GetPar("attack_prc"));
+        }
+        
+        if (val == "magic")
+        {
+            if (it == ItemType.projectile)
+            {
+                if (owner != null)
+                {
+                    var f1 = owner.GetMainPar("magic");
+                    var f2 = GetPar("magic_prc");
+                    var f3 = GetPar("magic");
+                    return f1*f2 + f3;
+                }
+            }
+            
+            return GetPar("magic") * (1 + GetPar("magic_prc"));
         }
         
         if (val == "health")

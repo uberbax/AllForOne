@@ -53,6 +53,9 @@ public class DatabaseAll : MonoBehaviour
             o.ID = v.skillName.ToLower();
             /*if (v.ATTACK != 0)*/ o.pars.Add("attack", v.ATTACK);
             /*if (v.ATTACK != 0)*/ o.pars.Add("attack_prc", v.ATTACK_PRC);
+            /*if (v.ATTACK != 0)*/ o.pars.Add("magic", v.MAGIC);
+            /*if (v.ATTACK != 0)*/ o.pars.Add("magic_prc", v.MAGIC_PRC);
+            
             if (v.HEALTH != 0) o.pars.Add("health", v.HEALTH);
             if (v.MAX_HEALTH != 0) o.pars.Add("max_health", v.MAX_HEALTH);
             if (v.MANA != 0) o.pars.Add("mana", v.MANA);
@@ -133,6 +136,15 @@ public class DatabaseAll : MonoBehaviour
             o.labelis = v.affected;
             
             o.pars.Add("slot", -1);
+
+            if (v.DMG_TYPE == "")
+            {
+                o.pars.Add("dmg_type", 0);
+            }
+            else
+            {
+                o.pars.Add("dmg_type", MainStates.dmgTypes[v.DMG_TYPE]);
+            }
             
             skills.Add(o.ID, o);
         }
@@ -147,6 +159,9 @@ public class DatabaseAll : MonoBehaviour
             o.ID = v.skillName.ToLower();
             /*if (v.ATTACK != 0)*/ o.pars.Add("attack", v.ATTACK);
             /*if (v.ATTACK != 0)*/ o.pars.Add("attack_prc", v.ATTACK_PRC);
+            /*if (v.ATTACK != 0)*/ o.pars.Add("magic", v.MAGIC);
+            /*if (v.ATTACK != 0)*/ o.pars.Add("magic_prc", v.MAGIC_PRC);
+            
             if (v.HEALTH != 0) o.pars.Add("health", v.HEALTH);
             if (v.MAX_HEALTH != 0) o.pars.Add("max_health", v.MAX_HEALTH);
             if (v.MANA != 0) o.pars.Add("mana", v.MANA);
@@ -188,6 +203,8 @@ public class DatabaseAll : MonoBehaviour
             var o = new Obj();
             o.ID = v.monsterName.ToLower();
             o.pars.Add("attack", v.attack);
+            o.pars.Add("magic", v.magic);
+            
             o.pars.Add("health", v.health);
             o.pars.Add("max_health", v.maxHealth);
             o.pars.Add("mana", v.mana);
