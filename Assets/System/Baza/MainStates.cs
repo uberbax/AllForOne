@@ -92,15 +92,17 @@ public class MainStates : MonoBehaviour
         { "mythic", 4}
     };
 
+    public static Dictionary<float, string> reverseDmgTypes = new Dictionary<float, string>();
+    
     public static Dictionary<string, float> dmgTypes = new Dictionary<string, float>()
     {
         { "phys", 0},
         { "mag", 1},
-        { "fire", 1},
-        { "water", 2},
-        { "earth", 3},
-        { "light", 4},
-        { "dark", 5},
+        { "fire", 2},
+        { "water", 3},
+        { "earth", 4},
+        { "light", 5},
+        { "dark", 6},
         
     };
     
@@ -288,6 +290,14 @@ public class MainStates : MonoBehaviour
         });
         
         dropTables.Add("battle_reward", new List<Bon>());
+        
+        //
+        reverseDmgTypes.Clear();
+        foreach (var v in dmgTypes)
+        {
+            reverseDmgTypes.Add(v.Value, v.Key);
+        }
+        
     }
 
     private void BattleStarted(ArgPass obj)
@@ -2235,6 +2245,11 @@ public class MainStates : MonoBehaviour
                 }, 1);
             }
         }
+
+        var f1 = skl.GetPar("dmg_type");
+        var f2 = a.GetPar("res_" + reverseDmgTypes[f1]);
+        if (f2 < 0) atk *= 1.5f;
+        else if (f2 > 0) atk *= 0.5f;
         
         if (atk > 0)
         {

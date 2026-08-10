@@ -257,6 +257,11 @@ public class DatabaseAll : MonoBehaviour
             {
                 heroes.Add(o.ID + v.level, o);
             }
+
+            foreach (var v1 in  v.extras)
+            {
+                o.pars.Add(v1.Key, v1.Value);
+            }
         }
 
     }

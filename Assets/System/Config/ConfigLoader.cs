@@ -898,11 +898,11 @@ public class ConfigLoader : MonoBehaviour
                 {
                     if (tt[j] == "x") continue;
                     var yy = tt[j].Split("#");
-                    mm.extras = new List<Bon>();
+                    //mm.extras = new List<Bon>();
                     for (int k = 0; k < yy.Length; k++)
                     {
                         var bb = yy[k].Split(",");
-                        mm.extras.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                        mm.extras.Add(new Bon{Key = "res_" + bb[0], Value = int.Parse(bb[1])});
                     }
                 }
                 
