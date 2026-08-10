@@ -2473,7 +2473,8 @@ public class MainStates : MonoBehaviour
                 v1.upgradePars["timeLeft"] -=  TimeManager.LAST_DT;
                 v1.upgradePars["timeEvery"] -=  TimeManager.LAST_DT;
                 
-                if (v1.upgradePars["timeEvery"] < 0)
+                //its should be instant, is it ?
+                if (v1.upgradePars["timeEvery"] < 0 && v1.GetPar("instant") > 0)
                 {
                     //deal damage
                     DealDamage(v.Value, v1);
