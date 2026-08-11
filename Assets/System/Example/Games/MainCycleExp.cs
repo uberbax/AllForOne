@@ -135,6 +135,7 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("flash");
         secondMain.AddViz("dmg_track");
         
+        secondMain.AddViz("buff");
         
         secondMain.AdjustPosition();
         secondMain.AddMeta("my_side");

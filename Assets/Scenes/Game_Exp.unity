@@ -122414,6 +122414,7 @@ MonoBehaviour:
     - shard
     - fire_arrow
     - basic_buff_atk
+    - buff_atk1
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -122445,6 +122446,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 0f650e3b9a6562e4e87c4905c5340a23, type: 3}
     - {fileID: 21300000, guid: f9be76fd216b3ac41b647b49c62711c7, type: 3}
     - {fileID: 21300000, guid: 00c87aa2ea3561f489bc1f193ee8c3ed, type: 3}
+    - {fileID: 21300000, guid: 28908278b75204ef292a2d7a6bdb70d9, type: 3}
   pars:
     m_keys:
     - health
@@ -122768,6 +122770,7 @@ MonoBehaviour:
     - click_move
     - mana
     - shiny
+    - buff
     m_values:
     - {fileID: 1651707953261391744, guid: f86804f86ef6d2d4cba08c01f59d4352, type: 3}
     - {fileID: 4461510688263357733, guid: 573ed837b1ecb23428d1c477d161cfa7, type: 3}
@@ -122806,6 +122809,7 @@ MonoBehaviour:
     - {fileID: 4885158629782507207, guid: 2e9a8569f8cdad64bbdafee601a0c060, type: 3}
     - {fileID: 4461510688263357733, guid: a8663d445293818499039f509e598485, type: 3}
     - {fileID: 8546803072901540509, guid: 953cb8491769cdc4cb2b9be6e3020628, type: 3}
+    - {fileID: 4461510688263357733, guid: e70883a5ba742c44d890bb93eb578b91, type: 3}
   miscGO:
     m_keys: []
     m_values: []
@@ -160252,6 +160256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1527425567}
+  - component: {fileID: 1527425568}
   m_Layer: 5
   m_Name: UI_Bottom
   m_TagString: Untagged
@@ -160285,6 +160290,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1527425568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527425566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 0
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 3
+    what: battle
+    val: 2
+    compar: <
+  forOther: {fileID: 0}
 --- !u!1 &1527892333
 GameObject:
   m_ObjectHideFlags: 0
