@@ -188,6 +188,16 @@ public class ModelSet : MonoBehaviour
             Bon mn = new Bon();
             mn.Key = tt[l].item;
             mn.Value = um;
+
+            if (DatabaseAll.instance.items.ContainsKey(mn.Key))
+            {
+                var bb =  DatabaseAll.instance.items[mn.Key];
+                //its rarity
+                if (bb.pars.ContainsKey("roll") && bb.pars["roll"] > 0)
+                    mn.Val3 = Random.Range(0, 4);
+                
+            }
+            
             ans.Add(mn);
 
 

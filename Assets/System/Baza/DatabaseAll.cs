@@ -189,6 +189,8 @@ public class DatabaseAll : MonoBehaviour
             o.sizeX = v.size / 10;
             o.sizeY = v.size % 10;
             o.price = v.price;
+
+            o.pars.Add("roll", v.RARITY_ROLL);
             
             items.Add(o.ID, o);
 

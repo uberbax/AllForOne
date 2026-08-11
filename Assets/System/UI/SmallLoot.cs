@@ -72,7 +72,7 @@ public class SmallLoot : MonoBehaviour
 
             icon.sprite = ResourceHolder.instance.items[all[i].Key];
             txt.text = ConfigLoader.Instance.GetMeLocale(all[i].Key);
-
+            txt.color = ResourceHolder.instance.rareColors[all[i].Val3];
 
         }
     }

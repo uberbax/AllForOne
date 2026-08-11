@@ -1148,6 +1148,8 @@ public class ConfigLoader : MonoBehaviour
                     }
                 }
                 
+                else if (columns[j].ToUpper() == "RARITY_ROLL") mm.RARITY_ROLL = int.Parse(tt[j]);
+                
                 
             }
             //
@@ -2662,6 +2664,7 @@ public class FormatArtefact
     public string RARITY = "";
 
     public int size = 11;
+    public int RARITY_ROLL = 0;
     public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
 
