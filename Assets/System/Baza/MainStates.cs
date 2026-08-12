@@ -80,16 +80,33 @@ public class MainStates : MonoBehaviour
         { "boots", 3},
         { "amulet", 4},
         { "ring", 5},
+        { "offhand", 6},
     };
     
     public static Dictionary<string, float> rarity = new Dictionary<string, float>()
     {
         { "common", 0},
         { "uncommon", 1},
-        { "rare", 1},
-        { "epic", 2},
-        { "legendary", 3},
-        { "mythic", 4}
+        { "rare", 2},
+        { "epic", 3},
+        { "legendary", 4},
+        { "mythic", 5}
+    };
+    
+    public static Dictionary<string, float> subtypes = new Dictionary<string, float>()
+    {
+        { "weapon", 0},
+        { "boots", 1},
+        { "offhand", 2},
+        { "shield", 3},
+        { "head", 4},
+        { "body", 5},
+        { "ring", 6},
+        { "amulet", 7},
+        { "currency", 8},
+        { "usable", 9},
+        { "none", 10},
+        
     };
 
     public static Dictionary<float, string> reverseDmgTypes = new Dictionary<float, string>();
@@ -1204,10 +1221,21 @@ public class MainStates : MonoBehaviour
                     res = res.FindAll(x => x.GetPar("amount") > 0 && x.GetPar("used_slot") < 0);
                 }
                 
+                if (gk[l] == "weapon")
+                {
+                    //res = res.FindAll(x => x.it == ItemType.);
+                }
                 
                 if (gk[l] == "items")
                 {
                     res = res.FindAll(x => x.it == ItemType.item);
+                }
+
+                if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
+                    gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body")
+                {
+                    var c = subtypes[gk[l]];
+                    res = res.FindAll(x => x.dbObj.pars["subtype"] == c);
                 }
                 
                 if (gk[l] == "dynamic")

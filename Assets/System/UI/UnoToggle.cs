@@ -13,6 +13,7 @@ public class UnoToggle : MonoBehaviour
     
     public string toggleKey = "0";
     public int toggleVal = 0;
+    public string toggleVal2 = "";
 
     public GameObject view;
     public List<GameObject> additionalObjs;
@@ -86,7 +87,7 @@ public class UnoToggle : MonoBehaviour
         }
         else
         {
-            EventManager.INV(toggleKey, new ArgPass { num = toggleVal});            
+            EventManager.INV(toggleKey, new ArgPass { num = toggleVal, what = toggleVal2});            
             var gg = toggles[groupName];
             foreach (var v in gg)
             {

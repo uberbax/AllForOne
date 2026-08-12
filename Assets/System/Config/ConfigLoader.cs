@@ -1125,8 +1125,10 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "INSTANT") mm.INSTANT = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "RARITY") mm.RARITY = tt[j];
                 else if (columns[j].ToUpper() == "SLOT") mm.SLOT = tt[j];
+                else if (columns[j].ToUpper() == "SUBTYPE") mm.SUBTYPE = tt[j];
                 else if (columns[j].ToUpper() == "REF_SKILL") mm.REF_SKILL = tt[j];
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "PRICE")
                 {
                     var yh = tt[j].Split("#");
@@ -2662,6 +2664,8 @@ public class FormatArtefact
     
     public string SLOT = "";
     public string RARITY = "";
+    public string SUBTYPE = "none";
+    
 
     public int size = 11;
     public int RARITY_ROLL = 0;

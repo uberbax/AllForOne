@@ -176,6 +176,7 @@ public class DatabaseAll : MonoBehaviour
             
             if (v.SLOT != "") o.pars.Add("slot", MainStates.slots[v.SLOT]);
             if (v.RARITY != "") o.pars.Add("rarity", MainStates.rarity[v.RARITY]);
+            o.pars.Add("subtype", MainStates.subtypes[v.SUBTYPE]);
             
             o.pars.Add("level", 1);
             

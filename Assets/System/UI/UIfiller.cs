@@ -35,6 +35,11 @@ public class UIfiller : MonoBehaviour
     public Button take;
 
     public bool deactivateOverCnt = false;
+
+    [Header("Subs for events")] 
+    public string subParamChange = "";
+    
+    
     private void Awake()
     {
         instances.Add(this);
@@ -51,6 +56,22 @@ public class UIfiller : MonoBehaviour
     
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
+
+    private void Start()
+    {
+        if (subParamChange != "")
+        {
+            EventManager.SUB(subParamChange, (x) =>
+            {
+                if (x.what != "")
+                {
+                    param = x.what;
+                    OnEnable();
+                }
+            });
+        }
+    }
+
     public void OnEnable()
     {
         if (!ConfigLoader.parseEnded || !MainStates.instance.all.ContainsKey("main_player"))

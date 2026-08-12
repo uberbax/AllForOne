@@ -1051,6 +1051,28 @@ public enum ItemType
 }
 
 [System.Serializable]
+public enum SubType
+{
+    weapon,
+    boots,
+    offhand,
+    shield,
+    head,
+    ring,
+    amulet,
+    
+    currency,
+    
+    usable,
+    
+    none,
+    
+    unknown
+}
+
+
+
+[System.Serializable]
 public enum RarityType
 {
     common = 0,
@@ -1073,6 +1095,7 @@ public enum ItemSlot
     shield,
     gloves,
     ring,
+    offhand,
         
     upgrade,
     tempItem,
