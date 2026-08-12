@@ -210,8 +210,8 @@ public class MainCycleExp : MonoBehaviour
         var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
         MainStates.instance.Equip(main, skl, 50);
         
-        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 }});
-        skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_aoe", Value = 1 }});
+        skl = main.inventory.Find(x => x.dbObj.ID == "basic_aoe");
         MainStates.instance.Equip(main, skl, 51);
         
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_buff_atk", Value = 1 }});
@@ -241,7 +241,7 @@ public class MainCycleExp : MonoBehaviour
         MainStates.pickOverHead = true;
         //move legnth in turn based games
         MainStates.maxMove = 1;
-        MainStates.overridesViz = new List<(string, string)>{ ("hp","") };
+        MainStates.overridesViz = new List<(string, string)>{ ("hp",""),("buff","")};
 
         Animato.GlobalTm = 0.33f;
         XDloot.doMagnet = true;

@@ -81,6 +81,10 @@ public class MainStates : MonoBehaviour
         { "amulet", 4},
         { "ring", 5},
         { "offhand", 6},
+        { "trinket", 7},
+        { "adorn", 8},
+        
+        
     };
     
     public static Dictionary<string, float> rarity = new Dictionary<string, float>()
@@ -105,7 +109,10 @@ public class MainStates : MonoBehaviour
         { "amulet", 7},
         { "currency", 8},
         { "usable", 9},
-        { "none", 10},
+        { "trinket", 10},
+        { "adorn", 11},
+        
+        { "none", 100},
         
     };
 
@@ -1232,7 +1239,8 @@ public class MainStates : MonoBehaviour
                 }
 
                 if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
-                    gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body")
+                    gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body" || gk[l] == "trinket" ||
+                    gk[l] == "adorn")
                 {
                     var c = subtypes[gk[l]];
                     res = res.FindAll(x => x.dbObj.pars["subtype"] == c);

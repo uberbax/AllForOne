@@ -107,6 +107,9 @@ public class XDloot : ComponentBehavior
                var ss = MainStates.instance.GetInventoryBon(mon);
                MainStates.instance.AddItems(ss);
                PopupoManager.instance.ShowRewards(ss);
+
+               var ff = DatabaseAll.instance.CreateItem(ss[0].Key, ss[0].Value);
+               EventManager.INV("show_item", new ArgPass{who = ff});
            }
            else
            {
