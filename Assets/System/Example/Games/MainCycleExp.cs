@@ -17,6 +17,9 @@ public class MainCycleExp : MonoBehaviour
 
     private bool inBattle = false;
 
+    public Camera mainCamera;
+    public GameObject otherScene;
+    
     [Header("Other")] 
     public Button skipTurn;
     
@@ -47,7 +50,7 @@ public class MainCycleExp : MonoBehaviour
             MainStates.manualDt = false;
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle",1);
-            Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+            mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(false);
             MainStates.instance.UI_unitsPlaced.SetActive(false);
@@ -70,7 +73,7 @@ public class MainCycleExp : MonoBehaviour
             BattleController.instance.Flee();
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle",1);
-            Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+            mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(false);
             //MainStates.instance.UI_unitsPlaced.SetActive(false);
@@ -78,6 +81,7 @@ public class MainCycleExp : MonoBehaviour
                 MainStates.instance.inBattle = false;
                 inBattle = false;
             }
+            ActivateOtherScene(false);
         });
         
         EventManager.SUB("go_home", (x) =>
@@ -116,7 +120,7 @@ public class MainCycleExp : MonoBehaviour
         MainStates.instance.UI_squadList.SetActive(false);
 
         
-        Camera.main.GetComponent<CameraFollow>().target = battlePoint;
+        mainCamera.GetComponent<CameraFollow>().target = battlePoint;
         MainStates.instance.mainPlayer.ResetCDs();
 
         //we need to create player clone basically, but with available skills
@@ -173,15 +177,24 @@ public class MainCycleExp : MonoBehaviour
         //and we do basically start battle
         EventManager.INV("battle_start", null);
         
+        //we activate other SCENE
+        ActivateOtherScene(true);
+        
     }
 
+    public void ActivateOtherScene(bool val)
+    {
+        mainCamera.gameObject.SetActive(!val);
+        otherScene.SetActive(val);
+    }
+
+    
+    
     public void StartGame()
     {
-
         
     }
     
-
     private void Start()
     {
         
