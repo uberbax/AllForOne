@@ -6,9 +6,9 @@ namespace LayerLab
 /// Moves the sample character horizontally and flips its visual root to face the current movement direction.
 /// </summary>
 [DisallowMultipleComponent]
-public sealed class SampleCharacterMover : MonoBehaviour
+public class SampleCharacterMover : MonoBehaviour
 {
-    [SerializeField] private float speed = 2f;
+    [SerializeField] public float speed = 2f;
     [SerializeField] private float maxSpeed = 15f;
     [SerializeField] private Transform visualRoot;
     [SerializeField] private bool moveOnUpdate = true;

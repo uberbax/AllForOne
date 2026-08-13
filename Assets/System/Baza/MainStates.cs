@@ -111,6 +111,8 @@ public class MainStates : MonoBehaviour
         { "usable", 9},
         { "trinket", 10},
         { "adorn", 11},
+        { "potion", 12},
+        
         
         { "none", 100},
         
@@ -1240,7 +1242,7 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
                     gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body" || gk[l] == "trinket" ||
-                    gk[l] == "adorn")
+                    gk[l] == "adorn" || gk[l] == "potion")
                 {
                     var c = subtypes[gk[l]];
                     res = res.FindAll(x => x.dbObj.pars["subtype"] == c);

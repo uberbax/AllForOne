@@ -6,7 +6,7 @@ namespace LayerLab
 /// Provides the runtime demo UI for switching maps and controlling the sample character.
 /// </summary>
 [DisallowMultipleComponent]
-public sealed class DemoControl : MonoBehaviour
+public class DemoControl : MonoBehaviour
 {
     private const float ReferenceUiWidth = 1280f;
     private const float ReferenceUiHeight = 720f;
@@ -35,7 +35,7 @@ public sealed class DemoControl : MonoBehaviour
     [HideInInspector, SerializeField] private Color sliderTrackColor = new Color(1f, 1f, 1f, 0.22f);
     [HideInInspector, SerializeField] private Color sliderFillColor = new Color(0.48f, 0.78f, 1f, 0.92f);
     [HideInInspector, SerializeField] private Color sliderKnobColor = new Color(0.94f, 0.98f, 1f, 1f);
-    [HideInInspector, SerializeField] private bool showUi = true;
+    public bool showUi = true;
 
     private GameObject currentMap;
     private int currentMapIndex = -1;
