@@ -182,7 +182,7 @@ public class MainStates : MonoBehaviour
     public static List<(string, string)> overridesViz = null;
 
     public Dictionary<string, List<Bon>> dropTables = new Dictionary<string, List<Bon>>();
-    
+    public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
     //
     public Transform trashRoot;
     

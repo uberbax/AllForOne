@@ -22,7 +22,12 @@ public class GoBattle : MonoBehaviour
                 {
                     EventManager.INV("battle_press", new ArgPass{what = "battle9"});
                     //MainStates.instance.CreateLevelAtPos(2, 30, "LEVEL_1");
-                    WaveSpawner.instance.DoSpawnAnyPos(new List<Bon>{new Bon{Key = mon.dbObj.ID, Value = 1, Val3 = (int)mon.GetPar("level")}},"enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz);
+                    var ee = WaveSpawner.instance.DoSpawnAnyPos(new List<Bon>{new Bon{Key = mon.dbObj.ID, Value = 1, Val3 = (int)mon.GetPar("level")}},"enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz);
+                    if (mon.dbObj.pars["is_boss"] > 0)
+                    {
+                        MainStates.instance.curObjs["last_boss"] = ee[0];
+                    }
+                    
                     MainStates.instance.lastBattleTrigger = mon.main;
                     ModelStatistics.instance.SetStatValue("battle",2); 
                     holder.transform.parent.gameObject.SetActive(false);

@@ -63,6 +63,8 @@ public class MainCycleExp : MonoBehaviour
                 MainStates.instance.inBattle = false;
                 inBattle = false;
             }
+            ActivateOtherScene(false);
+            MainStates.instance.curObjs["last_boss"] = null;
         });
 
         EventManager.SUB("battle_leave", (x) =>
@@ -80,6 +82,7 @@ public class MainCycleExp : MonoBehaviour
                 inBattle = false;
             }
             ActivateOtherScene(false);
+            MainStates.instance.curObjs["last_boss"] = null;
         });
 
         EventManager.SUB("go_home", (x) => { Camera.main.GetComponent<CameraFollow>().target = basePos; });

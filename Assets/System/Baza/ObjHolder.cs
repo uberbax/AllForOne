@@ -14,7 +14,8 @@ public class ObjHolder : MonoBehaviour, IReceive
     public bool inDrag = false;
     
     public bool asMain = false;
-
+    public string asCurObj = "";
+    
     public ObjHolder redirect;
     public void OnEnable()
     {
@@ -52,7 +53,11 @@ public class ObjHolder : MonoBehaviour, IReceive
             obj = redirect.obj;
             return;
         }
-        
+
+        if (asCurObj != "")
+        {
+            obj = MainStates.instance.curObjs[asCurObj];
+        }
         
         if (asMain)
         {

@@ -546,6 +546,11 @@ public partial class ModelStatistics : MonoBehaviour
                         var gg = MainStates.instance.playerData.dynTaken.Contains(g.what);
                         q = gg;
                     }
+                    else if (g.typo == TaskType.have_obj)
+                    {
+                        q = MainStates.instance.curObjs.ContainsKey(g.what) &&
+                            MainStates.instance.curObjs[g.what] != null;
+                    }
                     else if (g.typo == TaskType.kill)
                     {
                         var aa = GetStatValue(g.what);
@@ -690,6 +695,11 @@ public partial class ModelStatistics : MonoBehaviour
                     {
                         q = MainStates.instance.playerData.dynTaken.Contains(g.what);
                     }
+                    else if (g.typo == TaskType.have_obj)
+                    {
+                        q = MainStates.instance.curObjs.ContainsKey(g.what) &&
+                            MainStates.instance.curObjs[g.what] != null;
+                    }
                     else if (g.typo == TaskType.have_item)
                     {
                         var aa = MainStates.instance.all["main_player"].inventory.Sum(x =>
@@ -787,6 +797,11 @@ public partial class ModelStatistics : MonoBehaviour
                             else if (g.typo == TaskType.have_dyn)
                             {
                                 q = MainStates.instance.playerData.dynTaken.Contains(g.what);
+                            }
+                            else if (g.typo == TaskType.have_obj)
+                            {
+                                q = MainStates.instance.curObjs.ContainsKey(g.what) &&
+                                    MainStates.instance.curObjs[g.what] != null;
                             }
                             else if (g.typo == TaskType.have_stat)
                             {
@@ -1037,7 +1052,9 @@ public enum TaskType
     battle_complete,
     have_par,
     have_skill,
-    have_dyn
+    have_dyn,
+    
+    have_obj
 }
 
 

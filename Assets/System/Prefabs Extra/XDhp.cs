@@ -49,6 +49,11 @@ public class XDhp : ComponentBehavior
             hp.transform.position = head.position + new Vector3(0, dlt, 0);
         }
 
+        if (mon == null)
+        {
+            mon = GetComponentInParent<ObjHolder>().obj;
+        }
+        
         float ratio = mon.GetPar(trackWhat) / mon.GetPar("max_" + trackWhat);
         fill.fillAmount = ratio;
         if (fillMed.fillAmount > ratio)
