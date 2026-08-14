@@ -24,6 +24,8 @@ public class ResourceHolder : MonoBehaviour
     public IntSpriteDictionary rareFrame;
     public IntSpriteDictionary slotFrame;
     
+    public StringColorDictionary elemColors;
+    
     public StringSpriteDictionary items;
     public StringSpriteDictionary buildings;
     

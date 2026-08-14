@@ -13,11 +13,11 @@ public partial class ModelStatistics : MonoBehaviour
     public Dictionary<string, BattleStat> battleStats = new Dictionary<string, BattleStat>();
 
     //CODEX
-    //codex_{id}_meet      //meet monster
-    //codex_{id}_loot_{id2}   //discovered loot
-    //codex_{id}_weak_{id2}   //discovered weakness
-    //codex_{id}_res_{id2}   //discovered resistance
-    //codex_{id}_immune_{id2}   //discovered immune
+    //codex_{id}_meet               //meet monster
+    //codex_{id}_loot_{id2}         //discovered loot
+    //codex_{id}_weak_{id2}         //discovered weakness
+    //codex_{id}_res_{id2}          //discovered resistance
+    //codex_{id}_immune_{id2}       //discovered immune
     
     //discovered locations
 

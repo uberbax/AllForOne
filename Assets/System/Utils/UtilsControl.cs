@@ -2610,6 +2610,8 @@ public class UtilsControl : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (IsPointerOverUIElement()) return;
+            
             lastClicked = CheckClick();
             if (lastClicked != null)
             {

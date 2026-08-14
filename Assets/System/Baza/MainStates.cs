@@ -1566,6 +1566,12 @@ public class MainStates : MonoBehaviour
             if (SV.IndexOf("evt_") >= 0)
             {
                 var g = SV.Substring(4);
+                //время костылей ?
+                if (g == "codex_click")
+                {
+                    var d = ModelStatistics.instance.Codex_IsMonsterMet(o.dbObj.ID);
+                    if (!d) return;
+                }
                 EventManager.INV(g, new ArgPass{who = o});
             }
             else if (SV == "click")
@@ -2300,8 +2306,25 @@ public class MainStates : MonoBehaviour
         var mana = skl.GetPar("mana");
         var health = skl.GetPar("health");
         var f2 = a.GetPar("res_" + reverseDmgTypes[f1]);
-        if (f2 < 0) atk *= 1.5f;
-        else if (f2 > 0) atk *= 0.5f;
+        if (f2 < 0)
+        {
+            atk *= 1.5f;
+            ModelStatistics.instance.Codex_WeakMet(a.dbObj.ID, reverseDmgTypes[f1]);
+        }
+        else if (f2 > 0)
+        {
+            if (f2 >= 100)
+            {
+                atk = 0;
+                ModelStatistics.instance.Codex_ImmuneMet(a.dbObj.ID, reverseDmgTypes[f1]);
+            }
+            else
+            {
+                atk *= 0.5f;    
+                ModelStatistics.instance.Codex_ResMet(a.dbObj.ID, reverseDmgTypes[f1]);
+            }
+
+        }
         
         if (atk > 0)
         {
