@@ -1573,6 +1573,18 @@ public class MainStates : MonoBehaviour
                 UI_descr.GetComponent<UIfiller>().otherContext = h.filler;
                 UI_descr.SetActive(true);
             }
+            else if (SV == "use")
+            {
+                Debug.Log("USE USE USE ");
+                if (o.dbObj.useSkill != "")
+                {
+                    var b = DatabaseAll.instance.CreateProjectile(all["second_main"], o.dbObj.useSkill,
+                        Vector3.zero);
+                    SkillExecutor.instance.ExecuteSkill(all["second_main"], b);
+                    DelItems(new List<Bon>{new Bon{ Key  = o.dbObj.ID, Value = 1} });
+                    EventManager.INV("potion_used", new ArgPass{who = o});
+                }
+            }
             else if (SV == "equip_exp")
             {
                 //bad shit
@@ -2285,6 +2297,8 @@ public class MainStates : MonoBehaviour
         }
 
         var f1 = skl.GetPar("dmg_type");
+        var mana = skl.GetPar("mana");
+        var health = skl.GetPar("health");
         var f2 = a.GetPar("res_" + reverseDmgTypes[f1]);
         if (f2 < 0) atk *= 1.5f;
         else if (f2 > 0) atk *= 0.5f;
@@ -2336,6 +2350,33 @@ public class MainStates : MonoBehaviour
             a.ChangePar("shield", -k);
         }
         //we get through buffs and timed buffs to reduce shield
+        if (mana > 0)
+        {
+            var m1 = a.GetPar("mana");
+            var m2 = a.GetPar("max_mana");
+            if (m2 - m1 < mana)
+            {
+                a.SetPar("mana", m2);
+            }
+            else
+            {
+                a.ChangePar("mana", mana);
+            }
+        }
+
+        if (health > 0)
+        {
+            var m1 = a.GetPar("registered_damage");
+            if (m1 < health) a.SetPar("registered_damage", 0);
+            else a.ChangePar("registered_damage", -health);
+        }
+
+        if (skl.dbObj.ID == "cure")
+        {
+            //a.timedBuffs.FindAll();
+            a.timedBuffs.RemoveAll(x => x.GetPar("positive") < 0);
+        }
+        
         for (int i = 0; i < a.buffs.Count; i++)
         {
             if (atk <= 0) break;

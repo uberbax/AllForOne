@@ -87,6 +87,11 @@ public class MainCycleExp : MonoBehaviour
         EventManager.SUB("go_map", (x) => { Camera.main.GetComponent<CameraFollow>().target = main.main.transform; });
 
         EventManager.SUB("battle_ended", BattleEnded);
+        
+        EventManager.SUB("potion_used", (x) =>
+        {
+            MainStates.instance.awaitUnits["second_main"] = 0;
+        });
 
         skipTurn.onClick.AddListener(() => SkipTurn());
     }

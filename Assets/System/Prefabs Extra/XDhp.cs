@@ -60,7 +60,7 @@ public class XDhp : ComponentBehavior
             fillMed.fillAmount = ratio;
         }
         
-        hp.text = ((int)mon.GetPar("health")).ToString();
+        hp.text = ((int)mon.GetPar(trackWhat)).ToString();
         
         fill.gameObject.SetActive(ratio < 1 || !nofull);
         hp.gameObject.SetActive(!notext);

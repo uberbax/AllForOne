@@ -115,6 +115,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("dodge_prc", v.dodge_prc);
             o.pars.Add("accuracy", v.accuracy);
             o.pars.Add("apoints", v.apoints);
+            o.pars.Add("positive", v.POSITIVE);
             
             o.pars.Add("immortal", v.immortal);
             o.pars.Add("req2", v.req2);
@@ -177,6 +178,7 @@ public class DatabaseAll : MonoBehaviour
             if (v.SLOT != "") o.pars.Add("slot", MainStates.slots[v.SLOT]);
             if (v.RARITY != "") o.pars.Add("rarity", MainStates.rarity[v.RARITY]);
             o.pars.Add("subtype", MainStates.subtypes[v.SUBTYPE]);
+            o.useSkill = v.useSkill;
             
             o.pars.Add("level", 1);
             

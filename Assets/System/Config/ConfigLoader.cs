@@ -975,6 +975,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "TAG_APPLY") mm.TAG_APPLY = tt[j];
                 else if (columns[j].ToUpper() == "PEN_CNT") mm.PEN_CNT = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "RARITY") mm.RARITY = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "POSITIVE") mm.POSITIVE = int.Parse(tt[j]);
+                
                 
                 else if (columns[j].ToUpper() == "DMG_TYPE") mm.DMG_TYPE = tt[j];
                 
@@ -1103,6 +1105,7 @@ public class ConfigLoader : MonoBehaviour
             {
                 if (tt[j]== "x") continue;
                 if (columns[j].ToUpper() == "NAME") mm.skillName = tt[j];
+                else if (columns[j].ToUpper() == "USE_SKILL") mm.useSkill = tt[j];
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
@@ -2639,6 +2642,7 @@ public class FormatArtefact_old
 public class FormatArtefact
 {
     public string skillName = string.Empty;
+    public string useSkill = string.Empty;
     
     public float ATTACK_PRC;
     public float ATTACK;
@@ -2771,7 +2775,10 @@ public class FormatSkill
     public float PEN_CNT;
     public float CRIT_CHANCE = 0;
     public float CRIT_DMG = 0;
+    
     public int RARITY = 0;
+    public int POSITIVE = 0;
+    
     public string DMG_TYPE = "";
 
     public float dodge = 0;

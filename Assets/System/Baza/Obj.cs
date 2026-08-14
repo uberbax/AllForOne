@@ -48,6 +48,7 @@ public class Obj
     public string spawn = "";
     public string dropPerHit = "";
     public string dynamic = "";
+    public string useSkill = "";
     
     public List<Bon> extraPars =  new List<Bon>();
     public List<string> buffsApplied = new List<string>();

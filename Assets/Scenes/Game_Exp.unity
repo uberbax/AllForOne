@@ -1973,6 +1973,7 @@ GameObject:
   - component: {fileID: 17290874}
   - component: {fileID: 17290876}
   - component: {fileID: 17290875}
+  - component: {fileID: 17290877}
   m_Layer: 5
   m_Name: UI_InBattle_Potions
   m_TagString: Untagged
@@ -2039,6 +2040,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17290873}
   m_CullTransparentMesh: 1
+--- !u!114 &17290877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17290873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428e9aaccbf11864393bbcd6f5ee4dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::EventSubscribe
+  eventName: potion_used
+  wh: 
+  wh1: 
+  toInject: {fileID: 0}
+  toInjectUpgrade: {fileID: 0}
+  toInjectAscend: {fileID: 0}
+  toActivate: {fileID: 0}
+  toDeactivate: {fileID: 17290873}
 --- !u!1 &17989601
 GameObject:
   m_ObjectHideFlags: 0
@@ -26819,6 +26840,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 633606907}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 1376501017}
+  toDeactivate: {fileID: 0}
 --- !u!1 &236827094
 GameObject:
   m_ObjectHideFlags: 0
@@ -37937,6 +37959,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 2924878823136461824}
+  toDeactivate: {fileID: 0}
 --- !u!222 &353176500
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38755,7 +38778,7 @@ MonoBehaviour:
   param: not_equiped,potion
   clickFunc: 
   fillFunc: 
-  replaceClick: 
+  replaceClick: use
   slots: []
   root: {fileID: 362708443}
   asGrid: 1
@@ -44356,6 +44379,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 141484508}
+  toDeactivate: {fileID: 0}
 --- !u!1 &433418934
 GameObject:
   m_ObjectHideFlags: 0
@@ -48148,6 +48172,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 0}
+  toDeactivate: {fileID: 0}
 --- !u!114 &456816571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61733,6 +61758,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 646274573}
+  toDeactivate: {fileID: 0}
 --- !u!1 &590403885
 GameObject:
   m_ObjectHideFlags: 0
@@ -117007,6 +117033,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 1714224224}
+  toDeactivate: {fileID: 0}
 --- !u!1 &1107397593
 GameObject:
   m_ObjectHideFlags: 0
@@ -124358,6 +124385,7 @@ MonoBehaviour:
     - fire_arrow
     - basic_buff_atk
     - buff_atk1
+    - mana_heal
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -124390,6 +124418,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f9be76fd216b3ac41b647b49c62711c7, type: 3}
     - {fileID: 21300000, guid: 00c87aa2ea3561f489bc1f193ee8c3ed, type: 3}
     - {fileID: 21300000, guid: 28908278b75204ef292a2d7a6bdb70d9, type: 3}
+    - {fileID: 21300000, guid: 0d7afa09f09b6b2479ccc2737732d29a, type: 3}
   pars:
     m_keys:
     - health
@@ -124516,6 +124545,7 @@ MonoBehaviour:
     - mana_potion
     - shield
     - book_fairy
+    - cure_potion
     m_values:
     - {fileID: 21300000, guid: f562338df1df4224f9ac7027d3c4d4df, type: 3}
     - {fileID: 21300000, guid: 430fd57e41b17074db2c02f860ee9e20, type: 3}
@@ -124543,6 +124573,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: bee99074e3aaa4f10b57618376e3c07a, type: 3}
     - {fileID: 21300000, guid: dea43a646a9d2314fb3fc6df566ece62, type: 3}
     - {fileID: 21300000, guid: 22a122dd5eb52404393633d2774f954e, type: 3}
+    - {fileID: 21300000, guid: 1ae2bb0915fe647ee98071da041a0523, type: 3}
   buildings:
     m_keys:
     - barracks1
@@ -129640,6 +129671,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 0}
+  toDeactivate: {fileID: 0}
 --- !u!114 &1205813835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137212,6 +137244,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 550321221}
+  toDeactivate: {fileID: 0}
 --- !u!1 &1275690543
 GameObject:
   m_ObjectHideFlags: 0
@@ -146132,6 +146165,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 0}
+  toDeactivate: {fileID: 0}
 --- !u!1 &1352845626
 GameObject:
   m_ObjectHideFlags: 0
@@ -177545,6 +177579,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 0}
+  toDeactivate: {fileID: 0}
 --- !u!114 &1697961297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202467,6 +202502,7 @@ MonoBehaviour:
   toInjectUpgrade: {fileID: 0}
   toInjectAscend: {fileID: 0}
   toActivate: {fileID: 1399171240}
+  toDeactivate: {fileID: 0}
 --- !u!1 &1943001374
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class EventSubscribe : MonoBehaviour
     public ObjHolder toInjectAscend;
     
     public GameObject toActivate;
+    public GameObject toDeactivate;
+    
     
     public void Start()
     {
@@ -30,6 +32,11 @@ public class EventSubscribe : MonoBehaviour
                 if (b != null) b.Receive(x);                
                 toActivate.SetActive(true);
                 //toActivate.SendMessage("Receive", x);
+            }
+
+            if (toDeactivate != null)
+            {
+                toDeactivate.SetActive(false);
             }
 
             if (toInjectUpgrade != null)
