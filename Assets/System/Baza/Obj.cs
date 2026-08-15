@@ -625,7 +625,7 @@ public class RObj
             if (lvl != l0)
             {
                 EventManager.INV("lvlup", new ArgPass{who = this});
-                upgradePars["level"] = lvl;
+                upgradePars["level"] = lvl-1;
             }
             
         }

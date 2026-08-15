@@ -302,16 +302,27 @@ public class MainCycleExp : MonoBehaviour
         //exp
         //orns
         int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
-        aa.Add(new Bon{Key = "exp", Value = (int)( g0 * 100)});
+        var e0 = g0 * 100;
+        aa.Add(new Bon{Key = "exp", Value = e0});
         aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
         aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
         
-        
+        //if there was a levelup
+        var l1 = MainStates.instance.mainPlayer.GetPar("level");
+        MainStates.instance.GetMeExpPars(MainStates.instance.mainPlayer, out float rat, out float cr, out float cm, out float lvl);
+        //Debug.Log(cr + " " + cm + " " + e0);
+        if (cr + e0 >= cm)
+        {
+            UIlevelUp.wasLevelup = true;
+            UIlevelUp.levelWas = (int)l1;
+        }
         
         MainStates.instance.UI_win.GetComponent<ObjHolder>().obj = d1;
         MainStates.instance.dropTables["battle_reward"] = aa;
 
-
+        MainStates.instance.AddItems(aa);
+        
+        
         inBattle = false;
         if (coroutine != null)
         {

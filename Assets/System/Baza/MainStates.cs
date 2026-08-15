@@ -1856,6 +1856,12 @@ public class MainStates : MonoBehaviour
     
     public void AddItem(RObj who, RObj what, bool overIndex = false)
     {
+        if (what.dbObj.ID == "exp")
+        {
+            who.ChangePar("exp", what.GetPar("amount"), true);
+            return;
+        }
+        
         while (true)
         {
             var a = who.inventory.Find(x =>
