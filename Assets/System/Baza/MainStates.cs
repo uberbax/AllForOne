@@ -130,6 +130,12 @@ public class MainStates : MonoBehaviour
         { "light", 5},
         { "dark", 6},
         
+        { "stun", 7},
+        { "sleep", 8},
+        { "holy", 9},
+        
+        
+        
     };
     
     public static List<int> rarityShards = new List<int>
