@@ -246,6 +246,7 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        XDdeath.autoAddExp = false;
         //move legnth in turn based games
         MainStates.maxMove = 1;
         MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", "") };
@@ -297,9 +298,19 @@ public class MainCycleExp : MonoBehaviour
         var aa = ModelSet.GetMeItemsBon(d);
         //mark loot as taken
         ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
-
+        //gold
+        //exp
+        //orns
+        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
+        aa.Add(new Bon{Key = "exp", Value = (int)( g0 * 100)});
+        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
+        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
+        
+        
+        
         MainStates.instance.UI_win.GetComponent<ObjHolder>().obj = d1;
         MainStates.instance.dropTables["battle_reward"] = aa;
+
 
         inBattle = false;
         if (coroutine != null)

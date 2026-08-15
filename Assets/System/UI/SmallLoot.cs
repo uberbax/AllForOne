@@ -71,7 +71,7 @@ public class SmallLoot : MonoBehaviour
             var txt = g.Find("icon/name").GetComponent<TextMeshProUGUI>();
 
             icon.sprite = ResourceHolder.instance.items[all[i].Key];
-            txt.text = ConfigLoader.Instance.GetMeLocale(all[i].Key);
+            txt.text = (all[i].Value <= 1 ? "" : all[i].Value + " ") + ConfigLoader.Instance.GetMeLocale(all[i].Key);
             txt.color = ResourceHolder.instance.rareColors[all[i].Val3];
 
         }

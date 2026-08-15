@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class XDdeath : ComponentBehavior
 {
+    public static bool autoAddExp = true;
     // Start is called before the first frame update
     public RObj mon;
 
@@ -66,7 +67,8 @@ public class XDdeath : ComponentBehavior
         if (mon.decreaseStatOnDeath != "")
             ModelStatistics.instance.IncreaseStatValue(mon.decreaseStatOnDeath, -1);
         
-        MainStates.instance.AddItem(MainStates.instance.all["main_player"], "exp", 50);
+        if (autoAddExp)
+            MainStates.instance.AddItem(MainStates.instance.all["main_player"], "exp", 50);
 
         bool frac = false;
         if (mon.visMain.GetComponent<SpriteFracturer2D>() != null)

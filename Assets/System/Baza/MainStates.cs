@@ -1809,6 +1809,11 @@ public class MainStates : MonoBehaviour
         //who ?
         foreach (var v in rewards)
         {
+            if (v.Key == "exp")
+            {
+                int l = 0;
+            }
+            
             var ii = DatabaseAll.instance.CreateItem(v.Key, v.Value);
             if (who != null)
                 AddItem(who, ii);
