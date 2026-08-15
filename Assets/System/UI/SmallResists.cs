@@ -12,6 +12,9 @@ public class SmallResists : MonoBehaviour
     public Transform immunitiesRoot;
     public Transform weaknessRoot;
     
+    //hack
+    public TextMeshProUGUI foundIn;
+    
     private void OnEnable()
     {
         //if (other == null)

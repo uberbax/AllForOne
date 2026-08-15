@@ -36,6 +36,7 @@ public class Obj
     public string ID = "";
     
     public Dictionary<string, float> pars = new Dictionary<string, float>();
+    public Dictionary<string, string> parsStr = new Dictionary<string, string>();
 
     [NonSerialized]
     public List<string> labelis = new List<string>();

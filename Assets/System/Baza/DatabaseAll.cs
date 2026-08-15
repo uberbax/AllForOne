@@ -223,6 +223,8 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("used", v.used);
             o.pars.Add("is_boss", v.isBoss);
             
+            o.pars.Add("difficulty", v.difficulty);
+            
             o.pars.Add("lifesteal_prc", v.lifestealPrc);
             o.pars.Add("regen", v.regen);
             o.pars.Add("drop_pick", v.dropPick);
@@ -268,6 +270,10 @@ public class DatabaseAll : MonoBehaviour
             {
                 o.pars.Add(v1.Key, v1.Value);
             }
+            
+            o.parsStr.Add("found_in", v.foundIn);
+            o.parsStr.Add("encounter", v.encounter);
+            
         }
 
     }

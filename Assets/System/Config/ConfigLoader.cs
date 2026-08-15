@@ -839,6 +839,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "MAGIC") mm.magic = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "IS_BOSS") mm.isBoss = int.Parse(tt[j]);
                 
+                else if (columns[j].ToUpper() == "FOUND_IN") mm.foundIn = tt[j];
+                else if (columns[j].ToUpper() == "ENCOUNTER") mm.encounter = tt[j];
                 
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
                 
@@ -2533,6 +2535,10 @@ public class FormatHero
     public float attackSpeed = 0;
     public int difficulty = 0;
     public int isBoss = 0;
+    
+    public string foundIn = "";
+    public string encounter = "";
+    
     
     public float speed = 3;
 
