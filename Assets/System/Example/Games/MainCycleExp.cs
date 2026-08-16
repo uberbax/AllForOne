@@ -125,7 +125,11 @@ public class MainCycleExp : MonoBehaviour
 
         //we need to create player clone basically, but with available skills
 
-        secondMain = new RObj("hero", 1, 1, true, Vector3.zero, true, ItemType.monster, "second_main");
+        var lvl = MainStates.instance.mainPlayer.GetPar("level");
+        
+        secondMain = new RObj("hero", 1, (int)lvl, true, Vector3.zero, true, ItemType.monster, "second_main");
+        //man, we need to clone it
+        
         MainStates.instance.ApplyPlayerConfigParams(secondMain);
         secondMain.AddViz("shadow");
         secondMain.AddViz("combat#no:1");
@@ -157,6 +161,14 @@ public class MainCycleExp : MonoBehaviour
             if (main.inventory[i].GetPar("used_slot") < 0) continue;
             MainStates.instance.AcquireAnySkill(secondMain, main.inventory[i].dbObj.ID);
         }
+        
+        //for (int i = 0; i < main.inventory.Count; i++)
+        //{
+        //    if (main.inventory[i].it != ItemType.item) continue;
+        //    if (main.inventory[i].GetPar("used_slot") < 0) continue;
+        //    MainStates.instance.Equip(secondMain, main.inventory[i]);
+        //}
+        
         //MainStates.instance.AcquireSkill(secondMain, "basic_melee");
 
         secondMain.SetScale(true);

@@ -84,6 +84,11 @@ public class UnoToggle : MonoBehaviour
                 GetComponent<Image>().sprite = toChangeDisabled;
                 GetComponent<Image>().color = disabledColor;
             }
+
+            if (disabledColor != Color.white)
+            {
+                GetComponent<Image>().color = disabledColor;
+            }
         }
         else
         {
@@ -113,6 +118,11 @@ public class UnoToggle : MonoBehaviour
             if (toChangeEnabled != null)
             {
                 GetComponent<Image>().sprite = toChangeEnabled;
+                GetComponent<Image>().color = enabledColor;
+            }
+            
+            if (disabledColor != Color.white)
+            {
                 GetComponent<Image>().color = enabledColor;
             }
         }
