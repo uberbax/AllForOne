@@ -1938,6 +1938,8 @@ public class MainStates : MonoBehaviour
         {
             who.inventory.Add(what);
             what.owner = who;
+            what.upgradePars["used_slot"] = -1;
+            what.RecalcPars();
         }
 
         var b = who.inventory.Find(
