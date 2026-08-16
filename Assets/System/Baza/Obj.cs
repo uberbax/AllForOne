@@ -1035,6 +1035,7 @@ public class ArgPass
     public GameObject go;
     public Vector3 pos;
     public RObj who2;
+    public List<RObj> whats = new List<RObj>();
 }
 
 [System.Serializable]

@@ -162,12 +162,13 @@ public class MainCycleExp : MonoBehaviour
             MainStates.instance.AcquireAnySkill(secondMain, main.inventory[i].dbObj.ID);
         }
         
-        //for (int i = 0; i < main.inventory.Count; i++)
-        //{
-        //    if (main.inventory[i].it != ItemType.item) continue;
-        //    if (main.inventory[i].GetPar("used_slot") < 0) continue;
-        //    MainStates.instance.Equip(secondMain, main.inventory[i]);
-        //}
+        for (int i = 0; i < main.inventory.Count; i++)
+        {
+            if (main.inventory[i].it != ItemType.item) continue;
+            if (main.inventory[i].GetPar("used_slot") < 0) continue;
+            var cc = main.inventory[i].Clone();
+            MainStates.instance.Equip(secondMain, cc);
+        }
         
         //MainStates.instance.AcquireSkill(secondMain, "basic_melee");
 

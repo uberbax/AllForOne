@@ -2696,7 +2696,29 @@ public class MainStates : MonoBehaviour
         }
         */
         combats.RemoveAll(x => !x.HasVis("combat") || x.main.GetComponentInChildren<XDcombat>() == null);
+        
+        List<RObj> curComateers = new List<RObj>();
 
+        for (int i = 0; i < combats.Count; i++)
+        {
+            if (exceptMain && combats[i].RID == "main_player") continue;
+            if (metaContain != "" && !combats[i].META_TAGS.Contains(metaContain))
+            {
+                continue;
+            }
+
+            if (!combats[i].HasVis("combat")) continue;
+            if (combats[i].GetPar("do_nothing") > 0) continue;
+            
+            var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
+            if (gg == null) continue;
+            
+            curComateers.Add(combats[i]);            
+        }
+        //
+
+        EventManager.INV("turn_order", new ArgPass{whats = curComateers});
+        
         for (int i = 0; i < combats.Count; i++)
         {
             if (exceptMain && combats[i].RID == "main_player") continue;
@@ -2716,6 +2738,7 @@ public class MainStates : MonoBehaviour
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;
 
+            
             //we possibly wait
             if (awaitUnits && this.awaitUnits.ContainsKey(combats[i].RID))
             {
@@ -2749,7 +2772,7 @@ public class MainStates : MonoBehaviour
         {
             HandleCds(manualTick);
         }
-
+        
         InIteration = false;
     }
 
