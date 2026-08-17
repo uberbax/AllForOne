@@ -71,6 +71,8 @@ public class MainStates : MonoBehaviour
     public List<WaveSpawner> spawners = new List<WaveSpawner>();
     public RObj mainPlayer => all["main_player"];
 
+    public Dictionary<string, UnoQueTime> queTimes = new Dictionary<string, UnoQueTime>();
+    
     public static Dictionary<string, float> slots = new Dictionary<string, float>()
     {
         { "none", -1},
@@ -2717,6 +2719,8 @@ public class MainStates : MonoBehaviour
         }
         //
 
+        curComateers.AddRange(curComateers);
+        curComateers.AddRange(curComateers);
         EventManager.INV("turn_order", new ArgPass{whats = curComateers});
         
         for (int i = 0; i < combats.Count; i++)
@@ -2749,6 +2753,13 @@ public class MainStates : MonoBehaviour
                 
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
+
+                if (curComateers.Count > 0)
+                {
+                    curComateers.RemoveAt(0);
+                    EventManager.INV("turn_order", new ArgPass { whats = curComateers });
+                }
+
                 continue;
             }
             
@@ -2766,6 +2777,12 @@ public class MainStates : MonoBehaviour
             
 
             yield return new WaitForSeconds(tm);
+            
+            if (curComateers.Count > 0)
+            {
+                curComateers.RemoveAt(0);
+                EventManager.INV("turn_order", new ArgPass { whats = curComateers });
+            }
         }
 
         if (manualDt)
@@ -2878,4 +2895,10 @@ public class UnoSub
     public string what = "";
     public float prev = -1;
     public Action<RObj, string, float, float> act = null;
+}
+
+public class UnoQueTime
+{
+    public float tm;
+    public Action act = null;
 }

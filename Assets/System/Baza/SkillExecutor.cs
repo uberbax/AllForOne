@@ -301,6 +301,14 @@ public class SkillExecutor : MonoBehaviour
 
         if (overPos == default)
             skl.SetPar("cd", skl.GetPar("cooldown"));
+        
+        //ok for logging
+        EventManager.INV("skill_casted", new ArgPass
+        {
+            who = who,
+            who2 = skl
+        });
+        
         return ExecReso.OK;
     }
 
