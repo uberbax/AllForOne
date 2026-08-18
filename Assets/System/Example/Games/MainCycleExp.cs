@@ -186,6 +186,7 @@ public class MainCycleExp : MonoBehaviour
         //
         MainStates.instance.awaitUnits.Clear();
         MainStates.instance.awaitUnits.Add("second_main", 1);
+        secondMain.main.transform.localScale *= 2;
 
         //and we do basically start battle
         EventManager.INV("battle_start", null);
@@ -262,8 +263,9 @@ public class MainCycleExp : MonoBehaviour
         XDdeath.autoAddExp = false;
         //move legnth in turn based games
         MainStates.maxMove = 1;
-        MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", "") };
-
+        MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", ""), ("shadow","") };
+        MainStates.inBattleScale = 2;
+        
         Animato.GlobalTm = 0.33f;
         XDloot.doMagnet = true;
 

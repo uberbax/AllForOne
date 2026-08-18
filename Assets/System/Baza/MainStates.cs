@@ -193,6 +193,8 @@ public class MainStates : MonoBehaviour
     public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
     //
     public Transform trashRoot;
+    public static float inBattleScale = 1.0f;
+    
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
