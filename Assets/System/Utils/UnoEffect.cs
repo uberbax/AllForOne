@@ -17,8 +17,22 @@ public class UnoEffect : MonoBehaviour
     public bool pong = false;
     public int rotMask = 0;
     public Color color = Color.white;
-    void Start()
+
+    public Transform asOther;
+
+    public bool once = true;
+    private bool was = false;
+    public bool takeWaitFromAnimat = false;
+    public void OnEnable()
     {
+        if (takeWaitFromAnimat)
+        {
+            wait = GetComponentInParent<Animato>().wait;
+        }
+        
+        if (once && was) return;
+        was = true;
+        
         if (actStr == "destroy")
         {
             act = () =>
@@ -28,7 +42,7 @@ public class UnoEffect : MonoBehaviour
             };
         }
         
-        UtilsControl.Instance.ApplyCurve(transform, ac, curve, act, time, speed, evKoef, wait, color, pong, rotMask, waitBetween:waitBetween);
+        UtilsControl.Instance.ApplyCurve(asOther == null ? transform : asOther, ac, curve, act, time, speed, evKoef, wait, color, pong, rotMask, waitBetween:waitBetween);
     }
 
 
