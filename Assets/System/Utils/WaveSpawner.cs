@@ -453,6 +453,11 @@ public class WaveSpawner : MonoBehaviour
                 {
                     if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
                 }
+
+                if (MainStates.inBattleScale != 1)
+                {
+                    enm1.main.transform.localScale *= MainStates.inBattleScale;
+                }
                 
             }
             

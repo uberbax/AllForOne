@@ -193,6 +193,8 @@ public class MainStates : MonoBehaviour
     public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
     //
     public Transform trashRoot;
+    public static float inBattleScale = 1.0f;
+    
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
@@ -2519,13 +2521,21 @@ public class MainStates : MonoBehaviour
         Vector3 saved1 = who.Position;
         Vector3 saved2 = who.Position +
                          (target.Position - who.Position) * ConfigLoader.GetMetaParamValue("naprig_prc");
+        
+        var t = ConfigLoader.GetMetaParamValue("wait_naprig");
             
         UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
         {
-            UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
-            {
+            FunctionTimer.Create(() =>
+
+                UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
+                {
+
+                }, null, useRight: false, ignoreFlip: true),
                 
-            }, null,useRight:false,ignoreFlip:true);
+                t
+
+            );
         }, null,useRight:false,ignoreFlip:true);
     }
     
@@ -2534,13 +2544,22 @@ public class MainStates : MonoBehaviour
         Vector3 saved1 = who.Position;
         Vector3 saved2 = who.Position +
                          (target - who.Position) * ConfigLoader.GetMetaParamValue("naprig_prc");
+        
+        var t = ConfigLoader.GetMetaParamValue("wait_naprig");
             
         UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
         {
-            UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
-            {
+            FunctionTimer.Create( () =>
+            
+                UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
+                {
+                    
+                }, null,useRight:false, ignoreFlip:true),
                 
-            }, null,useRight:false, ignoreFlip:true);
+                t
+            );
+
+
         }, null,useRight:false, ignoreFlip:true);
     }
     

@@ -128,4 +128,5 @@ public class UnoAnim
     public bool doEffect = false;
 
     public float scale = 1;
+    public float speed = 1;
 }

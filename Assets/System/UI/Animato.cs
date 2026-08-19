@@ -57,9 +57,13 @@ public class Animato : MonoBehaviour
         if (maxScale < 0)
             maxScale = transform.localScale.x;
 
-        transform.localScale = Vector3.zero;
-        if (scaleOnStart) 
-            UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0,0,1,maxScale), UtilsControl.CurveType.ScaleAbs, null, tm, 1 / tm, 1, wait, Color.white );
+        
+        if (scaleOnStart)
+        {
+            transform.localScale = Vector3.zero;
+            UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0, 0, 1, maxScale),
+                UtilsControl.CurveType.ScaleAbs, null, tm, 1 / tm, 1, wait, Color.white);
+        }
 
         if (fadeOnStart)
         {

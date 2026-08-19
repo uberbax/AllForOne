@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1242484197524942635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7191706078830860141}
+  m_Layer: 0
+  m_Name: legs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7191706078830860141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242484197524942635}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.363, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6939798254224343657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1273900211663125247
 GameObject:
   m_ObjectHideFlags: 0
@@ -34,6 +65,7 @@ Transform:
   - {fileID: 5740887133794858018}
   - {fileID: 4221801728125672955}
   - {fileID: 4099321750313872778}
+  - {fileID: 7191706078830860141}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8000539715760911422
@@ -68,6 +100,7 @@ MonoBehaviour:
     endAnim: 
     doEffect: 0
     scale: 1
+    speed: 1
   - nm: attack
     loop: 0
     sprites:
@@ -82,6 +115,7 @@ MonoBehaviour:
     endAnim: 
     doEffect: 0
     scale: 1
+    speed: 1
   - nm: walk
     loop: 1
     sprites:
@@ -98,6 +132,7 @@ MonoBehaviour:
     endAnim: 
     doEffect: 0
     scale: 1
+    speed: 1
   - nm: death
     loop: 0
     sprites:
@@ -112,6 +147,7 @@ MonoBehaviour:
     endAnim: 
     doEffect: 0
     scale: 1
+    speed: 1
   - nm: hit
     loop: 0
     sprites:
@@ -124,6 +160,7 @@ MonoBehaviour:
     endAnim: 
     doEffect: 0
     scale: 1
+    speed: 1
   defaultAnim: idle
   curAnim: 
   forceAnim: idle
