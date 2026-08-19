@@ -2538,6 +2538,26 @@ public class MainStates : MonoBehaviour
             );
         }, null,useRight:false,ignoreFlip:true);
     }
+
+    public void ApplyMonsterExtraParams(RObj who, RObj from)
+    {
+        List<string> pars = new List<string> {"max_health","health","attack","def","res"};
+        //
+        float koef = 1;
+        var f = from.GetPar("obj_berserk");
+        if (f > 0) koef = 2;
+        f = from.GetPar("obj_arisen");
+        if (f > 0) koef = 3;
+        
+        if (koef > 1)
+        {
+            for (int i = 0; i < pars.Count; i++)
+            {
+                var h = who.GetPar(pars[i]) * (koef-1);
+                who.SetPar(pars[i], h);
+            }
+        }
+    }
     
     public void DoNaprig(RObj who, Vector3 target)
     {

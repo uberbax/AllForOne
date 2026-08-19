@@ -118,6 +118,8 @@ public class AddedObject : MonoBehaviour
             r.tags.Add("neutral");
         }
         
+        MainStates.instance.ApplyMonsterExtraParams(r,r);
+        
     }
 
     

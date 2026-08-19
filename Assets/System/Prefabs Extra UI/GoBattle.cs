@@ -32,6 +32,8 @@ public class GoBattle : MonoBehaviour
                     MainStates.instance.lastBattleTrigger = mon.main;
                     ModelStatistics.instance.SetStatValue("battle",2); 
                     holder.transform.parent.gameObject.SetActive(false);
+                    
+                    MainStates.instance.ApplyMonsterExtraParams(ee[0],mon);
                 }, null);
             }
         );
