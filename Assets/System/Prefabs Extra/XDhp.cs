@@ -38,6 +38,20 @@ public class XDhp : ComponentBehavior
     {
         mon = GetComponentInParent<ObjHolder>().obj;
         head = mon.visMain.transform.Find(trackWhere);
+
+        if (head == null && trackWhere == "bot_health")
+        {
+            head = mon.visMain.transform.Find("legs");
+            dlt = 0;
+        }
+
+        if (head == null && trackWhere == "bot_mana")
+        {
+            head = mon.visMain.transform.Find("legs");
+            dlt = 0;
+        }
+        
+        
         Update();
     }
 

@@ -14,6 +14,9 @@ public class XDdeath : ComponentBehavior
 
     // Update is called once per frame
     private bool done = false;
+
+    public static float fadeAfter = 0;
+    
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
@@ -85,12 +88,19 @@ public class XDdeath : ComponentBehavior
         }
         else
         {
-            UtilsControl.Instance.ApplyCurve(mon.visuals["vis_main"].transform, AnimationCurve.Linear(0,1,1,0), UtilsControl.CurveType.Color,
-                () =>
+            
+            FunctionTimer.Create(() =>
                 {
-                    Destroy(mon.main);
-                    MainStates.instance.all.Remove(mon.RID);
-                }, 1, 1, 1, 0, Color.clear);            
+                    UtilsControl.Instance.ApplyCurve(mon.visuals["vis_main"].transform,
+                        AnimationCurve.Linear(0, 1, 1, 0), UtilsControl.CurveType.Color,
+                        () =>
+                        {
+                            Destroy(mon.main);
+                            MainStates.instance.all.Remove(mon.RID);
+                        }, 1, 1, 1, 0, Color.clear);
+                },
+                fadeAfter
+            );
         }
 
         if (ConfigLoader.GetMetaParamValue("blood_death") > 0 && !frac)

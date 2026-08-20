@@ -260,7 +260,11 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        
         XDdeath.autoAddExp = false;
+        XDdeath.fadeAfter = 1;
+
+        XDloot.asSingeItem = true;
         //move legnth in turn based games
         MainStates.maxMove = 1;
         MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", ""), ("shadow","") };
@@ -390,7 +394,7 @@ public class MainCycleExp : MonoBehaviour
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1f, "sword", true));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1.7f, "sword", true));
             }
         }
     }
