@@ -25039,6 +25039,10 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1803829530115307293, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -25053,6 +25057,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898813581568632939, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4251024812680103941, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4251024812680103941, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c4c1268eec6a9c545bdc4268955eba95, type: 3}
+    - target: {fileID: 4251024812680103941, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4461510688263357733, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
@@ -94681,7 +94701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Minimus::EventTrigger
   explanation: 
   keyCode: 
-  evtName: show_in_codex
+  evtName: codex_click
   arg:
     num: 0
     what: 
@@ -128793,7 +128813,7 @@ MonoBehaviour:
     - goblin
     - bandit
     - orc
-    - beetle
+    - beetle_iron
     m_values:
     - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
     - {fileID: 1273900211663125247, guid: 004305318b94a4042a57683f7a2df0c6, type: 3}
@@ -128841,7 +128861,7 @@ MonoBehaviour:
     - panda
     - shard
     - skeleton
-    - beetle
+    - beetle_iron
     m_values:
     - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
     - {fileID: 21300000, guid: dd87291cddc8f9e4f9a45ae91071a6fe, type: 3}
@@ -154615,7 +154635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIlevelUp
   activate: {fileID: 1131283072}
-  waitWhat: []
+  waitWhat:
+  - {fileID: 1307232988}
   statHolder: {fileID: 599347272}
 --- !u!222 &1391693928
 CanvasRenderer:
@@ -208974,7 +208995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   overID: 
-  id: beetle
+  id: beetle_iron
   isEnemy: 1
   isNeutral: 0
   amount: 1
@@ -213129,11 +213150,11 @@ RectTransform:
   - {fileID: 1352789263}
   - {fileID: 453703600}
   - {fileID: 289704355}
+  - {fileID: 1611343701}
   - {fileID: 1275348900}
   - {fileID: 1903030383}
   - {fileID: 188651769}
   - {fileID: 24449638}
-  - {fileID: 1611343701}
   - {fileID: 1942134714}
   - {fileID: 1391693926}
   - {fileID: 353176498}

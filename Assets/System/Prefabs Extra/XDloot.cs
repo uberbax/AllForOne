@@ -38,6 +38,7 @@ public class XDloot : ComponentBehavior
     {
         if (Input.GetMouseButtonUp(0))
         {
+            if (UtilsControl.IsPointerOverUIElement()) return;
             var d = UtilsControl.CheckClick();
             if (d != gameObject) return;
             

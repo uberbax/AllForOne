@@ -459,6 +459,13 @@ public class WaveSpawner : MonoBehaviour
                     enm1.main.transform.localScale *= MainStates.inBattleScale;
                 }
                 
+                //ok we place it on earth
+                var ff = enm1.visMain.transform.Find("legs");
+                if (ff != null)
+                {
+                   enm1.main.transform.position += (enm1.main.transform.position - ff.position);
+                }
+
             }
             
         }

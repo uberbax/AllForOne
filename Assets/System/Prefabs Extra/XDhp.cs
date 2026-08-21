@@ -21,6 +21,8 @@ public class XDhp : ComponentBehavior
     public string trackWhat = "health";
     public string trackWhere = "head";
     public float dlt = 0.3f;
+    public float dlt2 = 0;
+    public bool samePos = false;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
@@ -43,12 +45,14 @@ public class XDhp : ComponentBehavior
         {
             head = mon.visMain.transform.Find("legs");
             dlt = 0;
+            dlt2 = -0.4f;
         }
 
         if (head == null && trackWhere == "bot_mana")
         {
             head = mon.visMain.transform.Find("legs");
             dlt = 0;
+            dlt2 = -0.7f;
         }
         
         
@@ -59,8 +63,16 @@ public class XDhp : ComponentBehavior
     {
         if (head != null)
         {
-            fill.transform.parent.position = head.position;
-            hp.transform.position = head.position + new Vector3(0, dlt, 0);
+            if (samePos)
+            {
+                transform.GetChild(0).position = head.position + new Vector3(0, dlt2, 0);
+            }
+            else
+            {
+                fill.transform.parent.position = head.position;
+                hp.transform.position = head.position + new Vector3(0, dlt, 0);                
+            }
+
         }
 
         if (mon == null)
