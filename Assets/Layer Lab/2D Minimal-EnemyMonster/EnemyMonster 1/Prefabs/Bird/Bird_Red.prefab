@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 4033585430681749715}
   - component: {fileID: 8440398670402505686}
   - component: {fileID: 1447356607556535586}
+  - component: {fileID: 468100422540302772}
   m_Layer: 0
   m_Name: Bird_Red
   m_TagString: Untagged
@@ -260,6 +261,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &468100422540302772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4033585430681749714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &4033585430870730932
 GameObject:
   m_ObjectHideFlags: 0

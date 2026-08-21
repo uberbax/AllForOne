@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 2230351435740611005}
   - component: {fileID: 576624302288970549}
   - component: {fileID: 4242902371231268559}
+  - component: {fileID: -808009620692698859}
   m_Layer: 0
   m_Name: Animal_Fox
   m_TagString: Untagged
@@ -480,6 +481,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &-808009620692698859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230351435740611004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &2230351435782409203
 GameObject:
   m_ObjectHideFlags: 0

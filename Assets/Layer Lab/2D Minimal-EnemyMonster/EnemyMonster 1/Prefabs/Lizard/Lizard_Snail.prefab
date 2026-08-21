@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: 2682578831257242447}
   - component: {fileID: 2330991903354800282}
   - component: {fileID: 145389024269205742}
+  - component: {fileID: 1767037976503274783}
   m_Layer: 0
   m_Name: Lizard_Snail
   m_TagString: Untagged
@@ -296,6 +297,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &1767037976503274783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2682578831257242448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &3318627679909703766
 GameObject:
   m_ObjectHideFlags: 0

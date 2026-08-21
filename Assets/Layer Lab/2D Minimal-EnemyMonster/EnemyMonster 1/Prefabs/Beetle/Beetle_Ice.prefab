@@ -572,6 +572,7 @@ GameObject:
   - component: {fileID: 7316353862025440486}
   - component: {fileID: 7316353862025440485}
   - component: {fileID: 632364574803658504}
+  - component: {fileID: 1600210581452017309}
   m_Layer: 0
   m_Name: Beetle_Ice
   m_TagString: Untagged
@@ -634,6 +635,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &1600210581452017309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316353862025440484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &8634803953876173517
 GameObject:
   m_ObjectHideFlags: 0

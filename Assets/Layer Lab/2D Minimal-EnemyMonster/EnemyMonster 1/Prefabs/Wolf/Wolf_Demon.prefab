@@ -1382,6 +1382,7 @@ GameObject:
   - component: {fileID: 8556868708077610408}
   - component: {fileID: 8556868708077610409}
   - component: {fileID: 1616630804437310672}
+  - component: {fileID: -612817611456311645}
   m_Layer: 0
   m_Name: Wolf_Demon
   m_TagString: Untagged
@@ -1444,6 +1445,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &-612817611456311645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556868708077610411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &8556868708225776440
 GameObject:
   m_ObjectHideFlags: 0

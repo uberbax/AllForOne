@@ -993,6 +993,7 @@ GameObject:
   - component: {fileID: 8691858862792728506}
   - component: {fileID: 8691858862792728507}
   - component: {fileID: 2370872847277759654}
+  - component: {fileID: 3076217906438161334}
   m_Layer: 0
   m_Name: Goat_Angry
   m_TagString: Untagged
@@ -1055,6 +1056,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &3076217906438161334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8691858862792728509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &8691858863966114288
 GameObject:
   m_ObjectHideFlags: 0

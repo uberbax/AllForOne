@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 4766129926032728990}
   - component: {fileID: 1418051816715118866}
   - component: {fileID: 4921659732081302750}
+  - component: {fileID: 1057862342016590906}
   m_Layer: 0
   m_Name: Blowfish_Beast
   m_TagString: Untagged
@@ -728,6 +729,33 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &1057862342016590906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4766129926032728989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - idle
+    - walk
+    - run
+    - death
+    - attack
+    - hit
+    m_values:
+    - Idle
+    - Walk
+    - Walk
+    - Dead
+    - Attack
+    - Hit
 --- !u!1 &7135854407471572061
 GameObject:
   m_ObjectHideFlags: 0
