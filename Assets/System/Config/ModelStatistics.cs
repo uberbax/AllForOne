@@ -501,7 +501,7 @@ public partial class ModelStatistics : MonoBehaviour
 
     }
 
-    public bool IsReady(List<UnoReq> reqs, int startStat)
+    public bool IsReady(List<UnoReq> reqs, int startStat, RObj who)
     {
         bool q = true;
                 foreach (var g in reqs)
@@ -573,7 +573,10 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_item)
                     {
-                        var aa = MainStates.instance.all["main_player"].inventory.Sum(x =>
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        var aa = hh.inventory.Sum(x =>
                         {
                             if (x.dbObj.ID == g.what) return x.GetPar("amount");
                             else return 0;
@@ -587,7 +590,10 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_par)
                     {
-                        var aa = MainStates.instance.all["main_player"].GetPar(g.what);
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        var aa = hh.GetPar(g.what);
                         var aa1 = int.Parse(g.val) + startStat;
                         if (g.compar == "==" && aa != aa1) q = false;
                         if (g.compar == ">=" && aa < aa1) q = false;
@@ -597,7 +603,10 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_skill)
                     {
-                        var aas = MainStates.instance.all["main_player"].buffs.Find(x => x.dbObj.ID == g.what);
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        var aas = hh.buffs.Find(x => x.dbObj.ID == g.what);
                         int aa = 0;
                         if (aas != null) aa = (int)aas.GetPar("level");
                         
@@ -750,7 +759,7 @@ public partial class ModelStatistics : MonoBehaviour
             {
                 //its not started
                 bool q = true;
-                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat);
+                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat, null);
                 
                 if (q)
                 {
@@ -860,13 +869,13 @@ public partial class ModelStatistics : MonoBehaviour
 
     public bool CheckCondition(UnoCond u)
     {
-        bool b = IsReady(u.reqs, 0);
+        bool b = IsReady(u.reqs, 0, null);
         return b;
     }
 
-    public bool CheckCondition(List<UnoReq> u)
+    public bool CheckCondition(List<UnoReq> u, RObj who)
     {
-        bool b = IsReady(u, 0);
+        bool b = IsReady(u, 0, who);
         return b;
     }
     public void GetMeProgress(ElTasko v, out float me, out float all)

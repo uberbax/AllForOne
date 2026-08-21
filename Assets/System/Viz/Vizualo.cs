@@ -17,6 +17,10 @@ public class Vizualo : MonoBehaviour
     
     //other
     public string id;
+    private RObj who;
+    private ObjHolder wHolder;
+    
+    
     public bool readyNotTakenTask = false;
     public bool taken = false;
     public bool notTaken = false;
@@ -31,7 +35,19 @@ public class Vizualo : MonoBehaviour
     public List<UnoReq> reqs = new List<UnoReq>();
     
     public GameObject forOther;
-    
+
+    private void OnEnable()
+    {
+        if (asHolderCond)
+        {
+            wHolder = GetComponentInParent<ObjHolder>();
+            id = wHolder.obj.dbObj.ID;
+            who = wHolder.obj;
+            if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
+                condID = ConfigLoader.Instance.allRelConditions[id];
+        }
+    }
+
     private void Start()
     {
         c = GetComponent<CanvasGroup>();
@@ -45,8 +61,9 @@ public class Vizualo : MonoBehaviour
         }
         else if (asHolderCond)
         {
-            var f = GetComponentInParent<ObjHolder>();
-            id = f.obj.dbObj.ID;
+            wHolder = GetComponentInParent<ObjHolder>();
+            id = wHolder.obj.dbObj.ID;
+            who = wHolder.obj;
             if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
                 condID = ConfigLoader.Instance.allRelConditions[id];
         }
@@ -61,6 +78,11 @@ public class Vizualo : MonoBehaviour
     {
         if (!ConfigLoader.parseEnded) return;
 
+        if (asHolderCond)
+        {
+            who = wHolder.obj;
+        }
+        
         if (abs && abs.isTask)
         {
 
@@ -132,7 +154,7 @@ public class Vizualo : MonoBehaviour
                 }
             }
 
-            var g = ModelStatistics.instance.CheckCondition(reqs);
+            var g = ModelStatistics.instance.CheckCondition(reqs, who);
             Activate(g);
         }
         else if (asOther)
