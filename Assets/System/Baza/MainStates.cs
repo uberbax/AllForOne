@@ -2545,9 +2545,17 @@ public class MainStates : MonoBehaviour
         //
         float koef = 1;
         var f = from.GetPar("obj_berserk");
-        if (f > 0) koef = 2;
+        if (f > 0)
+        {
+            koef = 2;
+            who.SetPar("obj_berserk", f);
+        }
         f = from.GetPar("obj_arisen");
-        if (f > 0) koef = 3;
+        if (f > 0)
+        {
+            koef = 3;
+            who.SetPar("obj_arisen", f);
+        }
         
         if (koef > 1)
         {

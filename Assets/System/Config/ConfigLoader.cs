@@ -831,6 +831,8 @@ public class ConfigLoader : MonoBehaviour
                     mm.health = int.Parse(tt[j]);
                     mm.maxHealth = int.Parse(tt[j]);
                 }
+                else if (columns[j].ToUpper() == "LVL") mm.lvl = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "MOVE") mm.move = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "LEVEL") mm.level = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "COST") mm.cost = int.Parse(tt[j]);
@@ -2535,6 +2537,8 @@ public class FormatHero
     public float attackSpeed = 0;
     public int difficulty = 0;
     public int isBoss = 0;
+    
+    public int lvl = 0;
     
     public string foundIn = "";
     public string encounter = "";

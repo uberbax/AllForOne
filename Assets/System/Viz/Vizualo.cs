@@ -35,8 +35,11 @@ public class Vizualo : MonoBehaviour
     public List<UnoReq> reqs = new List<UnoReq>();
     
     public GameObject forOther;
-
-    private void OnEnable()
+    public List<GameObject> alsoActive = new List<GameObject>();
+    
+    public bool activateScale = false; 
+    
+    private void OnEnable1()
     {
         if (asHolderCond)
         {
@@ -62,10 +65,21 @@ public class Vizualo : MonoBehaviour
         else if (asHolderCond)
         {
             wHolder = GetComponentInParent<ObjHolder>();
-            id = wHolder.obj.dbObj.ID;
-            who = wHolder.obj;
-            if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
-                condID = ConfigLoader.Instance.allRelConditions[id];
+            /*
+            if (wHolder.obj == null)
+            {
+                Invoke("Start", 0.1f);
+                return;
+            }
+            */
+
+            if (wHolder.obj != null)
+            {
+                id = wHolder.obj.dbObj.ID;
+                who = wHolder.obj;
+                if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
+                    condID = ConfigLoader.Instance.allRelConditions[id];
+            }
         }
         
         MainStates.allVisuals.Add(this);
@@ -178,11 +192,39 @@ public class Vizualo : MonoBehaviour
 
     public void Activate(bool val)
     {
-        if (forOther != null) forOther.SetActive(val);
-        else gameObject.SetActive(val);
+         var ls = Vector3.one;
+         if (!val) ls = Vector3.zero;
+        
+        if (forOther != null)
+        {
+            if (activateScale)
+            {
+                forOther.transform.localScale = ls;
+            }
+            else
+                forOther.SetActive(val);
+        }
+        else
+        {
+            if (activateScale)
+            {
+                transform.localScale = ls;
+            }
+            else
+                gameObject.SetActive(val);
+        }
         
         if (relButton != null) relButton.interactable = isNot ? !val : val;
 
+        foreach (var v in alsoActive)
+        {
+            if (activateScale)
+            {
+                forOther.transform.localScale = ls;
+            }
+            else
+                v.SetActive(val);
+        }
         //if (val) c.alpha = 1;
         //else c.alpha = 0;
     }

@@ -208,6 +208,7 @@ public class DatabaseAll : MonoBehaviour
             var o = new Obj();
             o.ID = v.monsterName.ToLower();
             o.pars.Add("attack", v.attack);
+            o.pars.Add("lvl", v.lvl);
             o.pars.Add("magic", v.magic);
             
             o.pars.Add("health", v.health);

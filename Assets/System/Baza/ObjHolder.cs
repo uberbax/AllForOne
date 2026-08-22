@@ -56,6 +56,7 @@ public class ObjHolder : MonoBehaviour, IReceive
 
         if (asCurObj != "")
         {
+            if (!MainStates.instance.curObjs.ContainsKey(asCurObj)) return;
             obj = MainStates.instance.curObjs[asCurObj];
         }
         
