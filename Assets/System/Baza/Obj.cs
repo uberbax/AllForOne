@@ -171,6 +171,9 @@ public class RObj
     
     [NonSerialized]
     public List<string> extraBuffs = new List<string>();
+    
+    public List<Bon> extraMonsters = new List<Bon>();
+    
     public bool IsIntersected(int index, int sizeX, int sizeY, RObj who)
     {
         int szx = -1;

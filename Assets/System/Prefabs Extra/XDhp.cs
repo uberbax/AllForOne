@@ -23,6 +23,7 @@ public class XDhp : ComponentBehavior
     public float dlt = 0.3f;
     public float dlt2 = 0;
     public bool samePos = false;
+    public bool useMax = false;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
@@ -54,7 +55,12 @@ public class XDhp : ComponentBehavior
             dlt = 0;
             dlt2 = -0.7f;
         }
-        
+
+        if (mon.GetPar("is_boss") > 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            return;
+        }
         
         Update();
     }
@@ -90,8 +96,16 @@ public class XDhp : ComponentBehavior
         {
             fillMed.fillAmount = ratio;
         }
-        
-        hp.text = ((int)mon.GetPar(trackWhat)).ToString();
+
+        if (useMax)
+        {
+            hp.text = mon.GetPar(trackWhat) + "/" + mon.GetPar("max_" + trackWhat);
+        }
+        else
+        {
+            hp.text = ((int)mon.GetPar(trackWhat)).ToString();
+        }
+
         
         fill.gameObject.SetActive(ratio < 1 || !nofull);
         hp.gameObject.SetActive(!notext);

@@ -399,11 +399,12 @@ public class WaveSpawner : MonoBehaviour
     
     
         public List<RObj> DoSpawnAnyPos(List<Bon> what, string tg, bool battle, bool isSummon = false,
-        List<(string, string)> overridesViz = null, bool applyExtra = false)
+        List<(string, string)> overridesViz = null, bool applyExtra = false, int start = 0)
     {
         List<RObj> res = new List<RObj>();
         //we choose root depending on tag
-        
+
+        int l = 0;
         foreach (var v in what)
         {
             for (int i = 0; i < v.Value; i++)
@@ -429,12 +430,12 @@ public class WaveSpawner : MonoBehaviour
                 
                 if (tg == "enemy")
                 {
-                    enm1.main.transform.position = enemyPosHolder.GetChild(i).position;
+                    enm1.main.transform.position = enemyPosHolder.GetChild(start + l).position;
                     enm1.Position = enm1.main.transform.position;
                 }
                 else
                 {
-                    enm1.main.transform.position = heroPosHolder.GetChild(i).position;
+                    enm1.main.transform.position = heroPosHolder.GetChild(start + l).position;
                     enm1.Position = enm1.main.transform.position;
                 }
 
@@ -467,7 +468,8 @@ public class WaveSpawner : MonoBehaviour
                 }
 
             }
-            
+
+            l++;
         }
 
         return res;

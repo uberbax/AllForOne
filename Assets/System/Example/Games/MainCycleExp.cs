@@ -267,7 +267,11 @@ public class MainCycleExp : MonoBehaviour
         XDloot.asSingeItem = true;
         //move legnth in turn based games
         MainStates.maxMove = 1;
-        MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", ""), ("shadow","") };
+        MainStates.overridesViz = new List<(string, string)>
+        {
+            ("hp", ""), ("buff", ""), ("shadow",""),
+            ("drop", "")
+        };
         MainStates.inBattleScale = 2;
         
         Animato.GlobalTm = 0.33f;
