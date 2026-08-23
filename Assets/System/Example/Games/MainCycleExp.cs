@@ -45,6 +45,9 @@ public class MainCycleExp : MonoBehaviour
 
         EventManager.SUB("after_battle", (x) =>
         {
+            if (DungeonController.instance.inDungeon)
+                return;
+            
             MainStates.manualDt = false;
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle", 1);
@@ -318,6 +321,7 @@ public class MainCycleExp : MonoBehaviour
     public void BattleEnded(ArgPass obj)
     {
         var d1 = MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj;
+        
         var d = d1.dbObj.drop;
         var aa = ModelSet.GetMeItemsBon(d);
         //mark loot as taken
