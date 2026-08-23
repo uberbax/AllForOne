@@ -2355,7 +2355,12 @@ public class MainStates : MonoBehaviour
             {
                 var kk = a.GetPar("dodge");
                 var roll = Random.Range(0, 100);
-                if (roll < kk)
+                
+
+                var kk1 = skl.owner.GetPar("accuracy");
+                var roll1 = Random.Range(0, 100);
+                
+                if (roll < kk || (kk1 < 0 && roll1 < 50))
                 {
                     a.SetPar("show_message", 1);
                     return;

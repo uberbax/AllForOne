@@ -91,7 +91,12 @@ public class XDdeath : ComponentBehavior
             
             FunctionTimer.Create(() =>
                 {
-                    UtilsControl.Instance.ApplyCurve(mon.visuals["vis_main"].transform,
+                    //?
+                    var gh = mon.visuals["vis_main"].transform;
+                    if (gh.GetComponent<SpriteRenderer>() == null)
+                        gh = gh.GetChild(0);
+                    
+                    UtilsControl.Instance.ApplyCurve(gh,
                         AnimationCurve.Linear(0, 1, 1, 0), UtilsControl.CurveType.Color,
                         () =>
                         {

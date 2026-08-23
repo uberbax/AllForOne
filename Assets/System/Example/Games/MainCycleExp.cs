@@ -263,6 +263,7 @@ public class MainCycleExp : MonoBehaviour
         
         XDdeath.autoAddExp = false;
         XDdeath.fadeAfter = 1;
+        UtilsControl.overDrop = 0;
 
         XDloot.asSingeItem = true;
         //move legnth in turn based games

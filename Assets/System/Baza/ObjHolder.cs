@@ -114,7 +114,7 @@ public class ObjHolder : MonoBehaviour, IReceive
 
     public void OnDisable()
     {
-        Debug.Log("TTTT");
+        //Debug.Log("TTTT " + gameObject.name);
     }
 
     public void Receive(ArgPass arg)

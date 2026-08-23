@@ -898,6 +898,7 @@ public class UtilsControl : MonoBehaviour
     
     public IEnumerator ApplyCurveA(Transform who, AnimationCurve ac, CurveType curve, Action act, float time, float speed, float evKoef, float wait, Color endColor, bool pong, int rotMask, int scaleMask, int repCount, float was, float now, float waitBetween, Func<bool> func, string str)
     {
+        bool clr = false;
         if (wait > 0)
         {
             yield return new WaitForSeconds(wait);
@@ -1299,6 +1300,7 @@ public class UtilsControl : MonoBehaviour
         }
         else if (curve == CurveType.Color)
         {
+            clr = true;
             var svk = GetColor(who.gameObject);
             FadeToColor(who.gameObject, endColor, speed, () =>
             {
@@ -1310,14 +1312,23 @@ public class UtilsControl : MonoBehaviour
                         {
                             ApplyCurve(who, ac, curve, act, time, speed, evKoef, wait, endColor, pong, rotMask);
                         }
+                        
+                        if (act != null)
+                            act();
+                        
                     });    
+                }
+                else
+                {
+                    if (act != null)
+                        act();
                 }
             });
         }
 
         yield return null;
 
-        if (act != null)
+        if (act != null && !clr)
             act();
     }
 
@@ -2753,8 +2764,9 @@ public class UtilsControl : MonoBehaviour
             else if (rend != null) rend.material.color = iniClr + v * t;
             else if (rend1 != null) rend1.color = iniClr + v * t;
             
-            
             t += Time.deltaTime * spd;
+            //Debug.Log(iniClr + " --- " + t);
+            
             yield return null;
         }
 
@@ -3481,7 +3493,8 @@ public class UtilsControl : MonoBehaviour
     {
         StartCoroutine(ParabolicDrop(who, a, end,  instigator));
     }
-    
+
+    public static int overDrop = -100;
     IEnumerator ParabolicDrop(Transform who, RObj a, Action end, Transform instigator)
     {
         var sg = who.gameObject.AddComponent<SortingGroup>();
@@ -3502,6 +3515,10 @@ public class UtilsControl : MonoBehaviour
         Vector3 endPos = who.position;
         if (tt != null && tt.loPoint != null) endPos = tt.loPoint.position;
         var dY = endPos.y - startPos.y;
+
+        who.name += "_droppy";
+        if (overDrop > -100)
+            who.GetComponent<SortingGroup>().sortingOrder = overDrop;
         
         while (elapsedTime < duration)
         {
