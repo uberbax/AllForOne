@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DungeonController : MonoBehaviour
@@ -11,6 +12,8 @@ public class DungeonController : MonoBehaviour
     public int last = 3;
 
     private List<string> tests = new List<string> { "skeleton", "skeleton_archer", "goblin"};
+
+    public TextMeshProUGUI waveNumber;
     private void Awake()
     {
         instance = this;
@@ -91,5 +94,17 @@ public class DungeonController : MonoBehaviour
             
                     
         }, null);
+    }
+
+    private void Update()
+    {
+        if (inDungeon)
+        {
+            waveNumber.text = "Floor " + (cur + 1) + "/" + last;
+        }
+        else
+        {
+            waveNumber.text = "";
+        }
     }
 }

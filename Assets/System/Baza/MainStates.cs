@@ -296,7 +296,7 @@ public class MainStates : MonoBehaviour
             level = l;
             
             cr = cur - expCurve[l-1];
-            cm = expCurve[l];
+            cm = expCurve[l] - expCurve[l-1];
             
             rat = cr / cm;            
         }
@@ -2594,6 +2594,7 @@ public class MainStates : MonoBehaviour
         if (cr + e0 >= cm)
         {
             UIlevelUp.wasLevelup = true;
+            UIlevelUp.tmLevelUp = Time.time;
             UIlevelUp.levelWas = (int)l1;
         }
 
