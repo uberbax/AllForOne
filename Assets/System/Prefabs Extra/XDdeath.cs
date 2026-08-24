@@ -17,6 +17,8 @@ public class XDdeath : ComponentBehavior
 
     public static float fadeAfter = 0;
     
+    public static bool contributeEach = false;
+    
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
@@ -34,7 +36,12 @@ public class XDdeath : ComponentBehavior
         g = mon.visMain.transform.Find("shadow (1)");
         if (g != null) Destroy(g.gameObject);
         
-
+        //here goes the drop
+        if (contributeEach)
+        {
+            MainStates.instance.HandleMonsterKilled(mon);
+        }
+        
         if (mon.visuals.ContainsKey("drop"))
         {
             mon.visuals["drop"].GetComponent<XDdrop>().deathFrom = mon.lastDmgFrom;

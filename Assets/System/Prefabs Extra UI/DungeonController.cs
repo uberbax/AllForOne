@@ -20,9 +20,10 @@ public class DungeonController : MonoBehaviour
     {
         EventManager.SUB("start_dungeon", B);
         EventManager.SUB("after_battle", C);
+        EventManager.SUB("battle_ended", D);
     }
 
-    private void C(ArgPass obj)
+    private void D(ArgPass obj)
     {
         if (cur >= last - 1)
         {
@@ -31,7 +32,17 @@ public class DungeonController : MonoBehaviour
         }
         
         cur++;
+    }
+
+    private void C(ArgPass obj)
+    {
+
+        MainStates.instance.inBattle = true;
         CreateField();
+        MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
+        FunctionTimer.Create(
+            () => EventManager.INV("battle_start", null), 0.5f);
+        ;
     }
 
     public void CreateField()
@@ -44,7 +55,9 @@ public class DungeonController : MonoBehaviour
                 "enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz);
             
             MainStates.instance.curObjs["last_mon"] = ee[0];
-            MainStates.instance.lastBattleTrigger = null;        
+            MainStates.instance.lastBattleTrigger = ee[0].main; 
+            
+            MainStates.instance.all["second_main"].ResetCDs();
     }
     private void B(ArgPass obj)
     {

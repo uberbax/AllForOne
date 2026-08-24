@@ -2572,6 +2572,66 @@ public class MainStates : MonoBehaviour
         }
     }
     
+    public void HandleMonsterKilled(RObj d1, bool addItems = true)
+    {
+        var d = d1.dbObj.drop;
+        var aa = ModelSet.GetMeItemsBon(d);
+        //mark loot as taken
+        ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
+        //gold
+        //exp
+        //orns
+        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
+        var e0 = g0 * 100;
+        aa.Add(new Bon{Key = "exp", Value = e0});
+        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
+        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
+        
+        //if there was a levelup
+        var l1 = mainPlayer.GetPar("level");
+        GetMeExpPars(mainPlayer, out float rat, out float cr, out float cm, out float lvl);
+        //Debug.Log(cr + " " + cm + " " + e0);
+        if (cr + e0 >= cm)
+        {
+            UIlevelUp.wasLevelup = true;
+            UIlevelUp.levelWas = (int)l1;
+        }
+
+        dropTables["battle_reward"] = MergeRewards(dropTables["battle_reward"], aa);
+
+        if (addItems)
+            AddItems(aa);        
+    }
+
+    public List<Bon> MergeRewards(List<Bon> a1, List<Bon> a2)
+    {
+        List<Bon> res = new List<Bon>();
+
+        foreach (var a in a2)
+        {
+            var g = a1.Find(x => x.Key == a.Key);
+            if (g != null)
+            {
+                var h = DatabaseAll.instance.items[a.Key];
+                if (h.pars["max_stack"] > 1)
+                {
+                    g.Value += a.Value;
+                }
+                else
+                {
+                    a1.Add(g);
+                }
+            }
+            else
+            {
+                a1.Add(a);
+            }
+        }
+        
+        return a1;
+    }
+    
+    
     public void DoNaprig(RObj who, Vector3 target)
     {
         Vector3 saved1 = who.Position;

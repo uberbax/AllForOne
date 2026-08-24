@@ -16,8 +16,6 @@ public class MainCycleExp : MonoBehaviour
     private RObj main;
     private RObj secondMain;
 
-    private bool inBattle = false;
-
     public Camera mainCamera;
     public GameObject otherScene;
 
@@ -38,7 +36,7 @@ public class MainCycleExp : MonoBehaviour
 
         EventManager.SUB("battle_start", (x) =>
         {
-            inBattle = true;
+            MainStates.instance.inBattle = true;
             MainStates.instance.InIteration = false;
         });
         EventManager.SUB("battle_press", BattleClicked);
@@ -59,15 +57,14 @@ public class MainCycleExp : MonoBehaviour
             {
                 Destroy(MainStates.instance.lastBattleTrigger);
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             else
             {
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             ActivateOtherScene(false);
             MainStates.instance.curObjs["last_boss"] = null;
+            MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });
 
         EventManager.SUB("battle_leave", (x) =>
@@ -82,10 +79,10 @@ public class MainCycleExp : MonoBehaviour
             //MainStates.instance.UI_unitsPlaced.SetActive(false);
             {
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             ActivateOtherScene(false);
             MainStates.instance.curObjs["last_boss"] = null;
+            MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });
 
         EventManager.SUB("go_home", (x) => { Camera.main.GetComponent<CameraFollow>().target = basePos; });
@@ -263,6 +260,7 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        XDdeath.contributeEach = true;
         
         XDdeath.autoAddExp = false;
         XDdeath.fadeAfter = 1;
@@ -322,36 +320,11 @@ public class MainCycleExp : MonoBehaviour
     {
         var d1 = MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj;
         
-        var d = d1.dbObj.drop;
-        var aa = ModelSet.GetMeItemsBon(d);
-        //mark loot as taken
-        ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
-        //gold
-        //exp
-        //orns
-        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
-        var e0 = g0 * 100;
-        aa.Add(new Bon{Key = "exp", Value = e0});
-        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
-        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
-        
-        //if there was a levelup
-        var l1 = MainStates.instance.mainPlayer.GetPar("level");
-        MainStates.instance.GetMeExpPars(MainStates.instance.mainPlayer, out float rat, out float cr, out float cm, out float lvl);
-        //Debug.Log(cr + " " + cm + " " + e0);
-        if (cr + e0 >= cm)
-        {
-            UIlevelUp.wasLevelup = true;
-            UIlevelUp.levelWas = (int)l1;
-        }
+        //MainStates.instance.HandleMonsterKilled(d1);
         
         MainStates.instance.UI_win.GetComponent<ObjHolder>().obj = d1;
-        MainStates.instance.dropTables["battle_reward"] = aa;
-
-        MainStates.instance.AddItems(aa);
         
-        
-        inBattle = false;
+        MainStates.instance.inBattle = false;
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
@@ -399,7 +372,7 @@ public class MainCycleExp : MonoBehaviour
             var go = Instantiate(rr, MainStates.instance.mainPlayer.main.transform);
         }
 
-        if (inBattle)
+        if (MainStates.instance.inBattle)
         {
             if (!MainStates.instance.InIteration)
             {

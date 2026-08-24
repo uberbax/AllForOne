@@ -16,6 +16,8 @@ public class UIlevelUp : MonoBehaviour
     void Update()
     {
         if (!wasLevelup) return;
+        if (BattleController.instance.startDo) return;
+        //if 
         
         bool check = false;
         foreach (var v in waitWhat)
