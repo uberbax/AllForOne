@@ -15,6 +15,8 @@ public class ObjHolder : MonoBehaviour, IReceive
     
     public bool asMain = false;
     public string asCurObj = "";
+    public string asObj = "";
+    
     
     public ObjHolder redirect;
     public void OnEnable()
@@ -58,6 +60,12 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             if (!MainStates.instance.curObjs.ContainsKey(asCurObj)) return;
             obj = MainStates.instance.curObjs[asCurObj];
+        }
+        
+        if (asObj != "")
+        {
+            if (!MainStates.instance.all.ContainsKey(asObj)) return;
+            obj = MainStates.instance.all[asObj];
         }
         
         if (asMain)

@@ -410,6 +410,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &4557020
@@ -1305,6 +1306,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1001 &11046183
@@ -1948,6 +1950,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 1
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &14803239
@@ -10900,9 +10903,11 @@ MonoBehaviour:
     what: obj_berserk
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &96552709
 GameObject:
   m_ObjectHideFlags: 0
@@ -12651,7 +12656,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1071506726}
   m_SourcePrefab: {fileID: 100100000, guid: 741651c981383a341868e137cf79af8f, type: 3}
 --- !u!224 &112543746 stripped
 RectTransform:
@@ -12663,7 +12671,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2681352494987823996, guid: 741651c981383a341868e137cf79af8f, type: 3}
   m_PrefabInstance: {fileID: 112543745}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1071506723}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -14479,6 +14487,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &128343020
@@ -15103,6 +15112,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &133745984
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -15501,6 +15511,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &137562172
@@ -16023,6 +16034,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &140886784
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -17360,6 +17372,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &153021597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+  m_PrefabInstance: {fileID: 1563996316402238576}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &153420449
 GameObject:
   m_ObjectHideFlags: 0
@@ -18500,6 +18517,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &164559619
@@ -21432,6 +21450,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 1
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1001 &188966442
@@ -22420,6 +22439,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &194527417
@@ -22478,6 +22498,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &195039117
@@ -22748,6 +22769,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &197526989
@@ -23307,6 +23329,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &198776426
@@ -25685,6 +25708,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &214922792
@@ -29259,6 +29283,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &241181461
@@ -33151,6 +33176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 282052402}
+  - component: {fileID: 282052403}
   m_Layer: 5
   m_Name: other
   m_TagString: Untagged
@@ -33184,6 +33210,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &282052403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282052401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee53179e0d86e741888aea1d8e93f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::ObjHolder
+  attachedVeh: {fileID: 0}
+  filler: {fileID: 0}
+  noTrack: 1
+  inDrag: 0
+  asMain: 0
+  asCurObj: 
+  asObj: second_main
+  redirect: {fileID: 0}
+  ignoreScale: 0
 --- !u!1 &282605285
 GameObject:
   m_ObjectHideFlags: 0
@@ -34028,9 +34075,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: ==
+    meta: 
   forOther: {fileID: 88660544}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &290932867
 GameObject:
   m_ObjectHideFlags: 0
@@ -34664,6 +34713,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &295566400
@@ -36033,6 +36083,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 794524338}
   ignoreScale: 0
 --- !u!1 &314440274
@@ -38392,6 +38443,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &333468008
@@ -42494,6 +42546,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &383780240
@@ -46170,6 +46223,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &428357270
@@ -47117,6 +47171,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &434709172
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -48717,6 +48772,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 1
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &441506333
@@ -49579,6 +49635,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &445975750
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -50267,9 +50324,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: ==
+    meta: 
   forOther: {fileID: 1108734057}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &453703602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52157,6 +52216,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &466845310
@@ -53365,6 +53425,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &480757722
@@ -56635,6 +56696,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &504479272
 GameObject:
   m_ObjectHideFlags: 0
@@ -56930,6 +56992,7 @@ GameObject:
   - component: {fileID: 510097065}
   - component: {fileID: 510097064}
   - component: {fileID: 510097063}
+  - component: {fileID: 510097069}
   m_Layer: 5
   m_Name: Skl1 (6)
   m_TagString: Untagged
@@ -57055,6 +57118,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &510097067
@@ -57095,6 +57159,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510097061}
   m_CullTransparentMesh: 1
+--- !u!114 &510097069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510097061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &510529040
 GameObject:
   m_ObjectHideFlags: 0
@@ -59120,6 +59223,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &528903594
@@ -60665,6 +60769,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &550321226
@@ -62908,6 +63013,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &571739966
 GameObject:
   m_ObjectHideFlags: 0
@@ -63072,6 +63178,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &572453634
@@ -63448,6 +63555,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &574505356
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -66589,9 +66697,11 @@ MonoBehaviour:
     what: is_boss
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &601216061
 GameObject:
   m_ObjectHideFlags: 0
@@ -69733,6 +69843,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &633606908
@@ -73857,9 +73968,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: <
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &670546720
 GameObject:
   m_ObjectHideFlags: 0
@@ -76694,6 +76807,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &689591159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77265,10 +77379,12 @@ MonoBehaviour:
     what: obj_berserk
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive:
   - {fileID: 271508547}
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &692117411
 GameObject:
   m_ObjectHideFlags: 0
@@ -77707,6 +77823,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &694925960
@@ -78661,6 +78778,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &707083394
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -79142,7 +79260,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712839284}
   m_SourcePrefab: {fileID: 100100000, guid: 741651c981383a341868e137cf79af8f, type: 3}
 --- !u!224 &711817589 stripped
 RectTransform:
@@ -79154,7 +79275,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2681352494987823996, guid: 741651c981383a341868e137cf79af8f, type: 3}
   m_PrefabInstance: {fileID: 711817588}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1712839281}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -80552,6 +80673,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &729155079
@@ -83091,6 +83213,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &754250216
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -83926,6 +84049,7 @@ GameObject:
   - component: {fileID: 769541865}
   - component: {fileID: 769541864}
   - component: {fileID: 769541869}
+  - component: {fileID: 769541870}
   m_Layer: 5
   m_Name: Skl1 (1)
   m_TagString: Untagged
@@ -84039,6 +84163,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &769541867
@@ -84091,6 +84216,45 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &769541870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769541862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &772881357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7266504965274542837, guid: 0c9693de83853d54cb7bb966f8d875a1, type: 3}
@@ -85800,6 +85964,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &789532362
@@ -86328,6 +86493,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &794524339
@@ -86593,6 +86759,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &796800029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86824,6 +86991,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &797377241
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -90570,6 +90738,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &824734751
@@ -96397,6 +96566,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &879135019
@@ -99581,6 +99751,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &898834448
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -99823,6 +99994,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &902163639
@@ -100098,6 +100270,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &902786556
@@ -100527,6 +100700,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &907435020
@@ -100728,6 +100902,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &909366714
@@ -101500,10 +101675,12 @@ MonoBehaviour:
     what: obj_arisen
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive:
   - {fileID: 433923114}
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &914162112
 GameObject:
   m_ObjectHideFlags: 0
@@ -104106,13 +104283,16 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: ==
+    meta: 
   - typo: 11
     what: last_boss
     val: 2
     compar: ==
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &945153550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104131,6 +104311,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: last_boss
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &946662127
@@ -104901,6 +105082,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &953956944
@@ -106204,6 +106386,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &964024816
@@ -108528,6 +108711,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &985909560
@@ -109777,6 +109961,7 @@ GameObject:
   - component: {fileID: 994649058}
   - component: {fileID: 994649057}
   - component: {fileID: 994649062}
+  - component: {fileID: 994649063}
   m_Layer: 5
   m_Name: Skl1
   m_TagString: Untagged
@@ -109890,6 +110075,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &994649060
@@ -109942,6 +110128,45 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &994649063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994649055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &995170467
 GameObject:
   m_ObjectHideFlags: 0
@@ -114945,6 +115170,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1034571639
@@ -115693,6 +115919,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1038961443
 GameObject:
   m_ObjectHideFlags: 0
@@ -117716,6 +117943,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1061001313
@@ -118660,6 +118888,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1071506723 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+  m_PrefabInstance: {fileID: 112543745}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1071506726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071506723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1071981229
 GameObject:
   m_ObjectHideFlags: 0
@@ -119379,6 +119646,7 @@ GameObject:
   - component: {fileID: 1077357904}
   - component: {fileID: 1077357903}
   - component: {fileID: 1077357908}
+  - component: {fileID: 1077357909}
   m_Layer: 5
   m_Name: Skl1 (3)
   m_TagString: Untagged
@@ -119492,6 +119760,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1077357906
@@ -119544,6 +119813,45 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1077357909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077357901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1078682776
 GameObject:
   m_ObjectHideFlags: 0
@@ -120048,6 +120356,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1086187309
@@ -121175,6 +121484,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1090910232
 GameObject:
   m_ObjectHideFlags: 0
@@ -121683,9 +121993,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: ==
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 1
+  halfCanvasGroup: 0
 --- !u!114 &1097064818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121704,6 +122016,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: last_mon
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1098348102
@@ -124457,6 +124770,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1124580634
 GameObject:
   m_ObjectHideFlags: 0
@@ -125041,6 +125355,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 1
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1131283076
@@ -130023,6 +130338,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1154028119
 GameObject:
   m_ObjectHideFlags: 0
@@ -134393,6 +134709,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1186484932
@@ -136559,10 +136876,12 @@ MonoBehaviour:
     what: is_boss
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive:
   - {fileID: 690556421}
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1205813832
 GameObject:
   m_ObjectHideFlags: 0
@@ -139496,6 +139815,7 @@ GameObject:
   - component: {fileID: 1229862389}
   - component: {fileID: 1229862388}
   - component: {fileID: 1229862387}
+  - component: {fileID: 1229862393}
   m_Layer: 5
   m_Name: Skl1 (5)
   m_TagString: Untagged
@@ -139621,6 +139941,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1229862391
@@ -139661,6 +139982,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229862385}
   m_CullTransparentMesh: 1
+--- !u!114 &1229862393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229862385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1229937570
 GameObject:
   m_ObjectHideFlags: 0
@@ -140910,9 +141270,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: ==
+    meta: 
   forOther: {fileID: 282052401}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1241319394
 GameObject:
   m_ObjectHideFlags: 0
@@ -142153,6 +142515,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1251465028
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -142629,6 +142992,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1259194348
@@ -144550,6 +144914,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1275348899
 GameObject:
   m_ObjectHideFlags: 0
@@ -147066,6 +147431,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1299360770
 GameObject:
   m_ObjectHideFlags: 0
@@ -148425,6 +148791,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1310659561
@@ -152691,6 +153058,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1339182146
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -153803,6 +154171,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1352789262
@@ -157261,6 +157630,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1396732255
 GameObject:
   m_ObjectHideFlags: 0
@@ -157865,6 +158235,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1399171243
@@ -160454,6 +160825,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1422174958
 GameObject:
   m_ObjectHideFlags: 0
@@ -161782,6 +162154,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1440169762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+  m_PrefabInstance: {fileID: 1653233733}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1442372871
 GameObject:
   m_ObjectHideFlags: 0
@@ -167607,6 +167984,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1487194119
@@ -171429,9 +171807,11 @@ MonoBehaviour:
     what: battle
     val: 2
     compar: <
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1527892333
 GameObject:
   m_ObjectHideFlags: 0
@@ -173912,9 +174292,11 @@ MonoBehaviour:
     what: obj_arisen
     val: 0
     compar: '>'
+    meta: 
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1555946747
 GameObject:
   m_ObjectHideFlags: 0
@@ -175074,6 +175456,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1575017973
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -178906,6 +179289,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1608738790
@@ -183395,7 +183779,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1653233738}
   m_SourcePrefab: {fileID: 100100000, guid: 741651c981383a341868e137cf79af8f, type: 3}
 --- !u!224 &1653233734 stripped
 RectTransform:
@@ -183407,12 +183794,46 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2681352494987823996, guid: 741651c981383a341868e137cf79af8f, type: 3}
   m_PrefabInstance: {fileID: 1653233733}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1440169762}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &1653233738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440169762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1653936301
 GameObject:
   m_ObjectHideFlags: 0
@@ -185328,6 +185749,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1674012399
@@ -188014,6 +188436,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1704152501
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -188753,6 +189176,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1710857927
@@ -189021,6 +189445,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1712839281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+  m_PrefabInstance: {fileID: 711817588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1712839284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712839281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1712860929
 GameObject:
   m_ObjectHideFlags: 0
@@ -191407,6 +191870,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1738127172
@@ -191666,6 +192130,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1740090809
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -191789,6 +192254,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1740499372
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -194812,6 +195278,7 @@ GameObject:
   - component: {fileID: 1776492069}
   - component: {fileID: 1776492068}
   - component: {fileID: 1776492073}
+  - component: {fileID: 1776492074}
   m_Layer: 5
   m_Name: Skl1 (2)
   m_TagString: Untagged
@@ -194925,6 +195392,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1776492071
@@ -194977,6 +195445,45 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1776492074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776492066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &1777342653
 GameObject:
   m_ObjectHideFlags: 0
@@ -197091,6 +197598,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1793155068
@@ -197913,6 +198421,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1795336394
@@ -207590,6 +208099,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1881171033
@@ -208781,6 +209291,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1895787203
@@ -209463,6 +209974,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1903030382
@@ -211798,6 +212310,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1929839158
 GameObject:
   m_ObjectHideFlags: 0
@@ -214447,6 +214960,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1954291537
 GameObject:
   m_ObjectHideFlags: 0
@@ -216136,6 +216650,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1971984307
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -216970,6 +217485,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!225 &1983189121
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -217153,6 +217669,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1986477500
@@ -220420,6 +220937,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &2020436443
@@ -227016,6 +227534,7 @@ GameObject:
   - component: {fileID: 2073892831}
   - component: {fileID: 2073892830}
   - component: {fileID: 2073892835}
+  - component: {fileID: 2073892836}
   m_Layer: 5
   m_Name: Skl1 (4)
   m_TagString: Untagged
@@ -227129,6 +227648,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &2073892833
@@ -227181,6 +227701,45 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2073892836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073892828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: manacost
+    val: owner.mana
+    compar: <=
+    meta: 
+  - typo: 8
+    what: owner.can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!1 &2076751192
 GameObject:
   m_ObjectHideFlags: 0
@@ -233157,6 +233716,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &176927560825149477
@@ -233711,6 +234271,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &742586793216709843
@@ -234872,7 +235433,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1042504964063546563, guid: 741651c981383a341868e137cf79af8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6529188492569762348}
   m_SourcePrefab: {fileID: 100100000, guid: 741651c981383a341868e137cf79af8f, type: 3}
 --- !u!222 &1573081338632742600
 CanvasRenderer:
@@ -234900,6 +235464,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!224 &1606589383047028449
@@ -235212,6 +235777,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!212 &1991342581768768070
@@ -236855,6 +237421,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!4 &3347801086884723453
 Transform:
   m_ObjectHideFlags: 0
@@ -240884,6 +241451,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!222 &5491297921933324582
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -242650,12 +243218,46 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2681352494987823996, guid: 741651c981383a341868e137cf79af8f, type: 3}
   m_PrefabInstance: {fileID: 1563996316402238576}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 153021597}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &6529188492569762348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153021597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 1
+  asOther: {fileID: 0}
+  reqs:
+  - typo: 8
+    what: can_cast
+    val: 0
+    compar: '>'
+    meta: 
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 1
 --- !u!224 &6567231420157596630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -243218,6 +243820,7 @@ MonoBehaviour:
   forOther: {fileID: 0}
   alsoActive: []
   activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &7074039155222020461
 GameObject:
   m_ObjectHideFlags: 0
@@ -244384,6 +244987,7 @@ MonoBehaviour:
   inDrag: 0
   asMain: 0
   asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &7802299937085074659

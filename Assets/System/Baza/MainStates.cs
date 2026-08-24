@@ -2407,7 +2407,7 @@ public class MainStates : MonoBehaviour
             var m2 = a.GetPar("max_mana");
             if (m2 - m1 < mana)
             {
-                a.SetPar("mana", m2);
+                a.ChangePar("mana", m2-m1);
             }
             else
             {
@@ -2859,14 +2859,16 @@ public class MainStates : MonoBehaviour
             if (awaitUnits && this.awaitUnits.ContainsKey(combats[i].RID))
             {
                 //vot zdes' can_cast = true cause its our turn
+                combats[i].SetPar("can_cast", 1);
                 while (this.awaitUnits[combats[i].RID] > 0)
                 {
                     yield return null;
                 }
+                combats[i].SetPar("can_cast", 0);
                 
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
-
+                
                 if (curComateers.Count > 0)
                 {
                     curComateers.RemoveAt(0);

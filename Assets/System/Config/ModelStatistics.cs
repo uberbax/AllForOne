@@ -590,11 +590,39 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_par)
                     {
+                        string vv = g.what;
+                        int vv1 = 0;
                         RObj hh = MainStates.instance.all["main_player"];
                         if (who != null) hh = who;
                         
-                        var aa = hh.GetPar(g.what);
-                        var aa1 = int.Parse(g.val) + startStat;
+                        if (g.what.IndexOf("owner.") >= 0)
+                        {
+                            if (hh != null && hh.owner != null)
+                            {
+                                vv = g.what.Substring(6);
+                                hh = who.owner;
+                            }
+                        }
+                        else
+                        {
+                            
+                        }
+                        
+                        if (g.val.IndexOf("owner.") >= 0)
+                        {
+                            if (hh != null && hh.owner != null)
+                            {
+                                string r = g.val.Substring(6);
+                                vv1 = (int)hh.owner.GetPar(r);
+                            }
+                        }
+                        else
+                        {
+                            vv1 = int.Parse(g.val);
+                        }
+                        
+                        var aa = hh.GetPar(vv);
+                        var aa1 = vv1 + startStat;
                         if (g.compar == "==" && aa != aa1) q = false;
                         if (g.compar == ">=" && aa < aa1) q = false;
                         if (g.compar == ">" && aa <= aa1) q = false;
@@ -1126,6 +1154,7 @@ public class UnoReq
     public string val;
     // = < > <= >=
     public string compar;
+    public string meta = "";
 }
 
 [System.Serializable]

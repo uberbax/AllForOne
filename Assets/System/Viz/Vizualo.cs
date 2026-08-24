@@ -37,7 +37,8 @@ public class Vizualo : MonoBehaviour
     public GameObject forOther;
     public List<GameObject> alsoActive = new List<GameObject>();
     
-    public bool activateScale = false; 
+    public bool activateScale = false;
+    public bool halfCanvasGroup = false;
     
     private void OnEnable1()
     {
@@ -56,6 +57,9 @@ public class Vizualo : MonoBehaviour
         c = GetComponent<CanvasGroup>();
         if (c == null) c = gameObject.AddComponent<CanvasGroup>();
         abs = GetComponentInParent<AbsHolder>();
+        
+        if (relButton == null) 
+            relButton = GetComponent<Button>();
         
         if (abs)
         {
@@ -194,22 +198,21 @@ public class Vizualo : MonoBehaviour
     {
          var ls = Vector3.one;
          if (!val) ls = Vector3.zero;
-        
+         float cg = 1;
+         if (!val) cg = 0.5f;
+         if (asHolderCond && who == null) cg = 0;
+         
         if (forOther != null)
         {
-            if (activateScale)
-            {
-                forOther.transform.localScale = ls;
-            }
+            if (activateScale) forOther.transform.localScale = ls;
+            else if (halfCanvasGroup) forOther.GetComponent<CanvasGroup>().alpha = cg;
             else
                 forOther.SetActive(val);
         }
         else
         {
-            if (activateScale)
-            {
-                transform.localScale = ls;
-            }
+            if (activateScale) transform.localScale = ls;
+            else if (halfCanvasGroup) c.alpha = cg;
             else
                 gameObject.SetActive(val);
         }
@@ -218,10 +221,8 @@ public class Vizualo : MonoBehaviour
 
         foreach (var v in alsoActive)
         {
-            if (activateScale)
-            {
-                forOther.transform.localScale = ls;
-            }
+            if (activateScale) v.transform.localScale = ls;
+            else if (halfCanvasGroup) v.GetComponent<CanvasGroup>().alpha = cg;
             else
                 v.SetActive(val);
         }
