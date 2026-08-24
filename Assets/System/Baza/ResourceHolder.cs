@@ -286,7 +286,10 @@ public class ResourceHolder : MonoBehaviour
             }
             else if (a.param == "cd")
             {
-                img.fillAmount = r.GetPar("cd") / r.GetPar("cooldown");
+                var s1 = r.GetPar("cd");
+                var s2 = r.GetPar("cooldown");
+                img.fillAmount = s1 / s2;
+                //Debug.Log(r.RID + " " + s1 + " " + s2);
             }
             else if (a.param == "rarity")
             {

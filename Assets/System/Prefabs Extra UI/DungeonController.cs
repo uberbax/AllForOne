@@ -25,6 +25,8 @@ public class DungeonController : MonoBehaviour
 
     private void D(ArgPass obj)
     {
+        MainStates.instance.awaitUnits["second_main"] = 1;
+        BattleController.instance.Clean();
         if (cur >= last - 1)
         {
             inDungeon = false;
@@ -45,6 +47,13 @@ public class DungeonController : MonoBehaviour
         ;
     }
 
+    [ContextMenu("TryReset")]
+    public void TryReset()
+    {
+        MainStates.instance.all["second_main"].ResetCDs();
+        MainStates.instance.mainPlayer.ResetCDs();
+    }
+
     public void CreateField()
     {
             List<Bon> curLevel = new List<Bon>();
@@ -57,7 +66,10 @@ public class DungeonController : MonoBehaviour
             MainStates.instance.curObjs["last_mon"] = ee[0];
             MainStates.instance.lastBattleTrigger = ee[0].main; 
             
+            //? doesnt work
             MainStates.instance.all["second_main"].ResetCDs();
+            MainStates.instance.mainPlayer.ResetCDs();
+            
     }
     private void B(ArgPass obj)
     {

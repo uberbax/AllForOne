@@ -354,6 +354,7 @@ public class RObj
         foreach (var v in actSkills)
         {
             v.upgradePars["cd"] = 0;
+            v.curPars["cd"] = 0;
         }
     }
 

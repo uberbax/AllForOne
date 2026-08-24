@@ -2858,6 +2858,7 @@ public class MainStates : MonoBehaviour
             //we possibly wait
             if (awaitUnits && this.awaitUnits.ContainsKey(combats[i].RID))
             {
+                //vot zdes' can_cast = true cause its our turn
                 while (this.awaitUnits[combats[i].RID] > 0)
                 {
                     yield return null;
