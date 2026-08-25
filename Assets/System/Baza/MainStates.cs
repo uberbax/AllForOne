@@ -189,7 +189,10 @@ public class MainStates : MonoBehaviour
 
     public static List<(string, string)> overridesViz = null;
 
+    //battle_reward
     public Dictionary<string, List<Bon>> dropTables = new Dictionary<string, List<Bon>>();
+    //last_boss
+    //last_leg (last legendary item)
     public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
     //
     public Transform trashRoot;

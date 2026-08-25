@@ -3541,7 +3541,8 @@ public class UtilsControl : MonoBehaviour
         }
 
         if (end != null) end();
-         who.position = endPos;
+         //who.position = endPos;
+         who.position = targetPos;
         
         if (ConfigLoader.GetMetaParamValue("autotake_drop") == 1)
         {
