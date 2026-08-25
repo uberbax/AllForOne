@@ -24,6 +24,10 @@ public class XDhp : ComponentBehavior
     public float dlt2 = 0;
     public bool samePos = false;
     public bool useMax = false;
+    public bool hideIfZero = false;
+    private CanvasGroup cg;
+
+    private float dlt3 = 0;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
@@ -34,6 +38,8 @@ public class XDhp : ComponentBehavior
         if (pars.ContainsKey("track"))
             trackWhat = pars["track"];
         
+        if (pars.ContainsKey("d3"))
+            dlt3 = float.Parse(pars["d3"]);
         
     }
     
@@ -41,6 +47,7 @@ public class XDhp : ComponentBehavior
     {
         mon = GetComponentInParent<ObjHolder>().obj;
         head = mon.visMain.transform.Find(trackWhere);
+        cg = GetComponent<CanvasGroup>();
 
         if (head == null && trackWhere == "bot_health")
         {
@@ -54,6 +61,13 @@ public class XDhp : ComponentBehavior
             head = mon.visMain.transform.Find("legs");
             dlt = 0;
             dlt2 = -0.7f;
+        }
+        
+        if (head == null && trackWhere == "bot_shield")
+        {
+            head = mon.visMain.transform.Find("legs");
+            dlt = 0;
+            dlt2 = -1 + dlt3;
         }
 
         if (mon.GetPar("is_boss") > 0)
@@ -86,7 +100,18 @@ public class XDhp : ComponentBehavior
             mon = GetComponentInParent<ObjHolder>().obj;
         }
         
-        float ratio = mon.GetPar(trackWhat) / mon.GetPar("max_" + trackWhat);
+        var mm = mon.GetPar("max_" + trackWhat);
+        if (mm == 0) mm = 500; //? its for shield
+        var mm0 = mon.GetPar(trackWhat);
+        if (hideIfZero)
+        {
+            if (mm0 <= 0)
+                cg.alpha = 0;
+            else
+                cg.alpha = 1;
+        }
+        
+        float ratio = mm0 / mm;
         fill.fillAmount = ratio;
         if (fillMed.fillAmount > ratio)
         {

@@ -135,6 +135,8 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("combat#no:1");
         secondMain.AddViz("hp");
         secondMain.AddViz("mana");
+        secondMain.AddViz("ward");
+        
 
         secondMain.AddViz("coll#scale:0.5");
         secondMain.AddViz("animator#pr:1");
@@ -237,8 +239,8 @@ public class MainCycleExp : MonoBehaviour
         skl = main.inventory.Find(x => x.dbObj.ID == "basic_aoe");
         MainStates.instance.Equip(main, skl, 51);
 
-        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_buff_atk", Value = 1 } });
-        skl = main.inventory.Find(x => x.dbObj.ID == "basic_buff_atk");
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "shield_spell", Value = 1 } });
+        skl = main.inventory.Find(x => x.dbObj.ID == "shield_spell");
         MainStates.instance.Equip(main, skl, 52);
 
         //
@@ -272,7 +274,7 @@ public class MainCycleExp : MonoBehaviour
         MainStates.overridesViz = new List<(string, string)>
         {
             ("hp", ""), ("buff", ""), ("shadow",""),
-            ("drop", "")
+            ("drop", ""), ("ward", "d3:0.3")
         };
         MainStates.inBattleScale = 2;
         

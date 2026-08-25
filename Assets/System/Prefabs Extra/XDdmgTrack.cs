@@ -11,6 +11,11 @@ public class XDdmgTrack : ComponentBehavior
     private float prevHp = -1;
 
     private Transform head;
+    
+    //
+    
+    
+    
     void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
