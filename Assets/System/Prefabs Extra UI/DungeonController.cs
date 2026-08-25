@@ -11,7 +11,12 @@ public class DungeonController : MonoBehaviour
     public int cur = 0;
     public int last = 3;
 
-    private List<string> tests = new List<string> { "skeleton", "skeleton_archer", "goblin"};
+    private List<List<Bon>> tests = new List<List<Bon>>
+    {
+        new List<Bon>{ new Bon{ Key = "skeleton", Value = 1, Val2 = "obj_berserk:1"} }, 
+        new List<Bon>{ new Bon{ Key = "skeleton_archer", Value = 1} }, 
+        new List<Bon>{ new Bon{ Key = "goblin", Value = 1} } 
+    };
 
     public TextMeshProUGUI waveNumber;
     private void Awake()
@@ -60,7 +65,7 @@ public class DungeonController : MonoBehaviour
     public void CreateField()
     {
             List<Bon> curLevel = new List<Bon>();
-            curLevel.Add(new Bon{Key = tests[cur], Value = 1});
+            curLevel = tests[cur];
             //curLevel.Add(new Bon{Key = "skeleton_archer", Value = 1});
             
             var ee = WaveSpawner.instance.DoSpawnAnyPos(curLevel,

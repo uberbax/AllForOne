@@ -16,6 +16,8 @@ public class XDdmgTrack : ComponentBehavior
     private bool trackMana = false;
     private bool trackShield = false;
     
+    private float prevMp = -1;
+    private float prevShld = -1;
     
     void Start()
     {
@@ -27,6 +29,10 @@ public class XDdmgTrack : ComponentBehavior
     void Update()
     {
         var c = mon.GetPar("health");
+        var cm = mon.GetPar("mana");
+        var cs = mon.GetPar("shield");
+        
+        
         var c0 = mon.GetPar("show_message");
 
         Vector3 where = transform.position;
@@ -71,5 +77,27 @@ public class XDdmgTrack : ComponentBehavior
         }
 
         prevHp = c;
+        //
+        
+        if (cm != prevMp && prevMp != -1)
+        {
+            var dlt = cm - prevMp;
+            DamageNumber newDamageNumber = UtilsControl.Instance.prefabMana.Spawn(where, dlt);
+
+        }
+        
+        prevMp = cm;
+        //
+        
+        if (cs != prevShld && prevShld != -1)
+        {
+            var dlt = cs - prevShld;
+            DamageNumber newDamageNumber = UtilsControl.Instance.prefabWard.Spawn(where, dlt);
+
+        }
+        
+        prevShld = cs;
+        
+        
     }
 }

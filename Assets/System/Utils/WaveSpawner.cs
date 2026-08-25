@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -465,6 +466,19 @@ public class WaveSpawner : MonoBehaviour
                 if (ff != null)
                 {
                    enm1.main.transform.position += (enm1.main.transform.position - ff.position);
+                }
+                //
+                if (v.Val2 != "")
+                {
+                    var t0 = v.Val2.Split(',');
+                    foreach (var t1 in t0)
+                    {
+                        var t2 = t1.Split(':');
+                        enm1.SetPar(t2[0], float.Parse(t2[1], CultureInfo.InvariantCulture));
+                        //pars.Add(t2[0], t2[1]);
+                    }
+                    //
+                    MainStates.instance.ApplyMonsterExtraParams(enm1, enm1);
                 }
 
             }

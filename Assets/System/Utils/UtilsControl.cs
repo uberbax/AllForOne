@@ -21,6 +21,9 @@ public class UtilsControl : MonoBehaviour
     public DamageNumber prefab;
     public DamageNumber prefabPos;
     public DamageNumber prefabPhrase;
+    public DamageNumber prefabMana;
+    public DamageNumber prefabWard;
+    
     
     public static UtilsControl Instance;
     public GameObject imgTxt;
