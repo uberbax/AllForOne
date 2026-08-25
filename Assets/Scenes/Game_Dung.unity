@@ -1353,6 +1353,78 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9077919028482928247, guid: 822264d7e82fbfd4dbf2a5e69d31a1be, type: 3}
   m_PrefabInstance: {fileID: 79682024}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &80407903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 80407904}
+  - component: {fileID: 80407906}
+  - component: {fileID: 80407905}
+  m_Layer: 5
+  m_Name: cards-sourse-screenshot (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &80407904
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80407903}
+  m_LocalRotation: {x: -0, y: -0, z: -0.018378649, w: 0.9998312}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 922838692}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -2.106}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -32.8303, y: -84}
+  m_SizeDelta: {x: 1633.8494, y: 923.96}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &80407905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80407903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: 61451592fe35f5f46934083bfde0adc2, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &80407906
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80407903}
+  m_CullTransparentMesh: 1
 --- !u!1001 &82729816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4992,7 +5064,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &273439256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6980,6 +7052,7 @@ MonoBehaviour:
   - dmg_track
   - combat
   - flash
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -6990,6 +7063,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &360892572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11137,7 +11211,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 128
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 61451592fe35f5f46934083bfde0adc2, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -11251,6 +11325,7 @@ MonoBehaviour:
   - dmg_track
   - combat
   - flash
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -11261,6 +11336,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &577302857
 GameObject:
   m_ObjectHideFlags: 0
@@ -18054,6 +18130,7 @@ RectTransform:
   - {fileID: 668265541}
   - {fileID: 2074027991}
   - {fileID: 273439256}
+  - {fileID: 80407904}
   - {fileID: 465846098}
   - {fileID: 175431223}
   - {fileID: 300316545}
@@ -29281,6 +29358,7 @@ MonoBehaviour:
   - flash
   - animator
   - death
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -29291,6 +29369,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 801236646}
+  extraMonsters: []
 --- !u!114 &1480990219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35293,6 +35372,7 @@ MonoBehaviour:
   - dmg_track
   - combat
   - flash
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -35303,6 +35383,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1835135544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42553,6 +42634,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!224 &170383734981096330
@@ -44083,6 +44166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: battle_phase
   arg:
@@ -44128,6 +44212,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!1 &611158813118792293
 GameObject:
   m_ObjectHideFlags: 0
@@ -44431,6 +44518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: spawn_wave
   arg:
@@ -44476,6 +44564,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!224 &682030108785602739
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44569,6 +44660,7 @@ MonoBehaviour:
   replaceClick: unequip_exp
   slots: []
   root: {fileID: 6177297781761488385}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: b84bfd9b2e74d3a4dae3292adeb63922, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -44576,6 +44668,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!114 &726472485355839879
 MonoBehaviour:
@@ -44989,7 +45082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: 0, y: 348}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &832027219162261156
@@ -45209,6 +45302,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &926480258640209174
@@ -45495,6 +45590,7 @@ MonoBehaviour:
   slots:
   - {fileID: 8743015785389924195}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -45502,6 +45598,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &1028559411577388917
 CanvasRenderer:
@@ -45722,6 +45819,7 @@ MonoBehaviour:
   replaceClick: 
   slots: []
   root: {fileID: 8613786842061475329}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: b84bfd9b2e74d3a4dae3292adeb63922, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -45729,6 +45827,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &1097042764086702156
 CanvasRenderer:
@@ -46899,6 +46998,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &1395321816855639173
@@ -47148,6 +47249,7 @@ MonoBehaviour:
   replaceClick: 
   slots: []
   root: {fileID: 6910587021517003648}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: b84bfd9b2e74d3a4dae3292adeb63922, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -47155,6 +47257,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!224 &1454216202556000704
 RectTransform:
@@ -47684,6 +47787,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &1537939691221494108
@@ -48168,6 +48273,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!222 &1661894481622427634
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -48897,6 +49006,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &1842995284265919223
@@ -48916,6 +49027,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &1849842687384335009
@@ -49142,6 +49255,7 @@ MonoBehaviour:
   slots:
   - {fileID: 2225153544883527830}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -49149,6 +49263,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1 &1918527137668896301
 GameObject:
@@ -49899,6 +50014,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &1992059774831893671
 GameObject:
   m_ObjectHideFlags: 0
@@ -50097,6 +50216,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &2116064731175859669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50209,7 +50332,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &2154081461451026647
 GameObject:
   m_ObjectHideFlags: 0
@@ -50407,6 +50530,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!4 &2221530857692690414
@@ -50555,6 +50680,7 @@ MonoBehaviour:
   replaceClick: 
   slots: []
   root: {fileID: 6320152705069775094}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: 0706d80e7d21b8949b90f0774d668371, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -50562,6 +50688,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &2282364860653220611
 CanvasRenderer:
@@ -50607,6 +50734,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &2293580007012180077
@@ -50906,6 +51035,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!224 &2358307469639301893
@@ -51118,6 +51249,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &2397281884470785276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51519,6 +51654,7 @@ MonoBehaviour:
   replaceClick: 
   slots: []
   root: {fileID: 1227538510053289453}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -51526,6 +51662,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1 &2482300288913837636
 GameObject:
@@ -52889,6 +53026,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!224 &2829135971942531436
@@ -53172,6 +53311,7 @@ MonoBehaviour:
   slots:
   - {fileID: 5196507897242315906}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -53179,6 +53319,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!224 &2905589482016278925
 RectTransform:
@@ -53327,6 +53468,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &2988362224275617413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53785,6 +53930,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &3172433253103222839
@@ -53812,6 +53959,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &3199401801143207821
@@ -54264,6 +54413,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &3328447298450486777
@@ -55161,6 +55312,7 @@ MonoBehaviour:
   level: 1
   addedVis:
   - take
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -55171,6 +55323,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!114 &3543005347857906521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56754,6 +56907,7 @@ MonoBehaviour:
   - {fileID: 3600107206634607004}
   - {fileID: 1214939867345160160}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -56761,6 +56915,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!4 &3925849475942869144
 Transform:
@@ -57214,6 +57369,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!222 &4056813659142967258
@@ -57786,7 +57943,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -489.79993, y: 444}
+  m_AnchoredPosition: {x: -489.79993, y: 720}
   m_SizeDelta: {x: 121.80615, y: 53.6439}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4180241308897085312
@@ -58231,6 +58388,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &4307509249513607986
@@ -58257,6 +58416,7 @@ MonoBehaviour:
   slots:
   - {fileID: 682030108785602739}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -58264,6 +58424,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1 &4309049876469114564
 GameObject:
@@ -58388,6 +58549,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!1 &4383509594800076352
@@ -59578,6 +59741,8 @@ MonoBehaviour:
     hi: {fileID: 3775057785394733213}
   dropdown: {fileID: 1557619290893496882}
   IsDone: 0
+  heroPosHolder: {fileID: 0}
+  enemyPosHolder: {fileID: 0}
 --- !u!224 &4635422254322729191
 RectTransform:
   m_ObjectHideFlags: 0
@@ -59795,6 +59960,7 @@ MonoBehaviour:
   slots:
   - {fileID: 3142443966751487310}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -59802,6 +59968,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!114 &4676151160069560008
 MonoBehaviour:
@@ -61513,6 +61680,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &5092544887938386439
@@ -61695,6 +61864,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &5150248367119450225
@@ -62015,6 +62186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: after_battle
   arg:
@@ -62060,6 +62232,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!114 &5225407723149958053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62080,6 +62255,7 @@ MonoBehaviour:
   level: 1
   addedVis:
   - take
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -62090,6 +62266,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!224 &5230528928511682122
 RectTransform:
   m_ObjectHideFlags: 0
@@ -62961,6 +63138,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!4 &5423717776279578750
@@ -64015,6 +64194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: plus_time
   arg:
@@ -64060,6 +64240,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!224 &5513533674964380808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64321,6 +64504,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1001 &5631269518447311311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64520,6 +64707,7 @@ MonoBehaviour:
   level: 1
   addedVis:
   - take
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -64530,6 +64718,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!114 &5664604390067880622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65409,6 +65598,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &5940860535396189697
@@ -66043,6 +66234,7 @@ MonoBehaviour:
   UI_noMoney: {fileID: 1397971224678900463}
   UI_skilChose: {fileID: 7085973190578881776}
   UI_infoMon: {fileID: 364510766642356390}
+  UI_infoItem: {fileID: 0}
   UI_smalls: {fileID: 0}
   UI_buildings: {fileID: 6858623387154512983}
   UI_skills: {fileID: 0}
@@ -66053,6 +66245,7 @@ MonoBehaviour:
   UI_squadList: {fileID: 0}
   UI_unitsPlaced: {fileID: 0}
   UI_buildingInterface: {fileID: 0}
+  UI_win: {fileID: 0}
   GLOBAL_OBJECTS:
     m_keys: []
     m_values: []
@@ -66981,6 +67174,7 @@ MonoBehaviour:
   level: 1
   addedVis:
   - loot
+  addedInvLoot: 
   addedInv:
   - apple,5
   addedPars: []
@@ -66992,6 +67186,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &6225662834323562469
 GameObject:
   m_ObjectHideFlags: 0
@@ -68055,7 +68250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -540}
+  m_AnchoredPosition: {x: 0, y: -268}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6510955560505551347
@@ -68425,6 +68620,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &6596510333891979120
 GameObject:
   m_ObjectHideFlags: 0
@@ -68558,6 +68757,7 @@ MonoBehaviour:
   slots:
   - {fileID: 4100322725239421155}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -68565,6 +68765,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!224 &6627565817780591951
 RectTransform:
@@ -69008,6 +69209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: after_battle
   arg:
@@ -69053,6 +69255,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!225 &6718272343024370230
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -69141,6 +69346,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!222 &6742435704006883904
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -69371,6 +69580,8 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
   redirect: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &6796921659668379777
@@ -69874,6 +70085,7 @@ MonoBehaviour:
   slots:
   - {fileID: 6659000166034051252}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -69887,6 +70099,7 @@ MonoBehaviour:
     - {fileID: 4102296177032684316}
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1 &6907708395162985024
 GameObject:
@@ -70477,6 +70690,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &7085973190578881776
 GameObject:
   m_ObjectHideFlags: 0
@@ -70665,6 +70882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: build_phase
   arg:
@@ -70710,6 +70928,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!114 &7141712404789821835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71212,6 +71433,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!222 &7213584453674294451
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -72374,6 +72599,7 @@ MonoBehaviour:
   slots:
   - {fileID: 6271923108298437258}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -72381,6 +72607,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &7499163582546616613
 CanvasRenderer:
@@ -72647,6 +72874,7 @@ MonoBehaviour:
   replaceClick: 
   slots: []
   root: {fileID: 4801315092481917973}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: b84bfd9b2e74d3a4dae3292adeb63922, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -72654,6 +72882,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1001 &7555761561590083682
 PrefabInstance:
@@ -75431,6 +75660,7 @@ MonoBehaviour:
   slots:
   - {fileID: 7566415437667198499}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -75438,6 +75668,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &8187098820124086432
 CanvasRenderer:
@@ -75484,6 +75715,7 @@ MonoBehaviour:
   level: 1
   addedVis:
   - take
+  addedInvLoot: 
   addedInv: []
   addedPars: []
   addedMeta: []
@@ -75494,6 +75726,7 @@ MonoBehaviour:
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!114 &8194376792285634124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76318,6 +76551,10 @@ MonoBehaviour:
   asHolderCond: 0
   asOther: {fileID: 0}
   reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!114 &8487842955783363830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76986,6 +77223,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: f924599efe4d14ebdbd19150bc821595, type: 3}
     - {fileID: 21300000, guid: 3c4d21a4029394557870624a5fb37760, type: 3}
     - {fileID: 21300000, guid: d026475b88d6a41128ffdd00720243f3, type: 3}
+  elemColors:
+    m_keys: []
+    m_values: []
   items:
     m_keys:
     - apple
@@ -77182,6 +77422,7 @@ MonoBehaviour:
   sounds:
     m_keys: []
     m_values: []
+  toAct: {fileID: 0}
 --- !u!224 &8668627096128297081
 RectTransform:
   m_ObjectHideFlags: 0
@@ -77428,6 +77669,7 @@ MonoBehaviour:
   slots:
   - {fileID: 529573725007161927}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -77435,6 +77677,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!222 &8742315658757520814
 CanvasRenderer:
@@ -77995,6 +78238,7 @@ MonoBehaviour:
   replaceClick: equip_exp
   slots: []
   root: {fileID: 6412864277184376894}
+  asGrid: 0
   spawn: {fileID: 8666806559895012436, guid: b84bfd9b2e74d3a4dae3292adeb63922, type: 3}
   otherContext: {fileID: 0}
   context:
@@ -78002,6 +78246,7 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
   selfReward: []
 --- !u!1 &8916930262885910146
 GameObject:
@@ -78222,7 +78467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -652.1, y: 542.5}
+  m_AnchoredPosition: {x: -652.1, y: 718}
   m_SizeDelta: {x: 121.80615, y: 53.6439}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8983109903097169290
@@ -79313,6 +79558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::EventTrigger
+  explanation: 
   keyCode: 
   evtName: battle_start
   arg:
@@ -79358,6 +79604,9 @@ MonoBehaviour:
   toDeactivate: []
   soundTrigger: 
   paramAsHolder: 0
+  passRobjHolder: 0
+  addToBtn: 1
+  setAsCurLoot: 0
 --- !u!114 &9212492230624012402
 MonoBehaviour:
   m_ObjectHideFlags: 0

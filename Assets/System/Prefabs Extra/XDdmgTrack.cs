@@ -13,7 +13,8 @@ public class XDdmgTrack : ComponentBehavior
     private Transform head;
     
     //
-    
+    private bool trackMana = false;
+    private bool trackShield = false;
     
     
     void Start()
