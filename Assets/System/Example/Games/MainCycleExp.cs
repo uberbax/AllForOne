@@ -278,7 +278,8 @@ public class MainCycleExp : MonoBehaviour
         MainStates.overridesViz = new List<(string, string)>
         {
             ("hp", ""), ("buff", ""), ("shadow",""),
-            ("drop", ""), ("ward", "d3:0.3"), ("status","")
+            ("drop", ""), ("ward", "d3:0.3"), ("status",""),
+            ("select","in_battle:1")
         };
         MainStates.inBattleScale = 2;
         

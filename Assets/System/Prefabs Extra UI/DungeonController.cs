@@ -35,6 +35,7 @@ public class DungeonController : MonoBehaviour
     {
         MainStates.instance.awaitUnits["second_main"] = 1;
         BattleController.instance.Clean();
+        MainStates.instance.lastTargetSelected = null;
         if (cur >= last - 1)
         {
             inDungeon = false;

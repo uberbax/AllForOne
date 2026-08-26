@@ -166,6 +166,11 @@ public class SkillExecutor : MonoBehaviour
         {
             if (!targ.Contains(target))
                 target = targ[0];
+            else
+            {
+                targ.Remove(target);
+                targ.Insert(0, target);
+            }
         }
         
         if (target == null)
@@ -362,7 +367,7 @@ public class SkillExecutor : MonoBehaviour
         }
         else
         {
-            ExecuteSkill(who, skl);
+            ExecuteSkill(who, skl, target);
         }
         
     }

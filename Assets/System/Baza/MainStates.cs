@@ -61,6 +61,7 @@ public class MainStates : MonoBehaviour
     public RObj curClick;
     public RObj curLoot;
     public RObj lastAllySelected;
+    public RObj lastTargetSelected;
     public GameObject lastBattleTrigger;
     
     public List<RObj> curSmalls;
@@ -1737,7 +1738,10 @@ public class MainStates : MonoBehaviour
             }
             else if (SV == "cast")
             {
-                SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o);
+                //target
+                RObj trg = null;
+                if (o.dbObj.pars["target"] == 0) trg = lastTargetSelected;
+                SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o, target:trg);
             }
             else if (SV == "select")
             {

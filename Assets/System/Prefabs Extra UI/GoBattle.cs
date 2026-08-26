@@ -33,6 +33,7 @@ public class GoBattle : MonoBehaviour
                     MainStates.instance.curObjs["last_mon"] = ee[0];
                     MainStates.instance.curObjs["last_leg"] = null;
                     MainStates.instance.lastBattleTrigger = mon.main;
+                    MainStates.instance.lastTargetSelected = null;
                     ModelStatistics.instance.SetStatValue("battle",2); 
                     holder.transform.parent.gameObject.SetActive(false);
                     
