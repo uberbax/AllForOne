@@ -21,6 +21,7 @@ public class SkillExecutor : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        EventManager.SUB("use_skill", SubExecute);
     }
 
     public static Dictionary<string, int> mapFilter = new Dictionary<string, int>
@@ -146,6 +147,11 @@ public class SkillExecutor : MonoBehaviour
     {
         var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false); 
         return ExecuteSkill(who, h0, target);
+    }
+
+    public void SubExecute(ArgPass e)
+    {
+        ExecuteSkill(e.who, e.what, null);
     }
     
     public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false, string reqTag = "")

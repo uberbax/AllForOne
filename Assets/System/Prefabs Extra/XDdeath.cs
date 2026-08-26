@@ -39,7 +39,8 @@ public class XDdeath : ComponentBehavior
         //here goes the drop
         if (contributeEach)
         {
-            MainStates.instance.HandleMonsterKilled(mon);
+            if (!mon.tags.Contains("player"))
+                MainStates.instance.HandleMonsterKilled(mon);
         }
         
         if (mon.visuals.ContainsKey("drop"))

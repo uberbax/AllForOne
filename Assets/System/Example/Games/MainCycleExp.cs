@@ -136,6 +136,7 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("hp");
         secondMain.AddViz("mana");
         secondMain.AddViz("ward");
+        secondMain.AddViz("death");
         
 
         secondMain.AddViz("coll#scale:0.5");
