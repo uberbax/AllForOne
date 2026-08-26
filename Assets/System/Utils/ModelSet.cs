@@ -194,8 +194,10 @@ public class ModelSet : MonoBehaviour
                 var bb =  DatabaseAll.instance.items[mn.Key];
                 //its rarity
                 if (bb.pars.ContainsKey("roll") && bb.pars["roll"] > 0)
-                    mn.Val3 = Random.Range(0, 4);
-                
+                {
+                    mn.Val3 = Random.Range(0, 5);
+                    //mn.Val3 = 4;
+                }
             }
             
             ans.Add(mn);

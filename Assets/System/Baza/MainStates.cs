@@ -1816,12 +1816,19 @@ public class MainStates : MonoBehaviour
         //who ?
         foreach (var v in rewards)
         {
-            if (v.Key == "exp")
+            var ii = DatabaseAll.instance.CreateItem(v.Key, v.Value);
+            
+            if (v.Val3 > 0)
             {
-                int l = 0;
+                ii.SetPar("rarity", v.Val3);    
+            }
+
+            if (v.Val3 == 4)
+            {
+                //leg found
+                curObjs["last_leg"] = ii;
             }
             
-            var ii = DatabaseAll.instance.CreateItem(v.Key, v.Value);
             if (who != null)
                 AddItem(who, ii);
             else
@@ -2869,6 +2876,7 @@ public class MainStates : MonoBehaviour
                     yield return null;
                 }
                 combats[i].SetPar("can_cast", 0);
+                HandleCds(0);
                 
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;

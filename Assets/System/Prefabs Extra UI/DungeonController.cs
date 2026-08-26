@@ -72,6 +72,7 @@ public class DungeonController : MonoBehaviour
                 "enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz);
             
             MainStates.instance.curObjs["last_mon"] = ee[0];
+            MainStates.instance.curObjs["last_leg"] = null;
             MainStates.instance.lastBattleTrigger = ee[0].main; 
             
             //? doesnt work
