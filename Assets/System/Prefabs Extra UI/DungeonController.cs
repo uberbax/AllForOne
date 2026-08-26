@@ -46,13 +46,14 @@ public class DungeonController : MonoBehaviour
 
     private void C(ArgPass obj)
     {
-
-        MainStates.instance.inBattle = true;
-        CreateField();
-        MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
-        FunctionTimer.Create(
-            () => EventManager.INV("battle_start", null), 0.5f);
-        ;
+        if (inDungeon)
+        {
+            MainStates.instance.inBattle = true;
+            CreateField();
+            MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
+            FunctionTimer.Create(
+                () => EventManager.INV("battle_start", null), 0.5f);
+        }
     }
 
     [ContextMenu("TryReset")]

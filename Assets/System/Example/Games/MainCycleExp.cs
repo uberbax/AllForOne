@@ -262,10 +262,13 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
-        XDdeath.contributeEach = true;
         
+        XDdeath.contributeEach = true;
         XDdeath.autoAddExp = false;
         XDdeath.fadeAfter = 1;
+
+        XDcombat.oneCast = true;
+        
         UtilsControl.overDrop = 0;
 
         XDloot.asSingeItem = true;

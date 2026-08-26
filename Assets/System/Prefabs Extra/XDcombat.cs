@@ -13,6 +13,7 @@ public class XDcombat : ComponentBehavior
     private string reqTag = "";
 
     private int no = 0;
+    public static bool oneCast = false;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("no"))
@@ -81,8 +82,11 @@ public class XDcombat : ComponentBehavior
         bool sucCast = false;
         bool noSight = false;
         //check skills
-        for (int i = 0; i < mon.actSkills.Count; i++)
+        
+        for (int i = mon.actSkills.Count - 1; i >= 0; i--)
+        //for (int i = 0; i < mon.actSkills.Count; i++)
         {
+            if (oneCast && sucCast) continue;
             var skl = mon.actSkills[i];
             //dont execute those who req action ?
             if (skl.GetPar("action_req") > 0 && !mon.tags.Contains("enemy")) continue;
