@@ -2702,13 +2702,15 @@ public class MainStates : MonoBehaviour
 
     }
 
-    public void HandleCds(float dt = -1)
+    public void HandleCds(float dt = -1, RObj who = null)
     {
-        if (dt > 0)
+        if (dt >= 0)
             TimeManager.LAST_DT = dt;
         //decrease cds !    
         foreach (var v in all)
         {
+            if (who != null && v.Value != who) continue;
+            
             if (v.Value.it == ItemType.projectile && v.Value.upgradePars["cd"] >= 0)
             {
                 //v.Value.upgradePars["cd"] -= TimeManager.LAST_DT;
@@ -2724,7 +2726,7 @@ public class MainStates : MonoBehaviour
                 v1.upgradePars["timeEvery"] -=  TimeManager.LAST_DT;
                 
                 //its should be instant, is it ?
-                if (v1.upgradePars["timeEvery"] < 0 && v1.GetPar("instant") > 0)
+                if (v1.upgradePars["timeEvery"] <= 0 && v1.GetPar("instant") > 0)
                 {
                     //deal damage
                     DealDamage(v.Value, v1);
@@ -2880,8 +2882,11 @@ public class MainStates : MonoBehaviour
                     yield return null;
                 }
                 combats[i].SetPar("can_cast", 0);
-                HandleCds(0);
-                
+                if (manualDt)
+                {
+                    HandleCds(manualTick, combats[i]);
+                }
+
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
                 
@@ -2908,6 +2913,11 @@ public class MainStates : MonoBehaviour
             
 
             yield return new WaitForSeconds(tm);
+            if (manualDt)
+            {
+                HandleCds( manualTick, combats[i]);
+            }
+            
             
             if (curComateers.Count > 0)
             {
@@ -2916,10 +2926,7 @@ public class MainStates : MonoBehaviour
             }
         }
 
-        if (manualDt)
-        {
-            HandleCds(manualTick);
-        }
+
         
         InIteration = false;
     }
