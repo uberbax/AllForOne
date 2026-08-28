@@ -992,6 +992,7 @@ public class MainStates : MonoBehaviour
 
     public static bool CompareTags(RObj a, RObj b)
     {
+        if (a == null || b == null) return false;
         if (a.tags.Contains("player") && b.tags.Contains("player")) return true;
         if (a.tags.Contains("enemy") && b.tags.Contains("enemy")) return true;
         return false;

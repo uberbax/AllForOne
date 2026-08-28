@@ -381,6 +381,8 @@ public class RObj
         {
             var lvl = GetPar("level");
             if (lvl == 0) lvl = 1;
+            var rar = GetPar("rarity");
+            //if (rar == 0) rar = 1;
             
             foreach (var v in dbObj.pars)
             {
@@ -388,7 +390,7 @@ public class RObj
                 float vv = v.Value;
                 if (scalablePars.Contains(v.Key))
                 {
-                    vv = vv * MathF.Pow(1.1f, lvl - 1);
+                    vv = vv * MathF.Pow(1.1f, lvl + rar - 1);
                 }
                 AddFinal(v.Key, vv);
             }
