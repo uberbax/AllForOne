@@ -42,6 +42,7 @@ public class EventSubscribe : MonoBehaviour
             if (toInjectUpgrade != null)
             {
                 var a = MainStates.instance.GenerateUpgrade(x.who);
+                a.dltPars = MainStates.instance.GetDiff(x.who, a);
                 toInjectUpgrade.obj = a;    
             }
             

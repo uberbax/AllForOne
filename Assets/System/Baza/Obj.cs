@@ -78,6 +78,7 @@ public class RObj
     
     public Dictionary<string, float> upgradePars = new Dictionary<string, float>();
     public Dictionary<string, float> curPars = new Dictionary<string, float>();
+    public Dictionary<string, float> dltPars = new Dictionary<string, float>();
 
     //?????
     [SerializeReference]

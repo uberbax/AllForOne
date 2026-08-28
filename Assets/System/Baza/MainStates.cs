@@ -2196,6 +2196,17 @@ public class MainStates : MonoBehaviour
         //effect regen possibly
     }
 
+    public Dictionary<string, float> GetDiff(RObj a1, RObj a2)
+    {
+        var res = new Dictionary<string, float>();
+        foreach (var v in a1.curPars)
+        {
+            res.Add(v.Key, a2.curPars[v.Key] - v.Value);
+        }
+
+        return res;
+    }
+
     public void ShowRange(LineRenderer range, Vector3 pos, float skl, float size)
     {
         if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
