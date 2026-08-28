@@ -108,7 +108,10 @@ public class XDloot : ComponentBehavior
            {
                
                var ss = MainStates.instance.GetInventoryBon(mon);
-               MainStates.instance.AddItems(ss);
+               
+               if (asSingeItem)
+                   MainStates.instance.AddItems(new List<Bon>{ss[0]});
+               else MainStates.instance.AddItems(ss);
                
                if (!asSingeItem)
                     PopupoManager.instance.ShowRewards(ss);
