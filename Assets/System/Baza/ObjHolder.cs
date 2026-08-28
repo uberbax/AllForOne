@@ -19,6 +19,8 @@ public class ObjHolder : MonoBehaviour, IReceive
     
     
     public ObjHolder redirect;
+    public ObjHolder copyTo;
+    
     public void OnEnable()
     {
         UISystem.instance.FillItem(this);
@@ -54,6 +56,11 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             obj = redirect.obj;
             return;
+        }
+
+        if (copyTo != null)
+        {
+            copyTo.obj = obj;
         }
 
         if (asCurObj != "")

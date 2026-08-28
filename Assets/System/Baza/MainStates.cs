@@ -1580,9 +1580,11 @@ public class MainStates : MonoBehaviour
             //changed
             if (SV.IndexOf("evt_") >= 0)
             {
-                var g = SV.Substring(4);
+                //var g = SV.Substring(4);
+                var g = SV;
+                
                 //время костылей ?
-                if (g == "codex_click")
+                if (g == "evt_codex_click")
                 {
                     var d = ModelStatistics.instance.Codex_IsMonsterMet(o.dbObj.ID);
                     if (!d) return;
@@ -2239,6 +2241,9 @@ public class MainStates : MonoBehaviour
     
     public void DealDamage(RObj a, RObj skl)
     {
+        //when two chests collide ?
+        if (skl.owner == null) return;
+        
         Debug.Log("DAMAGE: " +skl.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
         var magic = skl.GetMainPar("magic");
         var atk = skl.GetMainPar("attack");
