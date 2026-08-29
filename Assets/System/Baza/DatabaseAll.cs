@@ -305,7 +305,7 @@ public class DatabaseAll : MonoBehaviour
             return DatabaseAll.instance.buildings[id];
     }
 
-    public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false)
+    public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false, int rarity = 0)
     {
         string other = "";
         if (id.IndexOf("shard_") >= 0)
@@ -313,7 +313,7 @@ public class DatabaseAll : MonoBehaviour
             other = id.Substring(6);
             id = "shard";
         }
-        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other));
+        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other), rarity: rarity);
         r.shardID = other;
         return r;
     }

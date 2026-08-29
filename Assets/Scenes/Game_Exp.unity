@@ -5406,6 +5406,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230ed1a5b5d91434bb0eb8a72cb36a48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::FPrice
+--- !u!1 &34535937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 34535938}
+  - component: {fileID: 34535939}
+  m_Layer: 0
+  m_Name: mons2_bird (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &34535938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34535937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.74, y: 0.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &34535939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34535937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: bird_snow
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll#val:0.5
+  - dmg_track
+  - flash
+  - death
+  - drop
+  - combat
+  - animator#pr:1
+  - realcol#val:0.2
+  - info
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &35650877
 GameObject:
   m_ObjectHideFlags: 0
@@ -64279,7 +64352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &550321222
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64389,7 +64462,6 @@ MonoBehaviour:
   resistsRoot: {fileID: 1545818029}
   immunitiesRoot: {fileID: 1816491679}
   weaknessRoot: {fileID: 1442575427}
-  foundIn: {fileID: 1724540023}
   itemReward: {fileID: 1094597817}
   takeReward: {fileID: 1358687396}
 --- !u!1 &550606140
@@ -90622,6 +90694,8 @@ Transform:
   - {fileID: 1687923246}
   - {fileID: 1171895230}
   - {fileID: 1925381294}
+  - {fileID: 34535938}
+  - {fileID: 1086837051}
   - {fileID: 1063826305}
   - {fileID: 1297907166}
   - {fileID: 128100561}
@@ -126834,6 +126908,79 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1086837050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1086837051}
+  - component: {fileID: 1086837052}
+  m_Layer: 0
+  m_Name: mons2_bird (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1086837051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086837050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.71, y: -1.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1086837052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086837050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: bird_snow
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll#val:0.5
+  - dmg_track
+  - flash
+  - death
+  - drop
+  - combat
+  - animator#pr:1
+  - realcol#val:0.2
+  - info
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1086991543
 GameObject:
   m_ObjectHideFlags: 0
@@ -138355,7 +138502,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: b1dfda7b9a69fdf418d449a54f94d100, type: 3}
     - {fileID: 21300000, guid: 0f650e3b9a6562e4e87c4905c5340a23, type: 3}
     - {fileID: 21300000, guid: f289ec66bdee26243b68180219fc696a, type: 3}
-    - {fileID: 21300000, guid: 9881b178fca7a3646984495a57ff7b30, type: 3}
+    - {fileID: 21300000, guid: bff9d37effdbb064da55156f0b9f170c, type: 3}
     - {fileID: 21300000, guid: a002e7257c9f4e64fafeb5fa97c5e33b, type: 3}
     - {fileID: 21300000, guid: 46d62e6c32471e741a4567d4ec0dcd60, type: 3}
     - {fileID: 21300000, guid: f5ce0f4771a2fe2449c54138ca0f9626, type: 3}
@@ -163621,6 +163768,7 @@ GameObject:
   - component: {fileID: 1358687393}
   - component: {fileID: 1358687396}
   - component: {fileID: 1358687395}
+  - component: {fileID: 1358687397}
   m_Layer: 5
   m_Name: Collect
   m_TagString: Untagged
@@ -163717,6 +163865,50 @@ MonoBehaviour:
   notify: {fileID: 1636011520}
   canCollect: {fileID: 21300000, guid: cb37917483ee24fea8fab306393441e5, type: 3}
   taken: {fileID: 21300000, guid: f87d9d25262734d879c2da72faf95bf2, type: 3}
+--- !u!114 &1358687397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358687391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1358687393}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1359766693
 GameObject:
   m_ObjectHideFlags: 0
@@ -225051,7 +225243,7 @@ GameObject:
   - component: {fileID: 1925381294}
   - component: {fileID: 1925381295}
   m_Layer: 0
-  m_Name: mons2_beetle
+  m_Name: mons2_bird
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

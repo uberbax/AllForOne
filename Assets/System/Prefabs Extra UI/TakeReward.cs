@@ -22,7 +22,13 @@ public class TakeReward : MonoBehaviour
     {
         btn = GetComponent<Button>();
         cg = GetComponent<CanvasGroup>();
-        
+        btn.onClick.AddListener(() =>
+            {
+                ModelStatistics.instance.SetStatValue(stat + "_taken", 1);
+                MainStates.instance.AddItems(rewards);
+            }
+        );
+
     }
 
     void Update()
@@ -30,6 +36,7 @@ public class TakeReward : MonoBehaviour
         var a = ModelStatistics.instance.GetStatValue(stat);
         if (a <= 0)
         {
+            notify.SetActive(false);
             btn.interactable = false;
             cg.alpha = 0.5f;
             txt.text = ConfigLoader.Instance.GetMeLocale("collect");
@@ -40,6 +47,7 @@ public class TakeReward : MonoBehaviour
             var b =  ModelStatistics.instance.GetStatValue(stat + "_taken");
             if (b >= 1)
             {
+                notify.SetActive(false);
                 btn.interactable = false;
                 cg.alpha = 0.5f;
                 txt.text = ConfigLoader.Instance.GetMeLocale("taken");

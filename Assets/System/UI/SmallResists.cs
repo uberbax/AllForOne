@@ -102,8 +102,10 @@ public class SmallResists : MonoBehaviour
         cc.Key = mon.dbObj.parsStr["codex_reward"];
         cc.Value = 1;
         cc.Val3 = 4;
-        itemReward.obj = DatabaseAll.instance.CreateAny(cc.Key, false, 1, null, rarity:4 );
+        itemReward.obj = DatabaseAll.instance.CreateItem(cc.Key, 1, rarity:4 );
         takeReward.stat = "codex_" + mon.dbObj.ID + "_completed";
+        takeReward.rewards.Clear();
+        takeReward.rewards.Add(cc);
     }
 
 

@@ -39,6 +39,7 @@ public partial class ModelStatistics : MonoBehaviour
         //
         foreach (var t in MainStates.dmgTypes)
         {
+            if (!mm.pars.ContainsKey("res_"+t.Key)) continue;
             var g = mm.pars["res_" + t.Key];
             if (g < 0)
             {
