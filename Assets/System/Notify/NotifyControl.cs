@@ -14,11 +14,21 @@ public class NotifyControl : MonoBehaviour
 
     public List<string> talents = new List<string>();
     private RObj player;
+
+    public bool calculateFlags = true;
     
     private void Awake()
     {
         instance = this;
-        player = MainStates.instance.mainPlayer;
+        if (MainStates.instance == null || !MainStates.instance.HasMain())
+        {
+            Invoke("Awake", 0.1f);
+        }
+        else
+        {
+            player = MainStates.instance.mainPlayer;            
+        }
+        
     }
     
     private void OnDestroy()
@@ -127,7 +137,8 @@ public class NotifyControl : MonoBehaviour
     
     private void Update()
     {
-        CalculateFlags();
+        if (calculateFlags)
+            CalculateFlags();
 
         foreach (var v in notifies)
         {

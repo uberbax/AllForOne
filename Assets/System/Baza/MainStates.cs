@@ -199,6 +199,11 @@ public class MainStates : MonoBehaviour
     public Transform trashRoot;
     public static float inBattleScale = 1.0f;
     
+    public bool HasMain()
+    {
+        if (all.ContainsKey("main_player")) return true;
+        return false;
+    }
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
