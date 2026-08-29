@@ -274,6 +274,7 @@ public class DatabaseAll : MonoBehaviour
             
             o.parsStr.Add("found_in", v.foundIn);
             o.parsStr.Add("encounter", v.encounter);
+            o.parsStr.Add("codex_reward", v.codexReward);
             
         }
 
@@ -336,7 +337,8 @@ public class DatabaseAll : MonoBehaviour
         
         return r;
     }
-    public RObj CreateAny(string id, bool isEnemy, int amount, GameObject g, string overID = "", GameObject asMainWith = null, bool withVisual = true, bool withEmpty = true, int level = 1)
+    public RObj CreateAny(string id, bool isEnemy, int amount, GameObject g, string overID = "", GameObject asMainWith = null, bool withVisual = true, bool withEmpty = true, int level = 1,
+        int rarity = 0)
     {
         if (heroes.ContainsKey(id))
         {
@@ -345,7 +347,7 @@ public class DatabaseAll : MonoBehaviour
         }
         else if (items.ContainsKey(id))
         {
-            var res = new RObj(id, amount, level, withEmpty, g.transform.position, withVisual, ItemType.item, overVis:g, overID:overID, asMainViz:asMainWith);
+            var res = new RObj(id, amount, level, withEmpty, g.transform.position, withVisual, ItemType.item, overVis:g, overID:overID, asMainViz:asMainWith, rarity:rarity);
             return res;
         }
         else if (buildings.ContainsKey(id))

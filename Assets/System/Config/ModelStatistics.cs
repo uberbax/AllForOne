@@ -18,10 +18,59 @@ public partial class ModelStatistics : MonoBehaviour
     //codex_{id}_weak_{id2}         //discovered weakness
     //codex_{id}_res_{id2}          //discovered resistance
     //codex_{id}_immune_{id2}       //discovered immune
+    //codex_{id}_completed
     
     //discovered locations
 
     //
+    public void Codex_UpdateCompleted(string mon)
+    {
+        bool res = true;
+        res = res && Codex_IsMonsterMet(mon);
+        if (!res) return;
+
+        var mm = DatabaseAll.instance.heroes[mon];
+        List<string> all = ModelSet.GetMeItemsAll(DatabaseAll.instance.heroes[mon].drop);
+        for (int i = 0; i < all.Count; i++)
+        {
+            var c = Codex_IsLootMet(mon, all[i]);
+            if (!c) return;
+        }
+        //
+        foreach (var t in MainStates.dmgTypes)
+        {
+            var g = mm.pars["res_" + t.Key];
+            if (g < 0)
+            {
+                bool b = Codex_IsWeakMet(mon, t.Key);
+                if (!b) return;
+            }
+            else if (g >= 100)
+            {
+                bool b = Codex_IsImmuneMet(mon, t.Key);
+                if (!b) return;
+            }
+            else if (g > 0)
+            {
+                bool b = Codex_IsResMet(mon, t.Key);
+                if (!b) return;
+            }
+        }
+
+
+        if (res)
+        {
+            SetStatValue("codex_" + mon + "_completed", 1);
+        }
+
+    }
+
+    public bool Codex_IsCompleted(string mon)
+    {
+        var f = GetStatValue("codex_" + mon + "_completed");
+        return f > 0;
+    }
+    
     public bool Codex_IsMonsterMet(string mon)
     {
         var f = GetStatValue("codex_" + mon + "_meet");
@@ -51,6 +100,7 @@ public partial class ModelStatistics : MonoBehaviour
     public void Codex_MetMonster(string mon)
     {
         SetStatValue("codex_" + mon + "_meet", 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_LootMet(string mon, string loot)
     {
@@ -60,18 +110,22 @@ public partial class ModelStatistics : MonoBehaviour
     {
         foreach (var v in loot)
             SetStatValue("codex_" + mon + "_loot_" + v.Key, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_WeakMet(string mon, string weak)
     {
         SetStatValue("codex_" + mon + "_weak_" + weak, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_ResMet(string mon, string res)
     {
         SetStatValue("codex_" + mon + "_res_" + res, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_ImmuneMet(string mon, string immune)
     {
         SetStatValue("codex_" + mon + "_immune_" + immune, 1);
+        Codex_UpdateCompleted(mon);
     }
     //hhh
     

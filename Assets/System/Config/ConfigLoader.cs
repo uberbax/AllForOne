@@ -845,6 +845,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "ENCOUNTER") mm.encounter = tt[j];
                 
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "CODEX_REWARD") mm.codexReward = tt[j];
                 
                 else if (columns[j].ToUpper() == "USED") mm.used = int.Parse(tt[j]);
                 
@@ -2542,6 +2543,7 @@ public class FormatHero
     
     public string foundIn = "";
     public string encounter = "";
+    public string codexReward = "";
     
     
     public float speed = 3;
