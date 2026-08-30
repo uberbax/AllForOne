@@ -170,6 +170,8 @@ public class RObj
     
     public List<Transform> attachables = new List<Transform>();
     
+    public List<RObj> adorments = new List<RObj>();
+    
     [NonSerialized]
     public List<string> extraBuffs = new List<string>();
     
