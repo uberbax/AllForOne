@@ -1834,6 +1834,11 @@ public class MainStates : MonoBehaviour
             {
                 ii.SetPar("rarity", v.Val3);    
             }
+            
+            if (v.ValLvl > 1)
+            {
+                ii.SetPar("level", v.ValLvl);    
+            }
 
             if (v.Val3 == 4)
             {

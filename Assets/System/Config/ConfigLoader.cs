@@ -1139,6 +1139,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "REF_SKILL") mm.REF_SKILL = tt[j];
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
                 
+                else if (columns[j].ToUpper() == "ADORN_CNT") mm.adornCnt = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "PRICE")
                 {
                     var yh = tt[j].Split("#");
@@ -1899,7 +1901,12 @@ public class ConfigLoader : MonoBehaviour
                 for (int k = 0; k < yy.Length; k++)
                 {
                     var bb = yy[k].Split(",");
-                    hh.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    var ss = new Bon { Key = bb[0], Value = int.Parse(bb[1]) };
+                    
+                    if (bb.Length > 2) ss.ValLvl =  int.Parse(bb[2]);
+                    if (bb.Length > 3) ss.Val3 =  int.Parse(bb[3]);
+                    
+                    hh.Add(ss);
                 }
 
                 mm.items = hh;
@@ -2687,6 +2694,8 @@ public class FormatArtefact
     
 
     public int size = 11;
+    public int adornCnt = 0;
+    
     public int RARITY_ROLL = 0;
     public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();

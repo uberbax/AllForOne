@@ -1018,6 +1018,7 @@ public class Bon
     //also in addWhat it is a param
     public string Val2 = "";
     public int Val3 = 0;
+    public int ValLvl = 0;
 }
 
 [System.Serializable]

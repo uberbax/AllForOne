@@ -181,6 +181,7 @@ public class DatabaseAll : MonoBehaviour
             o.useSkill = v.useSkill;
             
             o.pars.Add("level", 1);
+            o.pars.Add("adorn_count", v.adornCnt);
             
             if (v.SLOT == "none")
                 o.pars.Add("max_stack", 1000000);
