@@ -63,16 +63,38 @@ public class SmallAdorn : MonoBehaviour
             }            
         }
 
+        var g0 = new RObj();
         for (int i = 0; i < mon.adorments.Count; i++)
         {
             var p = holder.GetChild(i);
             p.Find("adorn").GetComponent<Image>().sprite = ResourceHolder.instance.items[mon.adorments[i].dbObj.ID];
             p.Find("rarity").GetComponent<Image>().color = ResourceHolder.instance.rareColors[(int)mon.adorments[i].GetPar("rarity")];
+            g0 = MainStates.instance.SumRobj(g0, mon.adorments[i]);
         }
         //
         //holderStats
+        for (int i = 0; i < holderStats.childCount; i++) holderStats.GetChild(i).gameObject.SetActive(false);
+        int l = 0;
+        for (int i = 0; i < pars.Count; i++)
+        {
+            var c = g0.GetPar(pars[i].Item1);
+            if (c < 0) continue;
+
+            holderStats.GetChild(l).gameObject.SetActive(false);
+            holderStats.GetChild(l).Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.pars[pars[i].Item1];
+            holderStats.GetChild(l).Find("value").GetComponent<TextMeshProUGUI>().text = c + pars[i].Item2;
+            l++;
+
+
+        }
         
     }
+
+    private List<(string, string)> pars = new List<(string, string)>
+    {
+        ("attack",""), ("max_health",""), ("def",""), ("magic",""), ("magic_prc",""),
+        ("res",""), ("crit_chance",""), ("crit_dmg","")
+    };
 
     public void FillFull()
     {

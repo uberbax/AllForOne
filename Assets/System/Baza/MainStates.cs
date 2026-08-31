@@ -2186,6 +2186,16 @@ public class MainStates : MonoBehaviour
         
     }
 
+    public RObj SumRobj(RObj a, RObj b)
+    {
+        foreach (var v in b.curPars)
+        {
+            a.curPars[v.Key] += b.curPars[v.Key];
+        }
+
+        return a;
+    }
+
     public Dictionary<string, float> dmgTimes = new Dictionary<string, float>();
     public Dictionary<string, int> awaitUnits = new Dictionary<string, int>();
     public void DealHeal(RObj who, float val)
