@@ -57,6 +57,7 @@ public class UIfiller : MonoBehaviour
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
 
+    public bool findRobj = false;
     private void Start()
     {
         if (subParamChange != "")
@@ -81,7 +82,18 @@ public class UIfiller : MonoBehaviour
         }
         
         //Debug.Log("~~~~~~" +nm);
-        var res = MainStates.instance.GetCommandResult(command, param, transform);
+        RObj rr = null;
+        if (findRobj)
+        {
+            rr = GetComponentInParent<ObjHolder>().obj;
+            var t0 = (int)rr.GetPar("adorn_count");
+            for (int i = 0; i < root.childCount; i++)
+            {
+                root.GetChild(i).gameObject.SetActive(i < t0);
+            }
+        }
+
+        var res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
         savedResult = res;
         if (slots.Count > 0)
         {

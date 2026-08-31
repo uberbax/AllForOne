@@ -1166,6 +1166,11 @@ public class MainStates : MonoBehaviour
             var v = combats.FindAll(x => x.tags.Contains("player") && !x.META_TAGS.Contains("npc"));
             return v;
         }
+        if (command == "GET_ADORNS")
+        {
+            //and not is summon ?
+            return rr.adorments;
+        }
         if (command == "GET_SKILLS_NO_BASIC")
         {
             return all[param].actSkills.FindAll(x => x.dbObj.ID.IndexOf("basic") < 0 && x.GetPar("action_req") > 0);
