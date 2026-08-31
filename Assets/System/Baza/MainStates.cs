@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
 using NUnit.Framework;
@@ -195,6 +196,7 @@ public class MainStates : MonoBehaviour
     //last_boss
     //last_leg (last legendary item)
     public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
+    public Dictionary<string, List<RObj>> curObjsMany =  new Dictionary<string, List<RObj>>();
     //
     public Transform trashRoot;
     public static float inBattleScale = 1.0f;
@@ -318,6 +320,7 @@ public class MainStates : MonoBehaviour
         DragObject.onEndDragGlobal = OnEndDrag;
         EventManager.SUB("next_hero", NextHero);
         EventManager.SUB("battle_start", BattleStarted);
+        EventManager.SUB("evt_adorn", EventAdorn);
 
         if (trashRoot == null)
         {
@@ -342,6 +345,20 @@ public class MainStates : MonoBehaviour
         {
             reverseDmgTypes.Add(v.Value, v.Key);
         }
+        
+    }
+
+    private void EventAdorn(ArgPass obj)
+    {
+        //refill global
+        var item = curObjsMany["last_item_info"][0];
+        Adorn(item, obj.who);
+    }
+
+    public void Adorn(RObj item, RObj adorn)
+    {
+        item.adorments.Add(adorn);
+        adorn.owner = item;
         
     }
 
@@ -1169,7 +1186,7 @@ public class MainStates : MonoBehaviour
         if (command == "GET_ADORNS")
         {
             //and not is summon ?
-            return rr.adorments;
+            return rr.adorments.FindAll(x => x.owner == null);
         }
         if (command == "GET_SKILLS_NO_BASIC")
         {

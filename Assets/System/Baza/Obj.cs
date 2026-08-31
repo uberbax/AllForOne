@@ -424,6 +424,26 @@ public class RObj
             }
         }
         
+        //
+        foreach (var v in adorments)
+        {
+            if (!v.upgradePars.ContainsKey("used_slot"))
+            {
+                v.upgradePars.Add("used_slot", -1);    
+            }
+            
+            //thwbbb
+            if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            foreach (var a in v.dbObj.pars)
+            {
+                if (a.Key == "amount") continue;
+                if (a.Key == "rarity") continue;
+                if (a.Key == "level") continue;
+                
+                AddFinal(a.Key, v.GetPar(a.Key));
+            }
+        }
+        
         foreach (var v in buffs)
         {
             //if (v.upgradePars["used_slot"] < 0) continue;

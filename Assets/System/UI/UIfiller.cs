@@ -53,7 +53,8 @@ public class UIfiller : MonoBehaviour
                 v.OnEnable();
         }
     }
-    
+
+    public string saveAsObj = "";
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
 
@@ -94,6 +95,11 @@ public class UIfiller : MonoBehaviour
         }
 
         var res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
+        if (saveAsObj != "")
+        {
+            MainStates.instance.curObjsMany[saveAsObj] = res;
+        }
+        
         savedResult = res;
         if (slots.Count > 0)
         {
