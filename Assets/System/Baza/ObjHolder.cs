@@ -21,9 +21,14 @@ public class ObjHolder : MonoBehaviour, IReceive
     public ObjHolder redirect;
     public ObjHolder copyTo;
     
+    public List<GameObject> alsoEnables = new List<GameObject>();
     public void OnEnable()
     {
         UISystem.instance.FillItem(this);
+        foreach (var a in alsoEnables)
+        {
+            a.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     [ContextMenu("ShowViz")]

@@ -45,6 +45,7 @@ public class UIfiller : MonoBehaviour
         instances.Add(this);
     }
 
+    public static Action acts = null;
     public static void GlobalRefresh()
     {
         foreach (var v in instances)
@@ -52,6 +53,8 @@ public class UIfiller : MonoBehaviour
             if (v.gameObject.activeInHierarchy)
                 v.OnEnable();
         }
+        
+        if (acts != null) acts.Invoke();
     }
 
     public string saveAsObj = "";
@@ -68,7 +71,8 @@ public class UIfiller : MonoBehaviour
                 if (x.what != "")
                 {
                     param = x.what;
-                    OnEnable();
+                    if (gameObject.activeInHierarchy)
+                        OnEnable();
                 }
             });
         }
@@ -214,7 +218,8 @@ public class UIfiller : MonoBehaviour
                         g.obj = res[i];
                         //zdes
                         var cc = g.GetComponentsInChildren<UnoAll>();
-                        for (int l = 0; l < cc.Length; l++) cc[l].mon = null;                        
+                        for (int l = 0; l < cc.Length; l++) cc[l].mon = null;  
+                        g.OnEnable();
                     }
                     else
                     {

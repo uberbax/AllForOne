@@ -417,11 +417,16 @@ public class RObj
             
             //thwbbb
             if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
-            foreach (var a in v.dbObj.pars)
+            foreach (var a in  v.curPars)//v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
                 if (a.Key == "rarity") continue;
                 if (a.Key == "level") continue;
+                if (a.Key == "exp") continue;
+                if (a.Key == "max_stack") continue;
+                if (a.Key == "subtype") continue;
+                if (a.Key == "adorn_count") continue;
+                
                 
                 AddFinal(a.Key, v.GetPar(a.Key));
             }
@@ -437,6 +442,11 @@ public class RObj
             
             //thwbbb
             //if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            if (v.dbObj == null)
+            {
+                int u = 1;
+            }
+            
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
@@ -765,6 +775,14 @@ public class RObj
             y.inventory[i].it = inventory[i].it;
             y.inventory[i].dbObj = inventory[i].dbObj;
             y.inventory[i].owner = y;
+        }
+        
+        for (int i = 0; i < y.adorments.Count; i++)
+        {
+            y.adorments[i].it = adorments[i].it;
+            y.adorments[i].dbObj = adorments[i].dbObj;
+            y.adorments[i].owner = y;//?
+            y.adorments[i].owner2 = y;
         }
 
         y.dynamic = dynamic;

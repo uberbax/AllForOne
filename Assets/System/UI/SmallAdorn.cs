@@ -16,8 +16,17 @@ public class SmallAdorn : MonoBehaviour
     public Transform holderStats;
     
     //stats
-    
-    
+
+    void Start()
+    {
+        UIfiller.acts += Fill;
+    }
+
+    private void OnDisable()
+    {
+        UIfiller.acts -= Fill;
+    }
+
     private void OnEnable()
     {
         //if (other == null)
