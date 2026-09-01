@@ -86,6 +86,7 @@ public class UIfiller : MonoBehaviour
         RObj rr = null;
         if (findRobj)
         {
+            Debug.Log(gameObject.name);
             rr = GetComponentInParent<ObjHolder>().obj;
             var t0 = (int)rr.GetPar("adorn_count");
             for (int i = 0; i < root.childCount; i++)

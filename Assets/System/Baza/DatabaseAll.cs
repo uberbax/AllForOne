@@ -76,6 +76,7 @@ public class DatabaseAll : MonoBehaviour
             }
             
             o.pars.Add("instant", v.INSTANT);
+            o.pars.Add("subtype", MainStates.subtypes["skill"]);
             
             //player ? eney, all
             if (v.TAG_APPLY == "enemy") o.pars.Add("target",0);
@@ -219,7 +220,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("def", v.armor);
             o.pars.Add("res", v.magicResist);
             o.pars.Add("speed", v.speed);
-            o.pars.Add("max_stack", 1);
+            o.pars.Add("max_stack", v.maxStack);
             o.pars.Add("exp", 0);
             o.pars.Add("slot", -1);
             o.pars.Add("used", v.used);

@@ -99,6 +99,9 @@ public class RObj
     public RObj usedBy;
     [NonSerialized]
     public RObj owner;
+    [NonSerialized]
+    //thats for adorns
+    public RObj owner2;
     
     [NonSerialized]
     public RObj attachedOther;

@@ -884,6 +884,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "BUILDING") mm.building = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "DROP_PICK") mm.dropPick = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "MAX_STACK") mm.maxStack = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "CRIT_CHANCE") mm.critChance = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "CRIT_DMG") mm.critDamage = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2551,8 +2552,8 @@ public class FormatHero
     public string foundIn = "";
     public string encounter = "";
     public string codexReward = "";
-    
-    
+
+    public int maxStack = 1;
     public float speed = 3;
 
     public int size = 11;

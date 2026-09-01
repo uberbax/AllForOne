@@ -38337,7 +38337,7 @@ MonoBehaviour:
   command: GET_ADORNS
   param: 
   clickFunc: click
-  fillFunc: 
+  fillFunc: remove
   replaceClick: click
   slots: []
   root: {fileID: 2112703599}
@@ -80750,7 +80750,7 @@ MonoBehaviour:
   nm: 
   compatibility: drag
   command: GET_ITEMS
-  param: not_equiped,weapon
+  param: weapon
   clickFunc: click
   fillFunc: 
   replaceClick: click
@@ -96313,6 +96313,7 @@ Transform:
   - {fileID: 2070583593}
   - {fileID: 514160160}
   - {fileID: 229068002}
+  - {fileID: 1383051786}
   - {fileID: 820483343}
   - {fileID: 438036355}
   - {fileID: 1152781508}
@@ -175776,6 +175777,123 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1277917039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1383051785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1383051786}
+  - component: {fileID: 1383051788}
+  - component: {fileID: 1383051787}
+  m_Layer: 9
+  m_Name: chest (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1383051786
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383051785}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.95, y: -3.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1383051787
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383051785}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.64, y: 0.68}
+  m_EdgeRadius: 0
+--- !u!114 &1383051788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383051785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: chest
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll
+  - combat
+  - animator#pr:1
+  - loot#dst:5
+  - shiny
+  addedInvLoot: 
+  addedInv:
+  - adorn_atk,1
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 1
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1384026520
 GameObject:
   m_ObjectHideFlags: 0

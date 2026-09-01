@@ -7,6 +7,7 @@ using GameDevWare.Dynamic.Expressions.CSharp;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 using Random = UnityEngine.Random;
 
@@ -117,7 +118,10 @@ public class MainStates : MonoBehaviour
         { "trinket", 10},
         { "adorn", 11},
         { "potion", 12},
+        { "pet", 13},
         
+        { "skill", 14},
+        { "hero", 15},
         
         { "none", 100},
         
@@ -354,13 +358,14 @@ public class MainStates : MonoBehaviour
         //refill global
         var item = curObjsMany["last_item_info"][0];
         Adorn(item, obj.who);
+        UIfiller.GlobalRefresh();
     }
 
     public void Adorn(RObj item, RObj adorn)
     {
         item.adorments.Add(adorn);
-        adorn.owner = item;
-        adorn.owner.RecalcPars();
+        adorn.owner2 = item;
+        adorn.owner2.RecalcPars();
     }
 
     private void BattleStarted(ArgPass obj)
@@ -1271,6 +1276,8 @@ public class MainStates : MonoBehaviour
                 if (gk[l] == "not_equiped")
                 {
                     res = res.FindAll(x => x.GetPar("amount") > 0 && x.GetPar("used_slot") < 0);
+                    res = res.FindAll(x => x.dbObj.pars["subtype"] != subtypes["adorn"] ||
+                                           x.dbObj.pars["subtype"] == subtypes["adorn"] && x.owner2 == null);
                 }
                 
                 if (gk[l] == "weapon")
@@ -1285,9 +1292,14 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
                     gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body" || gk[l] == "trinket" ||
-                    gk[l] == "adorn" || gk[l] == "potion")
+                    gk[l] == "adorn" || gk[l] == "potion" || gk[l] == "pet")
                 {
                     var c = subtypes[gk[l]];
+                    res.ForEach(x =>
+                    {
+                        Debug.Log(x.dbObj.ID);
+                        Debug.Log(x.dbObj.pars["subtype"]);
+                    });
                     res = res.FindAll(x => x.dbObj.pars["subtype"] == c);
                 }
                 

@@ -15,8 +15,10 @@ public class GoRemove : MonoBehaviour
         b.onClick.RemoveAllListeners();
         b.onClick.AddListener(() =>
             {
-                mon.owner.adorments.Remove(mon);
-                mon.owner = null;
+                mon.owner2.adorments.Remove(mon);
+                mon.owner2.RecalcPars();
+                mon.owner2 = null;
+                UIfiller.GlobalRefresh();
             }
         );
     }
