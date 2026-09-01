@@ -82,7 +82,7 @@ public class SmallAdorn : MonoBehaviour
 
             holderStats.GetChild(l).gameObject.SetActive(true);
             holderStats.GetChild(l).Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.pars[pars[i].Item1];
-            holderStats.GetChild(l).Find("value").GetComponent<TextMeshProUGUI>().text = c + pars[i].Item2;
+            holderStats.GetChild(l).Find("value").GetComponent<TextMeshProUGUI>().text = (int)(c) + pars[i].Item2;
             l++;
 
 

@@ -433,7 +433,7 @@ public class RObj
             }
             
             //thwbbb
-            if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            //if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;

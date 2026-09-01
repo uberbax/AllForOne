@@ -88,6 +88,7 @@ public class MainStates : MonoBehaviour
         { "trinket", 7},
         { "adorn", 8},
         
+        {"pet", 9}
         
     };
     
@@ -359,7 +360,7 @@ public class MainStates : MonoBehaviour
     {
         item.adorments.Add(adorn);
         adorn.owner = item;
-        
+        adorn.owner.RecalcPars();
     }
 
     private void BattleStarted(ArgPass obj)
@@ -1186,7 +1187,7 @@ public class MainStates : MonoBehaviour
         if (command == "GET_ADORNS")
         {
             //and not is summon ?
-            return rr.adorments.FindAll(x => x.owner == null);
+            return rr.adorments;//.FindAll(x => x.owner == null);
         }
         if (command == "GET_SKILLS_NO_BASIC")
         {
@@ -2212,6 +2213,9 @@ public class MainStates : MonoBehaviour
     {
         foreach (var v in b.curPars)
         {
+            //if (v.Key == "level") continue;
+            //if (!a.curPars.ContainsKey("level")) a.curPars.Add("level", 0);
+            if (!a.curPars.ContainsKey(v.Key)) a.curPars.Add(v.Key, 0);
             a.curPars[v.Key] += b.curPars[v.Key];
         }
 
