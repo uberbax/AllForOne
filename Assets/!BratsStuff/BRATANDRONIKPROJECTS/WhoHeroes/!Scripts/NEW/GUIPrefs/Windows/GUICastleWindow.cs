@@ -29,12 +29,25 @@ public class GUICastleWindow : MonoBehaviour
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         infoBut?.onClick.AddListener(() => GUILIB.Emit(WhoHeroesEvents.ViewBuilding, runtime, building.id));
         highlight?.SetUpNavigation();
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
-        EventManager.SUB(WhoHeroesEvents.ObserveBuilding, value =>
-        {
-            if (gameObject.activeInHierarchy && value != null && highlight?[value.what] != null)
-                highlight.SwitchTab(value.what);
-        });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+        EventManager.SUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnObserveBuilding(ArgPass value)
+    {
+        if (gameObject.activeInHierarchy && value != null && highlight?[value.what] != null)
+            highlight.SwitchTab(value.what);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
+        EventManager.UNSUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
     }
 
     public void Fill(RObj value = null)

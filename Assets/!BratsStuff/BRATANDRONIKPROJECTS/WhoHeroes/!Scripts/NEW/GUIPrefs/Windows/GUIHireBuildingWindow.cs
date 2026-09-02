@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,12 +14,24 @@ public class GUIHireBuildingWindow : MonoBehaviour
     public GUIButtUpgrade upgrade;
     public Button back;
     private RObj runtime;
+    private RObj offered;
 
     private void Start()
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         upgrade?.upgrade?.buy?.onClick.AddListener(() => GUILIB.CoreAction(runtime, "upgrade"));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        defender?.unit?.hire?.upgrade?.buy?.onClick.AddListener(() => GUILIB.CoreAction(offered, "buy"));
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill(RObj value = null)
@@ -27,8 +40,10 @@ public class GUIHireBuildingWindow : MonoBehaviour
         if (runtime == null)
             return;
         var level = GUILIB.Level(runtime, building.level);
-        var offered = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster);
+        offered = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster && x.GetPar("amount") > 0f);
         defender?.Fill(offered);
+        if (offered == null)
+            defender?.unit?.hire?.Fill(new List<Bon>(), false, true, false, "hire");
         general?.Fill(runtime, GUILIB.StringParam(runtime, "building_type"));
         if (addLvl != null) addLvl.text = level.ToString();
         var maxLevel = runtime.GetPar("max_level");

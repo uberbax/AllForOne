@@ -11,7 +11,17 @@ public class GUIMarketWindow : MonoBehaviour
     private void Start()
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill()

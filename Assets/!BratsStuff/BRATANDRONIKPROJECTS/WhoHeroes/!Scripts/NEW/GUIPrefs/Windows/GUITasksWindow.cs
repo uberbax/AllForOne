@@ -20,14 +20,26 @@ public class GUITasksWindow : MonoBehaviour
 
     private void Start()
     {
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => Fill());
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
         Fill();
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill()
     {
         if (!GUILIB.CoreReady) return;
-        var progress = MainStates.instance.playerData.playerTasks.Where(x => x.started != 0).ToList();
+        var progress = MainStates.instance.playerData.playerTasks
+            .Where(value => value.started != 0 && MainCycle_WhoHeroes.OnboardingTaskIds.Contains(value.id))
+            .ToList();
         for (var i = 0; i < tasks.Count; i++)
         {
             var active = i < progress.Count && DatabaseAll.instance.allTasks.ContainsKey(progress[i].id);

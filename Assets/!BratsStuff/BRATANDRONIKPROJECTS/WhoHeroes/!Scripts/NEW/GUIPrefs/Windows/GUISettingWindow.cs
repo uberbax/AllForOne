@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GUISettingWindow : MonoBehaviour
@@ -20,10 +19,10 @@ public class GUISettingWindow : MonoBehaviour
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         reset?.onClick.AddListener(() => EventManager.INV(WhoHeroesEvents.ResetRequested, new ArgPass()));
-        restart?.onClick.AddListener(() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
+        restart?.onClick.AddListener(() => EventManager.INV(WhoHeroesEvents.RestartRequested, new ArgPass()));
         quit?.onClick.AddListener(Application.Quit);
         settings?.SetUp();
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => Fill());
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     private void OnEnable()
@@ -34,5 +33,15 @@ public class GUISettingWindow : MonoBehaviour
     public void Fill()
     {
         settings?.Fill();
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 }

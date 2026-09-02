@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,7 +6,6 @@ using UnityEngine.UI;
 public class GUIStartScreen : MonoBehaviour
 {
     public bool startScreenOff;
-    [SerializeField] private string steamAppUrl = "https://store.steampowered.com/app/4633390/DeadZone_Outpost/";
     public Button start;
     public Button wish;
     public Button quit;
@@ -13,8 +13,7 @@ public class GUIStartScreen : MonoBehaviour
 
     private void Awake()
     {
-        startScreenOff |= PlayerPrefs.GetInt("restart", 0) == 1;
-        PlayerPrefs.SetInt("restart", 1);
+        EventManager.SUB("PARSE_ENDED", OnParseEnded);
         var canvas = GetComponentInChildren<Canvas>(true);
         if (canvas != null) canvas.enabled = !startScreenOff;
     }
@@ -22,9 +21,45 @@ public class GUIStartScreen : MonoBehaviour
     private void Start()
     {
         start?.onClick.AddListener(() => EventManager.INV("game_start", new ArgPass()));
-        wish?.onClick.AddListener(() => Application.OpenURL(steamAppUrl));
+        if (wish != null)
+        {
+            wish.interactable = false;
+            wish.onClick.AddListener(OpenStorePage);
+        }
         quit?.onClick.AddListener(Application.Quit);
         if (startScreenOff && start != null)
             FunctionTimer.Create(() => start.onClick.Invoke(), 0.01f);
+        if (ConfigLoader.parseEnded)
+            ApplyStaticConfig();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB("PARSE_ENDED", OnParseEnded);
+        wish?.onClick.RemoveListener(OpenStorePage);
+        quit?.onClick.RemoveListener(Application.Quit);
+    }
+
+    private void OnParseEnded(ArgPass _)
+    {
+        ApplyStaticConfig();
+    }
+
+    private void ApplyStaticConfig()
+    {
+        if (wish != null)
+            wish.interactable = IsValidStoreUrl(MainCycle_WhoHeroes.SteamUrl());
+    }
+
+    private static bool IsValidStoreUrl(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttps;
+    }
+
+    private void OpenStorePage()
+    {
+        var url = MainCycle_WhoHeroes.SteamUrl();
+        if (IsValidStoreUrl(url))
+            Application.OpenURL(url);
     }
 }

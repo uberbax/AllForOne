@@ -15,8 +15,18 @@ public class GUIEnemyBuilding : MonoBehaviour
     private void Start()
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
-        attack?.onClick.AddListener(() => EventManager.INV("battle_press", new ArgPass { who = runtime, what = building.id }));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        attack?.onClick.AddListener(() => MainCycle_WhoHeroes.Instance?.TryStart(runtime));
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill(RObj value = null)
@@ -27,7 +37,8 @@ public class GUIEnemyBuilding : MonoBehaviour
         general?.Fill(runtime, GUILIB.StringParam(runtime, "building_type"));
         defender?.Fill(runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster));
         expedition?.FillChoosen("expedition");
-        var canAttack = !runtime.curPars.ContainsKey("can_attack") || runtime.GetPar("can_attack") > 0;
+        var canAttack = MainCycle_WhoHeroes.Instance != null &&
+                        MainCycle_WhoHeroes.Instance.CanStart(runtime);
         if (attack != null)
         {
             attack.interactable = canAttack;

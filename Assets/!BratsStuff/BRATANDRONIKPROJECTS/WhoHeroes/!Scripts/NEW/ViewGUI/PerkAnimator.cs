@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(RectTransform))]
 public class PerkAnimator : MonoBehaviour, IPointerClickHandler
 {
     public string type = "perk";
@@ -14,28 +15,25 @@ public class PerkAnimator : MonoBehaviour, IPointerClickHandler
     public float jumpHeight = 25f;
 
     private RectTransform rt;
+    private Vector2 basePosition;
     private bool isSelected = false;
-    private CanvasGroup cg;
 
     void Awake()
     {
-        rt = GetComponent<RectTransform>();
-        cg = GetComponent<CanvasGroup>();
-        if (cg == null)
-            cg = gameObject.AddComponent<CanvasGroup>();
-
+        EnsureReferences();
+        basePosition = rt.anchoredPosition;
         rt.localScale = Vector3.zero;
-        cg.alpha = 0f;
     }
 
     public IEnumerator PlayAppear()
     {
+        EnsureReferences();
         // 
         float t = 0;
         Vector3 startScale = Vector3.zero;
         Vector3 endScale = Vector3.one * overshootScale;
 
-        Vector2 startPos = rt.anchoredPosition;
+        Vector2 startPos = basePosition;
         Vector2 jumpPos = startPos + Vector2.up * jumpHeight;
 
         while (t < appearDuration)
@@ -46,9 +44,6 @@ public class PerkAnimator : MonoBehaviour, IPointerClickHandler
             // 
             rt.localScale = Vector3.Lerp(startScale, endScale, k);
 
-            // 
-            cg.alpha = k;
-
             yield return null;
         }
 
@@ -58,7 +53,7 @@ public class PerkAnimator : MonoBehaviour, IPointerClickHandler
         {
             t += Time.deltaTime;
             float k = t / 0.15f;
-            rt.localScale = Vector3.Lerp(Vector3.one * overshootScale, Vector3.one, k);
+            rt.localScale = Vector3.Lerp(Vector3.one * overshootScale, Vector3.one * bounceScale, k);
             yield return null;
         }
 
@@ -73,6 +68,34 @@ public class PerkAnimator : MonoBehaviour, IPointerClickHandler
         }
 
         rt.anchoredPosition = startPos;
+        rt.localScale = Vector3.one;
+    }
+
+    public void ResetState()
+    {
+        EnsureReferences();
+        isSelected = false;
+        if (rt != null)
+        {
+            rt.localScale = Vector3.zero;
+            rt.anchoredPosition = basePosition;
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        isSelected = false;
+        if (rt == null)
+            return;
+        rt.anchoredPosition = basePosition;
+        rt.localScale = Vector3.zero;
+    }
+
+    private void EnsureReferences()
+    {
+        if (rt == null)
+            rt = GetComponent<RectTransform>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -107,10 +130,16 @@ public class PerkAnimator : MonoBehaviour, IPointerClickHandler
         }
 
        
-        Debug.Log("Perk selected: " + name);
         var window = GetComponent<GUIUnitFullInfo>();
+        var perkWindow = GetComponentInParent<GUIPerkWindow>();
+        if (type == "perk")
+        {
+            if (window == null || perkWindow == null || !perkWindow.SelectPermanentPerk(window.unitgui.unit))
+                isSelected = false;
+            yield break;
+        }
         if (window != null)
-            GUILIB.CoreAction(window.unitgui.unit, type == "perk" ? "take_skill" : "buy");
+            GUILIB.CoreAction(window.unitgui.unit, "buy");
 
     }
 }

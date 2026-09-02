@@ -18,7 +18,17 @@ public class GUITaskBuilWindow : MonoBehaviour
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         viewStory?.onClick.AddListener(OpenStory);
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     private void OpenStory()

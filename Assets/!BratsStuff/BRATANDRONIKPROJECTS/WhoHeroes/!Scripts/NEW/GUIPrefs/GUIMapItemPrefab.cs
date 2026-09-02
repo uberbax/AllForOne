@@ -12,8 +12,15 @@ public class GUIMapItemPrefab : MonoBehaviour
     private void Start()
     {
         info?.onClick.AddListener(() => GUILIB.Emit(WhoHeroesEvents.ViewBuilding, runtime, build.id));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => Fill());
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
         Fill();
+    }
+
+    private void OnRefresh(ArgPass _) => Fill();
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill()

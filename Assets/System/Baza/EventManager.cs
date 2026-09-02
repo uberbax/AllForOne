@@ -20,6 +20,18 @@ public class EventManager : MonoBehaviour
             dynActions.Add(evt, b);
         }
     }
+
+    public static void UNSUB(string evt, Action<ArgPass> b)
+    {
+        if (!dynActions.TryGetValue(evt, out var action))
+            return;
+
+        action -= b;
+        if (action == null)
+            dynActions.Remove(evt);
+        else
+            dynActions[evt] = action;
+    }
     
     public static void INV(string evt, ArgPass e)
     {

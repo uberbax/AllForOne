@@ -50,21 +50,27 @@ public class SpaumPoint : MonoBehaviour
         Spawn(wave);
     }
 
+    public GameObject SpawnOne(int wave = -1)
+    {
+        return Spawn(wave);
+    }
+
     public void Activate(bool state)
     {
         active = state;
         settings.active = state;
     }
 
-    private void Spawn(int wave = -1)
+    private GameObject Spawn(int wave = -1)
     {
         if (spaum.items.Count == 0)
-            return;
+            return null;
         var index = wave < 0 ? Mathf.Clamp(wavenum, 0, spaum.items.Count - 1) : Mathf.Clamp(wave, 0, spaum.items.Count - 1);
         var item = spaum.items[index];
+        GameObject current = null;
         if (item.pref != null && UnityEngine.Random.value <= settings.spawnChance)
         {
-            var current = Instantiate(item.pref, holder);
+            current = Instantiate(item.pref, holder);
             current.transform.position = RandomPoint(transform.position, settings.delta, settings.deltaOff);
             if (!string.IsNullOrEmpty(item.id) && GUILIB.CoreReady)
                 GUILIB.Resolve(item.id, current, true);
@@ -81,11 +87,12 @@ public class SpaumPoint : MonoBehaviour
         }
 
         if (wave >= 0)
-            return;
+            return current;
         objnum++;
         var targetCount = Mathf.Max(1, Mathf.RoundToInt(item.num * settings.countMultiplier));
         if (objnum >= targetCount)
             SwitchWave();
+        return current;
     }
 
     private static Vector3 RandomPoint(Vector3 center, float radius, float innerRadius)

@@ -12,8 +12,12 @@ public class GUIInventoryList : MonoBehaviour
         var units = GUILIB.PlayerInventory().Where(x => x != null && x.it == ItemType.monster).ToList();
         if (listType == "tavern" || string.IsNullOrEmpty(listType))
             units = units.Where(x => x.GetPar("used_slot") < 0).ToList();
-        else if (listType == "expedition" || listType == "tower")
-            units = units.Where(x => x.GetPar("used_slot") >= 20 && x.GetPar("used_slot") <= 23).ToList();
+        else if (listType == "expedition")
+            units = MainCycle_WhoHeroes.GetSelectedUnits().Where(x => x != null && x.it == ItemType.monster)
+                .ToList();
+        else if (listType == "tower")
+            units = units.Where(x => x.GetPar("used_slot") >= 20 && x.GetPar("used_slot") <= 23)
+                .OrderBy(x => x.GetPar("used_slot")).ToList();
         inventory?.Fill(units);
     }
 }
@@ -42,12 +46,22 @@ public class InventoryUnit
 
     public void Fill(List<RObj> units)
     {
+        Fill(units, null);
+    }
+
+    public void Fill(List<RObj> units, Func<RObj, bool> actionState)
+    {
         for (var i = 0; i < items.Count; i++)
         {
             var active = i < units.Count;
             items[i].gameObject.SetActive(active);
             if (active)
+            {
                 items[i].Fill(units[i]);
+                if (actionState != null)
+                    items[i].ChangeActionState(actionState(units[i]), viewMask.actionColor,
+                        viewMask.actionColorDis);
+            }
         }
     }
 

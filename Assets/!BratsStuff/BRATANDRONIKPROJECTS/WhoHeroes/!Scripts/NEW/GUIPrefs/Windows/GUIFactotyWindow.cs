@@ -18,7 +18,17 @@ public class GUIFactotyWindow : MonoBehaviour
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         uprgade?.upgrade?.buy?.onClick.AddListener(() => GUILIB.CoreAction(runtime, "upgrade"));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill(RObj value = null)
@@ -27,13 +37,13 @@ public class GUIFactotyWindow : MonoBehaviour
         if (runtime == null)
             return;
         var level = GUILIB.Level(runtime, building.level);
-        var resource = GUILIB.StringParam(runtime, "resource");
+        var resource = MainCycle_WhoHeroes.MineResourceId(runtime);
         var id = string.IsNullOrEmpty(resource) ? GUILIB.Id(runtime) : "factory" + resource;
         general?.Fill(id, level, GUILIB.Icon(string.IsNullOrEmpty(resource) ? id : resource), "factory");
         var maxLevel = runtime.GetPar("max_level");
         uprgade?.Fill(GUILIB.Price(runtime), maxLevel > 0 && level >= maxLevel, false, true,
             level == 0 ? "restore" : "upgrade");
-        grades?.Fill(level, runtime.GetPar("workers"), Mathf.Max(1, runtime.GetPar("level_multiplier")));
+        grades?.FillInverse(level, runtime.GetPar("timer") * Mathf.Max(1, level), "time", "", "s");
         if (speed != null) speed.text = GUILIB.Instance.FillNum(runtime.GetPar("timer"), "time", "", "s");
         if (storage != null)
         {

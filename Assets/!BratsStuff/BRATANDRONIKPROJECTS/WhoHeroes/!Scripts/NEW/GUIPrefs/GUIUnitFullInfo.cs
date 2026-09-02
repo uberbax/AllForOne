@@ -12,11 +12,19 @@ public class GUIUnitFullInfo : MonoBehaviour
         SetUpButtons();
         if (viewType.showUprgade && unitgui?.hire?.upgrade?.buy != null)
             unitgui.hire.upgrade.buy.onClick.AddListener(() => GUILIB.CoreAction(unitgui.unit, "buy"));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ =>
-        {
-            if (gameObject.activeInHierarchy)
-                Fill(unitgui?.unit);
-        });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy)
+            Fill(unitgui?.unit);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill(RObj value = null)

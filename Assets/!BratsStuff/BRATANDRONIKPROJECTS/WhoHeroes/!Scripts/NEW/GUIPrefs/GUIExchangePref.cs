@@ -8,22 +8,33 @@ public class GUIExchangePref : MonoBehaviour
     public string id = "";
     public SimpleButtonItem sell;
     public SimpleButtonItem buy;
-    private RObj item;
+    private RObj templateItem;
 
     private void Start()
     {
         sell?.but?.onClick.AddListener(() => GUILIB.CoreAction(FindItem(false), "sell"));
         buy?.but?.onClick.AddListener(() => GUILIB.CoreAction(FindItem(true), "buy"));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => Fill());
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
         Fill();
     }
 
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
+        if (templateItem != null && templateItem.owner == null && MainStates.instance != null)
+            templateItem.Destroy();
+        templateItem = null;
+    }
+    private void OnRefresh(ArgPass _) => Fill();
+
     private RObj FindItem(bool create)
     {
-        item = GUILIB.PlayerInventory().Find(x => GUILIB.IsId(x, id));
-        if (item == null && create && DatabaseAll.instance != null && DatabaseAll.instance.items.ContainsKey(id))
-            item = DatabaseAll.instance.CreateItem(id, 1, false, false);
-        return item;
+        var current = GUILIB.PlayerInventory().Find(x => GUILIB.IsId(x, id));
+        if (current != null || !create)
+            return current;
+        if (templateItem == null && DatabaseAll.instance != null && DatabaseAll.instance.items.ContainsKey(id))
+            templateItem = DatabaseAll.instance.CreateItem(id, 1, false, false);
+        return templateItem;
     }
 
     public void Fill()

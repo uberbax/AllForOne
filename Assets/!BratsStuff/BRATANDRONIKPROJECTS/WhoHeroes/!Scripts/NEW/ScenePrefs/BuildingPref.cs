@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BuildingPref : MonoBehaviour
 {
+    private const int RuntimeBindTimeoutFrames = 600;
+
     public WhoHeroesObjectRef build = new WhoHeroesObjectRef();
     public WhoHeroesObjectRepresent workers = new WhoHeroesObjectRepresent();
     public bool workRepresent;
@@ -28,19 +30,80 @@ public class BuildingPref : MonoBehaviour
     {
         blockUpdate = !workRepresent && !portalType;
         enemyPortal = portalType && build != null && build.id.Contains("0");
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => Sync());
-        EventManager.SUB("new_day", _ => { if (enemyPortal) blockUpdate = false; });
-        EventManager.SUB("new_night", _ => { if (enemyPortal) blockUpdate = true; });
-        EventManager.SUB("block_movement", value => ignoreClick = value != null && (value.num != 0 || value.what == "true"));
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+        EventManager.SUB("new_day", OnNewDay);
+        EventManager.SUB("new_night", OnNewNight);
+        EventManager.SUB("block_movement", OnBlockMovement);
         StartCoroutine(BindWhenReady());
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        Sync();
+    }
+
+    private void OnNewDay(ArgPass _)
+    {
+        if (enemyPortal)
+            blockUpdate = false;
+    }
+
+    private void OnNewNight(ArgPass _)
+    {
+        if (enemyPortal)
+            blockUpdate = true;
+    }
+
+    private void OnBlockMovement(ArgPass value)
+    {
+        ignoreClick = value != null && (value.num != 0 || value.what == "true");
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
+        EventManager.UNSUB("new_day", OnNewDay);
+        EventManager.UNSUB("new_night", OnNewNight);
+        EventManager.UNSUB("block_movement", OnBlockMovement);
     }
 
     private IEnumerator BindWhenReady()
     {
         while (!GUILIB.CoreReady)
             yield return null;
-        runtime = GUILIB.Resolve(build, gameObject, true);
+        ValidateConfiguration();
+
+        for (var frame = 0; runtime == null && frame < RuntimeBindTimeoutFrames; frame++)
+        {
+            runtime = GUILIB.Resolve(build, gameObject);
+            if (runtime == null)
+                yield return null;
+        }
+
+        if (runtime == null)
+            Debug.LogError(
+                $"WhoHeroes scene state '{build?.id}' was not created by AddedObject within {RuntimeBindTimeoutFrames} frames.",
+                this);
         Sync();
+    }
+
+    private void ValidateConfiguration()
+    {
+        var id = build?.id?.Trim();
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogError("WhoHeroes scene: BuildingPref id is empty.", this);
+            return;
+        }
+
+        if (!DatabaseAll.instance.heroes.ContainsKey(id))
+            Debug.LogError($"WhoHeroes config: scene object '{id}' is missing from Heroes.", this);
+
+        var added = GetComponent<AddedObject>();
+        if (added == null || added.id != id || added.overID != id || !added.asMainViz)
+            Debug.LogError(
+                $"WhoHeroes scene: '{id}' must be wired through AddedObject (id/overID='{id}', asMainViz=true).",
+                this);
     }
 
     public void OnMouseDown()
@@ -85,6 +148,7 @@ public class BuildingPref : MonoBehaviour
     {
         effectOnCall?.Activate();
     }
+
 }
 
 [Serializable]

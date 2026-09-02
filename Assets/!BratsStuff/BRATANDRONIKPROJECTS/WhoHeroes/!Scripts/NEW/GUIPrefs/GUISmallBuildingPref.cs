@@ -13,8 +13,20 @@ public class GUISmallBuildingPref : MonoBehaviour
 
     private void Start()
     {
+        if (infobut != null)
+            infobut.interactable = !blocked;
         infobut?.onClick.AddListener(() => GUILIB.Emit(WhoHeroesEvents.ObserveBuilding, runtime, building.id));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill()
@@ -24,7 +36,7 @@ public class GUISmallBuildingPref : MonoBehaviour
         runtime = GUILIB.Resolve(building, gameObject);
         if (runtime == null)
             return;
-        var offeredUnit = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster);
+        var offeredUnit = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster && x.GetPar("amount") > 0f);
         unit?.Fill(offeredUnit);
         general?.Fill(runtime);
     }

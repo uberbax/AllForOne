@@ -14,6 +14,18 @@ public static class WhoHeroesEvents
     public const string UnitInfo = "whoheroes_unit_info";
     public const string Dialogue = "whoheroes_dialogue";
     public const string ResetRequested = "whoheroes_reset_requested";
+    public const string ManagementBlocked = "whoheroes_management_blocked";
+    public const string DayProgress = "whoheroes_day_progress";
+    public const string PortalAvailable = "whoheroes_portal_available";
+    public const string PortalCaptured = "whoheroes_portal_captured";
+    public const string TerritoryAvailable = "whoheroes_territory_available";
+    public const string PointOfInterestCaptured = "whoheroes_poi_captured";
+    public const string NightWavePrepared = "whoheroes_night_wave_prepared";
+    public const string PermanentPerkOffered = "whoheroes_permanent_perk_offered";
+    public const string PermanentPerkChosen = "whoheroes_permanent_perk_chosen";
+    public const string TraderCompleted = "whoheroes_trader_completed";
+    public const string RestartRequested = "whoheroes_restart_requested";
+
 }
 
 [Serializable]
@@ -65,18 +77,16 @@ public class GUILIB : MonoBehaviour
 {
     public static GUILIB Instance;
 
-    private GameObject actionContext;
-    private ObjHolder actionHolder;
-    private UnoAll action;
+    private static readonly HashSet<string> MissingConfigIds = new HashSet<string>(StringComparer.Ordinal);
+
+    [SerializeField] private ObjHolder actionHolder;
+    [SerializeField] private UnoAll action;
 
     private void Awake()
     {
         Instance = this;
-        actionContext = new GameObject("WhoHeroes Minimus UI Context");
-        actionContext.transform.SetParent(transform, false);
-        actionContext.SetActive(false);
-        actionHolder = actionContext.AddComponent<ObjHolder>();
-        action = actionContext.AddComponent<UnoAll>();
+        if (actionHolder == null || action == null)
+            Debug.LogError("WhoHeroes GUI: Minimus action context is not assigned in Inspector.", this);
     }
 
     private void OnDestroy()
@@ -89,64 +99,39 @@ public class GUILIB : MonoBehaviour
 
     public static RObj Resolve(WhoHeroesObjectRef objectRef, GameObject context = null, bool create = false)
     {
-        return Resolve(objectRef == null ? "" : objectRef.id, context, create,
-            objectRef == null ? 1 : Mathf.Max(1, objectRef.level));
+        if (objectRef == null)
+            return null;
+
+        var sceneId = objectRef.id?.Trim() ?? string.Empty;
+        var configId = string.IsNullOrWhiteSpace(objectRef.itembaseid) ? sceneId : objectRef.itembaseid.Trim();
+        return Resolve(configId, context, create, objectRef.level, sceneId);
     }
 
-    public static RObj Resolve(string id, GameObject context = null, bool create = false, int level = 1)
+    public static RObj Resolve(string id, GameObject context = null, bool create = false, int level = 1,
+        string runtimeId = null)
     {
+        runtimeId = string.IsNullOrWhiteSpace(runtimeId) ? id : runtimeId;
         var holder = context == null ? null : context.GetComponentInParent<ObjHolder>(true);
         if (holder != null && holder.obj != null &&
-            (string.IsNullOrEmpty(id) || IsId(holder.obj, id)))
+            (string.IsNullOrEmpty(runtimeId) || IsId(holder.obj, runtimeId)))
             return holder.obj;
 
         if (MainStates.instance == null)
             return null;
 
-        if (!string.IsNullOrEmpty(id) && MainStates.instance.all.TryGetValue(id, out var exact))
+        if (!string.IsNullOrEmpty(runtimeId) && MainStates.instance.all.TryGetValue(runtimeId, out var exact))
             return exact;
 
         var player = MainStates.instance.all.TryGetValue("main_player", out var mainPlayer) ? mainPlayer : null;
-        var fromInventory = player?.inventory.Find(x => IsId(x, id));
+        var fromInventory = player?.inventory.Find(x => IsId(x, runtimeId) || IsId(x, id));
         if (fromInventory != null)
             return fromInventory;
 
-        if (!create || !CoreReady || string.IsNullOrEmpty(id) || context == null)
-            return null;
-
-        RObj result;
-        var known = DatabaseAll.instance.heroes.ContainsKey(id) || DatabaseAll.instance.items.ContainsKey(id) ||
-                    DatabaseAll.instance.buildings.ContainsKey(id) || DatabaseAll.instance.skills.ContainsKey(id);
-
-        if (known)
-        {
-            result = DatabaseAll.instance.CreateAny(id, false, 1, context, id, null, false, false, level);
-        }
-        else
-        {
-            result = new RObj(id, ItemType.unknown)
-            {
-                RID = id,
-                main = context,
-                Position = context.transform.position
-            };
-            result.upgradePars["amount"] = 1;
-            result.upgradePars["level"] = Mathf.Max(0, level - 1);
-            result.upgradePars["registered_damage"] = 0;
-            result.upgradePars["registered_mana"] = 0;
-            result.upgradePars["used_slot"] = -1;
-            result.upgradePars["exp"] = 0;
-            result.RecalcPars();
-            MainStates.instance.all.Add(result.RID, result);
-        }
-
-        holder = context.GetComponent<ObjHolder>();
-        if (holder == null)
-            holder = context.AddComponent<ObjHolder>();
-        holder.obj = result;
-        result.main = context;
-        result.Position = context.transform.position;
-        return result;
+        if (create && !string.IsNullOrEmpty(runtimeId) && MissingConfigIds.Add(runtimeId))
+            Debug.LogError(
+                $"WhoHeroes scene state '{runtimeId}' is missing. Wire it through AddedObject instead of creating it from GUI.",
+                context);
+        return null;
     }
 
     public static bool IsId(RObj value, string id)
@@ -160,6 +145,8 @@ public class GUILIB : MonoBehaviour
     {
         if (value == null)
             return fallback;
+        if (value.it == ItemType.building && value.dbObj != null && value.dbObj.ID == value.RID + "0")
+            return value.RID;
         return value.dbObj == null ? value.RID : value.dbObj.ID;
     }
 
@@ -254,8 +241,10 @@ public class GUILIB : MonoBehaviour
         if (value == null)
             return new List<Bon>();
         if (UpgradeSystem.instance != null)
-            return UpgradeSystem.instance.GetPrice(value, actionName);
-        return value.dbObj?.price ?? new List<Bon>();
+            return MainCycle_WhoHeroes.AdjustPermanentPrice(
+                value, actionName, UpgradeSystem.instance.GetPrice(value, actionName));
+        return MainCycle_WhoHeroes.AdjustPermanentPrice(
+            value, actionName, value.dbObj?.price ?? new List<Bon>());
     }
 
     public static bool CanAfford(List<Bon> price)
@@ -265,14 +254,48 @@ public class GUILIB : MonoBehaviour
 
     public static void CoreAction(RObj value, string actionName, string actionParam2 = "")
     {
-        if (value == null || MainStates.instance == null || Instance == null)
+        if (value == null || MainStates.instance == null || Instance == null ||
+            Instance.actionHolder == null || Instance.action == null)
             return;
+
+        if (!MainCycle_WhoHeroes.IsManagementActionAllowed(actionName))
+        {
+            EventManager.INV(WhoHeroesEvents.ManagementBlocked, new ArgPass
+            {
+                who = value,
+                what = actionName,
+                what1 = actionParam2
+            });
+            return;
+        }
 
         Instance.actionHolder.obj = value;
         Instance.action.mon = value;
         Instance.action.param = actionName;
         Instance.action.param2 = actionParam2;
-        MainStates.instance.ClickedSome(value, Instance.action, Instance.actionHolder, true);
+        MainStates.instance.all.TryGetValue("main_player", out var player);
+        var trackHire = actionName == "buy" && value.it == ItemType.monster && player != null;
+        var ownedBefore = trackHire
+            ? player.inventory.Where(item => item != null && item.dbObj != null &&
+                item.dbObj.ID == value.dbObj.ID).Sum(item => item.GetPar("amount"))
+            : 0f;
+        var trackCastleRestore = actionName == "upgrade" && value.dbObj != null &&
+            MainCycle_WhoHeroes.CastleUnits.ContainsKey(value.dbObj.ID) && Level(value) <= 0;
+        if (!MainCycle_WhoHeroes.TryExecutePermanentDiscountAction(
+                value, actionName, Instance.action, Instance.actionHolder))
+            MainStates.instance.ClickedSome(value, Instance.action, Instance.actionHolder, true);
+        if (trackHire)
+        {
+            var ownedAfter = player.inventory.Where(item => item != null && item.dbObj != null &&
+                item.dbObj.ID == value.dbObj.ID).Sum(item => item.GetPar("amount"));
+            var hired = Mathf.Max(0, Mathf.RoundToInt(ownedAfter - ownedBefore));
+            if (hired > 0)
+                ModelStatistics.instance?.IncreaseStatValue(MainCycle_WhoHeroes.UnitsHiredStat, hired);
+        }
+        if (trackCastleRestore && Level(value) > 0)
+            ModelStatistics.instance?.IncreaseStatValue(MainCycle_WhoHeroes.CastleRestoredStat, 1);
+        if (actionName == "equip_exp")
+            MainCycle_WhoHeroes.NormalizeNewDefenseSlot(value);
         EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { who = value, what = actionName });
     }
 
@@ -624,11 +647,13 @@ public class GUIResources
         var count = Mathf.Min(objs.Count, values.Count);
         for (var i = 0; i < count; i++)
         {
-            var visible = i < resources.Count && (fillZero || resources[i].Value != 0);
+            var hasResource = i < resources.Count;
+            var visible = fillZero || (hasResource && resources[i].Value != 0);
             objs[i].SetActive(visible);
             if (!visible)
                 continue;
-            values[i].text = GUILIB.Instance.FillNum(resources[i].Value, "int");
+            var value = hasResource ? resources[i].Value : 0;
+            values[i].text = GUILIB.Instance.FillNum(value, "int");
             if (!string.IsNullOrEmpty(color))
                 values[i].color = GUILIB.ColorFor(color);
         }
@@ -775,6 +800,18 @@ public class GUIValueGrades
             foreach (var image in icons)
                 image.sprite = sprite;
     }
+
+    public void FillInverse(int current, float basic, string format = "int", string pref = "", string postf = "", string icon = "")
+    {
+        for (var i = 0; i < levels.Count; i++)
+            levels[i].text = (current + i).ToString();
+        for (var i = 0; i < grades.Count; i++)
+            grades[i].text = GUILIB.Instance.FillNum(basic / Mathf.Max(1, current + i), format, pref, postf);
+        var sprite = GUILIB.Icon(icon);
+        if (sprite != null)
+            foreach (var image in icons)
+                image.sprite = sprite;
+    }
 }
 
 [Serializable]
@@ -827,11 +864,22 @@ public class GUIUnitFrame
 
     private void ExecuteAction(string actionType)
     {
+        if (actionType == "addexp")
+        {
+            MainCycle_WhoHeroes.Instance?.TrySelectUnit(g);
+            return;
+        }
+        if (actionType == "removeexp")
+        {
+            MainCycle_WhoHeroes.Instance?.TryDeselectUnit(g);
+            return;
+        }
+
         var coreAction = actionType switch
         {
             "hire" => "buy",
-            "addexp" or "addtower" or "add" => "equip_exp",
-            "removeexp" or "removetower" or "remove" => "unequip_exp",
+            "addtower" or "add" => "equip_exp",
+            "removetower" or "remove" => "unequip_exp",
             _ => actionType
         };
         GUILIB.CoreAction(g, coreAction);
@@ -956,10 +1004,17 @@ public class GUITask : CanFill<RObj>
         var config = DatabaseAll.instance.allTasks[task.RID];
         var progress = MainStates.instance.playerData.playerTasks.Find(x => x.id == task.RID);
         if (description != null)
-            description.text = ConfigLoader.Instance.GetMeLocale(config.description);
+        {
+            var localizationKey = config.description?.ToLowerInvariant() ?? string.Empty;
+            description.text = !string.IsNullOrEmpty(localizationKey) &&
+                               ConfigLoader.Instance.doctLoc.ContainsKey(localizationKey)
+                ? ConfigLoader.Instance.GetMeLocale(localizationKey)
+                : config.description ?? string.Empty;
+        }
         reward?.Fill(config.rewards);
 
-        var claimable = progress != null && progress.completed && !progress.taken;
+        var claimable = progress != null && progress.completed && !progress.taken &&
+                        MainCycle_WhoHeroes.IsManagementActionAllowed("take_quest");
         var taken = progress != null && progress.taken;
         if (claimButt != null)
         {
@@ -969,6 +1024,12 @@ public class GUITask : CanFill<RObj>
             if (claimable)
                 claimButt.onClick.AddListener(() =>
                 {
+                    if (!MainCycle_WhoHeroes.IsManagementActionAllowed("take_quest"))
+                    {
+                        EventManager.INV(WhoHeroesEvents.ManagementBlocked,
+                            new ArgPass { who = task, what = "take_quest" });
+                        return;
+                    }
                     ModelStatistics.instance.TakeTaskReward(config);
                     EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { who = task });
                 });

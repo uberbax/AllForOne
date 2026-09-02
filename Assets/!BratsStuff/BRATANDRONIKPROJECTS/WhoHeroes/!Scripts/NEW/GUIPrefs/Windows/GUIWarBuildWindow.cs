@@ -16,8 +16,18 @@ public class GUIWarBuildWindow : MonoBehaviour
     private void Start()
     {
         back?.onClick.AddListener(() => gameObject.SetActive(false));
-        uprgade?.upgrade?.buy?.onClick.AddListener(() => GUILIB.CoreAction(runtime, "upgrade"));
-        EventManager.SUB(WhoHeroesEvents.Refresh, _ => { if (gameObject.activeInHierarchy) Fill(); });
+        uprgade?.gameObject.SetActive(false);
+        EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
+    }
+
+    private void OnRefresh(ArgPass _)
+    {
+        if (gameObject.activeInHierarchy) Fill();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     public void Fill(RObj value = null)
@@ -26,11 +36,8 @@ public class GUIWarBuildWindow : MonoBehaviour
         if (runtime == null) return;
         var level = GUILIB.Level(runtime, building.level);
         general?.Fill(runtime, "bust");
-        var maxLevel = runtime.GetPar("max_level");
-        uprgade?.Fill(GUILIB.Price(runtime), maxLevel > 0 && level >= maxLevel, false, true,
-            level == 0 ? "restore" : "upgrade");
-        grades?.Fill(level, runtime.GetPar("basic_bust"), Mathf.Max(1, runtime.GetPar("level_multiplier")), "persent");
-        var stat = GUILIB.StringParam(runtime, "bust_stat");
+        grades?.Fill(level, MainCycle_WhoHeroes.BoostPercent() / 100f, 1f, "persent");
+        MainCycle_WhoHeroes.TryGetBoostStat(GUILIB.Id(runtime, building.id), out var stat);
         if (bust != null) GUILIB.Instance.Translate(bust, stat);
         if (statIcon != null)
         {
