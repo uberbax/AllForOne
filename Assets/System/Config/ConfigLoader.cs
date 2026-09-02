@@ -1064,6 +1064,15 @@ public class ConfigLoader : MonoBehaviour
                         mm.PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
+                else if (columns[j].ToUpper() == "PRICE")
+                {
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.price.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1]), Val2 = yp.Length > 2 ? yp[2] : ""});                        
+                    }
+                }
                 else if (columns[j].ToUpper() == "AOE") mm.aoe = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "AMOUNT") mm.amount = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "TRAVEL") mm.travel = int.Parse(tt[j]);
@@ -2849,6 +2858,7 @@ public class FormatSkill
     public string SECOND = "";
     
     public List<Bon> PARS = new List<Bon>();
+    public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
     
     

@@ -190,6 +190,7 @@ public class MainStates : MonoBehaviour
     public static int maxMove = 1;
     public static Bon anyPickAdd = null;
     public static bool pickOverHead = false;
+    public static bool skillBuyingBuff = true;
 
     public static bool manualDt = false;
     public static float manualTick = 1;
@@ -1709,8 +1710,7 @@ public class MainStates : MonoBehaviour
                 if (q)
                 {
                     DelItems(gg);
-                    if (o.it == ItemType.projectile)
-                        AddBuff(all["main_player"], o);
+                    if (o.it == ItemType.projectile && skillBuyingBuff) AddBuff(all["main_player"], o);
                     else AddItem(all["main_player"], o);
 
                     all["main_player"].RecalcPars();
@@ -1953,7 +1953,7 @@ public class MainStates : MonoBehaviour
 
                 who.inventory.Add(what);
                 //ne nravitsya chast c projectile thwbbb
-                if (what.owner != null && what.it != ItemType.projectile)
+                if (what.owner != null && what.owner != who) //&& what.it != ItemType.projectile)
                 {
                     what.owner.inventory.Remove(what);
                 }

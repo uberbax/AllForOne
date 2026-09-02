@@ -127,6 +127,8 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("level", 1);
             o.pars.Add("max_stack",1);
             
+            o.price = v.price;
+            
             o.second = v.SECOND;
             
             o.onDeath = v.onDeath;
@@ -314,6 +316,11 @@ public class DatabaseAll : MonoBehaviour
         {
             other = id.Substring(6);
             id = "shard";
+        }
+
+        if (id == "water_arrow")
+        {
+            int u = 1;
         }
         var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other), rarity: rarity);
         r.shardID = other;

@@ -274,6 +274,7 @@ public class MainCycleExp : MonoBehaviour
 
         XDloot.asSingeItem = true;
         //move legnth in turn based games
+        MainStates.skillBuyingBuff = false;
         MainStates.maxMove = 1;
         MainStates.overridesViz = new List<(string, string)>
         {
