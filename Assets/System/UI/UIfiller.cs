@@ -45,6 +45,7 @@ public class UIfiller : MonoBehaviour
         instances.Add(this);
     }
 
+    public static Action acts = null;
     public static void GlobalRefresh()
     {
         foreach (var v in instances)
@@ -52,11 +53,15 @@ public class UIfiller : MonoBehaviour
             if (v.gameObject.activeInHierarchy)
                 v.OnEnable();
         }
+        
+        if (acts != null) acts.Invoke();
     }
-    
+
+    public string saveAsObj = "";
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
 
+    public bool findRobj = false;
     private void Start()
     {
         if (subParamChange != "")
@@ -66,7 +71,8 @@ public class UIfiller : MonoBehaviour
                 if (x.what != "")
                 {
                     param = x.what;
-                    OnEnable();
+                    if (gameObject.activeInHierarchy)
+                        OnEnable();
                 }
             });
         }
@@ -81,7 +87,24 @@ public class UIfiller : MonoBehaviour
         }
         
         //Debug.Log("~~~~~~" +nm);
-        var res = MainStates.instance.GetCommandResult(command, param, transform);
+        RObj rr = null;
+        if (findRobj)
+        {
+            Debug.Log(gameObject.name);
+            rr = GetComponentInParent<ObjHolder>().obj;
+            var t0 = (int)rr.GetPar("adorn_count");
+            for (int i = 0; i < root.childCount; i++)
+            {
+                root.GetChild(i).gameObject.SetActive(i < t0);
+            }
+        }
+
+        var res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
+        if (saveAsObj != "")
+        {
+            MainStates.instance.curObjsMany[saveAsObj] = res;
+        }
+        
         savedResult = res;
         if (slots.Count > 0)
         {
@@ -195,7 +218,8 @@ public class UIfiller : MonoBehaviour
                         g.obj = res[i];
                         //zdes
                         var cc = g.GetComponentsInChildren<UnoAll>();
-                        for (int l = 0; l < cc.Length; l++) cc[l].mon = null;                        
+                        for (int l = 0; l < cc.Length; l++) cc[l].mon = null;  
+                        g.OnEnable();
                     }
                     else
                     {

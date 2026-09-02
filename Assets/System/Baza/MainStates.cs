@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 using Random = UnityEngine.Random;
 
@@ -61,6 +63,7 @@ public class MainStates : MonoBehaviour
     public RObj curClick;
     public RObj curLoot;
     public RObj lastAllySelected;
+    public RObj lastTargetSelected;
     public GameObject lastBattleTrigger;
     
     public List<RObj> curSmalls;
@@ -86,6 +89,7 @@ public class MainStates : MonoBehaviour
         { "trinket", 7},
         { "adorn", 8},
         
+        {"pet", 9}
         
     };
     
@@ -114,7 +118,10 @@ public class MainStates : MonoBehaviour
         { "trinket", 10},
         { "adorn", 11},
         { "potion", 12},
+        { "pet", 13},
         
+        { "skill", 14},
+        { "hero", 15},
         
         { "none", 100},
         
@@ -189,12 +196,21 @@ public class MainStates : MonoBehaviour
 
     public static List<(string, string)> overridesViz = null;
 
+    //battle_reward
     public Dictionary<string, List<Bon>> dropTables = new Dictionary<string, List<Bon>>();
+    //last_boss
+    //last_leg (last legendary item)
     public Dictionary<string, RObj> curObjs =  new Dictionary<string, RObj>();
+    public Dictionary<string, List<RObj>> curObjsMany =  new Dictionary<string, List<RObj>>();
     //
     public Transform trashRoot;
     public static float inBattleScale = 1.0f;
     
+    public bool HasMain()
+    {
+        if (all.ContainsKey("main_player")) return true;
+        return false;
+    }
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
@@ -296,7 +312,7 @@ public class MainStates : MonoBehaviour
             level = l;
             
             cr = cur - expCurve[l-1];
-            cm = expCurve[l];
+            cm = expCurve[l] - expCurve[l-1];
             
             rat = cr / cm;            
         }
@@ -309,6 +325,7 @@ public class MainStates : MonoBehaviour
         DragObject.onEndDragGlobal = OnEndDrag;
         EventManager.SUB("next_hero", NextHero);
         EventManager.SUB("battle_start", BattleStarted);
+        EventManager.SUB("evt_adorn", EventAdorn);
 
         if (trashRoot == null)
         {
@@ -334,6 +351,21 @@ public class MainStates : MonoBehaviour
             reverseDmgTypes.Add(v.Value, v.Key);
         }
         
+    }
+
+    private void EventAdorn(ArgPass obj)
+    {
+        //refill global
+        var item = curObjsMany["last_item_info"][0];
+        Adorn(item, obj.who);
+        UIfiller.GlobalRefresh();
+    }
+
+    public void Adorn(RObj item, RObj adorn)
+    {
+        item.adorments.Add(adorn);
+        adorn.owner2 = item;
+        adorn.owner2.RecalcPars();
     }
 
     private void BattleStarted(ArgPass obj)
@@ -988,6 +1020,7 @@ public class MainStates : MonoBehaviour
 
     public static bool CompareTags(RObj a, RObj b)
     {
+        if (a == null || b == null) return false;
         if (a.tags.Contains("player") && b.tags.Contains("player")) return true;
         if (a.tags.Contains("enemy") && b.tags.Contains("enemy")) return true;
         return false;
@@ -1156,6 +1189,11 @@ public class MainStates : MonoBehaviour
             var v = combats.FindAll(x => x.tags.Contains("player") && !x.META_TAGS.Contains("npc"));
             return v;
         }
+        if (command == "GET_ADORNS")
+        {
+            //and not is summon ?
+            return rr.adorments;//.FindAll(x => x.owner == null);
+        }
         if (command == "GET_SKILLS_NO_BASIC")
         {
             return all[param].actSkills.FindAll(x => x.dbObj.ID.IndexOf("basic") < 0 && x.GetPar("action_req") > 0);
@@ -1238,6 +1276,8 @@ public class MainStates : MonoBehaviour
                 if (gk[l] == "not_equiped")
                 {
                     res = res.FindAll(x => x.GetPar("amount") > 0 && x.GetPar("used_slot") < 0);
+                    res = res.FindAll(x => x.dbObj.pars["subtype"] != subtypes["adorn"] ||
+                                           x.dbObj.pars["subtype"] == subtypes["adorn"] && x.owner2 == null);
                 }
                 
                 if (gk[l] == "weapon")
@@ -1252,9 +1292,14 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
                     gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body" || gk[l] == "trinket" ||
-                    gk[l] == "adorn" || gk[l] == "potion")
+                    gk[l] == "adorn" || gk[l] == "potion" || gk[l] == "pet")
                 {
                     var c = subtypes[gk[l]];
+                    res.ForEach(x =>
+                    {
+                        Debug.Log(x.dbObj.ID);
+                        Debug.Log(x.dbObj.pars["subtype"]);
+                    });
                     res = res.FindAll(x => x.dbObj.pars["subtype"] == c);
                 }
                 
@@ -1575,9 +1620,11 @@ public class MainStates : MonoBehaviour
             //changed
             if (SV.IndexOf("evt_") >= 0)
             {
-                var g = SV.Substring(4);
+                //var g = SV.Substring(4);
+                var g = SV;
+                
                 //время костылей ?
-                if (g == "codex_click")
+                if (g == "evt_codex_click")
                 {
                     var d = ModelStatistics.instance.Codex_IsMonsterMet(o.dbObj.ID);
                     if (!d) return;
@@ -1734,7 +1781,10 @@ public class MainStates : MonoBehaviour
             }
             else if (SV == "cast")
             {
-                SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o);
+                //target
+                RObj trg = null;
+                if (o.dbObj.pars["target"] == 0) trg = lastTargetSelected;
+                SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o, target:trg);
             }
             else if (SV == "select")
             {
@@ -1813,12 +1863,24 @@ public class MainStates : MonoBehaviour
         //who ?
         foreach (var v in rewards)
         {
-            if (v.Key == "exp")
+            var ii = DatabaseAll.instance.CreateItem(v.Key, v.Value);
+            
+            if (v.Val3 > 0)
             {
-                int l = 0;
+                ii.SetPar("rarity", v.Val3);    
             }
             
-            var ii = DatabaseAll.instance.CreateItem(v.Key, v.Value);
+            if (v.ValLvl > 1)
+            {
+                ii.SetPar("level", v.ValLvl);    
+            }
+
+            if (v.Val3 == 4)
+            {
+                //leg found
+                curObjs["last_leg"] = ii;
+            }
+            
             if (who != null)
                 AddItem(who, ii);
             else
@@ -2159,6 +2221,19 @@ public class MainStates : MonoBehaviour
         
     }
 
+    public RObj SumRobj(RObj a, RObj b)
+    {
+        foreach (var v in b.curPars)
+        {
+            //if (v.Key == "level") continue;
+            //if (!a.curPars.ContainsKey("level")) a.curPars.Add("level", 0);
+            if (!a.curPars.ContainsKey(v.Key)) a.curPars.Add(v.Key, 0);
+            a.curPars[v.Key] += b.curPars[v.Key];
+        }
+
+        return a;
+    }
+
     public Dictionary<string, float> dmgTimes = new Dictionary<string, float>();
     public Dictionary<string, int> awaitUnits = new Dictionary<string, int>();
     public void DealHeal(RObj who, float val)
@@ -2177,6 +2252,17 @@ public class MainStates : MonoBehaviour
         if (h < 0) h = 0;
         who.SetPar("registered_damage", h);
         //effect regen possibly
+    }
+
+    public Dictionary<string, float> GetDiff(RObj a1, RObj a2)
+    {
+        var res = new Dictionary<string, float>();
+        foreach (var v in a1.curPars)
+        {
+            res.Add(v.Key, a2.curPars[v.Key] - v.Value);
+        }
+
+        return res;
     }
 
     public void ShowRange(LineRenderer range, Vector3 pos, float skl, float size)
@@ -2224,6 +2310,9 @@ public class MainStates : MonoBehaviour
     
     public void DealDamage(RObj a, RObj skl)
     {
+        //when two chests collide ?
+        if (skl.owner == null) return;
+        
         Debug.Log("DAMAGE: " +skl.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
         var magic = skl.GetMainPar("magic");
         var atk = skl.GetMainPar("attack");
@@ -2355,7 +2444,12 @@ public class MainStates : MonoBehaviour
             {
                 var kk = a.GetPar("dodge");
                 var roll = Random.Range(0, 100);
-                if (roll < kk)
+                
+
+                var kk1 = skl.owner.GetPar("accuracy");
+                var roll1 = Random.Range(0, 100);
+                
+                if (roll < kk || (kk1 < 0 && roll1 < 50))
                 {
                     a.SetPar("show_message", 1);
                     return;
@@ -2402,7 +2496,7 @@ public class MainStates : MonoBehaviour
             var m2 = a.GetPar("max_mana");
             if (m2 - m1 < mana)
             {
-                a.SetPar("mana", m2);
+                a.ChangePar("mana", m2-m1);
             }
             else
             {
@@ -2538,6 +2632,95 @@ public class MainStates : MonoBehaviour
             );
         }, null,useRight:false,ignoreFlip:true);
     }
+
+    public void ApplyMonsterExtraParams(RObj who, RObj from)
+    {
+        List<string> pars = new List<string> {"max_health","health","attack","def","res"};
+        //
+        float koef = 1;
+        var f = from.GetPar("obj_berserk");
+        if (f > 0)
+        {
+            koef = 2;
+            who.SetPar("obj_berserk", f);
+        }
+        f = from.GetPar("obj_arisen");
+        if (f > 0)
+        {
+            koef = 3;
+            who.SetPar("obj_arisen", f);
+        }
+        
+        if (koef > 1)
+        {
+            for (int i = 0; i < pars.Count; i++)
+            {
+                var h = who.GetPar(pars[i]) * (koef-1);
+                who.SetPar(pars[i], h);
+            }
+        }
+    }
+    
+    public void HandleMonsterKilled(RObj d1, bool addItems = true)
+    {
+        var d = d1.dbObj.drop;
+        var aa = ModelSet.GetMeItemsBon(d);
+        //mark loot as taken
+        ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
+        //gold
+        //exp
+        //orns
+        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
+        var e0 = g0 * 100;
+        aa.Add(new Bon{Key = "exp", Value = e0});
+        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
+        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
+        
+        //if there was a levelup
+        var l1 = mainPlayer.GetPar("level");
+        GetMeExpPars(mainPlayer, out float rat, out float cr, out float cm, out float lvl);
+        //Debug.Log(cr + " " + cm + " " + e0);
+        if (cr + e0 >= cm)
+        {
+            UIlevelUp.wasLevelup = true;
+            UIlevelUp.tmLevelUp = Time.time;
+            UIlevelUp.levelWas = (int)l1;
+        }
+
+        dropTables["battle_reward"] = MergeRewards(dropTables["battle_reward"], aa);
+
+        if (addItems)
+            AddItems(aa);        
+    }
+
+    public List<Bon> MergeRewards(List<Bon> a1, List<Bon> a2)
+    {
+        List<Bon> res = new List<Bon>();
+
+        foreach (var a in a2)
+        {
+            var g = a1.Find(x => x.Key == a.Key);
+            if (g != null)
+            {
+                var h = DatabaseAll.instance.items[a.Key];
+                if (h.pars["max_stack"] > 1)
+                {
+                    g.Value += a.Value;
+                }
+                else
+                {
+                    a1.Add(g);
+                }
+            }
+            else
+            {
+                a1.Add(a);
+            }
+        }
+        
+        return a1;
+    }
+    
     
     public void DoNaprig(RObj who, Vector3 target)
     {
@@ -2594,13 +2777,15 @@ public class MainStates : MonoBehaviour
 
     }
 
-    public void HandleCds(float dt = -1)
+    public void HandleCds(float dt = -1, RObj who = null)
     {
-        if (dt > 0)
+        if (dt >= 0)
             TimeManager.LAST_DT = dt;
         //decrease cds !    
         foreach (var v in all)
         {
+            if (who != null && v.Value != who) continue;
+            
             if (v.Value.it == ItemType.projectile && v.Value.upgradePars["cd"] >= 0)
             {
                 //v.Value.upgradePars["cd"] -= TimeManager.LAST_DT;
@@ -2616,7 +2801,7 @@ public class MainStates : MonoBehaviour
                 v1.upgradePars["timeEvery"] -=  TimeManager.LAST_DT;
                 
                 //its should be instant, is it ?
-                if (v1.upgradePars["timeEvery"] < 0 && v1.GetPar("instant") > 0)
+                if (v1.upgradePars["timeEvery"] <= 0 && v1.GetPar("instant") > 0)
                 {
                     //deal damage
                     DealDamage(v.Value, v1);
@@ -2765,14 +2950,21 @@ public class MainStates : MonoBehaviour
             //we possibly wait
             if (awaitUnits && this.awaitUnits.ContainsKey(combats[i].RID))
             {
+                //vot zdes' can_cast = true cause its our turn
+                combats[i].SetPar("can_cast", 1);
                 while (this.awaitUnits[combats[i].RID] > 0)
                 {
                     yield return null;
                 }
-                
+                combats[i].SetPar("can_cast", 0);
+                if (manualDt)
+                {
+                    HandleCds(manualTick, combats[i]);
+                }
+
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
-
+                
                 if (curComateers.Count > 0)
                 {
                     curComateers.RemoveAt(0);
@@ -2796,6 +2988,11 @@ public class MainStates : MonoBehaviour
             
 
             yield return new WaitForSeconds(tm);
+            if (manualDt)
+            {
+                HandleCds( manualTick, combats[i]);
+            }
+            
             
             if (curComateers.Count > 0)
             {
@@ -2804,10 +3001,7 @@ public class MainStates : MonoBehaviour
             }
         }
 
-        if (manualDt)
-        {
-            HandleCds(manualTick);
-        }
+
         
         InIteration = false;
     }

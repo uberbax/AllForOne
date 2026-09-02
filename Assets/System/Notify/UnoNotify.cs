@@ -31,8 +31,10 @@ public class UnoNotify : MonoBehaviour
     public bool haveAnyTaskCompletedNoTaken = false;
    
     public bool haveAutoreward = false;
-    
-    
+
+    public bool haveUncollectedCodex;
+
+    public bool haveSingleUncollectedCodex;
     /*
     //have any daily chest uncollected
     public bool haveDailyChestUncollected = false; 
@@ -49,6 +51,9 @@ public class UnoNotify : MonoBehaviour
     public string taskId1 = "";
 
     private TasksProg task = null;
+    [Header("Robj")]
+    public bool useRobj = false;
+    public ObjHolder holder;
     
     public int CalculateCustom()
     {
@@ -62,6 +67,35 @@ public class UnoNotify : MonoBehaviour
             var f = MainStates.instance.playerData.playerTasks.Find(x => x.completed && !x.taken);
             if (f != null) return 1;
             else return 0;
+        }
+
+        //it shoud be optimized i think
+        if (haveUncollectedCodex)
+        {
+            foreach (var v in DatabaseAll.instance.heroes)
+            {
+                var a1 = ModelStatistics.instance.Codex_IsCompleted(v.Key);
+                var a2 = ModelStatistics.instance.GetStatValue("codex_" + v.Key + "_completed_taken");
+                if (a1 && a2 < 1)
+                {
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+
+        if (haveSingleUncollectedCodex)
+        {
+            if (holder == null) return 0;
+            var a1 = ModelStatistics.instance.Codex_IsCompleted(holder.obj.dbObj.ID);
+            var a2 = ModelStatistics.instance.GetStatValue("codex_" + holder.obj.dbObj.ID + "_completed_taken");
+            if (a1 && a2 < 1)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
         if (haveAutoreward)
@@ -182,5 +216,8 @@ public class UnoNotify : MonoBehaviour
         {
             states.Add(gameObject);
         }
+        //
+        if (useRobj)
+            holder = gameObject.GetComponentInParent<ObjHolder>();
     }
 }

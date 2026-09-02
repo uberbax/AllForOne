@@ -26,6 +26,10 @@ public class EventTrigger : MonoBehaviour
     public bool addToBtn = true;
     //set cur click
     public bool setAsCurLoot = false;
+
+    public bool markSecond = false;
+    public bool markFirst = false;
+    
     void Start()
     {
         var btn = GetComponent<Button>();
@@ -55,6 +59,18 @@ public class EventTrigger : MonoBehaviour
                     MainStates.instance.ExecuteDone(dyno);
                 }
                 HandleReverts();
+                
+                //handle awaiters 
+                if (markSecond)
+                {
+                    MainStates.instance.awaitUnits["second_main"] = 0;
+                }
+
+                if (markFirst)
+                {
+                    MainStates.instance.awaitUnits["main_player"] = 0;
+                }
+                
             });
         }
 

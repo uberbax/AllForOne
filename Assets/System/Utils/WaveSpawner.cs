@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -399,11 +400,12 @@ public class WaveSpawner : MonoBehaviour
     
     
         public List<RObj> DoSpawnAnyPos(List<Bon> what, string tg, bool battle, bool isSummon = false,
-        List<(string, string)> overridesViz = null, bool applyExtra = false)
+        List<(string, string)> overridesViz = null, bool applyExtra = false, int start = 0)
     {
         List<RObj> res = new List<RObj>();
         //we choose root depending on tag
-        
+
+        int l = 0;
         foreach (var v in what)
         {
             for (int i = 0; i < v.Value; i++)
@@ -429,12 +431,12 @@ public class WaveSpawner : MonoBehaviour
                 
                 if (tg == "enemy")
                 {
-                    enm1.main.transform.position = enemyPosHolder.GetChild(i).position;
+                    enm1.main.transform.position = enemyPosHolder.GetChild(start + l).position;
                     enm1.Position = enm1.main.transform.position;
                 }
                 else
                 {
-                    enm1.main.transform.position = heroPosHolder.GetChild(i).position;
+                    enm1.main.transform.position = heroPosHolder.GetChild(start + l).position;
                     enm1.Position = enm1.main.transform.position;
                 }
 
@@ -459,8 +461,29 @@ public class WaveSpawner : MonoBehaviour
                     enm1.main.transform.localScale *= MainStates.inBattleScale;
                 }
                 
+                //ok we place it on earth
+                var ff = enm1.visMain.transform.Find("legs");
+                if (ff != null)
+                {
+                   enm1.main.transform.position += (enm1.main.transform.position - ff.position);
+                }
+                //
+                if (v.Val2 != "")
+                {
+                    var t0 = v.Val2.Split(',');
+                    foreach (var t1 in t0)
+                    {
+                        var t2 = t1.Split(':');
+                        enm1.SetPar(t2[0], float.Parse(t2[1], CultureInfo.InvariantCulture));
+                        //pars.Add(t2[0], t2[1]);
+                    }
+                    //
+                    MainStates.instance.ApplyMonsterExtraParams(enm1, enm1);
+                }
+
             }
-            
+
+            l++;
         }
 
         return res;

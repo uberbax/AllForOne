@@ -831,6 +831,8 @@ public class ConfigLoader : MonoBehaviour
                     mm.health = int.Parse(tt[j]);
                     mm.maxHealth = int.Parse(tt[j]);
                 }
+                else if (columns[j].ToUpper() == "LVL") mm.lvl = int.Parse(tt[j]);
+                
                 else if (columns[j].ToUpper() == "MOVE") mm.move = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "LEVEL") mm.level = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "COST") mm.cost = int.Parse(tt[j]);
@@ -843,6 +845,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "ENCOUNTER") mm.encounter = tt[j];
                 
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "CODEX_REWARD") mm.codexReward = tt[j];
                 
                 else if (columns[j].ToUpper() == "USED") mm.used = int.Parse(tt[j]);
                 
@@ -881,6 +884,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "BUILDING") mm.building = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "DROP_PICK") mm.dropPick = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "MAX_STACK") mm.maxStack = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "CRIT_CHANCE") mm.critChance = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "CRIT_DMG") mm.critDamage = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -1135,6 +1139,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "SUBTYPE") mm.SUBTYPE = tt[j];
                 else if (columns[j].ToUpper() == "REF_SKILL") mm.REF_SKILL = tt[j];
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                
+                else if (columns[j].ToUpper() == "ADORN_CNT") mm.adornCnt = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "PRICE")
                 {
@@ -1896,7 +1902,12 @@ public class ConfigLoader : MonoBehaviour
                 for (int k = 0; k < yy.Length; k++)
                 {
                     var bb = yy[k].Split(",");
-                    hh.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    var ss = new Bon { Key = bb[0], Value = int.Parse(bb[1]) };
+                    
+                    if (bb.Length > 2) ss.ValLvl =  int.Parse(bb[2]);
+                    if (bb.Length > 3) ss.Val3 =  int.Parse(bb[3]);
+                    
+                    hh.Add(ss);
                 }
 
                 mm.items = hh;
@@ -2536,10 +2547,13 @@ public class FormatHero
     public int difficulty = 0;
     public int isBoss = 0;
     
+    public int lvl = 0;
+    
     public string foundIn = "";
     public string encounter = "";
-    
-    
+    public string codexReward = "";
+
+    public int maxStack = 1;
     public float speed = 3;
 
     public int size = 11;
@@ -2681,6 +2695,8 @@ public class FormatArtefact
     
 
     public int size = 11;
+    public int adornCnt = 0;
+    
     public int RARITY_ROLL = 0;
     public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();

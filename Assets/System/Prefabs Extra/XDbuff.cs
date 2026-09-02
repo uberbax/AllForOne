@@ -60,7 +60,7 @@ public class XDbuff : ComponentBehavior
             var ii = transform.GetChild(i);
             var bb = mon.timedBuffs[i];
             ii.Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.skills[bb.dbObj.ID];
-            ii.Find("txt").GetComponent<TextMeshProUGUI>().text = bb.dbObj.ID + "(" + bb.GetPar("timeLeft") + ")";
+            ii.Find("txt").GetComponent<TextMeshProUGUI>().text = bb.dbObj.ID + "(" + (int)bb.GetPar("timeLeft") + ")";
         }
 
     }

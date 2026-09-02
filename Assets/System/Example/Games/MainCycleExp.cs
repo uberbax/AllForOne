@@ -16,8 +16,6 @@ public class MainCycleExp : MonoBehaviour
     private RObj main;
     private RObj secondMain;
 
-    private bool inBattle = false;
-
     public Camera mainCamera;
     public GameObject otherScene;
 
@@ -38,13 +36,16 @@ public class MainCycleExp : MonoBehaviour
 
         EventManager.SUB("battle_start", (x) =>
         {
-            inBattle = true;
+            MainStates.instance.inBattle = true;
             MainStates.instance.InIteration = false;
         });
         EventManager.SUB("battle_press", BattleClicked);
 
         EventManager.SUB("after_battle", (x) =>
         {
+            if (DungeonController.instance.inDungeon)
+                return;
+            
             MainStates.manualDt = false;
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle", 1);
@@ -56,15 +57,14 @@ public class MainCycleExp : MonoBehaviour
             {
                 Destroy(MainStates.instance.lastBattleTrigger);
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             else
             {
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             ActivateOtherScene(false);
             MainStates.instance.curObjs["last_boss"] = null;
+            MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });
 
         EventManager.SUB("battle_leave", (x) =>
@@ -79,10 +79,10 @@ public class MainCycleExp : MonoBehaviour
             //MainStates.instance.UI_unitsPlaced.SetActive(false);
             {
                 MainStates.instance.inBattle = false;
-                inBattle = false;
             }
             ActivateOtherScene(false);
             MainStates.instance.curObjs["last_boss"] = null;
+            MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });
 
         EventManager.SUB("go_home", (x) => { Camera.main.GetComponent<CameraFollow>().target = basePos; });
@@ -135,6 +135,9 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AddViz("combat#no:1");
         secondMain.AddViz("hp");
         secondMain.AddViz("mana");
+        secondMain.AddViz("ward");
+        secondMain.AddViz("death");
+        
 
         secondMain.AddViz("coll#scale:0.5");
         secondMain.AddViz("animator#pr:1");
@@ -233,12 +236,12 @@ public class MainCycleExp : MonoBehaviour
         var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
         MainStates.instance.Equip(main, skl, 50);
 
-        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_aoe", Value = 1 } });
-        skl = main.inventory.Find(x => x.dbObj.ID == "basic_aoe");
-        MainStates.instance.Equip(main, skl, 51);
-
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_buff_atk", Value = 1 } });
         skl = main.inventory.Find(x => x.dbObj.ID == "basic_buff_atk");
+        MainStates.instance.Equip(main, skl, 51);
+
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
+        skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
         MainStates.instance.Equip(main, skl, 52);
 
         //
@@ -260,10 +263,24 @@ public class MainCycleExp : MonoBehaviour
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;
+        
+        XDdeath.contributeEach = true;
         XDdeath.autoAddExp = false;
+        XDdeath.fadeAfter = 1;
+
+        XDcombat.oneCast = true;
+        
+        UtilsControl.overDrop = 0;
+
+        XDloot.asSingeItem = true;
         //move legnth in turn based games
         MainStates.maxMove = 1;
-        MainStates.overridesViz = new List<(string, string)> { ("hp", ""), ("buff", ""), ("shadow","") };
+        MainStates.overridesViz = new List<(string, string)>
+        {
+            ("hp", ""), ("buff", ""), ("shadow",""),
+            ("drop", ""), ("ward", "d3:0.3"), ("status",""),
+            ("select","in_battle:1")
+        };
         MainStates.inBattleScale = 2;
         
         Animato.GlobalTm = 0.33f;
@@ -309,36 +326,12 @@ public class MainCycleExp : MonoBehaviour
     public void BattleEnded(ArgPass obj)
     {
         var d1 = MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj;
-        var d = d1.dbObj.drop;
-        var aa = ModelSet.GetMeItemsBon(d);
-        //mark loot as taken
-        ModelStatistics.instance.Codex_LootMet(d1.dbObj.ID, aa);
-        //gold
-        //exp
-        //orns
-        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
-        var e0 = g0 * 100;
-        aa.Add(new Bon{Key = "exp", Value = e0});
-        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
-        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
         
-        //if there was a levelup
-        var l1 = MainStates.instance.mainPlayer.GetPar("level");
-        MainStates.instance.GetMeExpPars(MainStates.instance.mainPlayer, out float rat, out float cr, out float cm, out float lvl);
-        //Debug.Log(cr + " " + cm + " " + e0);
-        if (cr + e0 >= cm)
-        {
-            UIlevelUp.wasLevelup = true;
-            UIlevelUp.levelWas = (int)l1;
-        }
+        //MainStates.instance.HandleMonsterKilled(d1);
         
         MainStates.instance.UI_win.GetComponent<ObjHolder>().obj = d1;
-        MainStates.instance.dropTables["battle_reward"] = aa;
-
-        MainStates.instance.AddItems(aa);
         
-        
-        inBattle = false;
+        MainStates.instance.inBattle = false;
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
@@ -386,11 +379,11 @@ public class MainCycleExp : MonoBehaviour
             var go = Instantiate(rr, MainStates.instance.mainPlayer.main.transform);
         }
 
-        if (inBattle)
+        if (MainStates.instance.inBattle)
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1f, "sword", true));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1.7f, "sword", true));
             }
         }
     }

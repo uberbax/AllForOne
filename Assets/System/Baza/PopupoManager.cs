@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PopupoManager : MonoBehaviour
@@ -14,10 +15,20 @@ public class PopupoManager : MonoBehaviour
     public StringObjectDictionary insiders;
 
     public GameObject tooltip;
+    public GameObject alert;
+    public TextMeshProUGUI alertTxt;
+    
     private void Awake()
     {
         instance = this;
         EventManager.SUB("battle_ended", ShowBattleResult);
+        EventManager.SUB("show_alert", ShowAlert);
+        
+    }
+
+    private void ShowAlert(ArgPass obj)
+    {
+        alertTxt.text = obj.what1;
     }
 
     public void ShowBattleResult(ArgPass argPass)

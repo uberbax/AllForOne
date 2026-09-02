@@ -12,8 +12,9 @@ public class SmallResists : MonoBehaviour
     public Transform immunitiesRoot;
     public Transform weaknessRoot;
     
-    //hack
-    public TextMeshProUGUI foundIn;
+    //
+    public ObjHolder itemReward;
+    public TakeReward takeReward;
     
     private void OnEnable()
     {
@@ -61,7 +62,7 @@ public class SmallResists : MonoBehaviour
             else if (g >= 100)
             {
                 immunitiesRoot.GetChild(immuns).gameObject.SetActive(true);
-                bool b = ModelStatistics.instance.Codex_IsWeakMet(mon.dbObj.ID, t.Key);
+                bool b = ModelStatistics.instance.Codex_IsImmuneMet(mon.dbObj.ID, t.Key);
                 if (!b)
                 {
                     immunitiesRoot.GetChild(immuns).GetChild(0).GetComponent<TextMeshProUGUI>().text = "???";
@@ -79,7 +80,7 @@ public class SmallResists : MonoBehaviour
             else if (g > 0)
             {
                 resistsRoot.GetChild(resists).gameObject.SetActive(true);
-                bool b = ModelStatistics.instance.Codex_IsWeakMet(mon.dbObj.ID, t.Key);
+                bool b = ModelStatistics.instance.Codex_IsResMet(mon.dbObj.ID, t.Key);
                 if (!b)
                 {
                     resistsRoot.GetChild(resists).GetChild(0).GetComponent<TextMeshProUGUI>().text = "???";
@@ -96,8 +97,15 @@ public class SmallResists : MonoBehaviour
             }
         }
         
-        
-
+        //
+        Bon cc = new Bon();
+        cc.Key = mon.dbObj.parsStr["codex_reward"];
+        cc.Value = 1;
+        cc.Val3 = 4;
+        itemReward.obj = DatabaseAll.instance.CreateItem(cc.Key, 1, rarity:4 );
+        takeReward.stat = "codex_" + mon.dbObj.ID + "_completed";
+        takeReward.rewards.Clear();
+        takeReward.rewards.Add(cc);
     }
 
 

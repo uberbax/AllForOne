@@ -47,7 +47,7 @@ public class UIbattleLog : MonoBehaviour
         });
         //
         
-        string s = obj.who.dbObj.ID + " casted " + obj.who2.dbObj.ID;
+        string s = obj.who.dbObj.ID + " uses " + obj.who2.dbObj.ID;
         logs.Add(s);
         string result = "";
         if (logs.Count > numsDisplay)

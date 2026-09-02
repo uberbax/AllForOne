@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,15 +8,26 @@ public class UIlevelUp : MonoBehaviour
     public GameObject activate;
     public List<GameObject> waitWhat = new List<GameObject>();
 
+    public static float tmLevelUp = 0;
     public static bool wasLevelup = false;
     public static int levelWas = -1;
     // Update is called once per frame
     public Transform statHolder;
-    
-    
+
+    private void Start()
+    {
+        EventManager.SUB("battle_ended", (x) =>
+        {
+            tmLevelUp = Time.time;
+        });
+    }
+
     void Update()
     {
         if (!wasLevelup) return;
+        if (BattleController.instance.startDo) return;
+        if (Time.time - tmLevelUp < 2f) return;
+        //if 
         
         bool check = false;
         foreach (var v in waitWhat)

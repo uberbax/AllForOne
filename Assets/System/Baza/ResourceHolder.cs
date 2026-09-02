@@ -241,7 +241,19 @@ public class ResourceHolder : MonoBehaviour
                 if (a.isMainPar) rr = r.GetMainPar(a.param);
                 else rr = r.GetPar(a.param);
                 if (g.HasKey("icon"))  g.GetImage("icon").sprite = pars[a.param];
-                g.GetText("value").text = ((int)rr).ToString();
+
+                string extra = "";
+                if (a.addDlt)
+                {
+                    if (r.dltPars.ContainsKey(a.param))
+                    {
+                        var val = (int)r.dltPars[a.param];
+                        if (val < 0) extra = "<color=red>(" + val + ")</color>";
+                        else if (val > 0) extra = "<color=green>(+" + val + ")</color>";
+                    }
+                }
+                
+                g.GetText("value").text = ((int)rr).ToString() + extra;
                 if (a.hideEmpty)
                 {
                     if (rr == 0)
@@ -286,7 +298,10 @@ public class ResourceHolder : MonoBehaviour
             }
             else if (a.param == "cd")
             {
-                img.fillAmount = r.GetPar("cd") / r.GetPar("cooldown");
+                var s1 = r.GetPar("cd");
+                var s2 = r.GetPar("cooldown");
+                img.fillAmount = s1 / s2;
+                //Debug.Log(r.RID + " " + s1 + " " + s2);
             }
             else if (a.param == "rarity")
             {

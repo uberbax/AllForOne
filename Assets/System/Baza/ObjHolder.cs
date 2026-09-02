@@ -15,11 +15,20 @@ public class ObjHolder : MonoBehaviour, IReceive
     
     public bool asMain = false;
     public string asCurObj = "";
+    public string asObj = "";
+    
     
     public ObjHolder redirect;
+    public ObjHolder copyTo;
+    
+    public List<GameObject> alsoEnables = new List<GameObject>();
     public void OnEnable()
     {
         UISystem.instance.FillItem(this);
+        foreach (var a in alsoEnables)
+        {
+            a.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     [ContextMenu("ShowViz")]
@@ -54,9 +63,21 @@ public class ObjHolder : MonoBehaviour, IReceive
             return;
         }
 
+        if (copyTo != null)
+        {
+            copyTo.obj = obj;
+        }
+
         if (asCurObj != "")
         {
+            if (!MainStates.instance.curObjs.ContainsKey(asCurObj)) return;
             obj = MainStates.instance.curObjs[asCurObj];
+        }
+        
+        if (asObj != "")
+        {
+            if (!MainStates.instance.all.ContainsKey(asObj)) return;
+            obj = MainStates.instance.all[asObj];
         }
         
         if (asMain)
@@ -113,7 +134,7 @@ public class ObjHolder : MonoBehaviour, IReceive
 
     public void OnDisable()
     {
-        Debug.Log("TTTT");
+        //Debug.Log("TTTT " + gameObject.name);
     }
 
     public void Receive(ArgPass arg)

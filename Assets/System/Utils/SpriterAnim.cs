@@ -78,7 +78,7 @@ public class SpriterAnim : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time - timeFrame > lastTm)
+        if (Time.time - timeFrame / curUanim.speed > lastTm)
         {
             curFrame++;
             if (curFrame >= curUanim.sprites.Count)

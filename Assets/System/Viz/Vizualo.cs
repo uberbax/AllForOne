@@ -17,6 +17,10 @@ public class Vizualo : MonoBehaviour
     
     //other
     public string id;
+    private RObj who;
+    private ObjHolder wHolder;
+    
+    
     public bool readyNotTakenTask = false;
     public bool taken = false;
     public bool notTaken = false;
@@ -31,12 +35,31 @@ public class Vizualo : MonoBehaviour
     public List<UnoReq> reqs = new List<UnoReq>();
     
     public GameObject forOther;
+    public List<GameObject> alsoActive = new List<GameObject>();
     
+    public bool activateScale = false;
+    public bool halfCanvasGroup = false;
+    
+    private void OnEnable1()
+    {
+        if (asHolderCond)
+        {
+            wHolder = GetComponentInParent<ObjHolder>();
+            id = wHolder.obj.dbObj.ID;
+            who = wHolder.obj;
+            if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
+                condID = ConfigLoader.Instance.allRelConditions[id];
+        }
+    }
+
     private void Start()
     {
         c = GetComponent<CanvasGroup>();
         if (c == null) c = gameObject.AddComponent<CanvasGroup>();
         abs = GetComponentInParent<AbsHolder>();
+        
+        if (relButton == null) 
+            relButton = GetComponent<Button>();
         
         if (abs)
         {
@@ -45,10 +68,22 @@ public class Vizualo : MonoBehaviour
         }
         else if (asHolderCond)
         {
-            var f = GetComponentInParent<ObjHolder>();
-            id = f.obj.dbObj.ID;
-            if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
-                condID = ConfigLoader.Instance.allRelConditions[id];
+            wHolder = GetComponentInParent<ObjHolder>();
+            /*
+            if (wHolder.obj == null)
+            {
+                Invoke("Start", 0.1f);
+                return;
+            }
+            */
+
+            if (wHolder.obj != null)
+            {
+                id = wHolder.obj.dbObj.ID;
+                who = wHolder.obj;
+                if (ConfigLoader.Instance.allRelConditions.ContainsKey(id))
+                    condID = ConfigLoader.Instance.allRelConditions[id];
+            }
         }
         
         MainStates.allVisuals.Add(this);
@@ -61,6 +96,11 @@ public class Vizualo : MonoBehaviour
     {
         if (!ConfigLoader.parseEnded) return;
 
+        if (asHolderCond)
+        {
+            who = wHolder.obj;
+        }
+        
         if (abs && abs.isTask)
         {
 
@@ -132,7 +172,7 @@ public class Vizualo : MonoBehaviour
                 }
             }
 
-            var g = ModelStatistics.instance.CheckCondition(reqs);
+            var g = ModelStatistics.instance.CheckCondition(reqs, who);
             Activate(g);
         }
         else if (asOther)
@@ -156,11 +196,36 @@ public class Vizualo : MonoBehaviour
 
     public void Activate(bool val)
     {
-        if (forOther != null) forOther.SetActive(val);
-        else gameObject.SetActive(val);
+         var ls = Vector3.one;
+         if (!val) ls = Vector3.zero;
+         float cg = 1;
+         if (!val) cg = 0.5f;
+         if (asHolderCond && who == null) cg = 0;
+         
+        if (forOther != null)
+        {
+            if (activateScale) forOther.transform.localScale = ls;
+            else if (halfCanvasGroup) forOther.GetComponent<CanvasGroup>().alpha = cg;
+            else
+                forOther.SetActive(val);
+        }
+        else
+        {
+            if (activateScale) transform.localScale = ls;
+            else if (halfCanvasGroup) c.alpha = cg;
+            else
+                gameObject.SetActive(val);
+        }
         
         if (relButton != null) relButton.interactable = isNot ? !val : val;
 
+        foreach (var v in alsoActive)
+        {
+            if (activateScale) v.transform.localScale = ls;
+            else if (halfCanvasGroup) v.GetComponent<CanvasGroup>().alpha = cg;
+            else
+                v.SetActive(val);
+        }
         //if (val) c.alpha = 1;
         //else c.alpha = 0;
     }

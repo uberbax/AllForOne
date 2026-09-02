@@ -210,7 +210,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24, y: -2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2439063735617283618}
@@ -278,6 +278,9 @@ MonoBehaviour:
     - B
     suffixDigits: 030000000300000003000000
     maxDigits: 4
+    suffixDecimals: 1
+    suffixDecimalChar: .
+    suffixHideZeros: 0
   enableLeftText: 1
   leftText: 
   leftTextSettings:
@@ -653,6 +656,8 @@ MonoBehaviour:
   enablePooling: 0
   poolSize: 50
   disableOnSceneLoad: 1
+  limitActiveInstances: 0
+  maxActiveInstances: 50
   editorLastFont: Basic-Shadow
   position: {x: 0, y: 0, z: 0}
 --- !u!210 &4151511105961450424
@@ -685,6 +690,7 @@ MonoBehaviour:
   texts: []
   fonts: []
   randomColor: 0
+  lowestCooldown: 0
 --- !u!1 &3663411741590475730
 GameObject:
   m_ObjectHideFlags: 0

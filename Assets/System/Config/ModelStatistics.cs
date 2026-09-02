@@ -18,10 +18,60 @@ public partial class ModelStatistics : MonoBehaviour
     //codex_{id}_weak_{id2}         //discovered weakness
     //codex_{id}_res_{id2}          //discovered resistance
     //codex_{id}_immune_{id2}       //discovered immune
+    //codex_{id}_completed
     
     //discovered locations
 
     //
+    public void Codex_UpdateCompleted(string mon)
+    {
+        bool res = true;
+        res = res && Codex_IsMonsterMet(mon);
+        if (!res) return;
+
+        var mm = DatabaseAll.instance.heroes[mon];
+        List<string> all = ModelSet.GetMeItemsAll(DatabaseAll.instance.heroes[mon].drop);
+        for (int i = 0; i < all.Count; i++)
+        {
+            var c = Codex_IsLootMet(mon, all[i]);
+            if (!c) return;
+        }
+        //
+        foreach (var t in MainStates.dmgTypes)
+        {
+            if (!mm.pars.ContainsKey("res_"+t.Key)) continue;
+            var g = mm.pars["res_" + t.Key];
+            if (g < 0)
+            {
+                bool b = Codex_IsWeakMet(mon, t.Key);
+                if (!b) return;
+            }
+            else if (g >= 100)
+            {
+                bool b = Codex_IsImmuneMet(mon, t.Key);
+                if (!b) return;
+            }
+            else if (g > 0)
+            {
+                bool b = Codex_IsResMet(mon, t.Key);
+                if (!b) return;
+            }
+        }
+
+
+        if (res)
+        {
+            SetStatValue("codex_" + mon + "_completed", 1);
+        }
+
+    }
+
+    public bool Codex_IsCompleted(string mon)
+    {
+        var f = GetStatValue("codex_" + mon + "_completed");
+        return f > 0;
+    }
+    
     public bool Codex_IsMonsterMet(string mon)
     {
         var f = GetStatValue("codex_" + mon + "_meet");
@@ -51,6 +101,7 @@ public partial class ModelStatistics : MonoBehaviour
     public void Codex_MetMonster(string mon)
     {
         SetStatValue("codex_" + mon + "_meet", 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_LootMet(string mon, string loot)
     {
@@ -60,18 +111,22 @@ public partial class ModelStatistics : MonoBehaviour
     {
         foreach (var v in loot)
             SetStatValue("codex_" + mon + "_loot_" + v.Key, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_WeakMet(string mon, string weak)
     {
         SetStatValue("codex_" + mon + "_weak_" + weak, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_ResMet(string mon, string res)
     {
         SetStatValue("codex_" + mon + "_res_" + res, 1);
+        Codex_UpdateCompleted(mon);
     }
     public void Codex_ImmuneMet(string mon, string immune)
     {
         SetStatValue("codex_" + mon + "_immune_" + immune, 1);
+        Codex_UpdateCompleted(mon);
     }
     //hhh
     
@@ -501,7 +556,7 @@ public partial class ModelStatistics : MonoBehaviour
 
     }
 
-    public bool IsReady(List<UnoReq> reqs, int startStat)
+    public bool IsReady(List<UnoReq> reqs, int startStat, RObj who)
     {
         bool q = true;
                 foreach (var g in reqs)
@@ -573,7 +628,10 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_item)
                     {
-                        var aa = MainStates.instance.all["main_player"].inventory.Sum(x =>
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        var aa = hh.inventory.Sum(x =>
                         {
                             if (x.dbObj.ID == g.what) return x.GetPar("amount");
                             else return 0;
@@ -587,8 +645,39 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_par)
                     {
-                        var aa = MainStates.instance.all["main_player"].GetPar(g.what);
-                        var aa1 = int.Parse(g.val) + startStat;
+                        string vv = g.what;
+                        int vv1 = 0;
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        if (g.what.IndexOf("owner.") >= 0)
+                        {
+                            if (hh != null && hh.owner != null)
+                            {
+                                vv = g.what.Substring(6);
+                                hh = who.owner;
+                            }
+                        }
+                        else
+                        {
+                            
+                        }
+                        
+                        if (g.val.IndexOf("owner.") >= 0)
+                        {
+                            if (hh != null && hh.owner != null)
+                            {
+                                string r = g.val.Substring(6);
+                                vv1 = (int)hh.owner.GetPar(r);
+                            }
+                        }
+                        else
+                        {
+                            vv1 = int.Parse(g.val);
+                        }
+                        
+                        var aa = hh.GetPar(vv);
+                        var aa1 = vv1 + startStat;
                         if (g.compar == "==" && aa != aa1) q = false;
                         if (g.compar == ">=" && aa < aa1) q = false;
                         if (g.compar == ">" && aa <= aa1) q = false;
@@ -597,7 +686,10 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_skill)
                     {
-                        var aas = MainStates.instance.all["main_player"].buffs.Find(x => x.dbObj.ID == g.what);
+                        RObj hh = MainStates.instance.all["main_player"];
+                        if (who != null) hh = who;
+                        
+                        var aas = hh.buffs.Find(x => x.dbObj.ID == g.what);
                         int aa = 0;
                         if (aas != null) aa = (int)aas.GetPar("level");
                         
@@ -750,7 +842,7 @@ public partial class ModelStatistics : MonoBehaviour
             {
                 //its not started
                 bool q = true;
-                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat);
+                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat, null);
                 
                 if (q)
                 {
@@ -860,13 +952,13 @@ public partial class ModelStatistics : MonoBehaviour
 
     public bool CheckCondition(UnoCond u)
     {
-        bool b = IsReady(u.reqs, 0);
+        bool b = IsReady(u.reqs, 0, null);
         return b;
     }
 
-    public bool CheckCondition(List<UnoReq> u)
+    public bool CheckCondition(List<UnoReq> u, RObj who)
     {
-        bool b = IsReady(u, 0);
+        bool b = IsReady(u, 0, who);
         return b;
     }
     public void GetMeProgress(ElTasko v, out float me, out float all)
@@ -1117,6 +1209,7 @@ public class UnoReq
     public string val;
     // = < > <= >=
     public string compar;
+    public string meta = "";
 }
 
 [System.Serializable]

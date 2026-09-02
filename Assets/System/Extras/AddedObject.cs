@@ -33,6 +33,8 @@ public class AddedObject : MonoBehaviour
 
     public GameObject visMain;
     
+    //
+    public List<Bon> extraMonsters = new List<Bon>();
     void Start()
     {
         if (!ConfigLoader.parseEnded || !MainStates.instance.all.ContainsKey("main_player"))
@@ -44,7 +46,6 @@ public class AddedObject : MonoBehaviour
         GameObject nn = gameObject;
         if (recreateViz)
         {
-            Debug.Log("RECRE " + id);
             nn = Instantiate(ResourceHolder.instance.GetGameobject(id));
             nn.transform.position = transform.position;
             nn.transform.parent = gameObject.transform.parent;
@@ -118,6 +119,10 @@ public class AddedObject : MonoBehaviour
             r.tags.Add("neutral");
         }
         
+        MainStates.instance.ApplyMonsterExtraParams(r,r);
+
+        r.extraMonsters = extraMonsters;
+
     }
 
     

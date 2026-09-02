@@ -12,6 +12,13 @@ public class XDinfo : ComponentBehavior
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
+        if (transform.parent.name.IndexOf("bird_") >= 0)
+        {
+            var aa = gameObject.AddComponent<CircleCollider2D>();
+            aa.radius = 0.5f;
+            aa.isTrigger = true;
+            aa.offset = new Vector2(0, 0.6f);
+        }
     }
 
     void Update()

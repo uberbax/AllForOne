@@ -76,6 +76,7 @@ public class DatabaseAll : MonoBehaviour
             }
             
             o.pars.Add("instant", v.INSTANT);
+            o.pars.Add("subtype", MainStates.subtypes["skill"]);
             
             //player ? eney, all
             if (v.TAG_APPLY == "enemy") o.pars.Add("target",0);
@@ -181,6 +182,7 @@ public class DatabaseAll : MonoBehaviour
             o.useSkill = v.useSkill;
             
             o.pars.Add("level", 1);
+            o.pars.Add("adorn_count", v.adornCnt);
             
             if (v.SLOT == "none")
                 o.pars.Add("max_stack", 1000000);
@@ -208,6 +210,7 @@ public class DatabaseAll : MonoBehaviour
             var o = new Obj();
             o.ID = v.monsterName.ToLower();
             o.pars.Add("attack", v.attack);
+            o.pars.Add("lvl", v.lvl);
             o.pars.Add("magic", v.magic);
             
             o.pars.Add("health", v.health);
@@ -217,7 +220,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("def", v.armor);
             o.pars.Add("res", v.magicResist);
             o.pars.Add("speed", v.speed);
-            o.pars.Add("max_stack", 1);
+            o.pars.Add("max_stack", v.maxStack);
             o.pars.Add("exp", 0);
             o.pars.Add("slot", -1);
             o.pars.Add("used", v.used);
@@ -273,6 +276,7 @@ public class DatabaseAll : MonoBehaviour
             
             o.parsStr.Add("found_in", v.foundIn);
             o.parsStr.Add("encounter", v.encounter);
+            o.parsStr.Add("codex_reward", v.codexReward);
             
         }
 
@@ -303,7 +307,7 @@ public class DatabaseAll : MonoBehaviour
             return DatabaseAll.instance.buildings[id];
     }
 
-    public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false)
+    public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false, int rarity = 0)
     {
         string other = "";
         if (id.IndexOf("shard_") >= 0)
@@ -311,7 +315,7 @@ public class DatabaseAll : MonoBehaviour
             other = id.Substring(6);
             id = "shard";
         }
-        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other));
+        var r = new RObj(id, amount, 1, withEmpty, Vector3.zero, withVisual, GetItemType(id, other), rarity: rarity);
         r.shardID = other;
         return r;
     }
@@ -335,7 +339,8 @@ public class DatabaseAll : MonoBehaviour
         
         return r;
     }
-    public RObj CreateAny(string id, bool isEnemy, int amount, GameObject g, string overID = "", GameObject asMainWith = null, bool withVisual = true, bool withEmpty = true, int level = 1)
+    public RObj CreateAny(string id, bool isEnemy, int amount, GameObject g, string overID = "", GameObject asMainWith = null, bool withVisual = true, bool withEmpty = true, int level = 1,
+        int rarity = 0)
     {
         if (heroes.ContainsKey(id))
         {
@@ -344,7 +349,7 @@ public class DatabaseAll : MonoBehaviour
         }
         else if (items.ContainsKey(id))
         {
-            var res = new RObj(id, amount, level, withEmpty, g.transform.position, withVisual, ItemType.item, overVis:g, overID:overID, asMainViz:asMainWith);
+            var res = new RObj(id, amount, level, withEmpty, g.transform.position, withVisual, ItemType.item, overVis:g, overID:overID, asMainViz:asMainWith, rarity:rarity);
             return res;
         }
         else if (buildings.ContainsKey(id))

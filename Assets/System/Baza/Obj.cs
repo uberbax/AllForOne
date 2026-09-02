@@ -78,6 +78,7 @@ public class RObj
     
     public Dictionary<string, float> upgradePars = new Dictionary<string, float>();
     public Dictionary<string, float> curPars = new Dictionary<string, float>();
+    public Dictionary<string, float> dltPars = new Dictionary<string, float>();
 
     //?????
     [SerializeReference]
@@ -98,6 +99,9 @@ public class RObj
     public RObj usedBy;
     [NonSerialized]
     public RObj owner;
+    [NonSerialized]
+    //thats for adorns
+    public RObj owner2;
     
     [NonSerialized]
     public RObj attachedOther;
@@ -169,8 +173,13 @@ public class RObj
     
     public List<Transform> attachables = new List<Transform>();
     
+    public List<RObj> adorments = new List<RObj>();
+    
     [NonSerialized]
     public List<string> extraBuffs = new List<string>();
+    
+    public List<Bon> extraMonsters = new List<Bon>();
+    
     public bool IsIntersected(int index, int sizeX, int sizeY, RObj who)
     {
         int szx = -1;
@@ -351,12 +360,13 @@ public class RObj
         foreach (var v in actSkills)
         {
             v.upgradePars["cd"] = 0;
+            v.curPars["cd"] = 0;
         }
     }
 
     public static List<string> scalablePars = new List<string>
     {
-        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc","magic","magic_prc"
+        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc","magic","magic_prc","res"
     };
         
     
@@ -377,6 +387,8 @@ public class RObj
         {
             var lvl = GetPar("level");
             if (lvl == 0) lvl = 1;
+            var rar = GetPar("rarity");
+            //if (rar == 0) rar = 1;
             
             foreach (var v in dbObj.pars)
             {
@@ -384,7 +396,7 @@ public class RObj
                 float vv = v.Value;
                 if (scalablePars.Contains(v.Key))
                 {
-                    vv = vv * MathF.Pow(1.1f, lvl - 1);
+                    vv = vv * MathF.Pow(1.1f, lvl + rar - 1);
                 }
                 AddFinal(v.Key, vv);
             }
@@ -405,6 +417,36 @@ public class RObj
             
             //thwbbb
             if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            foreach (var a in  v.curPars)//v.dbObj.pars)
+            {
+                if (a.Key == "amount") continue;
+                if (a.Key == "rarity") continue;
+                if (a.Key == "level") continue;
+                if (a.Key == "exp") continue;
+                if (a.Key == "max_stack") continue;
+                if (a.Key == "subtype") continue;
+                if (a.Key == "adorn_count") continue;
+                
+                
+                AddFinal(a.Key, v.GetPar(a.Key));
+            }
+        }
+        
+        //
+        foreach (var v in adorments)
+        {
+            if (!v.upgradePars.ContainsKey("used_slot"))
+            {
+                v.upgradePars.Add("used_slot", -1);    
+            }
+            
+            //thwbbb
+            //if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            if (v.dbObj == null)
+            {
+                int u = 1;
+            }
+            
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
@@ -734,6 +776,14 @@ public class RObj
             y.inventory[i].dbObj = inventory[i].dbObj;
             y.inventory[i].owner = y;
         }
+        
+        for (int i = 0; i < y.adorments.Count; i++)
+        {
+            y.adorments[i].it = adorments[i].it;
+            y.adorments[i].dbObj = adorments[i].dbObj;
+            y.adorments[i].owner = y;//?
+            y.adorments[i].owner2 = y;
+        }
 
         y.dynamic = dynamic;
         
@@ -757,7 +807,8 @@ public class RObj
         }
     }
     
-    public RObj(string id, int amount, int level, bool withEmpty, Vector3 position, bool withVisual, ItemType tp, string overID = "", RObj own = null, bool isEnemy = false, GameObject overVis = null, GameObject asMainViz = null)
+    public RObj(string id, int amount, int level, bool withEmpty, Vector3 position, bool withVisual, ItemType tp, string overID = "", RObj own = null, 
+        bool isEnemy = false, GameObject overVis = null, GameObject asMainViz = null, int rarity = 0)
     {
         owner = own;
         it = tp;
@@ -783,6 +834,7 @@ public class RObj
         upgradePars.Add("registered_mana", 0);
         upgradePars.Add("used_slot", -1);
         upgradePars.Add("exp", 0);
+        upgradePars.Add("rarity", rarity);
         
         if (overID == "")
         {
@@ -1007,6 +1059,7 @@ public class Bon
     //also in addWhat it is a param
     public string Val2 = "";
     public int Val3 = 0;
+    public int ValLvl = 0;
 }
 
 [System.Serializable]

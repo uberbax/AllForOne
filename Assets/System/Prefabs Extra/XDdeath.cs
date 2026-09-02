@@ -14,6 +14,11 @@ public class XDdeath : ComponentBehavior
 
     // Update is called once per frame
     private bool done = false;
+
+    public static float fadeAfter = 0;
+    
+    public static bool contributeEach = false;
+    
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
@@ -31,7 +36,13 @@ public class XDdeath : ComponentBehavior
         g = mon.visMain.transform.Find("shadow (1)");
         if (g != null) Destroy(g.gameObject);
         
-
+        //here goes the drop
+        if (contributeEach)
+        {
+            if (!mon.tags.Contains("player"))
+                MainStates.instance.HandleMonsterKilled(mon);
+        }
+        
         if (mon.visuals.ContainsKey("drop"))
         {
             mon.visuals["drop"].GetComponent<XDdrop>().deathFrom = mon.lastDmgFrom;
@@ -85,12 +96,24 @@ public class XDdeath : ComponentBehavior
         }
         else
         {
-            UtilsControl.Instance.ApplyCurve(mon.visuals["vis_main"].transform, AnimationCurve.Linear(0,1,1,0), UtilsControl.CurveType.Color,
-                () =>
+            
+            FunctionTimer.Create(() =>
                 {
-                    Destroy(mon.main);
-                    MainStates.instance.all.Remove(mon.RID);
-                }, 1, 1, 1, 0, Color.clear);            
+                    //?
+                    var gh = mon.visuals["vis_main"].transform;
+                    if (gh.GetComponent<SpriteRenderer>() == null)
+                        gh = gh.GetChild(0);
+                    
+                    UtilsControl.Instance.ApplyCurve(gh,
+                        AnimationCurve.Linear(0, 1, 1, 0), UtilsControl.CurveType.Color,
+                        () =>
+                        {
+                            Destroy(mon.main);
+                            MainStates.instance.all.Remove(mon.RID);
+                        }, 1, 1, 1, 0, Color.clear);
+                },
+                fadeAfter
+            );
         }
 
         if (ConfigLoader.GetMetaParamValue("blood_death") > 0 && !frac)
