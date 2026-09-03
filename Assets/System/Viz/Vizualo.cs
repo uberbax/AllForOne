@@ -166,7 +166,8 @@ public class Vizualo : MonoBehaviour
         {
             foreach (var req in reqs)
             {
-                if (req.what.IndexOf("{") >= 0)
+                //? thwbbb
+                if (req.what.IndexOf("{") >= 0 && id != "")
                 {
                     req.what = id;
                 }

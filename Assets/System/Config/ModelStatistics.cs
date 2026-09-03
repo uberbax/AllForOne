@@ -520,6 +520,20 @@ public partial class ModelStatistics : MonoBehaviour
         }
         UpdateAllTasks();
     }
+    
+    public void SetStatValueStr(string val, string kk)
+    {
+        var gg = MainStates.instance.playerData.playerStats.Find(x => x.Key == val);
+        if (gg == null)
+        {
+            MainStates.instance.playerData.playerStats.Add(new Bon{Key = val, Value = 0, Val2 = kk});
+        }
+        else
+        {
+            gg.Val2 = kk;
+        }
+        UpdateAllTasks();
+    }
 
     public void IncreaseStatValue(string val, int kk)
     {
@@ -586,15 +600,20 @@ public partial class ModelStatistics : MonoBehaviour
 
     public string GetStat(string stat, RObj who)
     {
+        //return stat;
+        string stat1 = stat;
+        if (who == null) return stat1;
         if (stat.IndexOf("{id}") >= 0)
         {
-            stat = stat.Replace("{id}", who.RID);
+            
+            stat1 = stat.Replace("{id}", who.RID);
         }
         if (stat.IndexOf("{db_id}") >= 0)
         {
-            stat = stat.Replace("{db_id}", who.dbObj.ID);
+            if (who.dbObj == null) return stat1;
+            stat1 = stat.Replace("{db_id}", who.dbObj.ID);
         }
-        return stat;
+        return stat1;
     }
     
     public bool IsReady(List<UnoReq> reqs, int startStat, RObj who)
@@ -629,7 +648,7 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_stat)
                     {
-                        var aa = GetStatValue(g.what);
+                        var aa = GetStatValue(GetStat(g.what, who));
                         var aa1 = int.Parse(g.val);
                         if (g.compar == "==" && aa != aa1) q = false;
                         if (g.compar == ">=" && aa < aa1) q = false;

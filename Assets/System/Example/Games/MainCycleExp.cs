@@ -225,10 +225,6 @@ public class MainCycleExp : MonoBehaviour
     {
         Debug.Log("haha");
         
-        ModelStatistics.instance.SetStatValue("unlocked_hero_warrior", 1);
-        ModelStatistics.instance.SetStatValue("unlocked_hero_thief", 1);
-        ModelStatistics.instance.SetStatValue("unlocked_hero_mage", 1);
-        
         //
         main = new RObj("hero_warrior", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
         MainStates.instance.ApplyPlayerConfigParams(main);
@@ -335,6 +331,11 @@ public class MainCycleExp : MonoBehaviour
             x.META_TAGS.Add("sword");
         };
         //
+        
+        ModelStatistics.instance.SetStatValue("unlocked_hero_warrior", 1);
+        ModelStatistics.instance.SetStatValue("unlocked_hero_thief", 1);
+        ModelStatistics.instance.SetStatValue("unlocked_hero_mage", 1);
+        ModelStatistics.instance.SetStatValueStr("current_hero", "hero_warrior");
     }
 
     public void BattleEnded(ArgPass obj)
