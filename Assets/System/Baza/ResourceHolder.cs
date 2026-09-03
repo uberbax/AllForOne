@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class ResourceHolder : MonoBehaviour
     public static ResourceHolder instance;
 
     public StringObjectDictionary monsters;
+
     public StringSpriteDictionary misc;
     public StringSpriteDictionary avas;
     public StringSpriteDictionary skills;
@@ -42,6 +44,11 @@ public class ResourceHolder : MonoBehaviour
 
     public StringObjectDictionary skillsWorld;
     public StringAudioclipDictionary sounds;
+    
+    [Header("HERO CLASSES")]
+    public StringObjectDictionary heroClasses;   
+    public StringSpriteDictionary heroClassesAvas;
+    
     public Sprite GetDiaAva(string what)
     {
         if (what == "") return null;
@@ -81,6 +88,8 @@ public class ResourceHolder : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        monsters.AddRange(heroClasses);
+        avas.AddRange(heroClassesAvas);
     }
     
     public SkillEtc GetMeSkillEtc(Obj who, string sklName)

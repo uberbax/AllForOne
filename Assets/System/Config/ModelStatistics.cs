@@ -401,6 +401,30 @@ public partial class ModelStatistics : MonoBehaviour
         return res;
 
     }
+    
+    public string GetStatStrValue(string val, bool withAdd = true)
+    {
+        var gg = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key, val));
+        string res = "";
+        if (gg == null)
+        {
+            res = "";
+        }
+        else
+        {
+            res = gg.Val2;
+        }
+
+        if (withAdd)
+        {
+            var gg1 = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key,"add_" + val));
+            if (gg1 != null)
+                res += gg1.Value;
+        }
+
+        return res;
+
+    }
 
     public string GetTaskByReq(Bon req)
     {
@@ -431,6 +455,10 @@ public partial class ModelStatistics : MonoBehaviour
             return "get_" + val;
         }
         else if (tp == TaskType.have_stat)
+        {
+            return val;
+        }
+        else if (tp == TaskType.have_stat_str)
         {
             return val;
         }
@@ -556,6 +584,19 @@ public partial class ModelStatistics : MonoBehaviour
 
     }
 
+    public string GetStat(string stat, RObj who)
+    {
+        if (stat.IndexOf("{id}") >= 0)
+        {
+            stat = stat.Replace("{id}", who.RID);
+        }
+        if (stat.IndexOf("{db_id}") >= 0)
+        {
+            stat = stat.Replace("{db_id}", who.dbObj.ID);
+        }
+        return stat;
+    }
+    
     public bool IsReady(List<UnoReq> reqs, int startStat, RObj who)
     {
         bool q = true;
@@ -595,6 +636,13 @@ public partial class ModelStatistics : MonoBehaviour
                         if (g.compar == ">" && aa <= aa1) q = false;
                         if (g.compar == "<=" && aa > aa1) q = false;                        
                         if (g.compar == "<" && aa >= aa1) q = false;
+                    }
+                    else if (g.typo == TaskType.have_stat_str)
+                    {
+                        var aa = GetStatStrValue(GetStat(g.what, who));
+                        var aa1 = GetStat(g.val, who);
+                        if (g.compar == "==" && aa != aa1) q = false;
+                        if (g.compar == "!=" && aa == aa1) q = false;
                     }
                     else if (g.typo == TaskType.have_dyn)
                     {
@@ -763,6 +811,13 @@ public partial class ModelStatistics : MonoBehaviour
                         if (g.compar == "<=" && aa > aa1) q = false;                        
                         if (g.compar == "<" && aa >= aa1) q = false;
                     }
+                    else if (g.typo == TaskType.have_stat_str)
+                    {
+                        var aa = GetStatStrValue(g.what);
+                        var aa1 = g.val;
+                        if (g.compar == "==" && aa != aa1) q = false;
+                        if (g.compar == "!=" && aa == aa1) q = false;
+                    }
                     else if (g.typo == TaskType.kill)
                     {
                         var aa = GetStatValue("kill_" + g.what);
@@ -906,6 +961,13 @@ public partial class ModelStatistics : MonoBehaviour
                                 if (g.compar == "<=" && aa > aa1) q = false;                        
                                 if (g.compar == "<" && aa >= aa1) q = false;
                             }
+                            else if (g.typo == TaskType.have_stat_str)
+                            {
+                                var aa = GetStatStrValue(g.what);
+                                var aa1 = g.val;
+                                if (g.compar == "==" && aa != aa1) q = false;
+                                if (g.compar == "!=" && aa == aa1) q = false;
+                            }
                             else if (g.typo == TaskType.kill)
                             {
                                 var aa = GetStatValue(g.what);
@@ -1002,6 +1064,16 @@ public partial class ModelStatistics : MonoBehaviour
                         var aa1 = int.Parse(g.val) + tt.startStat;
                         me = aa - tt.startStat;
                         all = int.Parse(g.val);
+                    }
+                    else if (g.typo == TaskType.have_stat_str)
+                    {
+                        var aa = GetStatStrValue(g.what);
+                        var aa1 = g.val;
+                        me = 1;
+                        all = 1;
+                        if (g.compar == "==" && aa != aa1) me = 0;
+                        if (g.compar == "!=" && aa == aa1) me = 0;
+
                     }
                     else if (g.typo == TaskType.kill)
                     {
@@ -1138,6 +1210,7 @@ public enum TaskType
     gather,
     complete_other,
     have_stat,
+    have_stat_str,
     talk,
     spend,
     have_item,

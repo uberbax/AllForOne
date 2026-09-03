@@ -16,6 +16,7 @@ public class ObjHolder : MonoBehaviour, IReceive
     public bool asMain = false;
     public string asCurObj = "";
     public string asObj = "";
+    public string asDBObj = "";
     
     
     public ObjHolder redirect;
@@ -78,6 +79,12 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             if (!MainStates.instance.all.ContainsKey(asObj)) return;
             obj = MainStates.instance.all[asObj];
+        }
+        
+        if (asDBObj != "" && obj == null)
+        {
+            if (!DatabaseAll.instance.heroes.ContainsKey(asDBObj)) return;
+            obj = DatabaseAll.instance.CreateAny(asDBObj, false, 1, new GameObject());
         }
         
         if (asMain)

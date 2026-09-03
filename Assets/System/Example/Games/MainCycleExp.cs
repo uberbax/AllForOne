@@ -127,7 +127,7 @@ public class MainCycleExp : MonoBehaviour
 
         var lvl = MainStates.instance.mainPlayer.GetPar("level");
         
-        secondMain = new RObj("hero", 1, (int)lvl, true, Vector3.zero, true, ItemType.monster, "second_main");
+        secondMain = new RObj(MainStates.instance.mainPlayer.dbObj.ID, 1, (int)lvl, true, Vector3.zero, true, ItemType.monster, "second_main");
         //man, we need to clone it
         
         MainStates.instance.ApplyPlayerConfigParams(secondMain);
@@ -224,8 +224,13 @@ public class MainCycleExp : MonoBehaviour
     private void B(ArgPass obj)
     {
         Debug.Log("haha");
+        
+        ModelStatistics.instance.SetStatValue("unlocked_hero_warrior", 1);
+        ModelStatistics.instance.SetStatValue("unlocked_hero_thief", 1);
+        ModelStatistics.instance.SetStatValue("unlocked_hero_mage", 1);
+        
         //
-        main = new RObj("hero", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+        main = new RObj("hero_warrior", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
         MainStates.instance.ApplyPlayerConfigParams(main);
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
