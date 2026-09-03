@@ -61,6 +61,8 @@ public class DatabaseAll : MonoBehaviour
             if (v.MANA != 0) o.pars.Add("mana", v.MANA);
             if (v.MAX_MANA != 0) o.pars.Add("max_mana", v.MAX_MANA);
             if (v.DEF != 0) o.pars.Add("def", v.DEF);
+            if (v.EXTRA_TURN != 0) o.pars.Add("extra_turn", v.EXTRA_TURN);
+            
             if (v.RES != 0) o.pars.Add("res", v.RES);
             if (v.DEF_PRC != 0) o.pars.Add("def_prc", v.DEF_PRC);
             if (v.RES_PRC != 0) o.pars.Add("res_prc", v.RES_PRC);
@@ -257,6 +259,8 @@ public class DatabaseAll : MonoBehaviour
             o.labelis.Add(v.classes[0]);
             o.skills.Add(v.skillBasic);
             o.skills.AddRange(v.skillOthers);
+            o.traits.AddRange(v.skillTraits);
+            
             o.pars.Add("level", 1);
             
             o.sizeX = v.size / 10;

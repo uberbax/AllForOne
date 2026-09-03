@@ -165,6 +165,14 @@ public class MainCycleExp : MonoBehaviour
             MainStates.instance.AcquireAnySkill(secondMain, main.inventory[i].dbObj.ID);
         }
         
+        //for some reason its not ?
+        /*
+        for (int i = 0; i < main.buffs.Count; i++)
+        {
+            MainStates.instance.AcquireAnySkill(secondMain, main.buffs[i].dbObj.ID, true);
+        }
+        */
+        
         for (int i = 0; i < main.inventory.Count; i++)
         {
             if (main.inventory[i].it != ItemType.item) continue;

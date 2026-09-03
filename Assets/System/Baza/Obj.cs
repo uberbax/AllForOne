@@ -42,6 +42,9 @@ public class Obj
     public List<string> labelis = new List<string>();
     [NonSerialized]
     public List<string> skills = new List<string>();
+    [NonSerialized]
+    //pas skills ?
+    public List<string> traits = new List<string>();
     
     public string drop = "";
     public string onDeath = "";
@@ -851,6 +854,12 @@ public class RObj
             {
                 var g = DatabaseAll.instance.CreateProjectile(this, v, Vector3.zero, false, false);
                 actSkills.Add(g);
+            }
+            
+            foreach (var v in dbObj.traits)
+            {
+                var g = DatabaseAll.instance.CreateProjectile(this, v, Vector3.zero, false, false);
+                buffs.Add(g);
             }
             
             if (isEnemy)

@@ -147606,6 +147606,7 @@ MonoBehaviour:
     - ice_arrow
     - earth_arrow
     - dark_arrow
+    - basic_harm
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -147647,6 +147648,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 1fbb195c49f194e31a15d81f967970f5, type: 3}
     - {fileID: 21300000, guid: 3c59a548470ee4e9f984ddb47294e449, type: 3}
     - {fileID: 21300000, guid: 367034375319c45c9a159ac59ec78091, type: 3}
+    - {fileID: 21300126, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   pars:
     m_keys:
     - health
@@ -241097,7 +241099,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1932893069}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1162401731}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1932893069
 MonoBehaviour:
   m_ObjectHideFlags: 0

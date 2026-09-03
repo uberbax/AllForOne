@@ -671,9 +671,9 @@ public class MainStates : MonoBehaviour
         return f;
     }
 
-    public void AcquireAnySkill(RObj who, string sklName)
+    public void AcquireAnySkill(RObj who, string sklName, bool passive = false)
     {
-        if (sklName.IndexOf("pass_") >= 0)
+        if (sklName.IndexOf("pass_") >= 0 || passive)
         {
             AcquirePasSkill(who, sklName);
         }
@@ -2964,6 +2964,22 @@ public class MainStates : MonoBehaviour
 
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
+                
+                //case of extra turn
+                var go = combats[i].GetPar("extra_turn");
+                if (go > 0)
+                {
+                    var roll = Random.Range(0, 100);
+                    if (roll < go)
+                    {
+                        //added log for extra turn
+                        //this.awaitUnits[combats[i].RID] = 0;
+                        combats[i].SetPar("can_cast", 1);
+                        i--;
+                        continue;
+                    }
+                }
+                
                 
                 if (curComateers.Count > 0)
                 {

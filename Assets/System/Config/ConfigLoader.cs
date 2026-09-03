@@ -816,6 +816,7 @@ public class ConfigLoader : MonoBehaviour
         {
             var mm = new FormatHero();
             var tt = str[i].Split("\t", StringSplitOptions.RemoveEmptyEntries);
+            if (tt.Length < 1 || tt[0].IndexOf("----") >=0) continue;
             for (int j = 0; j < tt.Length; j++)
             {
                 if (tt[j] == "x") continue;
@@ -958,6 +959,7 @@ public class ConfigLoader : MonoBehaviour
         {
             var mm = new FormatSkill();
             var tt = str[i].Split("\t", StringSplitOptions.None);
+            if (tt.Length < 1 || tt[0].IndexOf("----") >=0) continue;
             for (int j = 0; j < tt.Length; j++)
             {
                 if (tt[j] == "x") continue;
@@ -973,6 +975,9 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "HEALTH_PRC") mm.HEALTH_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF") mm.DEF = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF_PRC") mm.DEF_PRC =float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
+                else if (columns[j].ToUpper() == "EXTRA_TURN") mm.EXTRA_TURN =float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
                 else if (columns[j].ToUpper() == "RES") mm.RES = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "RES_PRC") mm.RES_PRC =float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "MAX_HEALTH") mm.MAX_HEALTH = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -1118,6 +1123,7 @@ public class ConfigLoader : MonoBehaviour
         {
             var mm = new FormatArtefact();
             var tt = str[i].Split("\t", StringSplitOptions.RemoveEmptyEntries);
+            if (tt.Length < 1 || tt[0].IndexOf("----") >=0) continue;
             for (int j = 0; j < tt.Length; j++)
             {
                 if (tt[j]== "x") continue;
@@ -2801,6 +2807,8 @@ public class FormatSkill
     public float HEALTH_PRC;
     public float MAX_HEALTH_PRC;
     public float DEF_PRC;
+    public float EXTRA_TURN;
+    
     public float RES_PRC;
     public float MANA;
     public float MAX_MANA;
