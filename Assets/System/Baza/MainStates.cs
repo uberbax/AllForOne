@@ -2965,6 +2965,19 @@ public class MainStates : MonoBehaviour
                 yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
                 
+                //collat damage
+                //execute skill wit over pars ?
+                var cl = combats[i].GetPar("col_chance");
+                if (cl > 0)
+                {
+                    var roll = Random.Range(0, 100);
+                    if (roll < cl)
+                    {
+                        SkillExecutor.instance.ExecuteSkill(combats[i], "col_strike", null);
+                    }
+                }
+                
+                
                 //case of extra turn
                 var go = combats[i].GetPar("extra_turn");
                 if (go > 0)

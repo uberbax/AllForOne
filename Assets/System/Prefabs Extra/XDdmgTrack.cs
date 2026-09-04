@@ -13,8 +13,8 @@ public class XDdmgTrack : ComponentBehavior
     private Transform head;
     
     //
-    private bool trackMana = false;
-    private bool trackShield = false;
+    private bool trackMana = true;
+    private bool trackShield = true;
     
     private float prevMp = -1;
     private float prevShld = -1;
@@ -23,6 +23,14 @@ public class XDdmgTrack : ComponentBehavior
     {
         mon = GetComponentInParent<ObjHolder>().obj;
         head = mon.visMain.transform.Find("head");
+    }
+    
+    public void AfterSet(string par)
+    {
+
+        if (pars.ContainsKey("mana"))
+            trackMana = false;
+
     }
 
     // Update is called once per frame
@@ -78,14 +86,17 @@ public class XDdmgTrack : ComponentBehavior
 
         prevHp = c;
         //
-        
-        if (cm != prevMp && prevMp != -1)
-        {
-            var dlt = cm - prevMp;
-            DamageNumber newDamageNumber = UtilsControl.Instance.prefabMana.Spawn(where, dlt);
 
+        if (trackMana)
+        {
+            if (cm != prevMp && prevMp != -1)
+            {
+                var dlt = cm - prevMp;
+                DamageNumber newDamageNumber = UtilsControl.Instance.prefabMana.Spawn(where, dlt);
+
+            }
         }
-        
+
         prevMp = cm;
         //
         

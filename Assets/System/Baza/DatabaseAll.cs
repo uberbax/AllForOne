@@ -140,6 +140,11 @@ public class DatabaseAll : MonoBehaviour
             o.buffsApplied = v.buffApply;
             o.extraPars = v.PARS;
             o.labelis = v.affected;
+
+            foreach (var b in v.EXTRA_PARS)
+            {
+                o.pars.Add(b.Key, b.Value);
+            }
             
             o.pars.Add("slot", -1);
 

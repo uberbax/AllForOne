@@ -1069,6 +1069,17 @@ public class ConfigLoader : MonoBehaviour
                         mm.PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
+                else if (columns[j].ToUpper() == "EXTRA_PARS")
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.PARS = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
                 else if (columns[j].ToUpper() == "PRICE")
                 {
                     var yh = tt[j].Split("#");
@@ -2866,6 +2877,8 @@ public class FormatSkill
     public string SECOND = "";
     
     public List<Bon> PARS = new List<Bon>();
+    public List<Bon> EXTRA_PARS = new List<Bon>();
+    
     public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
     

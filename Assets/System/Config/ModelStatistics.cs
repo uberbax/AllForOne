@@ -1229,7 +1229,7 @@ public enum TaskType
     gather,
     complete_other,
     have_stat,
-    have_stat_str,
+
     talk,
     spend,
     have_item,
@@ -1238,7 +1238,9 @@ public enum TaskType
     have_skill,
     have_dyn,
     
-    have_obj
+    have_obj,
+    
+    have_stat_str,    
 }
 
 

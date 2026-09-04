@@ -245,8 +245,8 @@ public class MainCycleExp : MonoBehaviour
         var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
         MainStates.instance.Equip(main, skl, 50);
 
-        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_buff_atk", Value = 1 } });
-        skl = main.inventory.Find(x => x.dbObj.ID == "basic_buff_atk");
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_harm", Value = 1 } });
+        skl = main.inventory.Find(x => x.dbObj.ID == "basic_harm");
         MainStates.instance.Equip(main, skl, 51);
 
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
@@ -289,7 +289,7 @@ public class MainCycleExp : MonoBehaviour
         {
             ("hp", ""), ("buff", ""), ("shadow",""),
             ("drop", ""), ("ward", "d3:0.3"), ("status",""),
-            ("select","in_battle:1")
+            ("select","in_battle:1"), ("dmg_track", "mana:0")
         };
         MainStates.inBattleScale = 2;
         

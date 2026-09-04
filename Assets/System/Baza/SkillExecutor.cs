@@ -143,7 +143,7 @@ public class SkillExecutor : MonoBehaviour
         return new List<RObj>();
     }
 
-    public ExecReso ExecuteSkill(RObj who, string skl, RObj target)
+    public ExecReso ExecuteSkill(RObj who, string skl, RObj target, Dictionary<string, float> addPars = null)
     {
         var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false); 
         return ExecuteSkill(who, h0, target);
