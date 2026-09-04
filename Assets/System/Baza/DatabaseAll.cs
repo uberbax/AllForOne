@@ -138,6 +138,9 @@ public class DatabaseAll : MonoBehaviour
             o.spawn = v.spawn;
 
             o.buffsApplied = v.buffApply;
+            o.alsoCast = v.alsoCast;
+            
+            
             o.extraPars = v.PARS;
             o.labelis = v.affected;
 

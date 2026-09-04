@@ -249,9 +249,13 @@ public class MainCycleExp : MonoBehaviour
         skl = main.inventory.Find(x => x.dbObj.ID == "basic_harm");
         MainStates.instance.Equip(main, skl, 51);
 
-        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
-        skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
+        MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "crit_strike", Value = 1 } });
+        skl = main.inventory.Find(x => x.dbObj.ID == "crit_strike");
         MainStates.instance.Equip(main, skl, 52);
+        
+        //MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
+        //skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
+        //MainStates.instance.Equip(main, skl, 52);
 
         //
 

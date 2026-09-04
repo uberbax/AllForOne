@@ -2422,13 +2422,14 @@ public class MainStates : MonoBehaviour
         //self shield or 
         
         a.ChangePar("shield", sh);
-        var crt = skl.GetPar("crit_chance");
+        var crt = skl.owner.GetPar("crit_chance");
+        
         var rl = Random.Range(0, 1f);
         bool wasCrit = false;
         if (rl < crt)
         {
             wasCrit = true;
-            atk *= (1 + skl.GetPar("crit_dmg"));
+            atk *= (1 + 0.5f + skl.owner.GetPar("crit_dmg"));
         }
 
         if (sh > 0 && a.RID == "main_player")
@@ -2617,6 +2618,13 @@ public class MainStates : MonoBehaviour
                 DealHeal(skl.owner, vv);
             }
             
+        }
+
+
+        var gk = skl.dbObj.alsoCast;
+        foreach (var l0 in gk)
+        {
+            SkillExecutor.instance.ExecuteSkill(skl.owner, l0, null);
         }
     }
 

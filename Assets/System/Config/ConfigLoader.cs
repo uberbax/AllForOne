@@ -1112,6 +1112,16 @@ public class ConfigLoader : MonoBehaviour
                         mm.buffApply.Add(yy[k]);
                     }
                 }
+                else if (columns[j].ToUpper() == "ALSO_CAST")
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split(",");
+                    mm.alsoCast = new List<string>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        mm.alsoCast.Add(yy[k]);
+                    }
+                }
                 else if (columns[j].ToUpper() == "CD_RED") mm.cdReduction = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "TIME") mm.time = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DMG_EVERY") mm.dmgEvery = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2889,6 +2899,8 @@ public class FormatSkill
     public List<string> affected = new List<string>();
     
     public List<string> buffApply = new List<string>();
+    public List<string> alsoCast = new List<string>();
+    
     public float cdReduction = 0;
     public float time = -1;
     public float dmgEvery = 0;
