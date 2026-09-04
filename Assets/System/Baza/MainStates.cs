@@ -2968,12 +2968,18 @@ public class MainStates : MonoBehaviour
                 //collat damage
                 //execute skill wit over pars ?
                 var cl = combats[i].GetPar("col_chance");
+                var cld = combats[i].GetPar("col_damage");
+                
                 if (cl > 0)
                 {
                     var roll = Random.Range(0, 100);
                     if (roll < cl)
                     {
-                        SkillExecutor.instance.ExecuteSkill(combats[i], "col_strike", null);
+                        var gv = new Dictionary<string, float>();
+                        gv.Add("attack_prc", cld/100.0f);
+                        SkillExecutor.instance.ExecuteSkill(combats[i], "col_strike", null, gv);
+                        
+                        yield return new WaitForSeconds(tm);
                     }
                 }
                 

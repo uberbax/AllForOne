@@ -145,8 +145,8 @@ public class SkillExecutor : MonoBehaviour
 
     public ExecReso ExecuteSkill(RObj who, string skl, RObj target, Dictionary<string, float> addPars = null)
     {
-        var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false); 
-        return ExecuteSkill(who, h0, target);
+        var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false, addPars: addPars); 
+        return ExecuteSkill(who, h0, target, addPars: addPars);
     }
 
     public void SubExecute(ArgPass e)
@@ -154,7 +154,8 @@ public class SkillExecutor : MonoBehaviour
         ExecuteSkill(e.who, e.what, null);
     }
     
-    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false, string reqTag = "")
+    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false,
+        string reqTag = "", Dictionary<string, float> addPars = null)
     {
         float d = 1e+10f;
         //cur weapon skill ?
@@ -245,7 +246,10 @@ public class SkillExecutor : MonoBehaviour
                     RObj ro = null;
                     if (!useSame)
                     {
-                        ro = DatabaseAll.instance.CreateProjectile(who, skl.dbObj.ID, overPos == default ? Vector3.zero : overPos - who.Position);
+                        ro = DatabaseAll.instance.CreateProjectile(who, skl.dbObj.ID, overPos == default ? Vector3.zero : overPos - who.Position, addPars:addPars);
+                        //ro = skl.Clone();
+                        //?
+                        
                         ro.AddViz("coll");
                     }
                     else

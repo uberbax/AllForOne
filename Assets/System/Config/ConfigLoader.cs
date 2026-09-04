@@ -1073,11 +1073,11 @@ public class ConfigLoader : MonoBehaviour
                 {
                     if (tt[j] == "x") continue;
                     var yy = tt[j].Split("#");
-                    mm.PARS = new List<Bon>();
+                    mm.EXTRA_PARS = new List<Bon>();
                     for (int k = 0; k < yy.Length; k++)
                     {
                         var bb = yy[k].Split(",");
-                        mm.PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                        mm.EXTRA_PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
                 else if (columns[j].ToUpper() == "PRICE")

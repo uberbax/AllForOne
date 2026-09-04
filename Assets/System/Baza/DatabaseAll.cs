@@ -342,9 +342,9 @@ public class DatabaseAll : MonoBehaviour
         return r;
     }
 
-    public RObj CreateProjectile(RObj who, string skl, Vector3 dlt, bool withEmpty = true, bool withVisual = true, GameObject mainViz = null)
+    public RObj CreateProjectile(RObj who, string skl, Vector3 dlt, bool withEmpty = true, bool withVisual = true, GameObject mainViz = null, Dictionary<string, float> addPars = null)
     {
-        var r = new RObj(skl, 1, 1, withEmpty, who.Position + dlt, withVisual, ItemType.projectile, own:who, asMainViz:mainViz);
+        var r = new RObj(skl, 1, 1, withEmpty, who.Position + dlt, withVisual, ItemType.projectile, own:who, asMainViz:mainViz, addPars:addPars);
         
         return r;
     }

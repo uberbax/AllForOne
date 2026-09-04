@@ -445,10 +445,6 @@ public class RObj
             
             //thwbbb
             //if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
-            if (v.dbObj == null)
-            {
-                int u = 1;
-            }
             
             foreach (var a in v.dbObj.pars)
             {
@@ -811,7 +807,7 @@ public class RObj
     }
     
     public RObj(string id, int amount, int level, bool withEmpty, Vector3 position, bool withVisual, ItemType tp, string overID = "", RObj own = null, 
-        bool isEnemy = false, GameObject overVis = null, GameObject asMainViz = null, int rarity = 0)
+        bool isEnemy = false, GameObject overVis = null, GameObject asMainViz = null, int rarity = 0, Dictionary<string, float> addPars = null)
     {
         owner = own;
         it = tp;
@@ -838,6 +834,14 @@ public class RObj
         upgradePars.Add("used_slot", -1);
         upgradePars.Add("exp", 0);
         upgradePars.Add("rarity", rarity);
+
+        if (addPars != null)
+        {
+            foreach (var p in addPars)
+            {
+                ChangePar(p.Key, p.Value, false);
+            }
+        }
         
         if (overID == "")
         {
