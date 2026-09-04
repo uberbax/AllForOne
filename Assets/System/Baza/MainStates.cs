@@ -327,6 +327,7 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("next_hero", NextHero);
         EventManager.SUB("battle_start", BattleStarted);
         EventManager.SUB("evt_adorn", EventAdorn);
+        EventManager.SUB("switch_class", SwitchMainClass);
 
         if (trashRoot == null)
         {
@@ -2307,6 +2308,35 @@ public class MainStates : MonoBehaviour
         who.ChangePar("health", u1);
         
     }
+
+    public void SwitchMainClass(ArgPass e)
+    {
+        string switchTo = e.who.dbObj.ID;
+        Debug.Log("Switched to: " + switchTo);
+        ReplaceVisual(mainPlayer, ResourceHolder.instance.monsters[switchTo]);
+        mainPlayer.buffs.Clear();
+        mainPlayer.actSkills.Clear();
+        
+        var dbObj = DatabaseAll.instance.heroes[switchTo];
+        mainPlayer.dbObj = dbObj;
+        
+        foreach (var v in dbObj.skills)
+        {
+            var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
+            mainPlayer.actSkills.Add(g);
+        }
+        
+        foreach (var v in dbObj.traits)
+        {
+            var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
+            mainPlayer.buffs.Add(g);
+        }
+        
+        mainPlayer.RecalcPars();
+        ModelStatistics.instance.SetStatValueStr("current_class", switchTo);
+        
+    }
+    
     
     public void DealDamage(RObj a, RObj skl)
     {

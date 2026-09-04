@@ -229,8 +229,23 @@ public class SkillExecutor : MonoBehaviour
         float ft = skl.GetPar("first");
 
         if (overPos == default)
-            who.ChangePar("mana", -skl.GetPar("manacost"));
-        
+        {
+            var h0 = who.GetPar("mana_siphon");
+            if (h0 > 0)
+            {
+                var roll = Random.Range(0, 100);
+                if (roll > h0)
+                {
+                    who.ChangePar("mana", -skl.GetPar("manacost"));
+                }
+                else
+                {
+                    //we dont use mana !!!
+                }
+            }
+            else who.ChangePar("mana", -skl.GetPar("manacost"));
+        }
+
         if (skl.dbObj.spawn != "")
         {
             var gg = Instantiate(ResourceHolder.instance.skillsWorld[skl.dbObj.spawn], who.main.transform);
