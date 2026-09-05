@@ -852,6 +852,7 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "ASPEED") mm.attackSpeed = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "LIFESTEAL_PRC") mm.lifestealPrc = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                else if (columns[j].ToUpper() == "MANASTEAL_PRC") mm.manastealPrc = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "REGEN") mm.regen = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
                 
@@ -1116,11 +1117,12 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "ALSO_CAST")
                 {
                     if (tt[j] == "x") continue;
-                    var yy = tt[j].Split(",");
-                    mm.alsoCast = new List<string>();
-                    for (int k = 0; k < yy.Length; k++)
+                    var yh = tt[j].Split("#");
+                    mm.alsoCast = new List<Bon>();
+                    for (int o = 0; o < yh.Length; o++)
                     {
-                        mm.alsoCast.Add(yy[k]);
+                        var yp = yh[o].Split(",");  
+                        mm.alsoCast.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
                 else if (columns[j].ToUpper() == "CD_RED") mm.cdReduction = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2629,6 +2631,7 @@ public class FormatHero
     public float dmgBlock = 0;
     
     public float lifestealPrc = 0;
+    public float manastealPrc = 0;
     public float regen = 0;
     
     
@@ -2861,6 +2864,7 @@ public class FormatSkill
     
     public float ANGLE;
     public float LIFESTEAL_PRC;
+    public float MANASTEAL_PRC;
     public float REGEN;
     
     
@@ -2900,7 +2904,7 @@ public class FormatSkill
     public List<string> affected = new List<string>();
     
     public List<Bon> buffApply = new List<Bon>();
-    public List<string> alsoCast = new List<string>();
+    public List<Bon> alsoCast = new List<Bon>();
     
     public float cdReduction = 0;
     public float time = -1;

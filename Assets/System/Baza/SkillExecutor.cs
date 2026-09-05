@@ -190,7 +190,8 @@ public class SkillExecutor : MonoBehaviour
         
         if (d > skl.GetPar("range")) return ExecReso.NO_TARGETS;
         if (targ.Count == 0) return ExecReso.NO_TARGETS;
-        if (who.GetPar("mana") < skl.GetPar("manacost") && !overCd) return ExecReso.NO_MANA;
+        float mr1 =  (1 + who.GetPar("mana_reduction")/100.0f);
+        if (who.GetPar("mana") < skl.GetPar("manacost")*mr1 && !overCd) return ExecReso.NO_MANA;
 
         if (ConfigLoader.GetMetaParamValue("req_line_sight") > 0)
         {
@@ -230,20 +231,24 @@ public class SkillExecutor : MonoBehaviour
 
         if (overPos == default)
         {
+            float mr =  (1 + who.GetPar("mana_reduction")/100.0f);
             var h0 = who.GetPar("mana_siphon");
             if (h0 > 0)
             {
                 var roll = Random.Range(0, 100);
                 if (roll > h0)
                 {
-                    who.ChangePar("mana", -skl.GetPar("manacost"));
+                    who.ChangePar("mana", -skl.GetPar("manacost")*mr);
                 }
                 else
                 {
                     //we dont use mana !!!
                 }
             }
-            else who.ChangePar("mana", -skl.GetPar("manacost"));
+            else
+            {
+                who.ChangePar("mana", -skl.GetPar("manacost")*mr);
+            }
         }
 
         if (skl.dbObj.spawn != "")

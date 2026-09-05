@@ -2336,7 +2336,23 @@ public class MainStates : MonoBehaviour
         ModelStatistics.instance.SetStatValueStr("current_class", switchTo);
         
     }
-    
+
+
+    public void AddMana(RObj a, float mana)
+    {
+        {
+            var m1 = a.GetPar("mana");
+            var m2 = a.GetPar("max_mana");
+            if (m2 - m1 < mana)
+            {
+                a.ChangePar("mana", m2-m1);
+            }
+            else
+            {
+                a.ChangePar("mana", mana);
+            }
+        }
+    }
     
     public void DealDamage(RObj a, RObj skl)
     {
@@ -2422,14 +2438,14 @@ public class MainStates : MonoBehaviour
         //self shield or 
         
         a.ChangePar("shield", sh);
-        var crt = skl.owner.GetPar("crit_chance");
+        var crt = skl.owner.GetPar("crit_chance") + skl.GetPar("crit_chance");
         
         var rl = Random.Range(0, 1f);
         bool wasCrit = false;
         if (rl < crt)
         {
             wasCrit = true;
-            atk *= (1 + 0.5f + skl.owner.GetPar("crit_dmg"));
+            atk *= (1 + 0.5f + (skl.owner.GetPar("crit_dmg") + skl.GetPar("crit_dmg"))/100.0f);
         }
 
         if (sh > 0 && a.RID == "main_player")
@@ -2521,19 +2537,7 @@ public class MainStates : MonoBehaviour
             a.ChangePar("shield", -k);
         }
         //we get through buffs and timed buffs to reduce shield
-        if (mana > 0)
-        {
-            var m1 = a.GetPar("mana");
-            var m2 = a.GetPar("max_mana");
-            if (m2 - m1 < mana)
-            {
-                a.ChangePar("mana", m2-m1);
-            }
-            else
-            {
-                a.ChangePar("mana", mana);
-            }
-        }
+        AddMana(a, mana);
 
         if (health > 0)
         {
@@ -2620,10 +2624,19 @@ public class MainStates : MonoBehaviour
         //
         if (atk > 0)
         {
-            var vv = skl.owner.GetPar("lifesteal_prc") * atk;
+            var v1 = skl.GetPar("lifesteal_prc");
+            var vv = atk * (skl.owner.GetPar("lifesteal_prc") + v1)/100.0f;
             if (vv > 0)
             {
                 DealHeal(skl.owner, vv);
+            }
+            
+            //manasteal
+            v1 = skl.GetPar("manasteal_prc");
+            vv = atk * (skl.owner.GetPar("manasteal_prc") + v1)/100.0f;
+            if (vv > 0)
+            {
+                AddMana(skl.owner, vv);
             }
             
         }
@@ -2632,7 +2645,11 @@ public class MainStates : MonoBehaviour
         var gk = skl.dbObj.alsoCast;
         foreach (var l0 in gk)
         {
-            SkillExecutor.instance.ExecuteSkill(skl.owner, l0, null);
+            var roll = Random.Range(0, 100);
+            if (roll <= l0.Value)
+            {
+                SkillExecutor.instance.ExecuteSkill(skl.owner, l0.Key, null);
+            }
         }
     }
 

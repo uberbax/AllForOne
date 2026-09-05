@@ -56,7 +56,7 @@ public class Obj
     
     public List<Bon> extraPars =  new List<Bon>();
     public List<Bon> buffsApplied = new List<Bon>();
-    public List<string> alsoCast = new List<string>();
+    public List<Bon> alsoCast = new List<Bon>();
 
     public string second = "";
     public string refSkill = "";

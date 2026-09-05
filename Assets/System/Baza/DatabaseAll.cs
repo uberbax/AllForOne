@@ -110,6 +110,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("crit_chance", v.CRIT_CHANCE);
             o.pars.Add("crit_dmg", v.CRIT_DMG);
             o.pars.Add("lifesteal_prc", v.LIFESTEAL_PRC);
+            o.pars.Add("manasteal_prc", v.MANASTEAL_PRC);
             o.pars.Add("regen", v.REGEN);
             o.pars.Add("unique", v.unique);
             o.pars.Add("manacost", v.manaCost);
@@ -241,6 +242,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("difficulty", v.difficulty);
             
             o.pars.Add("lifesteal_prc", v.lifestealPrc);
+            o.pars.Add("manasteal_prc", v.manastealPrc);
             o.pars.Add("regen", v.regen);
             o.pars.Add("drop_pick", v.dropPick);
             
