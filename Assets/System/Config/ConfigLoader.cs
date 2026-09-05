@@ -1105,11 +1105,12 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "BUFF_APPLY")
                 {
                     if (tt[j] == "x") continue;
-                    var yy = tt[j].Split(",");
-                    mm.buffApply = new List<string>();
-                    for (int k = 0; k < yy.Length; k++)
+                    var yh = tt[j].Split("#");
+                    mm.buffApply = new List<Bon>();
+                    for (int o = 0; o < yh.Length; o++)
                     {
-                        mm.buffApply.Add(yy[k]);
+                        var yp = yh[o].Split(",");  
+                        mm.buffApply.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
                 else if (columns[j].ToUpper() == "ALSO_CAST")
@@ -2898,7 +2899,7 @@ public class FormatSkill
     public int travel = 0;
     public List<string> affected = new List<string>();
     
-    public List<string> buffApply = new List<string>();
+    public List<Bon> buffApply = new List<Bon>();
     public List<string> alsoCast = new List<string>();
     
     public float cdReduction = 0;

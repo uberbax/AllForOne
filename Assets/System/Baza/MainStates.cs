@@ -2576,7 +2576,15 @@ public class MainStates : MonoBehaviour
         if (dlt < 0)
             a.SetPar("registered_damage", 0);
 
-        var adds = new List<string>(skl.dbObj.buffsApplied);
+        //
+        List<string> adds = new List<string>();
+        foreach (var b in skl.dbObj.buffsApplied)
+        {
+            var roll = Random.Range(0, 100);
+            if (roll <= b.Value)
+                adds.Add(b.Key);
+        }
+        //var adds = new List<string>(skl.dbObj.buffsApplied);
         adds.AddRange(skl.extraBuffs);
 
         foreach (var v in adds)
