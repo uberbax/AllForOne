@@ -397,6 +397,11 @@ public class MainCycleExp : MonoBehaviour
             var rr = ResourceHolder.instance.skillsWorld["whirl"];
             var go = Instantiate(rr, MainStates.instance.mainPlayer.main.transform);
         }
+        
+        if (Input.GetKeyDown("g"))
+        {
+            MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "exp", Value = 200}});
+        }
 
         if (MainStates.instance.inBattle)
         {

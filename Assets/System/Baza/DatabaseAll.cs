@@ -210,6 +210,11 @@ public class DatabaseAll : MonoBehaviour
 
             o.pars.Add("roll", v.RARITY_ROLL);
             
+            foreach (var b in v.EXTRA_PARS)
+            {
+                o.pars.Add(b.Key, b.Value);
+            }
+            
             items.Add(o.ID, o);
 
         }

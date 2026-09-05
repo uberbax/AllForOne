@@ -199,7 +199,7 @@ public class ResourceHolder : MonoBehaviour
             //a.transform.Find("icon/price").GetComponent<TextMeshProUGUI>().text = gg[0].Value.ToString();
             return;
         }
-        else if (a.param == "upgrade" || a.param == "buy")
+        else if (a.param == "upgrade" || a.param == "buy" || a.param == "unlock")
         {
             var oo = a.GetComponent<GBind>();
             var gg = UpgradeSystem.instance.GetPrice(r, a.param);
@@ -221,20 +221,23 @@ public class ResourceHolder : MonoBehaviour
             for (int i = 0; i < 3; i++)
             {
                 var ss = (i == 0 ? "" : i.ToString());
-                oo.GetImage("icon" + ss).gameObject.SetActive(false);
-                oo.GetText("price"  + ss).gameObject.SetActive(false);
+                oo.GetImage("icon" + ss)?.gameObject.SetActive(false);
+                oo.GetText("price"  + ss)?.gameObject.SetActive(false);
             }
             
             for (int i = 0; i < gg.Count; i++)
             {
                 var bb = MainStates.instance.HaveAmount(new List<Bon>{gg[i]});
                 var ss = (i == 0 ? "" : i.ToString());
-                oo.GetImage("icon" + ss).gameObject.SetActive(true);
-                oo.GetText("price"  + ss).gameObject.SetActive(true);
-                
-                oo.GetImage("icon" + ss).sprite = items[gg[i].Key];
-                oo.GetText("price"  + ss).text = (bb ? "" : "<color=red>") + gg[i].Value + (bb ? "" : "</color>");
-                
+                var dd = oo.GetImage("icon" + ss);
+                if (dd != null)
+                {
+                    dd.gameObject.SetActive(true);
+                    oo.GetText("price" + ss).gameObject.SetActive(true);
+
+                    dd.sprite = items[gg[i].Key];
+                    oo.GetText("price" + ss).text = (bb ? "" : "<color=red>") + gg[i].Value + (bb ? "" : "</color>");
+                }
             }
             
             return;

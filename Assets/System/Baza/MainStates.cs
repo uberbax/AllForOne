@@ -2579,7 +2579,7 @@ public class MainStates : MonoBehaviour
         var dlt = a.GetPar("registered_damage");
         if (dlt < 0)
             a.SetPar("registered_damage", 0);
-
+        
         //
         List<string> adds = new List<string>();
         foreach (var b in skl.dbObj.buffsApplied)
@@ -2650,6 +2650,15 @@ public class MainStates : MonoBehaviour
             {
                 SkillExecutor.instance.ExecuteSkill(skl.owner, l0.Key, null);
             }
+        }
+        
+        var guts = a.GetPar("guts");
+        var hp = a.GetPar("health");
+        if (hp <= 0 && guts > 0)
+        {
+            var hm = a.GetPar("max_health");
+            a.SetPar("registered_damage", -hm+1);
+            a.ChangePar("guts", -1);
         }
     }
 

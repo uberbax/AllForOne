@@ -1201,6 +1201,17 @@ public class ConfigLoader : MonoBehaviour
                         mm.extras.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
+                else if (columns[j].ToUpper() == "EXTRA_PARS")
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.EXTRA_PARS = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.EXTRA_PARS.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
                 
                 else if (columns[j].ToUpper() == "RARITY_ROLL") mm.RARITY_ROLL = int.Parse(tt[j]);
                 
@@ -2740,6 +2751,7 @@ public class FormatArtefact
     public int RARITY_ROLL = 0;
     public List<Bon> price = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
+    public List<Bon> EXTRA_PARS = new List<Bon>();
 
 }
 
