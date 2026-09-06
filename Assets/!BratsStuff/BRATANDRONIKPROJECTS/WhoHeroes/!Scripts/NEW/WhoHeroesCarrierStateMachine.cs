@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
@@ -16,7 +17,10 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
 
     private Transform pickupTarget;
     private Transform castleTarget;
+    private GameObject sourceResourceIcon;
     private GameObject resourceIcon;
+    private List<(float, float, float)> routeToMine;
+    private List<(float, float, float)> routeToCastle;
     private float speed;
     private Action completed;
 
@@ -25,18 +29,26 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
     public bool Initialize(
         Transform pickup,
         Transform castle,
+        GameObject sourceIcon,
         GameObject icon,
+        List<(float, float, float)> toMine,
+        List<(float, float, float)> toCastle,
         float moveSpeed,
         Action onCompleted,
         bool fastForward)
     {
         pickupTarget = pickup;
         castleTarget = castle;
+        sourceResourceIcon = sourceIcon;
         resourceIcon = icon;
+        routeToMine = toMine;
+        routeToCastle = toCastle;
         speed = moveSpeed;
         completed = onCompleted;
 
-        if (pickupTarget == null || castleTarget == null || !fastForward && UtilsControl.Instance == null)
+        if (pickupTarget == null || castleTarget == null ||
+            !fastForward && (UtilsControl.Instance == null || routeToMine == null || routeToMine.Count == 0 ||
+                             routeToCastle == null || routeToCastle.Count == 0))
         {
             Cancel();
             return false;
@@ -48,8 +60,10 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
             return true;
         }
 
+        sourceResourceIcon?.SetActive(true);
+        resourceIcon?.SetActive(false);
         state = CarrierState.ToMine;
-        MoveTo(pickupTarget, OnMineReached);
+        MoveAlong(routeToMine, OnMineReached);
         return true;
     }
 
@@ -59,6 +73,7 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
             return;
 
         StopMovement();
+        sourceResourceIcon?.SetActive(false);
         resourceIcon?.SetActive(true);
         if (castleTarget != null)
             transform.position = castleTarget.position;
@@ -71,18 +86,9 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
             return;
 
         StopMovement();
+        sourceResourceIcon?.SetActive(false);
         completed = null;
         state = CarrierState.Cancelled;
-    }
-
-    private void OnMineReached()
-    {
-        if (state != CarrierState.ToMine)
-            return;
-
-        resourceIcon?.SetActive(true);
-        state = CarrierState.ToCastle;
-        MoveTo(castleTarget, Complete);
     }
 
     private void Complete()
@@ -96,11 +102,20 @@ public sealed class WhoHeroesCarrierStateMachine : ComponentBehavior
         callback?.Invoke();
     }
 
-    private void MoveTo(Transform target, Action callback)
+    private void OnMineReached()
     {
-        UtilsControl.Instance.MoveTo(
-            transform, speed, target.position, callback, target,
-            useRight: false, ignoreFlip: true);
+        if (state != CarrierState.ToMine)
+            return;
+
+        sourceResourceIcon?.SetActive(false);
+        resourceIcon?.SetActive(true);
+        state = CarrierState.ToCastle;
+        MoveAlong(routeToCastle, Complete);
+    }
+
+    private void MoveAlong(List<(float, float, float)> route, Action callback)
+    {
+        UtilsControl.Instance.MoveToMany(transform, speed, route, 0, callback);
     }
 
     private void StopMovement()

@@ -31,7 +31,7 @@ public class GUIBuildingInfo : MonoBehaviour
         if (runtime == null)
             return;
         var level = GUILIB.Level(runtime, building.level);
-        general?.Fill(runtime);
+        general?.Fill(runtime, "generic_building_descr");
         var maxLevel = runtime.GetPar("max_level");
         uprgade?.Fill(GUILIB.Price(runtime), maxLevel > 0 && level >= maxLevel, false, true,
             level > 0 ? "upgrade" : "restore");

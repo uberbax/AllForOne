@@ -25,6 +25,10 @@ public static class WhoHeroesEvents
     public const string PermanentPerkChosen = "whoheroes_permanent_perk_chosen";
     public const string TraderCompleted = "whoheroes_trader_completed";
     public const string RestartRequested = "whoheroes_restart_requested";
+    public const string ActionSucceeded = "whoheroes_action_succeeded";
+    public const string ActionFailed = "whoheroes_action_failed";
+    public const string ResourceDelivered = "whoheroes_resource_delivered";
+    public const string DayStartedAfterNight = "whoheroes_day_started_after_night";
 
 }
 
@@ -275,27 +279,53 @@ public class GUILIB : MonoBehaviour
         Instance.action.param2 = actionParam2;
         MainStates.instance.all.TryGetValue("main_player", out var player);
         var trackHire = actionName == "buy" && value.it == ItemType.monster && player != null;
+        var assignedAmountsBefore = trackHire
+            ? player.inventory.Where(item => item != null && item.dbObj != null &&
+                    item.dbObj.ID == value.dbObj.ID && item.GetPar("used_slot") >= 0f)
+                .ToDictionary(item => item, item => Mathf.Max(0, Mathf.RoundToInt(item.GetPar("amount"))))
+            : null;
         var ownedBefore = trackHire
             ? player.inventory.Where(item => item != null && item.dbObj != null &&
                 item.dbObj.ID == value.dbObj.ID).Sum(item => item.GetPar("amount"))
             : 0f;
         var trackCastleRestore = actionName == "upgrade" && value.dbObj != null &&
             MainCycle_WhoHeroes.CastleUnits.ContainsKey(value.dbObj.ID) && Level(value) <= 0;
+        var levelBefore = Level(value);
+        var affordableBefore = actionName != "buy" && actionName != "upgrade" || CanAfford(Price(value, actionName));
         if (!MainCycle_WhoHeroes.TryExecutePermanentDiscountAction(
                 value, actionName, Instance.action, Instance.actionHolder))
             MainStates.instance.ClickedSome(value, Instance.action, Instance.actionHolder, true);
+        var actionSucceeded = false;
         if (trackHire)
         {
             var ownedAfter = player.inventory.Where(item => item != null && item.dbObj != null &&
                 item.dbObj.ID == value.dbObj.ID).Sum(item => item.GetPar("amount"));
             var hired = Mathf.Max(0, Mathf.RoundToInt(ownedAfter - ownedBefore));
             if (hired > 0)
+            {
+                MainCycle_WhoHeroes.KeepPurchasedUnitsInFreeRoster(
+                    player, value, hired, assignedAmountsBefore);
                 ModelStatistics.instance?.IncreaseStatValue(MainCycle_WhoHeroes.UnitsHiredStat, hired);
+                actionSucceeded = true;
+            }
         }
+        else if (actionName == "upgrade")
+            actionSucceeded = Level(value) > levelBefore;
+        if (actionName == "upgrade" && actionSucceeded)
+            MainCycle_WhoHeroes.Instance?.TryFinalizeRestoration(value);
         if (trackCastleRestore && Level(value) > 0)
             ModelStatistics.instance?.IncreaseStatValue(MainCycle_WhoHeroes.CastleRestoredStat, 1);
         if (actionName == "equip_exp")
+        {
             MainCycle_WhoHeroes.NormalizeNewDefenseSlot(value);
+            actionSucceeded = true;
+        }
+        if (actionSucceeded)
+            EventManager.INV(WhoHeroesEvents.ActionSucceeded,
+                new ArgPass { who = value, what = actionName, what1 = actionParam2 });
+        else if (!affordableBefore)
+            EventManager.INV(WhoHeroesEvents.ActionFailed,
+                new ArgPass { who = value, what = actionName, what1 = actionParam2 });
         EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { who = value, what = actionName });
     }
 
@@ -332,6 +362,12 @@ public class GUILIB : MonoBehaviour
     {
         if (text == null)
             return;
+        var projectText = MainCycle_WhoHeroes.Text(id);
+        if (!string.IsNullOrWhiteSpace(projectText))
+        {
+            text.text = projectText;
+            return;
+        }
         text.text = ConfigLoader.Instance == null ? id : ConfigLoader.Instance.GetMeLocale(id);
     }
 
@@ -855,7 +891,18 @@ public class GUIUnitFrame
         if (hasAction && actionBut != null)
         {
             if (buttonText != null && !string.IsNullOrEmpty(actionType))
-                GUILIB.Instance.Translate(buttonText, actionType);
+            {
+                var label = actionType switch
+                {
+                    "add" or "addexp" or "addtower" => "Add",
+                    "remove" or "removeexp" or "removetower" => "Remove",
+                    _ => string.Empty
+                };
+                if (string.IsNullOrEmpty(label))
+                    GUILIB.Instance.Translate(buttonText, actionType);
+                else
+                    buttonText.text = label;
+            }
             if (buttonImage != null && !string.IsNullOrEmpty(color))
                 buttonImage.color = GUILIB.ColorFor(color);
             actionBut.onClick.AddListener(() => ExecuteAction(actionType));
@@ -1034,7 +1081,7 @@ public class GUITask : CanFill<RObj>
                     EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { who = task });
                 });
         }
-        complete?.SetActive(taken);
+        complete?.SetActive(progress != null && progress.completed && !progress.taken);
         Order();
     }
 
@@ -1087,10 +1134,26 @@ public class GUISettings
     {
         languageToggles?.SetUpNavigation();
         languageToggles?.ToDefault();
-        music?.onValueChanged.AddListener(value => SetSetting("volume_music", value));
-        effects?.onValueChanged.AddListener(value => SetSetting("volume_sound", value));
+        music?.onValueChanged.AddListener(SetMusicVolume);
+        effects?.onValueChanged.AddListener(SetSoundVolume);
         apply?.onClick.AddListener(() =>
             EventManager.INV("language_changed", new ArgPass { what = languageToggles?.choosen ?? "" }));
+    }
+
+    private static void SetMusicVolume(float value)
+    {
+        if (WhoHeroesAudioController.Instance != null)
+            WhoHeroesAudioController.Instance.SetMusicVolume(value);
+        else
+            SetSetting(WhoHeroesAudioController.MusicVolumeKey, value);
+    }
+
+    private static void SetSoundVolume(float value)
+    {
+        if (WhoHeroesAudioController.Instance != null)
+            WhoHeroesAudioController.Instance.SetSoundVolume(value);
+        else
+            SetSetting(WhoHeroesAudioController.SoundVolumeKey, value);
     }
 
     private static void SetSetting(string key, float value)
@@ -1105,10 +1168,23 @@ public class GUISettings
         var settings = MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var value)
             ? value
             : null;
+        var musicValue = WhoHeroesAudioController.Instance != null
+            ? WhoHeroesAudioController.Instance.MusicVolume
+            : PlayerPrefs.GetFloat(WhoHeroesAudioController.MusicVolumeKey,
+                NormalizeVolume(settings?.GetPar(WhoHeroesAudioController.MusicVolumeKey) ?? 1f));
+        var soundValue = WhoHeroesAudioController.Instance != null
+            ? WhoHeroesAudioController.Instance.SoundVolume
+            : PlayerPrefs.GetFloat(WhoHeroesAudioController.SoundVolumeKey,
+                NormalizeVolume(settings?.GetPar(WhoHeroesAudioController.SoundVolumeKey) ?? 1f));
         if (music != null)
-            music.SetValueWithoutNotify(settings == null ? PlayerPrefs.GetFloat("volume_music", 1) : settings.GetPar("volume_music"));
+            music.SetValueWithoutNotify(Mathf.Clamp01(musicValue));
         if (effects != null)
-            effects.SetValueWithoutNotify(settings == null ? PlayerPrefs.GetFloat("volume_sound", 1) : settings.GetPar("volume_sound"));
+            effects.SetValueWithoutNotify(Mathf.Clamp01(soundValue));
+    }
+
+    private static float NormalizeVolume(float value)
+    {
+        return Mathf.Clamp01(value > 1f ? value / 100f : value);
     }
 }
 

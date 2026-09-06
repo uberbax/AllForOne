@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class GUIStartScreen : MonoBehaviour
 {
+    public static bool BlocksSceneInput =>
+        UnityEngine.Object.FindAnyObjectByType<GUIStartScreen>(FindObjectsInactive.Exclude) != null;
+
     public bool startScreenOff;
     public Button start;
     public Button wish;
@@ -20,7 +23,7 @@ public class GUIStartScreen : MonoBehaviour
 
     private void Start()
     {
-        start?.onClick.AddListener(() => EventManager.INV("game_start", new ArgPass()));
+        start?.onClick.AddListener(StartGame);
         if (wish != null)
         {
             wish.interactable = false;
@@ -36,6 +39,7 @@ public class GUIStartScreen : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.UNSUB("PARSE_ENDED", OnParseEnded);
+        start?.onClick.RemoveListener(StartGame);
         wish?.onClick.RemoveListener(OpenStorePage);
         quit?.onClick.RemoveListener(Application.Quit);
     }
@@ -61,5 +65,11 @@ public class GUIStartScreen : MonoBehaviour
         var url = MainCycle_WhoHeroes.SteamUrl();
         if (IsValidStoreUrl(url))
             Application.OpenURL(url);
+    }
+
+    private void StartGame()
+    {
+        gameObject.SetActive(false);
+        EventManager.INV("game_start", new ArgPass());
     }
 }

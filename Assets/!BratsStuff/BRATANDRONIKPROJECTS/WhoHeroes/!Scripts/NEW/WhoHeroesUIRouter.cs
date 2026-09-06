@@ -1,9 +1,29 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class WhoHeroesUIRouter : MonoBehaviour
 {
+    private const string ManagementTabId = "management";
+    private const string SettingsTabId = "settings";
+    private const string CastleMainTabId = "main";
+    private const string CastleHireTabId = "hire";
+    private const float BuildingCameraSize = 2f;
+    private const float BuildingCameraOffsetY = 1.25f;
+    private const float BuildingCameraTransitionSeconds = 0.75f;
+
+    [Header("Persistent HUD")]
+    [SerializeField] private Canvas mainCanvas;
+    [SerializeField] private GUIMainScreen mainScreen;
+    [SerializeField] private PopUpList rootTabs = new PopUpList();
+    [SerializeField] private PopUpList castleTabs = new PopUpList();
+
+    [Header("Management camera")]
+    [SerializeField] private Vector3 managementCameraPosition;
+    [SerializeField, Min(0.01f)] private float managementCameraSize = 10f;
+    [SerializeField] private Transform buildingFocusRoot;
+
     [Header("Windows")]
     [SerializeField] private GUICastleWindow castle;
     [SerializeField] private GUIHireBuildingWindow hire;
@@ -33,6 +53,7 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
     [SerializeField] private GameObject castleInterior;
     [SerializeField] private GameObject tavernInterior;
     [SerializeField] private GameObject towerInterior;
+    [SerializeField] private GameObject expeditionInterior;
     [SerializeField] private List<GameObject> worldRoots = new List<GameObject>();
 
     private readonly List<GameObject> windowGroups = new List<GameObject>();
@@ -40,13 +61,28 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
     private RObj portalRuntime;
     private GameObject traderVisual;
     private WhoHeroesTraderStateMachine traderStateMachine;
+    private Camera dayCamera;
+    private BRATViewMapCameraController dayCameraInput;
+    private Vector3 savedCameraPosition;
+    private float savedCameraSize;
+    private bool savedCameraInputBlocked;
+    private bool cameraStateSaved;
+    private bool restoreCameraOnClose;
+    private Coroutine cameraSizeRoutine;
+    private Coroutine buildingWindowRoutine;
 
     private void Awake()
     {
+        CacheDefaultCameraState();
+        KeepPersistentHudVisible();
+        rootTabs?.SetUpNavigation();
+        rootTabs?.ToDefault();
+        castleTabs?.SetUpNavigation();
+        castleTabs?.ToDefault();
         CacheWindows();
         EventManager.SUB(WhoHeroesEvents.ViewBuilding, OnViewBuilding);
         EventManager.SUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
-        EventManager.SUB("new_day", OnNewDay);
+        EventManager.SUB(WhoHeroesEvents.DayStartedAfterNight, OnDayStartedAfterNight);
         EventManager.SUB("new_night", OnTraderUnavailable);
         EventManager.SUB("whoheroes_game_over", OnTraderUnavailable);
         EventManager.SUB(WhoHeroesEvents.PermanentPerkOffered, OnPermanentPerkOffered);
@@ -57,12 +93,12 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
 
     private void Start()
     {
+        KeepPersistentHudVisible();
         if (actionHolder == null)
             Debug.LogError("WhoHeroes UI router: Minimus action holder is not assigned in Inspector.", this);
         else
             actionHolder.enabled = true;
 
-        TryPrepareTraderArrival();
         if (HasPendingPermanentPerk() && MainCycle_WhoHeroes.Instance?.Phase == WhoHeroesPhase.Day)
             ShowPermanentPerks();
     }
@@ -71,7 +107,7 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
     {
         EventManager.UNSUB(WhoHeroesEvents.ViewBuilding, OnViewBuilding);
         EventManager.UNSUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
-        EventManager.UNSUB("new_day", OnNewDay);
+        EventManager.UNSUB(WhoHeroesEvents.DayStartedAfterNight, OnDayStartedAfterNight);
         EventManager.UNSUB("new_night", OnTraderUnavailable);
         EventManager.UNSUB("whoheroes_game_over", OnTraderUnavailable);
         EventManager.UNSUB(WhoHeroesEvents.PermanentPerkOffered, OnPermanentPerkOffered);
@@ -80,10 +116,16 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         EventManager.UNSUB(WhoHeroesEvents.PortalCaptured, OnPortalCaptured);
         castle?.back?.onClick.RemoveListener(ShowWorld);
         hire?.back?.onClick.RemoveListener(ShowCastleOverview);
+        factory?.back?.onClick.RemoveListener(ShowWorld);
+        portal?.back?.onClick.RemoveListener(ShowWorld);
         tavern?.back?.onClick.RemoveListener(ShowWorld);
+        market?.back?.onClick.RemoveListener(ShowWorld);
+        enemy?.back?.onClick.RemoveListener(ShowWorld);
+        warBuilding?.back?.onClick.RemoveListener(ShowWorld);
+        taskBuilding?.back?.onClick.RemoveListener(ShowWorld);
         tower?.back?.onClick.RemoveListener(ShowWorld);
         expedition?.back?.onClick.RemoveListener(ShowWorld);
-        portal?.uprgade?.upgrade?.buy?.onClick.RemoveListener(ShowPortalAttack);
+        portal?.uprgade?.upgrade?.buy?.onClick.RemoveListener(HandlePortalAction);
         CleanupTraderVisual();
     }
 
@@ -105,13 +147,19 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
 
         castle?.back?.onClick.AddListener(ShowWorld);
         hire?.back?.onClick.AddListener(ShowCastleOverview);
+        factory?.back?.onClick.AddListener(ShowWorld);
+        portal?.back?.onClick.AddListener(ShowWorld);
         tavern?.back?.onClick.AddListener(ShowWorld);
+        market?.back?.onClick.AddListener(ShowWorld);
+        enemy?.back?.onClick.AddListener(ShowWorld);
+        warBuilding?.back?.onClick.AddListener(ShowWorld);
+        taskBuilding?.back?.onClick.AddListener(ShowWorld);
         tower?.back?.onClick.AddListener(ShowWorld);
         expedition?.back?.onClick.AddListener(ShowWorld);
-        portal?.uprgade?.upgrade?.buy?.onClick.AddListener(ShowPortalAttack);
+        portal?.uprgade?.upgrade?.buy?.onClick.AddListener(HandlePortalAction);
     }
 
-    private void OnNewDay(ArgPass _)
+    private void OnDayStartedAfterNight(ArgPass _)
     {
         TryPrepareTraderArrival();
     }
@@ -165,18 +213,28 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
 
         if (traderVisual == null)
         {
-            if (traderVisualPrefab == null || traderSpawnPoint == null || traderDestination == null)
+            if (traderVisualPrefab == null)
             {
-                Debug.LogError("WhoHeroes trader: visual prefab, gate spawn or castle destination is not assigned.", this);
+                Debug.LogError("WhoHeroes trader: visual prefab is not assigned.", this);
                 return;
             }
 
             traderVisual = Instantiate(traderVisualPrefab, MainStates.instance == null ? null : MainStates.instance.root);
             traderVisual.name = "WhoHeroes Trader";
-            traderVisual.transform.position = traderSpawnPoint.position;
+            var movementZ = traderSpawnPoint == null
+                ? traderVisual.transform.position.z
+                : traderSpawnPoint.position.z;
+            if (!cycle.TryGetTraderRoad(movementZ, out var spawnPosition,
+                    out var roadRoute, out var moveSpeed))
+            {
+                Debug.LogError("WhoHeroes trader: road from the active night portal to the castle was not found.", this);
+                CleanupTraderVisual();
+                return;
+            }
+            traderVisual.transform.position = spawnPosition;
             traderStateMachine = traderVisual.GetComponent<WhoHeroesTraderStateMachine>();
             if (traderStateMachine == null || !traderStateMachine.Initialize(
-                    traderDestination, MainCycle_WhoHeroes.TraderTravelSeconds(),
+                    roadRoute, moveSpeed,
                     HasPendingPermanentPerk(), OnTraderArrived))
             {
                 Debug.LogError("WhoHeroes trader: king prefab state machine could not be initialized.", this);
@@ -226,6 +284,8 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         if (permanentPerks != null)
             permanentPerks.gameObject.SetActive(false);
         ShowInterior(null);
+        ReleaseCameraState();
+        rootTabs?.ToDefault();
     }
 
     private void CleanupTraderVisual()
@@ -256,35 +316,41 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         if (id == "castle")
         {
             castleRuntime = runtime;
-            ShowInterior(castleInterior);
-            Show(castle, runtime, value => value.Fill(runtime));
+            ShowCastleOverview();
             return;
         }
 
         if (MainCycle_WhoHeroes.CastleUnits.ContainsKey(id))
         {
             ShowInterior(castleInterior);
-            Show(hire, runtime, value => value.Fill(runtime));
+            Show(hire, runtime, value => value.Fill(runtime), true);
+            return;
+        }
+
+        if (MainCycle_WhoHeroes.HasUndefeatedDefender(runtime))
+        {
+            Show(enemy, runtime, value => value.Fill(runtime));
             return;
         }
 
         if (id == "tower")
         {
             ShowInterior(towerInterior);
-            Show(tower, runtime, value => value.Fill(runtime));
+            Show(tower, runtime, value => value.Fill(runtime), true);
             return;
         }
 
         if (id == "expedition")
         {
-            Show(expedition, runtime, value => value.Fill(runtime));
+            ShowInterior(expeditionInterior);
+            Show(expedition, runtime, value => value.Fill(runtime), true);
             return;
         }
 
         if (id == "tavern")
         {
             ShowInterior(tavernInterior);
-            Show(tavern, runtime, value => value.Fill(runtime));
+            Show(tavern, runtime, value => value.Fill(runtime), true);
             return;
         }
 
@@ -298,12 +364,6 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         if (id == "market")
         {
             Show(market, runtime, value => value.Fill());
-            return;
-        }
-
-        if (MainCycle_WhoHeroes.IsAttackableTarget(runtime))
-        {
-            Show(enemy, runtime, value => value.Fill(runtime));
             return;
         }
 
@@ -335,7 +395,8 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
             return;
 
         ShowInterior(castleInterior);
-        Show(hire, args.who, value => value.Fill(args.who));
+        Show(hire, args.who, value => value.Fill(args.who), true);
+        castleTabs?.SwitchTab(CastleHireTabId);
     }
 
     private void ShowCastleOverview()
@@ -343,29 +404,65 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         if (castleRuntime == null && MainStates.instance != null)
             MainStates.instance.all.TryGetValue("castle", out castleRuntime);
         ShowInterior(castleInterior);
-        Show(castle, castleRuntime, value => value.Fill(castleRuntime));
+        Show(castle, castleRuntime, value => value.Fill(castleRuntime), true);
+        castleTabs?.SwitchTab(CastleMainTabId);
     }
 
-    private void ShowPortalAttack()
+    private void HandlePortalAction()
     {
-        if (!MainCycle_WhoHeroes.IsAttackableTarget(portalRuntime))
+        if (MainCycle_WhoHeroes.IsAttackableTarget(portalRuntime))
+        {
+            Show(enemy, portalRuntime, value => value.Fill(portalRuntime));
             return;
-        Show(enemy, portalRuntime, value => value.Fill(portalRuntime));
+        }
+
+        if (MainCycle_WhoHeroes.IsRestorableTarget(portalRuntime))
+            GUILIB.CoreAction(portalRuntime, "upgrade");
+    }
+
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Escape))
+            return;
+
+        ToggleSettings();
+    }
+
+    private void ToggleSettings()
+    {
+        if (rootTabs?[SettingsTabId] == null)
+            return;
+        if (string.Equals(rootTabs.choosen, SettingsTabId, StringComparison.Ordinal))
+            rootTabs.ToDefault();
+        else
+            rootTabs.SwitchTab(SettingsTabId);
     }
 
     private void ShowWorld()
     {
         ShowInterior(null);
+        ReleaseCameraState();
+        rootTabs?.ToDefault();
     }
 
     private void ShowInterior(GameObject target)
     {
+        KeepPersistentHudVisible();
         foreach (var worldRoot in worldRoots)
             if (worldRoot != null)
                 worldRoot.SetActive(target == null);
-        foreach (var interior in new[] { castleInterior, tavernInterior, towerInterior })
+        foreach (var interior in new[] { castleInterior, tavernInterior, towerInterior, expeditionInterior })
             if (interior != null)
                 interior.SetActive(interior == target);
+    }
+
+    private void KeepPersistentHudVisible()
+    {
+        if (mainCanvas != null)
+        {
+            mainCanvas.gameObject.SetActive(true);
+            mainCanvas.enabled = true;
+        }
     }
 
     private void AddWindowGroup(Component component)
@@ -391,7 +488,8 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
             targetGroup = targetGroup.parent;
 
         foreach (var group in windowGroups)
-            if (group != null && group != targetGroup.gameObject)
+            if (group != null && group != targetGroup.gameObject &&
+                (mainScreen == null || group != mainScreen.gameObject))
                 group.SetActive(false);
 
         targetGroup.gameObject.SetActive(true);
@@ -405,9 +503,12 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
             }
         }
         target.gameObject.SetActive(true);
+        KeepPersistentHudVisible();
     }
 
-    private void Show<T>(T target, RObj runtime, Action<T> fill) where T : Component
+    private void Show<T>(T target, RObj runtime, Action<T> fill, bool useManagementPreset = false,
+        float cameraOffsetY = BuildingCameraOffsetY)
+        where T : Component
     {
         if (target == null)
         {
@@ -415,8 +516,197 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
             return;
         }
 
+        if (useManagementPreset)
+        {
+            EnterManagementView();
+            PresentWindow(target, fill);
+            return;
+        }
+
+        EnterBuildingView(runtime, cameraOffsetY, () => PresentWindow(target, fill));
+    }
+
+    private void PresentWindow<T>(T target, Action<T> fill) where T : Component
+    {
         HideOtherGroups(target);
         fill(target);
+    }
+
+    private void CacheDefaultCameraState()
+    {
+        dayCamera = Camera.main;
+        if (dayCamera == null)
+            return;
+        dayCameraInput = dayCamera.GetComponent<BRATViewMapCameraController>();
+    }
+
+    private void EnterManagementView()
+    {
+        if (dayCamera == null)
+            CacheDefaultCameraState();
+        if (dayCamera == null)
+            return;
+
+        SaveCameraState();
+        StopCameraFocus();
+        restoreCameraOnClose = true;
+
+        rootTabs?.SwitchTab(ManagementTabId);
+        dayCamera.transform.position = managementCameraPosition;
+        dayCamera.orthographicSize = managementCameraSize;
+        dayCameraInput?.SetInputBlocked(true);
+    }
+
+    private void EnterBuildingView(RObj runtime, float cameraOffsetY, Action onCameraReady)
+    {
+        if (dayCamera == null)
+            CacheDefaultCameraState();
+        if (dayCamera == null)
+            return;
+
+        var openedFromMap = IsNavigationWindowOpen();
+        SaveCameraState();
+        if (openedFromMap)
+            savedCameraInputBlocked = false;
+        StopCameraFocus();
+        restoreCameraOnClose = false;
+        ShowInterior(null);
+        rootTabs?.SwitchTab(ManagementTabId);
+        dayCameraInput?.SetInputBlocked(true);
+
+        var focus = FindClosestBuildingFocus(runtime?.main?.transform);
+        if (focus == null || UtilsControl.Instance == null)
+        {
+            Debug.LogWarning($"WhoHeroes UI router: camera focus point was not found for '{GUILIB.Id(runtime)}'.", this);
+            onCameraReady?.Invoke();
+            return;
+        }
+
+        var targetPosition = focus.position + Vector3.up * cameraOffsetY;
+        var distance = Vector3.Distance(dayCamera.transform.position, targetPosition);
+        if (distance > 0.001f)
+        {
+            var speed = distance / BuildingCameraTransitionSeconds;
+            UtilsControl.Instance.MoveTo(dayCamera.transform, speed, targetPosition, null, null,
+                useRight: false, ignoreFlip: true);
+        }
+        else
+            dayCamera.transform.position = targetPosition;
+        cameraSizeRoutine = StartCoroutine(ScaleCameraSize(
+            BuildingCameraSize, BuildingCameraTransitionSeconds));
+        buildingWindowRoutine = StartCoroutine(PresentAfterCameraTransition(
+            targetPosition, BuildingCameraSize, onCameraReady));
+    }
+
+    private IEnumerator PresentAfterCameraTransition(Vector3 targetPosition, float targetSize, Action present)
+    {
+        yield return new WaitForSeconds(BuildingCameraTransitionSeconds);
+        dayCamera.transform.position = targetPosition;
+        dayCamera.orthographicSize = targetSize;
+        buildingWindowRoutine = null;
+        present?.Invoke();
+    }
+
+    private bool IsNavigationWindowOpen()
+    {
+        if (mainScreen == null)
+            return false;
+
+        foreach (var slider in mainScreen.GetComponentsInChildren<WindowSlider>(true))
+            if (slider != null && slider.IsOpen &&
+                string.Equals(slider.wtype, "navigation", StringComparison.OrdinalIgnoreCase))
+                return true;
+        return false;
+    }
+
+    private void SaveCameraState()
+    {
+        if (cameraStateSaved || dayCamera == null)
+            return;
+        savedCameraPosition = dayCamera.transform.position;
+        savedCameraSize = dayCamera.orthographicSize;
+        savedCameraInputBlocked = dayCameraInput != null && dayCameraInput.InputBlocked;
+        cameraStateSaved = true;
+    }
+
+    private Transform FindClosestBuildingFocus(Transform building)
+    {
+        if (building == null || buildingFocusRoot == null || buildingFocusRoot.childCount == 0)
+            return null;
+
+        Transform closest = null;
+        var bestDistance = float.PositiveInfinity;
+        for (var index = 0; index < buildingFocusRoot.childCount; index++)
+        {
+            var candidate = buildingFocusRoot.GetChild(index);
+            var distance = Vector2.SqrMagnitude(candidate.position - building.position);
+            if (distance >= bestDistance)
+                continue;
+            closest = candidate;
+            bestDistance = distance;
+        }
+        return closest;
+    }
+
+    private void StopCameraFocus()
+    {
+        if (dayCamera == null)
+            return;
+        var movement = dayCamera.GetComponent<MoveDir>();
+        if (movement?.cr != null && UtilsControl.Instance != null)
+        {
+            UtilsControl.Instance.StopCoroutine(movement.cr);
+            movement.cr = null;
+        }
+        if (cameraSizeRoutine != null)
+        {
+            StopCoroutine(cameraSizeRoutine);
+            cameraSizeRoutine = null;
+        }
+        if (buildingWindowRoutine != null)
+        {
+            StopCoroutine(buildingWindowRoutine);
+            buildingWindowRoutine = null;
+        }
+        dayCamera.name = dayCamera.name.Replace("_move", string.Empty);
+    }
+
+    private IEnumerator ScaleCameraSize(float targetSize, float duration)
+    {
+        var startSize = dayCamera.orthographicSize;
+        for (var elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+        {
+            dayCamera.orthographicSize = Mathf.Lerp(startSize, targetSize, elapsed / duration);
+            yield return null;
+        }
+        dayCamera.orthographicSize = targetSize;
+        cameraSizeRoutine = null;
+    }
+
+    private void ReleaseCameraState()
+    {
+        if (!cameraStateSaved || dayCamera == null)
+            return;
+        if (restoreCameraOnClose)
+        {
+            RestoreCameraState();
+            return;
+        }
+        StopCameraFocus();
+        dayCameraInput?.SetInputBlocked(savedCameraInputBlocked);
+        cameraStateSaved = false;
+    }
+
+    private void RestoreCameraState()
+    {
+        if (!cameraStateSaved || dayCamera == null)
+            return;
+        StopCameraFocus();
+        dayCamera.transform.position = savedCameraPosition;
+        dayCamera.orthographicSize = savedCameraSize;
+        dayCameraInput?.SetInputBlocked(savedCameraInputBlocked);
+        cameraStateSaved = false;
+        restoreCameraOnClose = false;
     }
 
 }

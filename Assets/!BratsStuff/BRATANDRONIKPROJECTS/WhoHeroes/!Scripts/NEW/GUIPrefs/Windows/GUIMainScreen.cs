@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class GUIMainScreen : MonoBehaviour
 {
+    private static readonly string[] SystemBuildingIds =
+    {
+        "castle", "tavern", "tower", "expedition", "market", "settings", "hero", "main_player"
+    };
+
     public TextMeshProUGUI castlelvl;
     public TextMeshProUGUI buildingOwned;
     public TextMeshProUGUI totalArmy;
@@ -108,24 +113,39 @@ public class GUIMainScreen : MonoBehaviour
         if (all == null) return;
         var castle = all.FirstOrDefault(x => GUILIB.IsId(x, "castle"));
         if (castlelvl != null) castlelvl.text = GUILIB.Level(castle).ToString();
-        if (buildingOwned != null) buildingOwned.text = all.Count(x => x.it == ItemType.building && x.GetPar("level") > 0).ToString();
+        if (buildingOwned != null)
+            buildingOwned.text = all.Count(IsCapturedBuilding).ToString();
         if (totalArmy != null)
-        {
-            var roster = GUILIB.PlayerInventory()
-                .Where(x => x != null && x.it == ItemType.monster && x.dbObj != null && x.GetPar("amount") > 0f)
-                .GroupBy(x => x.dbObj.ID)
-                .Select(group => $"{LocalizedName(group.Key)} × {group.Sum(x => Mathf.RoundToInt(x.GetPar("amount")))}");
-            totalArmy.text = string.Join("  ", roster);
-        }
-        if (totalWorkers != null) totalWorkers.text = all.Where(x => x.it == ItemType.building).Sum(x => Mathf.RoundToInt(x.GetPar("workers"))).ToString();
+            totalArmy.text = TotalArmyAmount().ToString();
+        if (totalWorkers != null)
+            totalWorkers.text = all.Where(x => x != null && GUILIB.Level(x) > 0 &&
+                    !string.IsNullOrEmpty(MainCycle_WhoHeroes.MineResourceId(x)))
+                .Sum(x => GUILIB.Level(x)).ToString();
     }
 
-    private static string LocalizedName(string id)
+    private static int TotalArmyAmount()
     {
-        if (ConfigLoader.Instance == null || string.IsNullOrEmpty(id))
-            return id;
-        var localized = ConfigLoader.Instance.GetMeLocale(id.ToLowerInvariant());
-        return string.IsNullOrWhiteSpace(localized) ? id : localized;
+        if (MainStates.instance == null)
+            return 0;
+
+        var owners = new[] { "main_player", "expedition" }
+            .Select(id => MainStates.instance.all.TryGetValue(id, out var owner) ? owner : null)
+            .Where(owner => owner != null);
+        return owners.SelectMany(owner => owner.inventory)
+            .Where(unit => unit != null && unit.it == ItemType.monster && unit.dbObj != null &&
+                           unit.GetPar("amount") > 0f)
+            .Sum(unit => Mathf.RoundToInt(unit.GetPar("amount")));
+    }
+
+    private static bool IsCapturedBuilding(RObj value)
+    {
+        if (value?.dbObj == null || value.main == null || value.it != ItemType.monster || GUILIB.Level(value) <= 0)
+            return false;
+        var id = value.dbObj.ID;
+        return !string.IsNullOrEmpty(id) &&
+               !id.StartsWith("portal", StringComparison.Ordinal) &&
+               !SystemBuildingIds.Contains(id) &&
+               !MainCycle_WhoHeroes.CastleUnits.ContainsKey(id);
     }
 
 }

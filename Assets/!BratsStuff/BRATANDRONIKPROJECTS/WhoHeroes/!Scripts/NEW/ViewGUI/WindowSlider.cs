@@ -15,12 +15,19 @@ public class WindowSlider : MonoBehaviour
 
     private bool isOpen = false;        
     private Vector3 targetPos;           
+    private Vector3 shownLayoutOffset;
+    private Vector3 hiddenLayoutOffset;
+
+    public bool IsOpen => isOpen;
+
+    [Header("Input Lock")]
+    public BRATViewMapCameraController cameraInput;
 
     void Start()
     {
-        
-        targetPos = isOpen ? shownPos.position : hiddenPos.position;
+        RefreshTarget();
         window.position = targetPos;
+        ApplyCameraInputLock();
     }
 
     void Update()
@@ -36,23 +43,58 @@ public class WindowSlider : MonoBehaviour
    
     public void Toggle()
     {
-        isOpen = !isOpen;
-        targetPos = isOpen ? shownPos.position : hiddenPos.position;
-
-        EventManager.INV("slide_window", new ArgPass { what = wtype, num = isOpen ? 1 : 0 });
+        SetOpen(!isOpen);
     }
 
     
     public void Open()
     {
-        isOpen = true;
-        targetPos = shownPos.position;
+        SetOpen(true);
     }
 
    
     public void Hide()
     {
+        SetOpen(false);
+    }
+
+    private void SetOpen(bool value)
+    {
+        if (isOpen == value)
+            return;
+        isOpen = value;
+        RefreshTarget();
+        ApplyCameraInputLock();
+        EventManager.INV("slide_window", new ArgPass { what = wtype, num = isOpen ? 1 : 0 });
+    }
+
+    public void SetVerticalWindowSizeDelta(float heightDelta)
+    {
+        shownLayoutOffset = Vector3.up * (heightDelta * 0.5f);
+        hiddenLayoutOffset = Vector3.down * (heightDelta * 0.5f);
+        RefreshTarget();
+    }
+
+    private void OnDisable()
+    {
+        if (!isOpen)
+            return;
         isOpen = false;
-        targetPos = hiddenPos.position;
+        RefreshTarget();
+        cameraInput?.SetInputBlocked(false);
+        EventManager.INV("slide_window", new ArgPass { what = wtype, num = 0 });
+    }
+
+    private void RefreshTarget()
+    {
+        var target = isOpen ? shownPos : hiddenPos;
+        if (target == null)
+            return;
+        targetPos = target.position + (isOpen ? shownLayoutOffset : hiddenLayoutOffset);
+    }
+
+    private void ApplyCameraInputLock()
+    {
+        cameraInput?.SetInputBlocked(isOpen);
     }
 }

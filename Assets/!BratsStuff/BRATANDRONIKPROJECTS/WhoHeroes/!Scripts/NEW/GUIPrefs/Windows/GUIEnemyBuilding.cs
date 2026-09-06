@@ -14,6 +14,7 @@ public class GUIEnemyBuilding : MonoBehaviour
 
     private void Start()
     {
+        expedition?.inventory?.SetUpInventory();
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         attack?.onClick.AddListener(() => MainCycle_WhoHeroes.Instance?.TryStart(runtime));
         EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
@@ -34,8 +35,16 @@ public class GUIEnemyBuilding : MonoBehaviour
         runtime = value ?? GUILIB.Resolve(building, gameObject);
         if (runtime == null)
             return;
-        general?.Fill(runtime, GUILIB.StringParam(runtime, "building_type"));
-        defender?.Fill(runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster));
+        var guard = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster);
+        var displayId = ResolveDisplayId(runtime);
+        var headerId = guard == null ? displayId : GUILIB.Id(guard);
+        general?.Fill(headerId, GUILIB.Level(runtime), GUILIB.Icon(runtime), ResolveDescriptionId(runtime));
+        if (defender != null)
+        {
+            defender.gameObject.SetActive(guard != null);
+            if (guard != null)
+                defender.Fill(guard);
+        }
         expedition?.FillChoosen("expedition");
         var canAttack = MainCycle_WhoHeroes.Instance != null &&
                         MainCycle_WhoHeroes.Instance.CanStart(runtime);
@@ -45,5 +54,24 @@ public class GUIEnemyBuilding : MonoBehaviour
             var image = attack.GetComponent<Image>();
             if (image != null) image.color = GUILIB.ColorFor(canAttack ? "butred" : "butgrey");
         }
+    }
+
+    private static string ResolveDisplayId(RObj value)
+    {
+        return GUILIB.Id(value);
+    }
+
+    private static string ResolveDescriptionId(RObj value)
+    {
+        var id = GUILIB.Id(value);
+        if (!string.IsNullOrEmpty(MainCycle_WhoHeroes.MineResourceId(value)))
+            return "factory";
+        if (id.StartsWith("portal", System.StringComparison.Ordinal))
+            return "portal_descr";
+        if (MainCycle_WhoHeroes.TryGetBoostStat(id, out _))
+            return "bust";
+        if (!string.IsNullOrEmpty(GUILIB.StringParam(value, "story")))
+            return "dbuildingstory";
+        return "generic_building_descr";
     }
 }

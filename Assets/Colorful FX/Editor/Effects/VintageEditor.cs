@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 // Colorful FX - Unity Asset
 // Copyright (c) 2015 - Thomas Hourdel
 // http://www.thomashourdel.com
@@ -31,3 +32,5 @@ namespace Colorful.Editors
         }
     }
 }
+
+#endif

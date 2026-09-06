@@ -32,6 +32,7 @@ public sealed partial class MainCycle_WhoHeroes
     private float expeditionSavedDayClock;
     private float expeditionBattleStartedAt;
     private bool expeditionSavedAutoAddExp;
+    private bool expeditionSavedOneCast;
     private bool expeditionHasSavedBattleOverrides;
     private bool expeditionCleaningUp;
     private Coroutine expeditionBattleStartRoutine;
@@ -80,7 +81,12 @@ public sealed partial class MainCycle_WhoHeroes
 
     public static bool IsAttackableTarget(RObj target)
     {
-        return target != null && GUILIB.Level(target) <= 0 && target.GetPar(AvailableParam) > 0f &&
+        return HasUndefeatedDefender(target) && target.GetPar(AvailableParam) > 0f;
+    }
+
+    public static bool HasUndefeatedDefender(RObj target)
+    {
+        return target != null && GUILIB.Level(target) <= 0 && !IsRestorableTarget(target) &&
                MainCycle_WhoHeroes.TryGetExpeditionDefense(GUILIB.Id(target), out _);
     }
 
@@ -346,6 +352,14 @@ public sealed partial class MainCycle_WhoHeroes
             if (!DatabaseAll.instance.heroes.ContainsKey(pair.Value.UnitId))
                 continue;
 
+            if (MainCycle_WhoHeroes.IsRestorableTarget(target) || GUILIB.Level(target) > 0)
+            {
+                foreach (var defeated in target.inventory
+                             .Where(value => value != null && value.it == ItemType.monster).ToList())
+                    MainCycle_WhoHeroes.DisposeRuntimeObject(defeated);
+                continue;
+            }
+
             var current = target.inventory.FirstOrDefault(value => value != null && value.it == ItemType.monster);
             if (current != null && current.dbObj != null && current.dbObj.ID == pair.Value.UnitId)
             {
@@ -404,6 +418,7 @@ public sealed partial class MainCycle_WhoHeroes
             overridesViz: ExpeditionBattleVisualOverrides);
         foreach (var ally in allyBattleUnits)
             MainCycle_WhoHeroes.ApplyPermanentPerksToUnit(ally, false);
+        StaggerSpecialSkillCooldowns(allyBattleUnits);
         battleUnits.AddRange(allyBattleUnits);
         battleUnits.AddRange(expeditionBattleSpawner.DoSpawnAny(
             enemies, "enemy", null, null, true,
@@ -487,8 +502,10 @@ public sealed partial class MainCycle_WhoHeroes
         expeditionSavedDayClock = TimeManager.instance == null ? 0f : TimeManager.instance.tm;
         expeditionBattleStartedAt = Time.unscaledTime;
         expeditionSavedAutoAddExp = XDdeath.autoAddExp;
+        expeditionSavedOneCast = XDcombat.oneCast;
         expeditionHasSavedBattleOverrides = true;
         XDdeath.autoAddExp = false;
+        XDcombat.oneCast = true;
 
         expeditionSuspendedCombats.Clear();
         expeditionSuspendedCombats.AddRange(MainStates.instance.combats);
@@ -571,6 +588,7 @@ public sealed partial class MainCycle_WhoHeroes
             return;
 
         XDdeath.autoAddExp = expeditionSavedAutoAddExp;
+        XDcombat.oneCast = expeditionSavedOneCast;
         expeditionHasSavedBattleOverrides = false;
     }
 

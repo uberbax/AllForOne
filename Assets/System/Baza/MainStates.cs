@@ -1930,11 +1930,22 @@ public class MainStates : MonoBehaviour
         
         while (true)
         {
+            var maxStack = Mathf.Max(1, Mathf.RoundToInt(what.dbObj.pars["max_stack"]));
             var a = who.inventory.Find(x =>
                 x.dbObj.ID == what.dbObj.ID && x.shardID == what.shardID && x.upgradePars["amount"] < x.dbObj.pars["max_stack"]);
 
             if (a == null)
             {
+                RObj overflow = null;
+                var amount = Mathf.Max(0, Mathf.RoundToInt(what.GetPar("amount")));
+                if (amount > maxStack)
+                {
+                    overflow = what.Clone();
+                    overflow.SetPar("amount", amount - maxStack);
+                    overflow.owner = null;
+                    what.SetPar("amount", maxStack);
+                }
+
                 if (!overIndex)
                 {
                     var hi = who.GetFreeIndex(what.dbObj.sizeX, what.dbObj.sizeY);
@@ -1958,7 +1969,9 @@ public class MainStates : MonoBehaviour
                     what.owner.inventory.Remove(what);
                 }
                     what.owner = who;
-                return;
+                if (overflow == null)
+                    return;
+                what = overflow;
             }
             else
             {
@@ -2540,6 +2553,17 @@ public class MainStates : MonoBehaviour
             a.SetPar("was_crit", 1);
         
         a.ChangePar("registered_damage", atk);
+
+        if (atk > 0f)
+        {
+            EventManager.INV("unit_damaged", new ArgPass
+            {
+                who = a,
+                who2 = skl.owner,
+                what = skl.dbObj.ID,
+                num = Mathf.Max(1, Mathf.RoundToInt(atk))
+            });
+        }
         
         var dlt = a.GetPar("registered_damage");
         if (dlt < 0)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -24,15 +23,37 @@ public class SoundManager : MonoBehaviour
 
     public void PlayClick()
     {
-        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, mon.GetPar("volume_sound"));
+        PlayClip(click);
     }
 
     public void PlayAny(string sound)
     {
-        if (ResourceHolder.instance.sounds.ContainsKey(sound))
+        if (string.IsNullOrEmpty(sound) || ResourceHolder.instance == null || ResourceHolder.instance.sounds == null ||
+            !ResourceHolder.instance.sounds.TryGetValue(sound, out var clip))
+            return;
+
+        PlayClip(clip);
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        if (clip == null)
+            return;
+
+        var position = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+        AudioSource.PlayClipAtPoint(clip, position, ResolveSoundVolume());
+    }
+
+    private float ResolveSoundVolume()
+    {
+        if (mon != null)
+            return Mathf.Clamp01(mon.GetPar("volume_sound"));
+        if (MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var settings))
         {
-            AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds[sound], Camera.main.transform.position, mon.GetPar("volume_sound"));
+            mon = settings;
+            return Mathf.Clamp01(settings.GetPar("volume_sound"));
         }
+        return Mathf.Clamp01(PlayerPrefs.GetFloat("volume_sound", 1f));
     }
     
     

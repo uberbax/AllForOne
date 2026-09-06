@@ -9,6 +9,9 @@ public class GUISettingWindow : MonoBehaviour
     public Button reset;
     public Button restart;
 
+    private float previousTimeScale = 1f;
+    private bool pausedByWindow;
+
     private void Start()
     {
         SetUp();
@@ -20,14 +23,28 @@ public class GUISettingWindow : MonoBehaviour
         back?.onClick.AddListener(() => gameObject.SetActive(false));
         reset?.onClick.AddListener(() => EventManager.INV(WhoHeroesEvents.ResetRequested, new ArgPass()));
         restart?.onClick.AddListener(() => EventManager.INV(WhoHeroesEvents.RestartRequested, new ArgPass()));
-        quit?.onClick.AddListener(Application.Quit);
+        quit?.onClick.AddListener(SaveAndQuit);
         settings?.SetUp();
         EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
     }
 
     private void OnEnable()
     {
+        if (Application.isPlaying && !pausedByWindow)
+        {
+            previousTimeScale = Time.timeScale;
+            Time.timeScale = 0f;
+            pausedByWindow = true;
+        }
         Fill();
+    }
+
+    private void OnDisable()
+    {
+        if (!pausedByWindow)
+            return;
+        Time.timeScale = previousTimeScale;
+        pausedByWindow = false;
     }
 
     public void Fill()
@@ -38,6 +55,12 @@ public class GUISettingWindow : MonoBehaviour
     private void OnRefresh(ArgPass _)
     {
         Fill();
+    }
+
+    public void SaveAndQuit()
+    {
+        MainCycle_WhoHeroes.Instance?.SaveNow();
+        Application.Quit();
     }
 
     private void OnDestroy()

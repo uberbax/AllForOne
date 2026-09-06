@@ -2037,7 +2037,9 @@ public class ConfigLoader : MonoBehaviour
                 {
                     Debug.Log(mm);
                     Debug.Log(ResourceHolder.instance);
-                    mm.icon = ResourceHolder.instance.GetMisc(tt[j]);
+                    mm.icon = ResourceHolder.instance != null
+                        ? ResourceHolder.instance.GetMisc(tt[j])
+                        : null;
                 }
                 else if (columns[j].ToUpper() == "MARKETID")
                 {
@@ -2156,7 +2158,9 @@ public class ConfigLoader : MonoBehaviour
                 }
                 else if (columns[j].ToUpper() == "ICON")
                 {
-                    mm.icon = ResourceHolder.instance.GetMisc(tt[j]);
+                    mm.icon = ResourceHolder.instance != null
+                        ? ResourceHolder.instance.GetMisc(tt[j])
+                        : null;
                 }
                 else if (columns[j].ToUpper() == "MARKETID")
                 {

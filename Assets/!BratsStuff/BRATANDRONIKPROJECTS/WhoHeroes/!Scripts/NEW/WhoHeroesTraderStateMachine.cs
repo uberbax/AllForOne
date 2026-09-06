@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class WhoHeroesTraderStateMachine : ComponentBehavior
@@ -15,19 +16,23 @@ public sealed class WhoHeroesTraderStateMachine : ComponentBehavior
 
     [SerializeField] private TraderState state = TraderState.Inactive;
 
-    private Transform destination;
-    private float travelSeconds;
+    private List<(float, float, float)> roadRoute;
+    private float moveSpeed;
     private Action arrived;
 
     public TraderState State => state;
 
-    public bool Initialize(Transform castleDestination, float configuredTravelSeconds, bool waitForPerk, Action onArrived)
+    public bool Initialize(
+        List<(float, float, float)> route,
+        float configuredMoveSpeed,
+        bool waitForPerk,
+        Action onArrived)
     {
-        destination = castleDestination;
-        travelSeconds = Mathf.Max(0.01f, configuredTravelSeconds);
+        roadRoute = route;
+        moveSpeed = configuredMoveSpeed;
         arrived = onArrived;
 
-        if (destination == null || UtilsControl.Instance == null)
+        if (roadRoute == null || roadRoute.Count == 0 || moveSpeed <= 0f || UtilsControl.Instance == null)
         {
             Cancel();
             return false;
@@ -45,9 +50,7 @@ public sealed class WhoHeroesTraderStateMachine : ComponentBehavior
             return;
 
         state = TraderState.MovingToCastle;
-        UtilsControl.Instance.MoveTo(
-            transform, 1f, destination.position, OnArrived, destination,
-            z0: 0f, useRight: false, travelTm: travelSeconds);
+        UtilsControl.Instance.MoveToMany(transform, moveSpeed, roadRoute, 0, OnArrived);
     }
 
     public void WaitForPerk()

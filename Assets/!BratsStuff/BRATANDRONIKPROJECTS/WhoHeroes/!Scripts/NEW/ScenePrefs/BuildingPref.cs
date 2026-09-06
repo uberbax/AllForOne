@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BuildingPref : MonoBehaviour
 {
-    private const int RuntimeBindTimeoutFrames = 600;
-
     public WhoHeroesObjectRef build = new WhoHeroesObjectRef();
     public WhoHeroesObjectRepresent workers = new WhoHeroesObjectRepresent();
     public bool workRepresent;
@@ -18,6 +16,7 @@ public class BuildingPref : MonoBehaviour
     private bool blockUpdate;
     private bool enemyPortal;
     private bool ignoreClick;
+    private bool mapWindowOpen;
     private RObj runtime;
 
     private void Awake()
@@ -34,6 +33,7 @@ public class BuildingPref : MonoBehaviour
         EventManager.SUB("new_day", OnNewDay);
         EventManager.SUB("new_night", OnNewNight);
         EventManager.SUB("block_movement", OnBlockMovement);
+        EventManager.SUB("slide_window", OnSlideWindow);
         StartCoroutine(BindWhenReady());
     }
 
@@ -59,12 +59,19 @@ public class BuildingPref : MonoBehaviour
         ignoreClick = value != null && (value.num != 0 || value.what == "true");
     }
 
+    private void OnSlideWindow(ArgPass value)
+    {
+        if (value != null && string.Equals(value.what, "navigation", StringComparison.OrdinalIgnoreCase))
+            mapWindowOpen = value.num != 0;
+    }
+
     private void OnDestroy()
     {
         EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
         EventManager.UNSUB("new_day", OnNewDay);
         EventManager.UNSUB("new_night", OnNewNight);
         EventManager.UNSUB("block_movement", OnBlockMovement);
+        EventManager.UNSUB("slide_window", OnSlideWindow);
     }
 
     private IEnumerator BindWhenReady()
@@ -73,17 +80,13 @@ public class BuildingPref : MonoBehaviour
             yield return null;
         ValidateConfiguration();
 
-        for (var frame = 0; runtime == null && frame < RuntimeBindTimeoutFrames; frame++)
+        while (runtime == null)
         {
             runtime = GUILIB.Resolve(build, gameObject);
             if (runtime == null)
                 yield return null;
         }
 
-        if (runtime == null)
-            Debug.LogError(
-                $"WhoHeroes scene state '{build?.id}' was not created by AddedObject within {RuntimeBindTimeoutFrames} frames.",
-                this);
         Sync();
     }
 
@@ -108,7 +111,8 @@ public class BuildingPref : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (ignoreClick || (MainStates.instance != null && MainStates.instance.isPaused))
+        if (GUIStartScreen.BlocksSceneInput || ignoreClick || mapWindowOpen ||
+            (MainStates.instance != null && MainStates.instance.isPaused))
             return;
         runtime ??= GUILIB.Resolve(build, gameObject);
         GUILIB.Emit(ignoreMove ? WhoHeroesEvents.ObserveBuilding : WhoHeroesEvents.ViewBuilding,

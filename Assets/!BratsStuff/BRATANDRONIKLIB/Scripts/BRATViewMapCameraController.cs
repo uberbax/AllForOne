@@ -17,6 +17,9 @@ public sealed class BRATViewMapCameraController : MonoBehaviour
 
     private Camera controlledCamera;
     private bool isDragging;
+    private bool inputBlocked;
+
+    public bool InputBlocked => inputBlocked;
 
     private void Awake()
     {
@@ -35,7 +38,7 @@ public sealed class BRATViewMapCameraController : MonoBehaviour
 
     private void Update()
     {
-        if (UtilsControl.Instance == null)
+        if (inputBlocked || UtilsControl.Instance == null)
             return;
 
         if (Application.isMobilePlatform)
@@ -55,6 +58,13 @@ public sealed class BRATViewMapCameraController : MonoBehaviour
     }
 
     private void OnDisable() => isDragging = false;
+
+    public void SetInputBlocked(bool blocked)
+    {
+        inputBlocked = blocked;
+        if (blocked)
+            isDragging = false;
+    }
 
     private void ClampPosition()
     {

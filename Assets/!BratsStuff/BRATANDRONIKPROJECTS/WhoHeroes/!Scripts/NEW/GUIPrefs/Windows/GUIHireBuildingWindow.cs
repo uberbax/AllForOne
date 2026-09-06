@@ -15,6 +15,7 @@ public class GUIHireBuildingWindow : MonoBehaviour
     public Button back;
     private RObj runtime;
     private RObj offered;
+    private RObj preview;
 
     private void Start()
     {
@@ -41,7 +42,7 @@ public class GUIHireBuildingWindow : MonoBehaviour
             return;
         var level = GUILIB.Level(runtime, building.level);
         offered = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster && x.GetPar("amount") > 0f);
-        defender?.Fill(offered);
+        defender?.Fill(offered ?? GetConfiguredUnitPreview());
         if (offered == null)
             defender?.unit?.hire?.Fill(new List<Bon>(), false, true, false, "hire");
         general?.Fill(runtime, GUILIB.StringParam(runtime, "building_type"));
@@ -50,5 +51,16 @@ public class GUIHireBuildingWindow : MonoBehaviour
         upgrade?.Fill(GUILIB.Price(runtime), maxLevel > 0 && level >= maxLevel, false, true,
             level == 0 ? "restore" : "upgrade");
         if (offered != null) grade?.Fill(level, offered, Mathf.Max(1, offered.GetPar("level_multiplier")));
+    }
+
+    private RObj GetConfiguredUnitPreview()
+    {
+        if (DatabaseAll.instance == null ||
+            !MainCycle_WhoHeroes.CastleUnits.TryGetValue(GUILIB.Id(runtime), out var unitId))
+            return null;
+
+        if (preview?.dbObj == null || preview.dbObj.ID != unitId)
+            preview = DatabaseAll.instance.CreateMonster(unitId, 0, false, false);
+        return preview;
     }
 }

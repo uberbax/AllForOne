@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using PlasticGui.WorkspaceWindow.BranchExplorer;
 using UnityEngine;
 
 public class XDcoll : ComponentBehavior

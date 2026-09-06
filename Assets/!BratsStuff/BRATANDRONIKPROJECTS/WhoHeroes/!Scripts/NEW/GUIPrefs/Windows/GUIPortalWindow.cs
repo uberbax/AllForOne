@@ -55,12 +55,14 @@ public class GUIPortalWindow : MonoBehaviour
         var level = GUILIB.Level(runtime, building.level);
         var enter = runtime.dbObj?.pars.ContainsKey("enter") == true ? runtime.GetPar("enter") > 0 : !building.id.Contains("out");
         var portalId = enter ? "portalin" : "portalout";
-        general?.Fill("portal", level, GUILIB.Icon(portalId), "portal");
+        var displayPortal = ResolveEntryPortal(runtime);
+        general?.Fill(GUILIB.Id(displayPortal), level, GUILIB.Icon(portalId), "portal_descr");
         outclosed?.SetActive(!enter && level == 0);
         var attackable = MainCycle_WhoHeroes.IsAttackableTarget(runtime);
+        var restorable = MainCycle_WhoHeroes.IsRestorableTarget(runtime);
         if (uprgade != null)
         {
-            uprgade.gameObject.SetActive(attackable);
+            uprgade.gameObject.SetActive(attackable || restorable);
             if (attackable)
             {
                 var blocked = MainCycle_WhoHeroes.Instance == null ||
@@ -68,6 +70,11 @@ public class GUIPortalWindow : MonoBehaviour
                 uprgade.Fill(new List<Bon>(), block: blocked, showRestriction: false,
                     head: "attack", activeButtonColor: "butred");
                 uprgade.upgrade?.costList?.SetActive(false);
+            }
+            else if (restorable)
+            {
+                uprgade.Fill(GUILIB.Price(runtime), false,
+                    !MainCycle_WhoHeroes.IsManagementActionAllowed("upgrade"), true, "restore");
             }
         }
 
@@ -176,6 +183,9 @@ public class GUIPortalWindow : MonoBehaviour
     {
         if (string.IsNullOrEmpty(id))
             return MainCycle_WhoHeroes.Text("none");
+        var projectText = MainCycle_WhoHeroes.Text(id);
+        if (!string.IsNullOrWhiteSpace(projectText))
+            return projectText;
         var key = id.ToLowerInvariant();
         return ConfigLoader.Instance != null && ConfigLoader.Instance.doctLoc.ContainsKey(key)
             ? ConfigLoader.Instance.GetMeLocale(key)

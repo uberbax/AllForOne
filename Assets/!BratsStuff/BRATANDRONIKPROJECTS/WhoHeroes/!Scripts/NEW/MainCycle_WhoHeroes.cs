@@ -236,6 +236,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
     [SerializeField] private BattleController nightBattleController;
     [SerializeField] private Transform nightPrinceSpawn;
     [SerializeField] private Transform nightCastleGate;
+    [SerializeField] private Transform nightCameraTarget;
     [SerializeField] private List<Transform> nightDefenseRows = new List<Transform>();
     [SerializeField, Min(0.1f)] private float nightFormationUnitSpacing = 0.55f;
     [SerializeField, Min(0.1f)] private float nightFormationShiftSpeed = 3f;
@@ -244,7 +245,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
     [SerializeField, Min(0.1f)] private float nightCastleGateRadius = 0.75f;
     [SerializeField] private Camera nightCamera;
     [SerializeField] private BRATViewMapCameraController nightViewMapCameraController;
-    [SerializeField, Min(0.1f)] private float nightCameraSize = 5f;
+    [SerializeField, Min(0.1f)] private float nightCameraSize = 4f;
 
     [Header("Run state")]
     [SerializeField] private WhoHeroesPhase phase = WhoHeroesPhase.Bootstrap;
@@ -272,7 +273,12 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
     private readonly List<PendingDelivery> pendingDeliveries = new List<PendingDelivery>();
     private readonly HashSet<string> reportedPortalConfigErrors = new HashSet<string>(StringComparer.Ordinal);
     private readonly HashSet<string> reportedEconomyErrors = new HashSet<string>(StringComparer.Ordinal);
+    private readonly HashSet<string> capturedTargetIds = new HashSet<string>(StringComparer.Ordinal);
     private Transform deliveryTarget;
+    private Vector3 deliveryResourceIconLocalPosition = new Vector3(0f, 0.42f, -0.1f);
+    private Vector2 deliveryResourceIconWorldSize = new Vector2(0.06f, 0.06f);
+    private int deliveryResourceIconSortingLayerId;
+    private int deliveryResourceIconSortingOrder;
     private WhoHeroesRunState pendingRunSnapshot;
     private bool restoringSavedRun;
     private bool runSnapshotApplied;
@@ -284,9 +290,11 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
     private sealed class PendingDelivery
     {
+        public RObj mine;
         public string resourceId;
         public int amount;
         public GameObject carrier;
+        public GameObject sourceResourceIcon;
         public GameObject resourceIcon;
         public WhoHeroesCarrierStateMachine stateMachine;
         public bool settled;
@@ -304,15 +312,30 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         : phase == WhoHeroesPhase.Night || phase == WhoHeroesPhase.GameOver ? 1f : 0f;
     public bool ManagementLocked => !initialized || phase != WhoHeroesPhase.Day;
     public bool TraderAvailableToday => initialized && phase == WhoHeroesPhase.Day &&
-                                        dayNumber >= MainCycle_WhoHeroes.TraderStartNight() &&
+                                        nightNumber >= MainCycle_WhoHeroes.TraderStartNight() &&
                                         (ModelStatistics.instance == null ||
                                          ModelStatistics.instance.GetStatValue(TraderCompletedDayStat, false) != dayNumber);
     public IReadOnlyList<Bon> NightWaveSnapshot => nightWaveSnapshot;
+
+    public float GetMineProductionProgress01(RObj mine)
+    {
+        if (mine == null || phase != WhoHeroesPhase.Day || GUILIB.Level(mine) <= 0)
+            return 0f;
+        foreach (var delivery in pendingDeliveries)
+            if (delivery.mine == mine && !delivery.settled && delivery.stateMachine != null &&
+                delivery.stateMachine.State == WhoHeroesCarrierStateMachine.CarrierState.ToMine)
+                return 1f;
+        var interval = mine.GetPar("timer");
+        var nextProduction = mine.GetPar(ProductionNextParam);
+        if (interval <= 0f || nextProduction <= 0f)
+            return 0f;
+        return Mathf.Clamp01(1f - Mathf.Max(0f, nextProduction - DayElapsedSeconds) / interval);
+    }
     public IReadOnlyDictionary<RObj, FormatBattles> NightBattleSnapshot => nightBattleSnapshot;
     public int ActiveNightPortalCount => nightBattleSnapshot.Count;
     public int ForecastNightNumber => phase == WhoHeroesPhase.Day ? nightNumber + 1 : nightNumber;
     public RObj NextLockedPortal => portalProgressionReady
-        ? portalProgression.FirstOrDefault(value => GUILIB.Level(value) <= 0)
+        ? portalProgression.FirstOrDefault(value => GUILIB.Level(value) <= 0 && !IsRestorableTarget(value))
         : null;
 
     private void Awake()
@@ -339,6 +362,12 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
     private void Update()
     {
+        if (!initialized && ConfigLoader.parseEnded)
+        {
+            InitializeRuntime();
+            TryAutoStart();
+        }
+
         UpdateExpeditionOrchestration();
         UpdateNightOrchestration();
         if (initialized && !castleShopReady)
@@ -347,6 +376,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             TryInitializeTavernShop();
         if (runSaveDirty && runSnapshotApplied && Time.unscaledTime >= nextRunSaveTime)
             SaveRunSnapshot();
+
+        if (phase == WhoHeroesPhase.Day && Input.GetKeyDown(KeyCode.N))
+            ForceNight();
 
         if (phase == WhoHeroesPhase.Day)
         {
@@ -382,13 +414,15 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         if (!InitializeRuntime() || phase == WhoHeroesPhase.GameOver)
             return;
 
-        if (phase == WhoHeroesPhase.Night)
+        var startedAfterNight = phase == WhoHeroesPhase.Night;
+        if (startedAfterNight)
         {
             dayNumber++;
             ClearNightCheckpoint();
         }
 
         phase = WhoHeroesPhase.Day;
+        SetPlayerAnchorRenderers(false);
         ResetClock(0f, true);
         lastPublishedSecond = -1;
 
@@ -404,6 +438,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             RestorePrinceHealth();
 
         PublishPhase(NewDayEvent);
+        if (startedAfterNight)
+            EventManager.INV(WhoHeroesEvents.DayStartedAfterNight,
+                new ArgPass { num = dayNumber, what = dayNumber.ToString() });
         PublishDayProgress(true);
     }
 
@@ -415,6 +452,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         SettleCompletedDay();
         phase = WhoHeroesPhase.Night;
+        SetPlayerAnchorRenderers(true);
         TimeManager.instance.spd = 0f;
         nightNumber++;
         SaveNightCheckpoint();
@@ -486,6 +524,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         var created = MainStates.instance.AddItem(player, resourceId, amount);
         if (created != null && created.owner == null && created.GetPar("amount") <= 0f)
             DisposeRuntimeObject(created);
+        UIfiller.GlobalRefresh();
         EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { num = amount, what = resourceId });
         return true;
     }
@@ -525,6 +564,27 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             Destroy(value.main);
     }
 
+    private static void StaggerSpecialSkillCooldowns(IReadOnlyList<RObj> units)
+    {
+        if (units == null)
+            return;
+
+        foreach (var group in units.Where(value => value?.dbObj != null)
+                     .GroupBy(value => value.dbObj.ID, StringComparer.Ordinal))
+        {
+            var groupUnits = group.ToList();
+            for (var index = 0; index < groupUnits.Count; index++)
+            {
+                foreach (var skill in groupUnits[index].actSkills.Where(value => value?.dbObj != null &&
+                             !value.dbObj.ID.StartsWith("basic_", StringComparison.Ordinal)))
+                {
+                    var cooldown = Mathf.Max(0f, skill.GetPar("cooldown"));
+                    skill.SetPar("cd", cooldown * index / Mathf.Max(1, groupUnits.Count));
+                }
+            }
+        }
+    }
+
     public bool TryRegisterTerritoryOpened(RObj portal)
     {
         if (ManagementLocked || !portalProgressionReady || portal == null ||
@@ -532,13 +592,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             GUILIB.Level(portal) > 0)
             return false;
 
-        if (!TryExecuteCaptureDynamic(portal))
-            return false;
+        capturedTargetIds.Add(portal.RID);
         SetAvailable(portal, false);
-        SyncExitPortal(portal, true);
-        MakeTerritoryAvailable(portal);
-        MakeNextPortalAvailable();
-        BuildNightWaveSnapshot();
         EventManager.INV(WhoHeroesEvents.PortalCaptured, new ArgPass
         {
             who = portal,
@@ -557,11 +612,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             GUILIB.Level(pointOfInterest) > 0)
             return false;
 
-        if (!TryExecuteCaptureDynamic(pointOfInterest))
-            return false;
+        capturedTargetIds.Add(pointOfInterest.RID);
         SetAvailable(pointOfInterest, false);
-        if (TryGetMineDefinition(pointOfInterest, out _, out _))
-            ResetMineProduction(pointOfInterest, DayElapsedSeconds);
         EventManager.INV(WhoHeroesEvents.PointOfInterestCaptured, new ArgPass
         {
             who = pointOfInterest,
@@ -569,25 +621,37 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             num = 1
         });
         EventManager.INV(WhoHeroesEvents.Refresh, new ArgPass { who = pointOfInterest });
-        ApplyCapturedBoostsToCurrentRun();
         MarkRunSaveDirty();
         return true;
     }
 
-    private bool TryExecuteCaptureDynamic(RObj target)
+    public static bool IsRestorableTarget(RObj target)
     {
-        if (target?.dynamic == null || MainStates.instance == null ||
-            !string.Equals(target.dynamic.id, CaptureDynamicId, StringComparison.Ordinal))
-        {
-            Debug.LogError($"WhoHeroes capture: target '{GUILIB.Id(target)}' has no configured Minimus DYNAMIC.", this);
-            return false;
-        }
+        return target != null && GUILIB.Level(target) <= 0 &&
+               Instance != null && Instance.capturedTargetIds.Contains(target.RID);
+    }
 
-        MainStates.instance.ExecuteDone(target.dynamic, true, target);
-        if (GUILIB.Level(target) != 1)
+    public bool TryFinalizeRestoration(RObj target)
+    {
+        if (target == null || GUILIB.Level(target) <= 0 || !capturedTargetIds.Contains(target.RID))
             return false;
 
         ClearCaptureDynamic(target);
+        SetAvailable(target, false);
+        if (IsEnterPortal(target))
+        {
+            SyncExitPortal(target, true);
+            MakeTerritoryAvailable(target);
+            MakeNextPortalAvailable();
+            BuildNightWaveSnapshot();
+        }
+        else
+        {
+            if (TryGetMineDefinition(target, out _, out _))
+                ResetMineProduction(target, DayElapsedSeconds);
+            ApplyCapturedBoostsToCurrentRun();
+        }
+        MarkRunSaveDirty();
         return true;
     }
 
@@ -604,10 +668,10 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
     private void OnGameStart(ArgPass _)
     {
+        gameStartRequested = true;
         if (!InitializeRuntime())
             return;
 
-        gameStartRequested = true;
         TryStartRequestedGame();
     }
 
@@ -656,6 +720,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         {
             initialized = true;
             RestoreOrInitializeRunState();
+            SetPlayerAnchorRenderers(phase == WhoHeroesPhase.Night);
             ApplyPermanentPerksToCurrentRun();
             RefreshOnboardingTasks();
             StartPortalProgressionInitialization();
@@ -696,6 +761,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         initialized = true;
         RestoreOrInitializeRunState();
+        SetPlayerAnchorRenderers(phase == WhoHeroesPhase.Night);
         ApplyPermanentPerksToCurrentRun();
         RefreshOnboardingTasks();
         StartPortalProgressionInitialization();
@@ -864,8 +930,6 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             !MainStates.instance.all.TryGetValue(MainCycle_WhoHeroes.StartingCastleBuildingId, out var building))
             return;
 
-        if (GUILIB.Level(building) <= 0)
-            SetExactLevel(building, 1);
         if (player.inventory.Any(value => value?.dbObj != null &&
                 value.dbObj.ID == MainCycle_WhoHeroes.StartingUnitId && value.GetPar("amount") > 0f))
             return;
@@ -1107,6 +1171,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             return;
 
         RemoveSpentOffers(tavern);
+        var activeOffers = tavern.inventory.Where(IsActiveTavernOffer).ToList();
+        for (var index = activeOffers.Count - 1; index >= MainCycle_WhoHeroes.TavernOfferCount; index--)
+            DisposeRuntimeObject(activeOffers[index]);
         foreach (var existing in tavern.inventory.Where(IsActiveTavernOffer))
             ConfigureUnitOffer(existing);
         if (MainCycle_WhoHeroes.TavernUnits.Count == 0)
@@ -1119,7 +1186,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         var selected = ModelSet.GetMeNonRepeat(available, Mathf.Min(missingCount, available.Count));
         foreach (var id in selected)
         {
-            var offer = DatabaseAll.instance.CreateMonster(id, 1, false, false);
+            var offer = DatabaseAll.instance.CreateMonster(
+                id, MainCycle_WhoHeroes.TavernUnitAmount(id), false, false);
             if (!ConfigureUnitOffer(offer))
                 break;
             MainStates.instance.AddItem(tavern, offer);
@@ -1143,7 +1211,11 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         var paid = false;
         MainStates.instance.Buy(MainCycle_WhoHeroes.TavernRerollPrice(), null, () => paid = true);
         if (!paid)
+        {
+            EventManager.INV(WhoHeroesEvents.ActionFailed,
+                new ArgPass { who = tavern, what = "reroll" });
             return false;
+        }
 
         for (var index = tavern.inventory.Count - 1; index >= 0; index--)
         {
@@ -1311,6 +1383,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
                 ResetMineProduction(mine, DayElapsedSeconds);
         }
 
+        CacheDeliveryResourceIconStyle();
         ApplyCapturedBoostsToCurrentRun();
         UpdateMineWorkers();
         economyReady = mines.Count > 0;
@@ -1422,11 +1495,27 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             return false;
 
         deliverySpawners.TryGetValue(mine.RID, out var spawner);
-        var pickupTarget = spawner == null ? mine.main?.transform : spawner.transform;
-        if (pickupTarget == null)
+        var pickupTarget = mine.main?.transform;
+        var routeRoot = FindDeliveryRoute(mine, resourceId);
+        if (pickupTarget == null || routeRoot == null || routeRoot.childCount == 0)
+        {
+            ReportEconomyError(mine.RID + "_route",
+                $"WhoHeroes economy: road route for '{mine.RID}' was not found under Transforms/Paths.");
+            return false;
+        }
+
+        var carrierSpawn = spawner == null
+            ? FindRouteEndpointFarthestFrom(routeRoot, pickupTarget.position)
+            : spawner.transform;
+        var carrierDestination = spawner == null ? carrierSpawn : deliveryTarget;
+        if (carrierSpawn == null || carrierDestination == null)
             return false;
 
-        var carrier = CreateCarrierVisual(mine, resourceId);
+        var movementZ = carrierSpawn.position.z;
+        var routeToMine = BuildDeliveryRoute(routeRoot, carrierSpawn.position, movementZ);
+        var routeToCastle = BuildDeliveryRoute(routeRoot, pickupTarget.position, movementZ);
+
+        var carrier = CreateCarrierVisual(mine, carrierSpawn, resourceId);
         if (carrier == null)
         {
             ReportEconomyError(mine.RID + "_carrier",
@@ -1447,14 +1536,18 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         var delivery = new PendingDelivery
         {
+            mine = mine,
             resourceId = resourceId,
             amount = amount,
             carrier = carrier,
+            sourceResourceIcon = CreateBuildingResourceIcon(mine, resourceId),
             resourceIcon = CreateCarrierResourceIcon(carrier, resourceId),
             stateMachine = carrier.GetComponent<WhoHeroesCarrierStateMachine>()
         };
         if (delivery.stateMachine == null)
         {
+            if (delivery.sourceResourceIcon != null)
+                Destroy(delivery.sourceResourceIcon);
             Destroy(carrier);
             ReportEconomyError("keeper_state_machine",
                 "WhoHeroes economy: keeper prefab has no WhoHeroesCarrierStateMachine.");
@@ -1463,10 +1556,13 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         pendingDeliveries.Add(delivery);
         if (!delivery.stateMachine.Initialize(
-                pickupTarget, deliveryTarget, delivery.resourceIcon, speed,
+                pickupTarget, carrierDestination, delivery.sourceResourceIcon, delivery.resourceIcon,
+                routeToMine, routeToCastle, speed,
                 () => CompleteDelivery(delivery), fastForward))
         {
             pendingDeliveries.Remove(delivery);
+            if (delivery.sourceResourceIcon != null)
+                Destroy(delivery.sourceResourceIcon);
             Destroy(carrier);
             ReportEconomyError("keeper_state_machine_init",
                 "WhoHeroes economy: keeper state machine could not be initialized.");
@@ -1475,16 +1571,16 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         return true;
     }
 
-    private GameObject CreateCarrierVisual(RObj mine, string resourceId)
+    private GameObject CreateCarrierVisual(RObj mine, Transform carrierSpawn, string resourceId)
     {
-        if (mine?.main == null || deliveryTarget == null || deliveryCarrierPrefab == null)
+        if (mine?.main == null || carrierSpawn == null || deliveryCarrierPrefab == null)
             return null;
 
         var parent = MainStates.instance?.root;
         var carrier = Instantiate(deliveryCarrierPrefab, parent);
         carrier.name = $"WhoHeroes Carrier {resourceId}";
         carrier.SetActive(true);
-        carrier.transform.position = deliveryTarget.position;
+        carrier.transform.position = carrierSpawn.position;
         foreach (var collider in carrier.GetComponentsInChildren<Collider2D>(true))
             collider.enabled = false;
         return carrier;
@@ -1506,27 +1602,201 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         }
     }
 
-    private static GameObject CreateCarrierResourceIcon(GameObject carrier, string resourceId)
+    private void CacheDeliveryResourceIconStyle()
+    {
+        var template = mines
+            .Where(value => value?.main != null)
+            .Select(value => value.main.transform.Find("resource"))
+            .FirstOrDefault(value => value != null && value.GetComponent<SpriteRenderer>() != null);
+        if (template == null)
+            return;
+
+        var renderer = template.GetComponent<SpriteRenderer>();
+        deliveryResourceIconLocalPosition = template.localPosition;
+        deliveryResourceIconWorldSize = renderer.bounds.size;
+        deliveryResourceIconSortingLayerId = renderer.sortingLayerID;
+        deliveryResourceIconSortingOrder = renderer.sortingOrder;
+    }
+
+    private Transform FindDeliveryRoute(RObj mine, string resourceId)
+    {
+        if (mine?.main == null || expeditionPathsRoot == null)
+            return null;
+
+        for (var islandIndex = 0; islandIndex < expeditionPathsRoot.childCount; islandIndex++)
+        {
+            var island = expeditionPathsRoot.GetChild(islandIndex);
+            if (!HasNamedAncestor(mine.main.transform, island.name))
+                continue;
+
+            for (var routeIndex = 0; routeIndex < island.childCount; routeIndex++)
+            {
+                var route = island.GetChild(routeIndex);
+                if (string.Equals(route.name, resourceId, StringComparison.OrdinalIgnoreCase))
+                    return route;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool HasNamedAncestor(Transform value, string name)
+    {
+        for (var current = value; current != null; current = current.parent)
+            if (string.Equals(current.name, name, StringComparison.OrdinalIgnoreCase))
+                return true;
+        return false;
+    }
+
+    private static Transform FindRouteEndpointFarthestFrom(Transform route, Vector3 target)
+    {
+        if (route == null || route.childCount == 0)
+            return null;
+        var first = route.GetChild(0);
+        var last = route.GetChild(route.childCount - 1);
+        return Vector3.SqrMagnitude(first.position - target) >= Vector3.SqrMagnitude(last.position - target)
+            ? first
+            : last;
+    }
+
+    private static List<(float, float, float)> BuildDeliveryRoute(
+        Transform route, Vector3 start, float movementZ)
+    {
+        var result = new List<(float, float, float)>();
+        if (route == null || route.childCount == 0)
+            return result;
+
+        var firstDistance = Vector3.SqrMagnitude(route.GetChild(0).position - start);
+        var lastDistance = Vector3.SqrMagnitude(route.GetChild(route.childCount - 1).position - start);
+        var forward = firstDistance <= lastDistance;
+        for (var index = 0; index < route.childCount; index++)
+        {
+            var waypoint = route.GetChild(forward ? index : route.childCount - 1 - index).position;
+            result.Add((waypoint.x, waypoint.y, movementZ));
+        }
+
+        return result;
+    }
+
+    public bool TryGetTraderRoad(
+        float movementZ,
+        out Vector3 spawnPosition,
+        out List<(float, float, float)> roadRoute,
+        out float moveSpeed)
+    {
+        spawnPosition = Vector3.zero;
+        roadRoute = null;
+        moveSpeed = ConfigLoader.GetMetaParamValue("global_move") / Mathf.Max(1f, carrierSpeedDivisor);
+        if (!portalProgressionReady || expeditionPathsRoot == null || moveSpeed <= 0f)
+            return false;
+
+        var sourcePortal = portalProgression.FirstOrDefault(value => value?.main != null &&
+            GUILIB.Level(value) > 0 && nightBattleSnapshot.ContainsKey(value));
+        if (sourcePortal == null)
+            return false;
+
+        Transform selectedRoute = null;
+        Transform selectedEndpoint = null;
+        var bestDistance = float.PositiveInfinity;
+        foreach (Transform island in expeditionPathsRoot)
+        foreach (Transform route in island)
+        {
+            if (route.childCount == 0)
+                continue;
+            foreach (var endpoint in new[] { route.GetChild(0), route.GetChild(route.childCount - 1) })
+            {
+                var distance = Vector2.SqrMagnitude(endpoint.position - sourcePortal.main.transform.position);
+                if (distance >= bestDistance)
+                    continue;
+                bestDistance = distance;
+                selectedRoute = route;
+                selectedEndpoint = endpoint;
+            }
+        }
+
+        if (selectedRoute == null || selectedEndpoint == null || bestDistance > 1f)
+            return false;
+        spawnPosition = selectedEndpoint.position;
+        spawnPosition.z = movementZ;
+        roadRoute = BuildDeliveryRoute(selectedRoute, selectedEndpoint.position, movementZ);
+        return roadRoute.Count > 0;
+    }
+
+    private GameObject CreateCarrierResourceIcon(GameObject carrier, string resourceId)
+    {
+        if (carrier == null)
+            return null;
+        var renderer = carrier.GetComponentsInChildren<SpriteRenderer>(true)
+            .FirstOrDefault(value => value.transform != carrier.transform);
+        var icon = CreateResourceIcon(carrier.transform, "ResourceIcon", resourceId, false,
+            renderer == null ? null : renderer.gameObject);
+        if (icon == null)
+            return null;
+        var localPosition = icon.transform.localPosition;
+        icon.transform.localPosition = new Vector3(0f, Mathf.Lerp(localPosition.y, 0f, 0.2f), localPosition.z);
+        icon.transform.localScale *= 0.625f;
+        return icon;
+    }
+
+    private GameObject CreateBuildingResourceIcon(RObj mine, string resourceId)
+    {
+        var icon = mine?.main == null
+            ? null
+            : CreateResourceIcon(mine.main.transform, "ReadyResourceIcon", resourceId, true);
+        if (icon != null && string.Equals(resourceId, MainCycle_WhoHeroes.StoneResourceId,
+                StringComparison.Ordinal))
+        {
+            var localPosition = icon.transform.localPosition;
+            icon.transform.localPosition = new Vector3(0f, localPosition.y, localPosition.z);
+        }
+        return icon;
+    }
+
+    private void SetPlayerAnchorRenderers(bool visible)
+    {
+        if (playerAnchor == null)
+            return;
+        foreach (var renderer in playerAnchor.GetComponentsInChildren<Renderer>(true))
+            renderer.enabled = visible;
+    }
+
+    private GameObject CreateResourceIcon(
+        Transform parent, string objectName, string resourceId, bool active, GameObject existing = null)
     {
         var sprite = ResolveResourceIcon(resourceId);
-        if (carrier == null || sprite == null)
+        if (parent == null || sprite == null)
             return null;
-        var icon = new GameObject("ResourceIcon");
-        icon.transform.SetParent(carrier.transform, false);
-        icon.transform.localPosition = new Vector3(0f, 0.42f, -0.1f);
-        var scale = carrier.transform.lossyScale;
-        icon.transform.localScale = new Vector3(
-            0.3f / Mathf.Max(0.01f, Mathf.Abs(scale.x)),
-            0.3f / Mathf.Max(0.01f, Mathf.Abs(scale.y)),
-            1f);
-        var renderer = icon.AddComponent<SpriteRenderer>();
+        var icon = existing == null ? new GameObject(objectName) : existing;
+        icon.transform.SetParent(parent, false);
+        icon.transform.localPosition = deliveryResourceIconLocalPosition;
+        var renderer = icon.GetComponent<SpriteRenderer>();
+        if (renderer == null)
+            renderer = icon.AddComponent<SpriteRenderer>();
+        var movement = icon.GetComponent<ItemsMovement>();
+        if (movement != null)
+        {
+            movement.ChangeSettings(false, false, false, false);
+            movement.enabled = false;
+        }
         renderer.sprite = sprite;
-        renderer.sortingOrder = carrier.GetComponentsInChildren<SpriteRenderer>(true)
-            .Where(value => value != renderer)
-            .Select(value => value.sortingOrder)
-            .DefaultIfEmpty(0)
-            .Max() + 1;
-        icon.SetActive(false);
+        var spriteSize = sprite.bounds.size;
+        var parentScale = parent.lossyScale;
+        icon.transform.localScale = new Vector3(
+            deliveryResourceIconWorldSize.x /
+            Mathf.Max(0.0001f, Mathf.Abs(spriteSize.x * parentScale.x)),
+            deliveryResourceIconWorldSize.y /
+            Mathf.Max(0.0001f, Mathf.Abs(spriteSize.y * parentScale.y)),
+            1f);
+        var renderedSize = renderer.bounds.size;
+        icon.transform.localScale = new Vector3(
+            icon.transform.localScale.x * deliveryResourceIconWorldSize.x /
+            Mathf.Max(0.0001f, renderedSize.x),
+            icon.transform.localScale.y * deliveryResourceIconWorldSize.y /
+            Mathf.Max(0.0001f, renderedSize.y),
+            icon.transform.localScale.z);
+        renderer.sortingLayerID = deliveryResourceIconSortingLayerId;
+        renderer.sortingOrder = deliveryResourceIconSortingOrder;
+        icon.SetActive(active);
         return icon;
     }
 
@@ -1555,7 +1825,14 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         delivery.settled = true;
         pendingDeliveries.Remove(delivery);
-        AddResource(delivery.resourceId, delivery.amount);
+        if (AddResource(delivery.resourceId, delivery.amount))
+        {
+            ModelStatistics.instance?.IncreaseStatValue("get_" + delivery.resourceId, delivery.amount);
+            EventManager.INV(WhoHeroesEvents.ResourceDelivered,
+                new ArgPass { what = delivery.resourceId, num = delivery.amount });
+        }
+        if (delivery.sourceResourceIcon != null)
+            Destroy(delivery.sourceResourceIcon);
         if (delivery.carrier != null)
             Destroy(delivery.carrier);
     }
@@ -1573,6 +1850,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             }
             delivery.settled = true;
             delivery.stateMachine?.Cancel();
+            if (delivery.sourceResourceIcon != null)
+                Destroy(delivery.sourceResourceIcon);
             if (delivery.carrier != null)
                 Destroy(delivery.carrier);
         }
@@ -1638,6 +1917,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
     private void InitializeNewPortalState()
     {
+        capturedTargetIds.Clear();
         foreach (var value in MainStates.instance.all.Values)
         {
             if (IsPortal(value) || !string.IsNullOrEmpty(ConfigString(value, TerritoryConfigParam)))
@@ -1647,14 +1927,18 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             }
         }
 
+        foreach (var id in MainCycle_WhoHeroes.CastleUnits.Keys)
+            if (MainStates.instance.all.TryGetValue(id, out var building))
+                SetExactLevel(building, 0);
+
         var configuredStartCount = ConfigLoader.GetMetaParamValue("whoheroes_start_active_portals");
         var startCount = Mathf.Clamp(Mathf.RoundToInt(configuredStartCount), 1, portalProgression.Count);
         for (var index = 0; index < startCount; index++)
         {
             var portal = portalProgression[index];
-            SetExactLevel(portal, 1);
-            SyncExitPortal(portal, true);
-            MakeTerritoryAvailable(portal);
+            SetExactLevel(portal, 0);
+            capturedTargetIds.Add(portal.RID);
+            SyncExitPortal(portal, false);
         }
     }
 
@@ -1665,7 +1949,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         foreach (var portal in portalProgression)
         {
-            if (GUILIB.Level(portal) > 0 || portal.GetPar(AvailableParam) > 0f)
+            if (GUILIB.Level(portal) > 0 || IsRestorableTarget(portal) ||
+                portal.GetPar(AvailableParam) > 0f)
                 continue;
 
             SetAvailable(portal, true);
@@ -2068,6 +2353,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             }
             snapshot.inventories.Add(inventory);
         }
+        foreach (var targetId in capturedTargetIds)
+            if (MainStates.instance.all.ContainsKey(targetId))
+                snapshot.inventories.Add(new WhoHeroesRunInventoryState { ownerId = targetId });
         return snapshot;
     }
 
@@ -2118,14 +2406,19 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         if (owner == null || DatabaseAll.instance == null || MainStates.instance == null)
             return;
 
+        foreach (var empty in owner.inventory.Where(value => value?.dbObj != null &&
+                     value.it == ItemType.monster && value.GetPar("amount") <= 0f).ToList())
+            DisposeRuntimeObject(empty);
+
         foreach (var group in owner.inventory
                      .Where(value => value?.dbObj != null && value.it == ItemType.monster &&
                                      value.GetPar("amount") > 0f)
                      .GroupBy(value => new
                      {
-                         value.dbObj.ID,
-                         value.shardID,
-                         Level = Mathf.Max(1, GUILIB.Level(value))
+                          value.dbObj.ID,
+                          value.shardID,
+                          Level = Mathf.Max(1, GUILIB.Level(value)),
+                          UsedSlot = Mathf.RoundToInt(value.GetPar("used_slot"))
                      })
                      .ToList())
         {
@@ -2149,9 +2442,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
                 var created = DatabaseAll.instance.CreateMonster(group.Key.ID, amount, false, false);
                 created.shardID = group.Key.shardID;
                 SetExactLevel(created, group.Key.Level);
-                created.SetPar("used_slot", -1f);
+                created.SetPar("used_slot", group.Key.UsedSlot);
                 ApplyPermanentPerksToUnit(created, false);
-                MainStates.instance.AddItem(owner, created);
+                AttachRosterStack(owner, created);
             }
 
             for (var index = stacks.Count - 1; index >= requiredStacks; index--)
@@ -2159,6 +2452,80 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         }
 
         owner.RecalcPars();
+    }
+
+    public static void KeepPurchasedUnitsInFreeRoster(
+        RObj owner,
+        RObj purchasedUnit,
+        int purchasedAmount,
+        IReadOnlyDictionary<RObj, int> assignedAmountsBefore)
+    {
+        if (owner == null || purchasedUnit?.dbObj == null || purchasedAmount <= 0 ||
+            assignedAmountsBefore == null)
+            return;
+
+        var misplaced = 0;
+        foreach (var pair in assignedAmountsBefore)
+        {
+            var stack = pair.Key;
+            if (stack == null || stack.owner != owner)
+                continue;
+            var current = Mathf.Max(0, Mathf.RoundToInt(stack.GetPar("amount")));
+            var added = Mathf.Min(purchasedAmount - misplaced, Mathf.Max(0, current - pair.Value));
+            if (added <= 0)
+                continue;
+            stack.SetPar("amount", current - added);
+            misplaced += added;
+            if (misplaced >= purchasedAmount)
+                break;
+        }
+
+        if (misplaced > 0)
+            AddFreeRosterAmount(owner, purchasedUnit, misplaced);
+        NormalizeRosterStacks(owner);
+    }
+
+    private static void AddFreeRosterAmount(RObj owner, RObj template, int amount)
+    {
+        var level = Mathf.Max(1, GUILIB.Level(template));
+        var maxStack = ResolveMaxStack(template);
+        foreach (var stack in owner.inventory.Where(value => value?.dbObj != null &&
+                     value.dbObj.ID == template.dbObj.ID && value.shardID == template.shardID &&
+                     Mathf.RoundToInt(value.GetPar("used_slot")) < 0 &&
+                     Mathf.Max(1, GUILIB.Level(value)) == level).ToList())
+        {
+            var current = Mathf.Max(0, Mathf.RoundToInt(stack.GetPar("amount")));
+            var added = Mathf.Min(amount, Mathf.Max(0, maxStack - current));
+            if (added <= 0)
+                continue;
+            stack.SetPar("amount", current + added);
+            amount -= added;
+            if (amount <= 0)
+                return;
+        }
+
+        while (amount > 0)
+        {
+            var stackAmount = Mathf.Min(maxStack, amount);
+            var created = DatabaseAll.instance.CreateMonster(template.dbObj.ID, stackAmount, false, false);
+            created.shardID = template.shardID;
+            SetExactLevel(created, level);
+            created.SetPar("used_slot", -1f);
+            ApplyPermanentPerksToUnit(created, false);
+            AttachRosterStack(owner, created);
+            amount -= stackAmount;
+        }
+    }
+
+    private static void AttachRosterStack(RObj owner, RObj stack)
+    {
+        if (owner == null || stack == null)
+            return;
+        if (stack.owner != null)
+            stack.owner.inventory.Remove(stack);
+        stack.index = owner.GetFreeIndex(stack.dbObj.sizeX, stack.dbObj.sizeY);
+        owner.inventory.Add(stack);
+        stack.owner = owner;
     }
 
     private static int ResolveMaxStack(RObj value)
@@ -2202,7 +2569,8 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         if (nightNumber <= 0 && capturedCount <= configuredStartCount)
             return;
 
-        var next = portalProgression.FirstOrDefault(value => GUILIB.Level(value) <= 0);
+        var next = portalProgression.FirstOrDefault(value =>
+            GUILIB.Level(value) <= 0 && !IsRestorableTarget(value));
         if (next != null)
             SetAvailable(next, true);
     }
@@ -2212,6 +2580,17 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         if (snapshot == null || MainStates.instance == null || DatabaseAll.instance == null)
             return;
 
+        capturedTargetIds.Clear();
+        foreach (var savedInventory in snapshot.inventories)
+        {
+            if (savedInventory == null || string.IsNullOrEmpty(savedInventory.ownerId) ||
+                savedInventory.items.Count != 0)
+                continue;
+            if (MainCycle_WhoHeroes.TryGetExpeditionDefense(savedInventory.ownerId, out _) ||
+                portalProgression.Any(value => value.RID == savedInventory.ownerId))
+                capturedTargetIds.Add(savedInventory.ownerId);
+        }
+
         foreach (var saved in snapshot.objects)
         {
             if (saved == null || string.IsNullOrEmpty(saved.id) ||
@@ -2219,8 +2598,6 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
                 continue;
             SetExactLevel(value, saved.level);
         }
-
-        RestoreProgressionAvailabilityFromLevels();
 
         foreach (var savedInventory in snapshot.inventories)
         {
@@ -2249,6 +2626,9 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             NormalizeRosterStacks(owner);
             owner.RecalcPars();
         }
+
+        RestoreProgressionAvailabilityFromLevels();
+        targetDefendersReady = EnsureTargetDefenders();
 
         SyncRunStats();
         ApplyPermanentPerksToCurrentRun();

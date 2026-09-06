@@ -26,6 +26,13 @@ public class XDdeath : ComponentBehavior
 
     public void DoDeath()
     {
+        EventManager.INV("unit_died", new ArgPass
+        {
+            who = mon,
+            who2 = mon.lastDmgFrom,
+            what = mon.dbObj != null ? mon.dbObj.ID : ""
+        });
+
         mon.RemoveViz("hp");
         mon.RemoveViz("coll");
         mon.RemoveViz("realcol");

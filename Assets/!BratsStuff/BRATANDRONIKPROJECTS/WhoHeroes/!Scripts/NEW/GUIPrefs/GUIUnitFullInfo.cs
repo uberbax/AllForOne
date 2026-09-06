@@ -16,10 +16,19 @@ public class GUIUnitFullInfo : MonoBehaviour
     }
 
 
-    private void OnRefresh(ArgPass _)
+    private void OnRefresh(ArgPass args)
     {
-        if (gameObject.activeInHierarchy)
-            Fill(unitgui?.unit);
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        var unit = unitgui?.unit;
+        if (args?.who == unit && args.what == "buy" && unit != null && unit.GetPar("amount") <= 0f)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        Fill(unit);
     }
 
     private void OnDestroy()

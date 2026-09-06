@@ -45,6 +45,8 @@ public sealed partial class MainCycle_WhoHeroes
     private static IReadOnlyDictionary<string, string> boostSources =
         new Dictionary<string, string>(StringComparer.Ordinal);
     private static IReadOnlyList<string> tavernUnits = Array.Empty<string>();
+    private static IReadOnlyDictionary<string, int> tavernUnitAmounts =
+        new Dictionary<string, int>(StringComparer.Ordinal);
     private static IReadOnlyList<string> permanentPerkIds = Array.Empty<string>();
     private static IReadOnlyList<string> runBoostStats = Array.Empty<string>();
     private static IReadOnlyList<string> onboardingTaskIds = Array.Empty<string>();
@@ -76,6 +78,14 @@ public sealed partial class MainCycle_WhoHeroes
     public static IReadOnlyList<string> TavernUnits
     {
         get { RefreshCache(); return tavernUnits; }
+    }
+
+    public static int TavernUnitAmount(string unitId)
+    {
+        RefreshCache();
+        return unitId != null && tavernUnitAmounts.TryGetValue(unitId, out var amount)
+            ? amount
+            : 1;
     }
 
     public static IReadOnlyList<string> PermanentPerkIds
@@ -221,6 +231,7 @@ public sealed partial class MainCycle_WhoHeroes
         expeditionDefenses = ReadDefenseSets();
         boostSources = ReadSingleValueSets(BoostStatSetPrefix);
         tavernUnits = ReadSet(TavernSetId);
+        tavernUnitAmounts = ReadSetAmounts(TavernSetId);
         permanentPerkIds = ReadSet(PermanentPerkSetId);
         runBoostStats = boostSources.Values.Distinct(StringComparer.Ordinal).ToArray();
         onboardingTaskIds = ReadSet(OnboardingTaskSetId);
@@ -271,6 +282,16 @@ public sealed partial class MainCycle_WhoHeroes
             return Array.Empty<string>();
         return entries.Where(value => value != null && !string.IsNullOrWhiteSpace(value.item))
             .Select(value => value.item.Trim()).Distinct(StringComparer.Ordinal).ToArray();
+    }
+
+    private static IReadOnlyDictionary<string, int> ReadSetAmounts(string setId)
+    {
+        if (ConfigLoader.Instance == null || !ConfigLoader.Instance.dictSets.TryGetValue(setId, out var entries))
+            return new Dictionary<string, int>(StringComparer.Ordinal);
+
+        return entries.Where(value => value != null && !string.IsNullOrWhiteSpace(value.item))
+            .GroupBy(value => value.item.Trim(), StringComparer.Ordinal)
+            .ToDictionary(group => group.Key, group => Mathf.Max(1, group.First().amount1), StringComparer.Ordinal);
     }
 
     private static string ReadString(string key)
