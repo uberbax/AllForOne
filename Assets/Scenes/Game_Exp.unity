@@ -7001,6 +7001,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: CHEST
@@ -7444,6 +7449,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -8578,6 +8588,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -9614,6 +9629,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -10967,6 +10987,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -12556,6 +12581,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: codex
@@ -14427,6 +14457,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -17266,6 +17301,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -19029,6 +19069,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -24510,6 +24555,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -24557,6 +24607,126 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &184968964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 184968965}
+  - component: {fileID: 184968968}
+  - component: {fileID: 184968967}
+  - component: {fileID: 184968966}
+  m_Layer: 5
+  m_Name: Prev
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &184968965
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184968964}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1950654896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -22, y: 106.78}
+  m_SizeDelta: {x: 115.5323, y: 118.4446}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &184968966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184968964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 184968967}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &184968967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184968964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b78e1c94f1bcb42a7996ce616745e100, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &184968968
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184968964}
+  m_CullTransparentMesh: 1
 --- !u!1 &185818599
 GameObject:
   m_ObjectHideFlags: 0
@@ -32293,6 +32463,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -39060,6 +39235,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 0
   ignoreInvAny: 0
   nm: 
@@ -44506,6 +44686,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -46822,6 +47007,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -57995,6 +58185,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -59220,6 +59415,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -71000,6 +71200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -73772,6 +73977,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -79761,6 +79971,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -81702,6 +81917,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -82780,7 +83000,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 63, y: 3.1531982}
+  m_AnchoredPosition: {x: 63, y: 138}
   m_SizeDelta: {x: 711.28, y: 2074.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &646425353
@@ -82795,6 +83015,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: 0
+  hi: -1
+  perPage: 9
+  next: {fileID: 184968966}
+  prev: {fileID: 1295456779}
   noScale: 0
   ignoreInvAny: 0
   nm: 
@@ -83097,6 +83322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -93805,6 +94035,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -101419,6 +101654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -102875,6 +103115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -107229,6 +107474,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -112356,6 +112606,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: kach
@@ -112846,6 +113101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -114137,6 +114397,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -117578,6 +117843,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -118392,6 +118662,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -118561,6 +118836,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -120678,6 +120958,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -121737,6 +122022,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -122145,6 +122435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -126157,6 +126452,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -128868,6 +129168,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -139548,6 +139853,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -140935,6 +141245,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -144744,6 +145059,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: CHEST
@@ -144852,6 +145172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -151032,6 +151357,20 @@ MonoBehaviour:
     - adorn_hp
     - adorn_def
     - adorn_magic
+    - twilight_fang
+    - oathbreaker
+    - ash_of_dawn
+    - abyss_whisper
+    - final_verdict
+    - whispering_locket
+    - ashen_idol
+    - moonveil_charm
+    - witchbone_talisman
+    - hollow_heart
+    - ashen_knight_bulwark
+    - ashen_knight_helm
+    - ashen_knight_greaves
+    - ashen_knight_pendant
     m_values:
     - {fileID: 21300000, guid: f562338df1df4224f9ac7027d3c4d4df, type: 3}
     - {fileID: 21300000, guid: 430fd57e41b17074db2c02f860ee9e20, type: 3}
@@ -151066,6 +151405,20 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 9db414d50278e4c9a8dd659ecc5b667b, type: 3}
     - {fileID: 21300000, guid: b4af23895e9034205bc09926bba82769, type: 3}
     - {fileID: 21300000, guid: a84680c4cd0ce42288e0838cc907b34a, type: 3}
+    - {fileID: 21300000, guid: cc245947d46df4a1fb3eab3a1f4f17d4, type: 3}
+    - {fileID: 21300000, guid: 0a44e1226e0a949828c228e6205dd96d, type: 3}
+    - {fileID: 21300000, guid: a71b0c89a4ebf48fdbc46f69dcd78355, type: 3}
+    - {fileID: 21300000, guid: ad3457beda89a4d67be4a13b666279d6, type: 3}
+    - {fileID: 21300000, guid: 2de6935d3d8394785b8a5e034ed5008b, type: 3}
+    - {fileID: 21300000, guid: 7944441b2914b493fbe9c956297bb450, type: 3}
+    - {fileID: 21300000, guid: 7cb00534359964b788ec37f92ecf2709, type: 3}
+    - {fileID: 21300000, guid: bbe192bc691ca45cbb2b8bf926d7fb97, type: 3}
+    - {fileID: 21300000, guid: 7bba158f3e9eb4bc59dc918a1ec5d3c1, type: 3}
+    - {fileID: 21300000, guid: 929aba43b7b43492187fa7fef0e16d2a, type: 3}
+    - {fileID: 21300000, guid: 7394793125c35498e8c1b4d31cdc4395, type: 3}
+    - {fileID: 21300000, guid: 8e10bbf8b9c544b64bd098330b8f7272, type: 3}
+    - {fileID: 21300000, guid: c1e10830e50213e4b83bc791e9846adb, type: 3}
+    - {fileID: 21300000, guid: fda950a405063ae4da7d457fd630eb2e, type: 3}
   buildings:
     m_keys:
     - barracks1
@@ -152497,6 +152850,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -154439,6 +154797,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 0
   ignoreInvAny: 0
   nm: 
@@ -157830,6 +158193,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -159330,6 +159698,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -167924,6 +168297,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -168603,6 +168981,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 0
   ignoreInvAny: 0
   nm: 
@@ -169075,6 +169458,126 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1295456777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1295456778}
+  - component: {fileID: 1295456781}
+  - component: {fileID: 1295456780}
+  - component: {fileID: 1295456779}
+  m_Layer: 5
+  m_Name: next
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1295456778
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295456777}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1950654896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 120, y: 106.78}
+  m_SizeDelta: {x: 115.5323, y: 118.4446}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1295456779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295456777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1295456780}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1295456780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295456777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b78e1c94f1bcb42a7996ce616745e100, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1295456781
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295456777}
+  m_CullTransparentMesh: 1
 --- !u!1 &1297544404
 GameObject:
   m_ObjectHideFlags: 0
@@ -171321,6 +171824,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -177197,6 +177705,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -178968,6 +179481,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -183400,6 +183918,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -187819,6 +188342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -198768,6 +199296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -199335,6 +199868,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -204672,6 +205210,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -206915,6 +207458,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -210257,6 +210805,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -212962,6 +213515,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 0
   ignoreInvAny: 0
   nm: 
@@ -213913,6 +214471,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: main_shop
@@ -217641,6 +218204,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -225136,6 +225704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -232655,6 +233228,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -232897,6 +233475,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -234002,6 +234585,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -235067,6 +235655,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Minimus::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -243113,6 +243706,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -244187,6 +244785,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -245545,6 +246148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -248292,6 +248900,8 @@ RectTransform:
   - {fileID: 45309669}
   - {fileID: 646425352}
   - {fileID: 1310143860}
+  - {fileID: 184968965}
+  - {fileID: 1295456778}
   - {fileID: 1399088022}
   m_Father: {fileID: 1966143097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -249980,6 +250590,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 0
   ignoreInvAny: 0
   nm: CHEST
@@ -250268,6 +250883,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -250368,6 +250988,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIfiller
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: EXPEDITION
@@ -252654,6 +253279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -254510,6 +255140,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: REWARDS
@@ -256683,6 +257318,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -269966,6 +270606,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -274893,6 +275538,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -278644,6 +279294,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -281924,6 +282579,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 

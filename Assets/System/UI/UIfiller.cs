@@ -6,6 +6,14 @@ using UnityEngine.UI;
 
 public class UIfiller : MonoBehaviour
 {
+    [Header("Next Prev")]
+    public int lo = -1;
+    public int hi = -1;
+    public int perPage = 10;
+    public Button next;
+    public Button prev;
+    
+    [Header("Other")]
     public bool noScale = true;
     public bool ignoreInvAny = true;
     
@@ -73,6 +81,35 @@ public class UIfiller : MonoBehaviour
                     param = x.what;
                     if (gameObject.activeInHierarchy)
                         OnEnable();
+                }
+            });
+        }
+
+        hi = lo + perPage;
+        if (prev != null)
+        {
+            prev.onClick.AddListener(() =>
+            {
+                if (lo >= 0 && lo - perPage >= 0)
+                {
+                    lo -= perPage;
+                    hi -= perPage;
+                    //do
+                    OnEnable();
+                }
+            });
+        }
+        
+        if (next != null)
+        {
+            prev.onClick.AddListener(() =>
+            {
+                if (lo >= 0)
+                {
+                    lo += perPage;
+                    hi += perPage;
+                    //do
+                    OnEnable();
                 }
             });
         }
