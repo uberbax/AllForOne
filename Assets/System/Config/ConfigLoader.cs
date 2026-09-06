@@ -855,6 +855,17 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "MANASTEAL_PRC") mm.manastealPrc = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "REGEN") mm.regen = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
+                else if (columns[j].ToUpper() == "UNLOCK_PRICE")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    mm.unlockPrice = new List<Bon>();
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.unlockPrice.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
                 
                 //else if (columns[j].ToUpper() == "RARITY") mm.rarity = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "SKILLBASIC") mm.skillBasic = tt[j];
@@ -2662,6 +2673,7 @@ public class FormatHero
     public int price = 3;
     public string dynamic = "";
 
+    public List<Bon> unlockPrice = new List<Bon>();
     public float GetMeStatVal(string parName)
     {
         //"p_atk","p_def","m_def","max_health","atk_spd","mana","max_mana"

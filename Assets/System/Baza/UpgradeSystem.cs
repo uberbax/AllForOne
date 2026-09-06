@@ -36,6 +36,17 @@ public class UpgradeSystem : MonoBehaviour
             
             return res;
         }
+        /*
+        else if (what == "unlock")
+        {
+            List<Bon> res = new List<Bon>();
+            foreach (var v in who.dbObj.price)
+            {
+                res.Add(new Bon{Key = v.Key, Value = v.Value});
+            }
+            return res;
+        }
+        */
 
         return who.dbObj.price;
         return new List<Bon> { new Bon{Key = "gold", Value = 100} };

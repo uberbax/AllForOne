@@ -328,6 +328,8 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("battle_start", BattleStarted);
         EventManager.SUB("evt_adorn", EventAdorn);
         EventManager.SUB("switch_class", SwitchMainClass);
+        EventManager.SUB("evt_unlock_class", UnlockClass);
+        
 
         if (trashRoot == null)
         {
@@ -2309,6 +2311,21 @@ public class MainStates : MonoBehaviour
         
     }
 
+    public void UnlockClass(ArgPass e)
+    {
+        var gg = UpgradeSystem.instance.GetPrice(e.who, "unlock");
+        var q = HaveAmount(gg);
+        if (q)
+        {
+            DelItems(gg);
+            ModelStatistics.instance.SetStatValue("unlocked_" + e.who.dbObj.ID, 1);
+        }
+        else
+        {
+            UI_noMoney.SetActive(true);
+        }
+    }
+    
     public void SwitchMainClass(ArgPass e)
     {
         string switchTo = e.who.dbObj.ID;
