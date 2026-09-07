@@ -272,6 +272,9 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("max_c_exp", 1);
             o.pars.Add("c_exp", 0);
             
+            //?
+            o.pars.Add("subtype", MainStates.subtypes["pet"]);
+            
             o.labelis.Add(v.origins[0]);
             o.labelis.Add(v.classes[0]);
             o.skills.Add(v.skillBasic);
