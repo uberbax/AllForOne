@@ -452,7 +452,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         SettleCompletedDay();
         phase = WhoHeroesPhase.Night;
-        SetPlayerAnchorRenderers(true);
+        SetPlayerAnchorRenderers(false);
         TimeManager.instance.spd = 0f;
         nightNumber++;
         SaveNightCheckpoint();
@@ -720,7 +720,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         {
             initialized = true;
             RestoreOrInitializeRunState();
-            SetPlayerAnchorRenderers(phase == WhoHeroesPhase.Night);
+            SetPlayerAnchorRenderers(false);
             ApplyPermanentPerksToCurrentRun();
             RefreshOnboardingTasks();
             StartPortalProgressionInitialization();
@@ -761,7 +761,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
 
         initialized = true;
         RestoreOrInitializeRunState();
-        SetPlayerAnchorRenderers(phase == WhoHeroesPhase.Night);
+        SetPlayerAnchorRenderers(false);
         ApplyPermanentPerksToCurrentRun();
         RefreshOnboardingTasks();
         StartPortalProgressionInitialization();
@@ -1936,9 +1936,10 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         for (var index = 0; index < startCount; index++)
         {
             var portal = portalProgression[index];
-            SetExactLevel(portal, 0);
+            SetExactLevel(portal, 1);
             capturedTargetIds.Add(portal.RID);
-            SyncExitPortal(portal, false);
+            SyncExitPortal(portal, true);
+            MakeTerritoryAvailable(portal);
         }
     }
 
@@ -2565,6 +2566,12 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             Mathf.RoundToInt(ConfigLoader.GetMetaParamValue("whoheroes_start_active_portals")),
             1,
             portalProgression.Count);
+        for (var index = 0; index < configuredStartCount; index++)
+        {
+            var startPortal = portalProgression[index];
+            if (GUILIB.Level(startPortal) <= 0 && capturedTargetIds.Contains(startPortal.RID))
+                SetExactLevel(startPortal, 1);
+        }
         var capturedCount = portalProgression.Count(value => GUILIB.Level(value) > 0);
         if (nightNumber <= 0 && capturedCount <= configuredStartCount)
             return;

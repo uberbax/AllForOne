@@ -40,6 +40,7 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
     [SerializeField] private GUITasksWindow tasks;
     [SerializeField] private GUIPerkWindow trader;
     [SerializeField] private GUIPerkWindow permanentPerks;
+    [SerializeField] private GUIUnitFullInfo unitInfo;
 
     [Header("Minimus UI context")]
     [SerializeField] private ObjHolder actionHolder;
@@ -82,6 +83,7 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         CacheWindows();
         EventManager.SUB(WhoHeroesEvents.ViewBuilding, OnViewBuilding);
         EventManager.SUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
+        EventManager.SUB(WhoHeroesEvents.UnitInfo, OnUnitInfo);
         EventManager.SUB(WhoHeroesEvents.DayStartedAfterNight, OnDayStartedAfterNight);
         EventManager.SUB("new_night", OnTraderUnavailable);
         EventManager.SUB("whoheroes_game_over", OnTraderUnavailable);
@@ -107,6 +109,7 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
     {
         EventManager.UNSUB(WhoHeroesEvents.ViewBuilding, OnViewBuilding);
         EventManager.UNSUB(WhoHeroesEvents.ObserveBuilding, OnObserveBuilding);
+        EventManager.UNSUB(WhoHeroesEvents.UnitInfo, OnUnitInfo);
         EventManager.UNSUB(WhoHeroesEvents.DayStartedAfterNight, OnDayStartedAfterNight);
         EventManager.UNSUB("new_night", OnTraderUnavailable);
         EventManager.UNSUB("whoheroes_game_over", OnTraderUnavailable);
@@ -397,6 +400,15 @@ public sealed class WhoHeroesUIRouter : MonoBehaviour
         ShowInterior(castleInterior);
         Show(hire, args.who, value => value.Fill(args.who), true);
         castleTabs?.SwitchTab(CastleHireTabId);
+    }
+
+    private void OnUnitInfo(ArgPass args)
+    {
+        if (args?.who == null || unitInfo == null)
+            return;
+
+        unitInfo.gameObject.SetActive(true);
+        unitInfo.Fill(args.who);
     }
 
     private void ShowCastleOverview()

@@ -29,6 +29,22 @@ public static class WhoHeroesConfigWorkbookEditor
         }
     }
 
+    private sealed class DemoDefenderStats
+    {
+        public readonly int rarity;
+        public readonly int attack;
+        public readonly int armor;
+        public readonly int health;
+
+        public DemoDefenderStats(int rarity, int attack, int armor, int health)
+        {
+            this.rarity = rarity;
+            this.attack = attack;
+            this.armor = armor;
+            this.health = health;
+        }
+    }
+
     private const string GoldResourceId = "gold";
     private const string WoodResourceId = "wood";
     private const string StoneResourceId = "stone";
@@ -46,6 +62,7 @@ public static class WhoHeroesConfigWorkbookEditor
     private const string DevilInfernoSkillId = "whoheroes_devil_inferno";
     private const string EfreedFireRainSkillId = "whoheroes_efreed_fire_rain";
     private const string WorkbookAssetPath = "Assets/StreamingAssets/WhoHeroes/Config_whoheroes.xlsx";
+    private const string RuntimeWorkbookAssetPath = "Assets/StreamingAssets/Config_whoheroes.xlsx";
     private const string SceneAssetPath = "Assets/!BratsStuff/BRATANDRONIKPROJECTS/WhoHeroes/!Scenes/WhoHeroes_System.unity";
     private const string CarrierPrefabAssetPath =
         "Assets/!BratsStuff/BRATANDRONIKPROJECTS/WhoHeroes/!Fantacy/!Prefabs/Chars/keeper.prefab";
@@ -97,6 +114,33 @@ public static class WhoHeroesConfigWorkbookEditor
             { "lion", "Sunmane the Lion" },
             { "cyclop", "Boulder-Eye the Cyclops" },
             { "lich", "Morcant the Lich" }
+        };
+    private static readonly IReadOnlyDictionary<string, DemoDefenderStats> DemoDefenderBalance =
+        new Dictionary<string, DemoDefenderStats>(StringComparer.Ordinal)
+        {
+            { "centaur", new DemoDefenderStats(2, 24, 12, 70) },
+            { "djinn", new DemoDefenderStats(2, 26, 12, 75) },
+            { "fireel", new DemoDefenderStats(2, 28, 15, 70) },
+            { "gargoyle", new DemoDefenderStats(2, 20, 18, 85) },
+            { "gostfem", new DemoDefenderStats(2, 30, 10, 80) },
+            { "harpybrown", new DemoDefenderStats(2, 22, 9, 65) },
+            { "lich", new DemoDefenderStats(2, 29, 14, 75) },
+            { "magicel", new DemoDefenderStats(2, 27, 16, 70) },
+            { "monk", new DemoDefenderStats(2, 25, 15, 90) },
+            { "naga", new DemoDefenderStats(2, 26, 17, 85) },
+            { "treant", new DemoDefenderStats(2, 20, 20, 100) },
+            { "windel", new DemoDefenderStats(2, 25, 12, 70) },
+            { "boss", new DemoDefenderStats(3, 42, 25, 150) },
+            { "cyclop", new DemoDefenderStats(3, 40, 28, 165) },
+            { "gost", new DemoDefenderStats(3, 34, 21, 120) },
+            { "harpywhite", new DemoDefenderStats(3, 35, 21, 115) },
+            { "lion", new DemoDefenderStats(3, 36, 22, 130) },
+            { "magmael", new DemoDefenderStats(3, 38, 24, 125) },
+            { "monkup", new DemoDefenderStats(3, 39, 26, 145) },
+            { "riderevil", new DemoDefenderStats(3, 41, 24, 140) },
+            { "shaman", new DemoDefenderStats(3, 32, 22, 120) },
+            { "stormel", new DemoDefenderStats(3, 37, 22, 125) },
+            { "vampire", new DemoDefenderStats(3, 43, 23, 135) }
         };
     private const string SteamUrl =
         "https://store.steampowered.com/app/4197340/WHO_THE_HELL_OPENED_THE_PORTAL/";
@@ -460,6 +504,50 @@ public static class WhoHeroesConfigWorkbookEditor
 
         AssetDatabase.ImportAsset(WorkbookAssetPath, ImportAssetOptions.ForceUpdate);
         Debug.Log("WhoHeroes demo defender names updated and validated: " + WorkbookAssetPath);
+    }
+
+    [MenuItem("Tools/WhoHeroes/Ensure Demo Defender Balance")]
+    public static void EnsureDemoDefenderBalance()
+    {
+        RequireWhoHeroesScene();
+        var fullPath = Path.GetFullPath(RuntimeWorkbookAssetPath);
+        if (!File.Exists(fullPath))
+            throw new FileNotFoundException("WhoHeroes config workbook was not found.", fullPath);
+
+        var backupPath = Path.GetTempFileName();
+        File.Copy(fullPath, backupPath, true);
+        try
+        {
+            using (var package = new ExcelPackage(new FileInfo(fullPath)))
+            {
+                var heroes = RequireSheet(package, "Heroes");
+                foreach (var pair in DemoDefenderBalance)
+                {
+                    var row = FindRow(heroes, 1, pair.Key);
+                    if (row <= 0)
+                        throw new InvalidDataException("Demo defender is missing from Heroes: " + pair.Key);
+
+                    SetCell(heroes, row, "RARITY", pair.Value.rarity);
+                    SetCell(heroes, row, "ATTACK", pair.Value.attack);
+                    SetCell(heroes, row, "ARMOR", pair.Value.armor);
+                    SetCell(heroes, row, "HEALTH", pair.Value.health);
+                }
+                package.Save();
+            }
+            ValidateDemoDefenderBalance(fullPath);
+        }
+        catch
+        {
+            File.Copy(backupPath, fullPath, true);
+            throw;
+        }
+        finally
+        {
+            File.Delete(backupPath);
+        }
+
+        AssetDatabase.ImportAsset(RuntimeWorkbookAssetPath, ImportAssetOptions.ForceUpdate);
+        Debug.Log("WhoHeroes demo defender rarity and stats updated and validated: " + RuntimeWorkbookAssetPath);
     }
 
     [MenuItem("Tools/WhoHeroes/Migrate Composite Config To Minimus Sets")]
@@ -1393,6 +1481,23 @@ public static class WhoHeroesConfigWorkbookEditor
                 if (row <= 0 || !string.Equals(meta.Cells[row, 3].Text.Trim(), pair.Value,
                         StringComparison.Ordinal))
                     throw new InvalidDataException("WhoHeroes defender name is missing or invalid: " + pair.Key);
+            }
+        }
+    }
+
+    private static void ValidateDemoDefenderBalance(string fullPath)
+    {
+        using (var package = new ExcelPackage(new FileInfo(fullPath)))
+        {
+            var heroes = RequireSheet(package, "Heroes");
+            foreach (var pair in DemoDefenderBalance)
+            {
+                var row = FindRow(heroes, 1, pair.Key);
+                if (row <= 0 || !CellEquals(heroes, row, "RARITY", pair.Value.rarity) ||
+                    !CellEquals(heroes, row, "ATTACK", pair.Value.attack) ||
+                    !CellEquals(heroes, row, "ARMOR", pair.Value.armor) ||
+                    !CellEquals(heroes, row, "HEALTH", pair.Value.health))
+                    throw new InvalidDataException("WhoHeroes defender balance is missing or invalid: " + pair.Key);
             }
         }
     }

@@ -227,6 +227,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("is_boss", v.isBoss);
             
             o.pars.Add("difficulty", v.difficulty);
+            o.pars.Add("rarity", v.rarity);
             
             o.pars.Add("lifesteal_prc", v.lifestealPrc);
             o.pars.Add("regen", v.regen);

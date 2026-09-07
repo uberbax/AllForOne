@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GUIUnitFullInfo : MonoBehaviour
 {
     public GUIUnit unitgui;
     public ButtonActionItem actionBut;
     public UnitDrowSettings viewType;
+    public Button close;
 
     private void Start()
     {
         SetUpButtons();
+        close?.onClick.AddListener(Close);
         if (viewType.showUprgade && unitgui?.hire?.upgrade?.buy != null)
             unitgui.hire.upgrade.buy.onClick.AddListener(() => GUILIB.CoreAction(unitgui.unit, "buy"));
         EventManager.SUB(WhoHeroesEvents.Refresh, OnRefresh);
@@ -34,6 +37,7 @@ public class GUIUnitFullInfo : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.UNSUB(WhoHeroesEvents.Refresh, OnRefresh);
+        close?.onClick.RemoveListener(Close);
     }
 
     public void Fill(RObj value = null)
@@ -53,6 +57,11 @@ public class GUIUnitFullInfo : MonoBehaviour
         actionBut.Fill(true, viewType.actionType, viewType.actionType == "add" ? "butgreen" : "butred");
         actionBut.but.onClick.AddListener(() =>
             GUILIB.CoreAction(unitgui?.unit, viewType.actionType == "add" ? "equip_exp" : "unequip_exp"));
+    }
+
+    private void Close()
+    {
+        gameObject.SetActive(false);
     }
 }
 

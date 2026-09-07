@@ -511,24 +511,7 @@ public sealed partial class MainCycle_WhoHeroes
         prince.SetPar("no_move", 1f);
         prince.AddMeta(NightBattleMeta);
         prince.AddMeta(PrinceMeta);
-
-        EnsurePrinceMainVisual();
-        EnsurePrinceVisual("hp#notext:1");
-        EnsurePrinceVisual("coll#val:0.5");
-        EnsurePrinceVisual("dmg_track");
-        EnsurePrinceVisual("flash");
-        EnsurePrinceVisual("death");
-        EnsurePrinceVisual("combat");
-        EnsurePrinceVisual("animator#pr:1");
-        nightPrinceMouseMove = prince.main.GetComponent<BRATMotionMouseMove>();
-        if (nightPrinceMouseMove == null)
-            nightPrinceMouseMove = prince.main.AddComponent<BRATMotionMouseMove>();
-        nightPrinceMouseMove.controlledCamera = nightCamera;
-        nightPrinceMouseMove.speed = NightPrinceMoveSpeed;
-        nightPrinceMouseMove.clickToMove = true;
-        nightPrinceMouseMove.MovementStarted += OnPrinceMovementStarted;
-        nightPrinceMouseMove.MovementStopped += OnPrinceMovementStopped;
-        nightPrinceMouseMove.enabled = true;
+        SetPlayerAnchorRenderers(false);
     }
 
     private void EnsurePrinceMainVisual()

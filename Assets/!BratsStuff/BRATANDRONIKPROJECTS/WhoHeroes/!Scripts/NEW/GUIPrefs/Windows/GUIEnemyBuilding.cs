@@ -37,8 +37,7 @@ public class GUIEnemyBuilding : MonoBehaviour
             return;
         var guard = runtime.inventory.FirstOrDefault(x => x.it == ItemType.monster);
         var displayId = ResolveDisplayId(runtime);
-        var headerId = guard == null ? displayId : GUILIB.Id(guard);
-        general?.Fill(headerId, GUILIB.Level(runtime), GUILIB.Icon(runtime), ResolveDescriptionId(runtime));
+        general?.Fill(displayId, GUILIB.Level(runtime), GUILIB.Icon(runtime), ResolveDescriptionId(runtime));
         if (defender != null)
         {
             defender.gameObject.SetActive(guard != null);
