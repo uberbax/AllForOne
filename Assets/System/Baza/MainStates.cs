@@ -87,9 +87,10 @@ public class MainStates : MonoBehaviour
         { "ring", 5},
         { "offhand", 6},
         { "trinket", 7},
-        { "adorn", 8},
+        {"pet", 8},
+        { "adorn", 9},
         
-        {"pet", 9}
+        
         
     };
     
@@ -1299,11 +1300,6 @@ public class MainStates : MonoBehaviour
                     gk[l] == "adorn" || gk[l] == "potion" || gk[l] == "pet")
                 {
                     var c = subtypes[gk[l]];
-                    res.ForEach(x =>
-                    {
-                        Debug.Log(x.dbObj.ID);
-                        Debug.Log(x.dbObj.pars["subtype"]);
-                    });
                     res = res.FindAll(x => x.dbObj.pars["subtype"] == c);
                 }
                 

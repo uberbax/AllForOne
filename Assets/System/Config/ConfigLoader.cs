@@ -2096,8 +2096,8 @@ public class ConfigLoader : MonoBehaviour
                 }
                 else if (columns[j].ToUpper() == "ICON")
                 {
-                    Debug.Log(mm);
-                    Debug.Log(ResourceHolder.instance);
+                    //Debug.Log(mm);
+                    //Debug.Log(ResourceHolder.instance);
                     mm.icon = ResourceHolder.instance.GetMisc(tt[j]);
                 }
                 else if (columns[j].ToUpper() == "MARKETID")

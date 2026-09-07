@@ -261,7 +261,9 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("max_dmg_taken", v.maxDmgTaken);
             o.pars.Add("building", v.building);
             
+            //thwbbb
             o.price = v.unlockPrice;
+            o.pars["slot"] = MainStates.slots["pet"];
             
             o.drop = v.drop;
             o.onDeath = v.onDeath;
