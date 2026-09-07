@@ -2975,6 +2975,12 @@ public class MainStates : MonoBehaviour
     public bool InIteration = false;
     public string lastBattle;
     public int lastBattleResult = 0;
+
+    public List<RObj> GetMines(string meta)
+    {
+        var cc = combats.FindAll(x => x.META_TAGS.Contains(meta) && x.tags.Contains("player"));
+        return cc;
+    }
     
     public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false)
     {

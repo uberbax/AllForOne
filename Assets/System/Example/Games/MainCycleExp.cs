@@ -69,6 +69,7 @@ public class MainCycleExp : MonoBehaviour
 
         EventManager.SUB("battle_leave", (x) =>
         {
+            DungeonController.instance.inDungeon = false;
             MainStates.manualDt = false;
             BattleController.instance.Flee();
             BattleController.instance.Clean();
@@ -184,6 +185,18 @@ public class MainCycleExp : MonoBehaviour
         //MainStates.instance.AcquireSkill(secondMain, "basic_melee");
 
         secondMain.SetScale(true);
+        //place my others ?
+        var bb = MainStates.instance.mainPlayer.inventory.FindAll(x => x.it == ItemType.monster && x.GetPar("used_slot") >= 0);
+
+        if (bb.Count > 0)
+        {
+            var ee = WaveSpawner.instance.DoSpawnAnyPos(new List<Bon> { new Bon { Key = bb[0].dbObj.ID, Value = 1} },
+                "player", false, applyExtra: true, overridesViz: MainStates.overridesViz, start: 1);
+            
+            ee[0].SetScale(true);
+            ee[0].visMain.transform.localScale *= 0.5f;
+        }
+
         //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
         //MainStates.instance.mainPlayer.Position = playerPos.position;
         //MainStates.instance.mainPlayer.AdjustPosition();

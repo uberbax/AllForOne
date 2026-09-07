@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LayerLab;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class DungeonController : MonoBehaviour
     public bool inDungeon = false;
     public int cur = 0;
     public int last = 3;
-
+    public SampleCharacterMover mover;
+    
     private List<List<Bon>> tests = new List<List<Bon>>
     {
         new List<Bon>{ new Bon{ Key = "skeleton", Value = 1, Val2 = "obj_berserk:1"} }, 
@@ -49,11 +51,20 @@ public class DungeonController : MonoBehaviour
     {
         if (inDungeon)
         {
+            if (MainStates.instance.lastBattleResult == 1)
+            {
+                inDungeon = false;
+                EventManager.INV("after_battle", null);
+                return;
+            }
+            
             MainStates.instance.inBattle = true;
-            CreateField();
+            var mm = CreateField();
             MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
             FunctionTimer.Create(
                 () => EventManager.INV("battle_start", null), 0.5f);
+            
+            DoLittleRun(mm);
         }
     }
 
@@ -64,7 +75,7 @@ public class DungeonController : MonoBehaviour
         MainStates.instance.mainPlayer.ResetCDs();
     }
 
-    public void CreateField()
+    public List<RObj> CreateField()
     {
             List<Bon> curLevel = new List<Bon>();
             curLevel = tests[cur];
@@ -80,7 +91,9 @@ public class DungeonController : MonoBehaviour
             //? doesnt work
             MainStates.instance.all["second_main"].ResetCDs();
             MainStates.instance.mainPlayer.ResetCDs();
-            
+
+            return ee;
+
     }
     private void B(ArgPass obj)
     {
@@ -96,12 +109,54 @@ public class DungeonController : MonoBehaviour
             ModelStatistics.instance.SetStatValue("battle",2); 
             EventManager.INV("battle_press", new ArgPass{what = "battle9"});
             
-            CreateField();
-                    
+            var mm = CreateField();
+            
+            DoLittleRun(mm);
             //MainStates.instance.ApplyMonsterExtraParams(ee[0],mon);
             
                     
         }, null);
+    }
+
+    public void DoLittleRun(List<RObj> enemies)
+    {
+        //ss
+        Vector3 sdvig = new Vector3(5, 0, 0);
+        foreach (var e in enemies)
+        {
+            e.main.transform.position += sdvig;
+        }
+
+        mover.speed = 2;
+        //
+        FunctionTimer.Create(() =>
+        {
+            var allies = MainStates.instance.GetMines(MainStates.metaCreateLevel);
+            foreach (var e in allies)
+            {
+                e.visuals["animator"].GetComponent<XDanimator>().SetState("walk");
+            }            
+        }, 0.1f);
+
+        
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            var e = enemies[i];
+            var tmp = i;
+            UtilsControl.Instance.MoveTo(enemies[i].main.transform, 2, enemies[i].main.transform.position - sdvig,
+                () =>
+                {
+                    if (tmp == 0)
+                    {
+                        var allies = MainStates.instance.GetMines(MainStates.metaCreateLevel);
+                        foreach (var e in allies)
+                        {
+                            e.visuals["animator"].GetComponent<XDanimator>().SetState("idle");
+                            mover.speed = 0;
+                        }   
+                    }
+                }, null, useRight: false);
+        }
     }
 
     private void Update()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,7 +43,9 @@ public class GoBattle : MonoBehaviour
                     //recreate extra monsters
                     var ee1 = WaveSpawner.instance.DoSpawnAnyPos(mon.extraMonsters,
                         "enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz, start:1);
-                    
+
+                    var jj = ee.Concat(ee1).ToList();
+                    DungeonController.instance.DoLittleRun(jj);
                     
                 }, null);
             }
