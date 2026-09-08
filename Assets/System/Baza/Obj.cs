@@ -49,7 +49,10 @@ public class Obj
     public string drop = "";
     public string onDeath = "";
     public string onDmg = "";
+    public string onRoundStart = "";
     public string spawn = "";
+    
+    
     public string dropPerHit = "";
     public string dynamic = "";
     public string useSkill = "";

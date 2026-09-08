@@ -3026,10 +3026,30 @@ public class MainStates : MonoBehaviour
             curComateers.Add(combats[i]);            
         }
         //
+        
+        //cast on round start
+        for (int i = 0; i < curComateers.Count; i++)
+        {
+            for (int j = 0; j < curComateers[i].inventory.Count; j++)
+            {
+                var tt =  curComateers[i].inventory[j];
+                
+                if (tt.dbObj.onRoundStart == "") continue;
+                //var kl = DatabaseAll.instance.skills[tt.dbObj.useSkill];
+                //if (kl.onRoundStart == "") continue;                
+                var hy = tt.GetPar("used_slot");
+                if (hy < 0) continue;
+
+                SkillExecutor.instance.ExecuteSkill(curComateers[i], tt.dbObj.onRoundStart, null);
+
+            }
+        }
 
         curComateers.AddRange(curComateers);
         curComateers.AddRange(curComateers);
         EventManager.INV("turn_order", new ArgPass{whats = curComateers});
+        
+
         
         for (int i = 0; i < combats.Count; i++)
         {

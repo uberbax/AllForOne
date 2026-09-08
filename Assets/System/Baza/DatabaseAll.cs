@@ -137,6 +137,7 @@ public class DatabaseAll : MonoBehaviour
             o.onDeath = v.onDeath;
             o.onDmg = v.onDmg;
             o.spawn = v.spawn;
+            o.onRoundStart = v.onRoundStart;
 
             o.buffsApplied = v.buffApply;
             o.alsoCast = v.alsoCast;
@@ -193,6 +194,7 @@ public class DatabaseAll : MonoBehaviour
             if (v.RARITY != "") o.pars.Add("rarity", MainStates.rarity[v.RARITY]);
             o.pars.Add("subtype", MainStates.subtypes[v.SUBTYPE]);
             o.useSkill = v.useSkill;
+            o.onRoundStart = v.onRoundStart;
             
             o.pars.Add("level", 1);
             o.pars.Add("adorn_count", v.adornCnt);

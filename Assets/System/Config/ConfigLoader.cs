@@ -1020,6 +1020,8 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "ON_DEATH") mm.onDeath = tt[j];
                 else if (columns[j].ToUpper() == "ON_DMG") mm.onDmg = tt[j];
+                else if (columns[j].ToUpper() == "ON_ROUND_START") mm.onRoundStart = tt[j];
+                
                 else if (columns[j].ToUpper() == "SPAWN") mm.spawn = tt[j];
                 
                 
@@ -1164,6 +1166,7 @@ public class ConfigLoader : MonoBehaviour
                 if (tt[j]== "x") continue;
                 if (columns[j].ToUpper() == "NAME") mm.skillName = tt[j];
                 else if (columns[j].ToUpper() == "USE_SKILL") mm.useSkill = tt[j];
+                else if (columns[j].ToUpper() == "ON_ROUND_START") mm.onRoundStart = tt[j];
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
@@ -2643,6 +2646,7 @@ public class FormatHero
     public string drop = "";
     public string onDeath = "";
     public string onDmg = "";
+    
     public string dropPerHit = "";
 
     public List<Bon> extras = new List<Bon>();
@@ -2729,6 +2733,7 @@ public class FormatArtefact
 {
     public string skillName = string.Empty;
     public string useSkill = string.Empty;
+    public string onRoundStart = string.Empty;
     
     public float ATTACK_PRC;
     public float ATTACK;
@@ -2936,6 +2941,8 @@ public class FormatSkill
 
     public string onDeath = "";
     public string onDmg = "";
+    public string onRoundStart = "";
+    
     public string spawn = "";
     
 
