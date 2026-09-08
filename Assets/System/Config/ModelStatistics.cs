@@ -1252,6 +1252,7 @@ public class ElTasko
         common,
         daily,
         weekly,
+        monthly,
         events,
         
         

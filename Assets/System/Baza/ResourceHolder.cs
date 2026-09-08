@@ -147,6 +147,14 @@ public class ResourceHolder : MonoBehaviour
         return null;
     }
     
+    public Sprite GetIcon(string id)
+    {
+        if (monsters.ContainsKey(id)) return  avas[id];
+        if (items.ContainsKey(id)) return items[id];
+        //if (buildingsGO.ContainsKey(id)) return  buildingsGO[id];
+        return null;
+    }
+    
     public Sprite GetIcon(RObj r, bool shard = false)
     {
         if (r.dynamic != null)
