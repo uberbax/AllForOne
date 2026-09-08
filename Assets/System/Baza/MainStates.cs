@@ -1356,6 +1356,19 @@ public class MainStates : MonoBehaviour
                 }
                 return sparsed;
             }
+            
+            //
+            var n = t.GetComponentInParent<UIfiller>(true);
+            if (n != null && n.lo >= 0)
+            {
+                int last = n.perPage;
+                if (n.lo + last > res.Count)
+                {
+                    last = res.Count - n.lo;
+                }
+                
+                res = res.GetRange(n.lo, last);
+            }
 
             return res;            
             

@@ -102,7 +102,7 @@ public class UIfiller : MonoBehaviour
         
         if (next != null)
         {
-            prev.onClick.AddListener(() =>
+            next.onClick.AddListener(() =>
             {
                 if (lo >= 0)
                 {

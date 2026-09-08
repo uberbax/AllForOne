@@ -45,6 +45,7 @@ public class TimeManager : MonoBehaviour
         tm += amount;
     }
     //algo for increasing time
+    private int prevEnd = -1;
     private void Update()
     {
         if (ConfigLoader.GetMetaParamValue("sim_time_cont") > 0)
@@ -52,6 +53,20 @@ public class TimeManager : MonoBehaviour
             LAST_DT = Time.deltaTime * spd;
             tm += LAST_DT;
         }
+
+        var hh = GetTimeTillDayEnd();
+        if (prevEnd != -1 && hh > prevEnd)
+        {
+            NewDay();
+        }
+        prevEnd = hh;
+    }
+
+    public void NewDay()
+    {
+        Debug.Log("NewDay");
+        //
+        
     }
 
     //
@@ -124,7 +139,7 @@ public class TimeManager : MonoBehaviour
     {
         var a1 = GetCurrentTime();
         var a2 = GetTimeDifferenceEndDay(a1);
-        Debug.Log(a2.Seconds);
+        //Debug.Log(a2.Seconds);
     }
 
 }

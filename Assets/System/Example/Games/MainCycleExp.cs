@@ -414,6 +414,10 @@ public class MainCycleExp : MonoBehaviour
         if (Input.GetKeyDown("g"))
         {
             MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "exp", Value = 200}});
+            for (int i = 0; i < 10; i++)
+            {
+                MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "sword", Value = 1}});
+            }
         }
 
         if (MainStates.instance.inBattle)
