@@ -424,6 +424,8 @@ public class ResourceHolder : MonoBehaviour
                 var e = r.GetPar(a.param);
                 if (!a.ignoreOnce && e == 1 && a.param == "amount") txt.text = "";
                 else txt.text = a.pref + r.GetPar(a.param).ToString();
+
+                if (a.hideEmpty) a.GetComponent<CanvasGroup>().alpha = e != 0 ? 1 : 0;
             }
             
             if (a.param2 == "is_met")

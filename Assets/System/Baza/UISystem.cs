@@ -27,10 +27,21 @@ public class UISystem : MonoBehaviour
             var kk = o.GetComponent<GBind>();
             for (int i = 0; i < gg.Length; i++)
             {
-                var nn = o.transform.Find(gg[i]);
-                var bb = kk.GetGameobject(gg[i]);
-                if (bb) bb.SetActive(true);
-                else if (nn) nn.gameObject.SetActive(true);
+                //Debug.Log(gg[i] + " " + o.transform);
+                bool nt = false;
+                var str = gg[i];
+                if (str[0] == '!')
+                {
+                    str = str.Substring(1);
+                    nt = true;
+                }
+                
+                var nn = o.transform.Find(str);
+                GameObject bb = null;
+                if (kk) bb = kk.GetGameobject(str);
+                
+                if (bb) bb.SetActive(true ^ nt);
+                else if (nn) nn.gameObject.SetActive(true ^ nt);
             }
         }
     }
