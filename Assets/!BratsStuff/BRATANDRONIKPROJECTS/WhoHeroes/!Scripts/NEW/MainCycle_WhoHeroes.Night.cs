@@ -61,6 +61,7 @@ public sealed partial class MainCycle_WhoHeroes
     private bool nightActive;
     private bool nightCleaningUp;
     private bool nightCombatStarted;
+    private bool nightDefeatMarchStarted;
     private BRATMotionMouseMove nightPrinceMouseMove;
     private BRATViewCameraFollow nightCameraFollow;
 
@@ -86,8 +87,6 @@ public sealed partial class MainCycle_WhoHeroes
         if (nightCombatStarted)
             UpdateFormationRows();
 
-        if (prince != null && prince.GetPar("health") <= 0f && nightBattleController != null)
-            nightBattleController.startDo = false;
     }
 
     private void DisposeNightOrchestration()
@@ -170,13 +169,15 @@ public sealed partial class MainCycle_WhoHeroes
         {
             nightActive = true;
             nightCombatStarted = false;
+            nightDefeatMarchStarted = false;
             IsolateBattleState();
             CreateGateTarget();
             ConfigurePrince();
             SpawnDefense();
             SpawnAllNightDemons();
+            var staging = StartCoroutine(MoveNightForcesToStaging());
             yield return FocusNightCamera();
-            yield return MoveNightForcesToStaging();
+            yield return staging;
             yield return new WaitForSeconds(NightPreClashDelay);
 
             ConfigureCombatTargets();
@@ -256,6 +257,7 @@ public sealed partial class MainCycle_WhoHeroes
         {
             unit.AddMeta(NightBattleMeta);
             unit.SetPar("no_move", 1f);
+            unit.SetPar("do_nothing", 1f);
             if (unit.visuals.TryGetValue("combat", out var combatVisual) && combatVisual != null)
                 combatVisual.GetComponent<XDcombat>().curTg = "chill";
             demons.Add(unit);
@@ -298,6 +300,9 @@ public sealed partial class MainCycle_WhoHeroes
                 MainCycle_WhoHeroes.ApplyPermanentPerksToUnit(unit, false);
                 unit.AddMeta(NightBattleMeta);
                 unit.SetPar("no_move", 1f);
+                unit.SetPar("do_nothing", 1f);
+                if (unit.visuals.TryGetValue("combat", out var combatVisual) && combatVisual != null)
+                    combatVisual.GetComponent<XDcombat>().curTg = "chill";
                 nightUnits.Add(unit);
             }
             StaggerSpecialSkillCooldowns(spawned);
@@ -309,8 +314,14 @@ public sealed partial class MainCycle_WhoHeroes
         if (UtilsControl.Instance == null)
             yield break;
 
+        // Let the spawned view/XD components finish Start before setting animation state.
+        yield return null;
+        foreach (var unit in nightUnits)
+            if (IsNightUnitAlive(unit))
+                SetNightUnitPhysics(unit, false);
         var speed = ResolveNightStageSpeed();
         var pendingMoves = 0;
+        var departureIndex = 0;
         foreach (var stack in orderedDefenseStacks)
         {
             if (!defenseUnits.TryGetValue(stack, out var units))
@@ -328,8 +339,9 @@ public sealed partial class MainCycle_WhoHeroes
                                   Vector3.right * ((index - center) * nightFormationUnitSpacing);
                 var route = BuildNightAllyRoute(unit.main.transform.position, destination);
                 pendingMoves++;
-                UtilsControl.Instance.MoveToMany(unit.main.transform, speed, route, 0,
-                    () => pendingMoves--);
+                StartCoroutine(MoveNightUnitAlongRoute(unit, speed, route,
+                    departureIndex++ * Mathf.Min(0.1f, nightFormationUnitSpacing / speed),
+                    () => pendingMoves--));
             }
         }
 
@@ -352,12 +364,77 @@ public sealed partial class MainCycle_WhoHeroes
                 (destination.x, destination.y, demon.main.transform.position.z)
             };
             pendingMoves++;
-            UtilsControl.Instance.MoveToMany(demon.main.transform, speed, route, 0,
-                () => pendingMoves--);
+            StartCoroutine(MoveNightUnitAlongRoute(demon, speed, route, 0f,
+                () => pendingMoves--));
         }
 
         while (nightActive && pendingMoves > 0)
             yield return null;
+    }
+
+    private IEnumerator MoveNightUnitAlongRoute(
+        RObj unit, float speed, List<(float, float, float)> route, float delay, Action completed)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+        if (!nightActive || !IsNightUnitAlive(unit) || UtilsControl.Instance == null)
+        {
+            completed();
+            yield break;
+        }
+
+        SetNightUnitAnimation(unit, "walk");
+        var arrived = false;
+        Action onArrival = () =>
+        {
+            if (nightActive && IsNightUnitAlive(unit))
+                SetNightUnitAnimation(unit, "idle");
+            arrived = true;
+        };
+        UtilsControl.Instance.MoveToMany(unit.main.transform, speed, route, 0, onArrival);
+        while (nightActive && IsNightUnitAlive(unit) && !arrived)
+        {
+            yield return null;
+            // Minimus can cancel movement without invoking the arrival callback.
+            if (nightActive && IsNightUnitAlive(unit) && !arrived &&
+                !unit.main.name.Contains("_move"))
+            {
+                SetNightUnitAnimation(unit, "walk");
+                UtilsControl.Instance.MoveToMany(unit.main.transform, speed, route, 0, onArrival);
+            }
+        }
+        completed();
+    }
+
+    private static void SetNightUnitAnimation(RObj unit, string state)
+    {
+        if (unit.visuals.TryGetValue("animator", out var visual) && visual != null)
+            visual.GetComponent<XDanimator>()?.SetState(state);
+    }
+
+    private void SetNightUnitPhysics(RObj unit, bool combat)
+    {
+        var position = unit.main.transform.position;
+        position.z = nightDefenseRows[0].position.z;
+        unit.main.transform.position = position;
+        unit.Position = position;
+        if (unit.main.TryGetComponent<Rigidbody>(out var body))
+        {
+            if (!body.isKinematic)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
+            body.constraints |= RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+            body.isKinematic = !combat;
+            body.detectCollisions = combat;
+        }
+        if (unit.main.TryGetComponent<Rigidbody2D>(out var body2D))
+        {
+            body2D.linearVelocity = Vector2.zero;
+            body2D.angularVelocity = 0f;
+            body2D.simulated = combat;
+        }
     }
 
     private List<(float, float, float)> BuildNightAllyRoute(Vector3 start, Vector3 destination)
@@ -411,26 +488,10 @@ public sealed partial class MainCycle_WhoHeroes
         {
             if (!IsNightUnitAlive(unit))
                 continue;
+            SetNightUnitPhysics(unit, true);
             unit.SetPar("speed", Mathf.Max(unit.GetPar("speed"), combatSpeed));
+            unit.SetPar("do_nothing", 0f);
             unit.SetPar("no_move", 0f);
-        }
-
-        foreach (var demon in demons)
-        {
-            if (!IsNightUnitAlive(demon))
-                continue;
-
-            demon.AddViz(DemonStateVisual);
-            if (!demon.visuals.TryGetValue(DemonStateVisual, out var stateVisual) || stateVisual == null ||
-                !stateVisual.TryGetComponent<WhoHeroesDemonStateMachine>(out var stateMachine) ||
-                !stateMachine.Initialize(
-                    demon, gateTarget, prince, NightBattleMeta, PrinceMeta,
-                    nightDemonAggroRange, nightCastleGateRadius, NightDemonDecisionInterval))
-            {
-                Debug.LogError($"WhoHeroes night: demon state machine was not initialized for '{demon.RID}'.", this);
-                if (demon.visuals.TryGetValue("combat", out var combatVisual) && combatVisual != null)
-                    combatVisual.GetComponent<XDcombat>().curTg = MainStates.instance.tgBattle;
-            }
         }
     }
 
@@ -503,14 +564,10 @@ public sealed partial class MainCycle_WhoHeroes
 
     private void ConfigurePrince()
     {
-        MainCycle_WhoHeroes.ApplyPermanentPerksToUnit(prince, true);
         princeDayPosition = prince.main.transform.position;
-        prince.main.transform.position = nightPrinceSpawn.position;
-        prince.Position = nightPrinceSpawn.position;
         princeSavedNoMove = prince.GetPar("no_move");
         prince.SetPar("no_move", 1f);
-        prince.AddMeta(NightBattleMeta);
-        prince.AddMeta(PrinceMeta);
+        // Keep the roster owner, but do not enlist the Prince as a combatant or target.
         SetPlayerAnchorRenderers(false);
     }
 
@@ -545,11 +602,6 @@ public sealed partial class MainCycle_WhoHeroes
             if (unit?.main != null && unit.visuals.TryGetValue("combat", out var visual) && visual != null)
                 visual.GetComponent<XDcombat>().curTg = MainStates.instance.tgBattle;
 
-        if (prince.visuals.TryGetValue("combat", out var princeCombat) && princeCombat != null)
-            princeCombat.GetComponent<XDcombat>().curTg = MainStates.instance.tgBattle;
-        foreach (var demon in demons)
-            if (demon?.main != null && demon.visuals.TryGetValue("combat", out var demonCombat) && demonCombat != null)
-                demonCombat.GetComponent<XDcombat>().curTg = "chill";
     }
 
     private void OnNightBattleEnded(ArgPass args)
@@ -558,12 +610,18 @@ public sealed partial class MainCycle_WhoHeroes
             MainCycle_WhoHeroes.Instance.Phase != WhoHeroesPhase.Night)
             return;
 
-        if (prince == null || prince.GetPar("health") <= 0f)
+        if (nightDefeatMarchStarted)
             return;
 
         var victory = args != null && args.num == 0;
         if (!victory)
+        {
+            nightCombatStarted = false;
+            nightDefeatMarchStarted = true;
+            ApplyDefenseSurvivors();
+            StartCoroutine(MarchNightDemonsToCastle());
             return;
+        }
 
         var reward = ResolveNightGoldReward();
         ApplyDefenseSurvivors();
@@ -571,11 +629,47 @@ public sealed partial class MainCycle_WhoHeroes
         MainCycle_WhoHeroes.Instance.CompleteNight(reward);
     }
 
+    private IEnumerator MarchNightDemonsToCastle()
+    {
+        var castle = GUILIB.Resolve("castle")?.main;
+        if (castle == null)
+        {
+            Debug.LogError("WhoHeroes night: castle arrival target is missing.", this);
+            yield break;
+        }
+
+        var pendingMoves = 0;
+        var speed = ResolveNightStageSpeed();
+        foreach (var demon in demons)
+        {
+            if (!IsNightUnitAlive(demon))
+                continue;
+            SetNightUnitPhysics(demon, false);
+            demon.SetPar("do_nothing", 1f);
+            demon.SetPar("no_move", 1f);
+            if (demon.visuals.TryGetValue("combat", out var visual) && visual != null)
+                visual.GetComponent<XDcombat>().curTg = "chill";
+            var movementZ = demon.main.transform.position.z;
+            var route = new List<(float, float, float)>();
+            AppendNightRoute(route, FindNightRoute("Fight"), demon.main.transform.position, movementZ);
+            route.Add((nightCastleGate.position.x, nightCastleGate.position.y, movementZ));
+            route.Add((castle.transform.position.x, castle.transform.position.y, movementZ));
+            pendingMoves++;
+            StartCoroutine(MoveNightUnitAlongRoute(demon, speed, route, 0f, () => pendingMoves--));
+        }
+
+        while (nightActive && pendingMoves > 0)
+            yield return null;
+        if (nightActive)
+            SetGameOver();
+    }
+
     private void OnNightGameOver(ArgPass _)
     {
         if (nightActive)
         {
-            ApplyDefenseSurvivors();
+            if (!nightDefeatMarchStarted)
+                ApplyDefenseSurvivors();
             CleanupNight(false);
         }
     }
@@ -632,7 +726,7 @@ public sealed partial class MainCycle_WhoHeroes
         MainStates.instance.curSp = 1;
         BattleController.reqTag = NightBattleMeta;
         nightBattleController.winTag = "wave";
-        nightBattleController.loseTag = PrinceMeta;
+        nightBattleController.loseTag = "my_side";
         MainStates.instance.lastBattle = "whoheroes_night_" + MainCycle_WhoHeroes.Instance.NightNumber;
     }
 

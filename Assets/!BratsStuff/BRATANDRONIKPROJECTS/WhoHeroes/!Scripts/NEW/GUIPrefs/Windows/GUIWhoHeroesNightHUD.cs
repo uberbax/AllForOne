@@ -2,11 +2,15 @@ using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
 {
     private const float RefreshInterval = 0.1f;
+    // Temporary army-only night UI while the prince is disabled.
+    private const string NightTitleFormat = "NIGHT {night}";
+    private const string DefeatTitle = "DEFEAT";
     [SerializeField] private GameObject content;
     [SerializeField] private Slider princeHealth;
     [SerializeField] private TextMeshProUGUI nightText;
@@ -24,6 +28,20 @@ public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI restartText;
     private float nextRefreshTime;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void RegisterSceneLoaded()
+    {
+        SceneManager.sceneLoaded -= ActivateSceneHud;
+        SceneManager.sceneLoaded += ActivateSceneHud;
+    }
+
+    private static void ActivateSceneHud(Scene scene, LoadSceneMode _)
+    {
+        foreach (var root in scene.GetRootGameObjects())
+            foreach (var hud in root.GetComponentsInChildren<GUIWhoHeroesNightHUD>(true))
+                hud.gameObject.SetActive(true);
+    }
+
     private void Awake()
     {
         EventManager.SUB("PARSE_ENDED", OnParseEnded);
@@ -34,7 +52,7 @@ public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
         ResolveLoseScreen();
         restartButton?.onClick.AddListener(Restart);
         if (princeHealth != null)
-            princeHealth.interactable = false;
+            princeHealth.gameObject.SetActive(false);
         if (ConfigLoader.parseEnded)
             ApplyConfiguredText();
         Refresh();
@@ -76,7 +94,7 @@ public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
     private void ApplyConfiguredText()
     {
         if (controlsText != null)
-            controlsText.text = MainCycle_WhoHeroes.Text("night_controls");
+            controlsText.gameObject.SetActive(false);
     }
 
     private void OnGameOver(ArgPass args)
@@ -85,9 +103,28 @@ public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
         if (loseScreen == null)
             return;
 
+        // The shared lose panel may belong to the disabled legacy Canvas.
+        // Show that panel in the current HUD without activating the legacy UI.
+        if (loseScreen.transform.parent != null && !loseScreen.transform.parent.gameObject.activeInHierarchy)
+        {
+            var canvas = GetComponentInParent<Canvas>();
+            if (canvas != null)
+            {
+                loseScreen.transform.SetParent(canvas.transform, false);
+                if (loseScreen.transform is RectTransform rect)
+                {
+                    rect.localScale = Vector3.one;
+                    rect.anchorMin = Vector2.zero;
+                    rect.anchorMax = Vector2.one;
+                    rect.offsetMin = Vector2.zero;
+                    rect.offsetMax = Vector2.zero;
+                }
+            }
+        }
+        loseScreen.transform.SetAsLastSibling();
         loseScreen.SetActive(true);
         if (loseTitle != null)
-            loseTitle.text = MainCycle_WhoHeroes.Text("prince_died");
+            loseTitle.text = DefeatTitle;
         if (nightReachedLabel != null)
             nightReachedLabel.text = MainCycle_WhoHeroes.Text("night_reached");
         if (nightReachedValue != null)
@@ -148,19 +185,12 @@ public sealed class GUIWhoHeroesNightHUD : MonoBehaviour
 
     private void RefreshValues()
     {
-        if (MainCycle_WhoHeroes.Instance == null || MainStates.instance == null ||
-            !MainStates.instance.all.TryGetValue("main_player", out var prince))
+        if (MainCycle_WhoHeroes.Instance == null)
             return;
 
-        var health = Mathf.Max(0f, prince.GetPar("health"));
-        var maxHealth = Mathf.Max(1f, prince.GetPar("max_health"));
-        if (princeHealth != null)
-            princeHealth.normalizedValue = Mathf.Clamp01(health / maxHealth);
         if (nightText != null)
-            nightText.text = MainCycle_WhoHeroes.Text("night_hud")
-                .Replace("{night}", MainCycle_WhoHeroes.Instance.NightNumber.ToString())
-                .Replace("{health}", Mathf.CeilToInt(health).ToString())
-                .Replace("{max_health}", Mathf.CeilToInt(maxHealth).ToString());
+            nightText.text = NightTitleFormat
+                .Replace("{night}", MainCycle_WhoHeroes.Instance.NightNumber.ToString());
     }
 
 }

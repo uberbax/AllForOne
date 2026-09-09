@@ -386,12 +386,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
             return;
         }
 
-        if (phase != WhoHeroesPhase.Night || MainStates.instance == null ||
-            !MainStates.instance.all.TryGetValue("main_player", out var king))
-            return;
-
-        if (king.GetPar("health") <= 0)
-            SetGameOver();
+        // Prince combat is temporarily disabled; the night army determines the result.
     }
 
     private void OnDestroy()
@@ -453,7 +448,7 @@ public sealed partial class MainCycle_WhoHeroes : MonoBehaviour
         SettleCompletedDay();
         phase = WhoHeroesPhase.Night;
         SetPlayerAnchorRenderers(false);
-        TimeManager.instance.spd = 0f;
+        ResetClock(0f, false);
         nightNumber++;
         SaveNightCheckpoint();
         BuildNightWaveSnapshot();
