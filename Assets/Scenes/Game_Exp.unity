@@ -95912,6 +95912,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd2abd1635dc0e4584bd68449f2818c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actSkillsLoIndex: 50
+  actSkillsHiIndex: 66
+  pasSkillsLoIndex: 50
+  pasSkillsHiIndex: 66
   curSp: 0
   wall: {fileID: 6094784501028112013, guid: 383c387156f19d940ac747e02a5e55da, type: 3}
   tgBattle: battle
@@ -107557,7 +107561,7 @@ MonoBehaviour:
   command: GET_ITEMS_BY_SLOTS
   param: 50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65
   clickFunc: unequip
-  fillFunc: 
+  fillFunc: '!level'
   replaceClick: unequip_exp
   slots: []
   root: {fileID: 801493171}
@@ -225179,6 +225183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87914e7c5728b344ebaeb21c96312422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autogenerateSkillDescr: 1
   done: 0
   localConfigs: []
   stages: []
@@ -256315,10 +256320,10 @@ MonoBehaviour:
   nm: EXPEDITION
   compatibility: 
   command: GET_ITEMS
-  param: act_skills,not_shard
+  param: act_skills,not_shard,not_equiped
   clickFunc: equip_skills
-  fillFunc: manacost,description
-  replaceClick: evt_watch_upgrade
+  fillFunc: manacost,description,!level,!ItemStats
+  replaceClick: equip_skills
   slots: []
   root: {fileID: 1910127288}
   asGrid: 0

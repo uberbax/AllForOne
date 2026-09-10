@@ -10,6 +10,7 @@ using TMPro;
 
 public class ConfigLoader : MonoBehaviour
 {
+    public bool autogenerateSkillDescr = false;
     public enum AdminTypes
     {
         Heroes,
@@ -2534,7 +2535,7 @@ public class ConfigLoader : MonoBehaviour
     private string locale = "EN";
 
     private List<UnoLoc> _locs = new List<UnoLoc>();
-    public string GetMeLocale(string phrase, UnoLoc ul = null)
+    public string GetMeLocale(string phrase, UnoLoc ul = null, RObj rr = null )
     {
         phrase = phrase.ToLower();
 
@@ -2550,6 +2551,12 @@ public class ConfigLoader : MonoBehaviour
             Obj cc = null;
             
             DatabaseAll.instance.items.TryGetValue(phrase, out cc);
+
+            if (cc == null && rr != null && rr.it == ItemType.projectile && autogenerateSkillDescr)
+            {
+                var ee = GenerateSkillDescr(phrase, rr);
+                return ee;
+            }
             
             if (cc == null) return "no_descr: " + phrase;
             
@@ -2577,6 +2584,60 @@ public class ConfigLoader : MonoBehaviour
             return doctLoc[phrase].KOR;
 
         return doctLoc[phrase].JAP;
+    }
+
+    private string GenerateSkillDescr(string gg, RObj rr)
+    {
+        var dt = rr.GetPar("dmg_type");
+        var f0 = rr.GetPar("attack");
+        var f1 = rr.GetPar("attack_prc");
+        var f2 = rr.GetPar("magic");
+        var f_2 = rr.GetPar("magic_prc");
+        var f3 = rr.GetPar("def");
+        var f4 = rr.GetPar("res");
+        var f5 = rr.GetPar("health");
+        var f6 = rr.GetPar("mana");
+
+        string s = "";
+        if (f0 > 0) s += "Deals " + f0 + " " + MainStates.reverseDmgTypes[dt] + " damage" + ", ";
+        else if (f0 < 0) s += "Heals for " + -f0+ ", ";
+        if (f1 > 0) s += "Deals " + f1*100 + "% attack as " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
+        else if (f1 < 0) s += "Heals for " + -f1*100 + "% attack"+ ", ";
+        if (f2 > 0) s += "Deals " + f2 + " " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
+        else if (f2 < 0) s += "Heals for " + -f2+ ", ";
+        if (f_2 > 0) s += "Deals " + f_2*100 + "% magic as " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
+        else if (f_2 < 0) s += "Heals for " + -f_2*100 + "% magic"+ ", ";
+        
+        if (f3 > 0) s += "Increases defence by " + f3+ ", ";
+        else if (f3 < 0) s += "Reduces defence by " + -f3+ ", ";
+        
+        if (f4 > 0) s += "Increases resistance by " + f4+ ", ";
+        else if (f4 < 0) s += "Reduces resistance by " + -f4+ ", ";
+        
+        if (f5 > 0) s += "Heals for " + f5+ ", ";
+        else if (f5 < 0) s += "Reduces health by " + -f5+ ", ";
+        
+        if (f6 > 0) s += "Regen mana for " + f6;
+        else if (f6 < 0) s += "Reduces mana by " + -f6;
+
+        if (s == "" && rr.dbObj.alsoCast.Count > 0)
+        {
+            var obj = DatabaseAll.instance.CreateAny(rr.dbObj.alsoCast[0].Key, false, 1, new GameObject());
+            //prc
+            if (rr.dbObj.alsoCast[0].Value < 100) s += "Has a chance to ";
+            s += GetMeLocale(rr.dbObj.alsoCast[0].Key + "_descr", null, obj);
+        }
+
+        if (rr.dbObj.buffsApplied.Count > 0)
+        {
+            if (rr.dbObj.buffsApplied[0].Value < 100) s += "Has a chance ";
+            s += "apply " + rr.dbObj.buffsApplied[0].Key;
+        }
+        
+        doctLoc[gg] = new FormatLocalization();
+        doctLoc[gg].EN = s;
+        
+        return s;
     }
 
     public void SwitchToLocale(string newLoc)

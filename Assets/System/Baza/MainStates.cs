@@ -13,6 +13,12 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public int actSkillsLoIndex = 50;
+    public int actSkillsHiIndex = 66;
+    
+    public int pasSkillsLoIndex = 70;
+    public int pasSkillsHiIndex = 86;
+    
     public int curSp = 0;
     public GameObject wall;
     public string tgBattle = "battle";
@@ -1585,25 +1591,29 @@ public class MainStates : MonoBehaviour
     {
             if (o.dbObj.ID.IndexOf("pass") < 0)
             {
-                var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 50);
-                if (b1 == null) o.SetPar("used_slot", 50);
-                var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 51);
-                if (b2 == null) o.SetPar("used_slot", 51);
-                var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 52);
-                if (b3 == null) o.SetPar("used_slot", 52);
-                var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 53);
-                if (b4 == null) o.SetPar("used_slot", 53);
+                for (int i = actSkillsLoIndex; i < actSkillsHiIndex; i++)
+                {
+                    var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == i);
+                    if (b1 == null)
+                    {
+                        o.SetPar("used_slot", i);
+                        break;
+                    }
+
+                }
             }
             else
             {
-                var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 60);
-                if (b1 == null) o.SetPar("used_slot", 60);
-                var b2 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 61);
-                if (b2 == null) o.SetPar("used_slot", 61);
-                var b3 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 62);
-                if (b3 == null) o.SetPar("used_slot", 62);
-                var b4 = a1.inventory.Find(x => x.upgradePars["used_slot"] == 63);
-                if (b4 == null) o.SetPar("used_slot", 63);
+                for (int i = pasSkillsLoIndex; i < pasSkillsHiIndex; i++)
+                {
+                    var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == i);
+                    if (b1 == null)
+                    {
+                        o.SetPar("used_slot", i);
+                        break;
+                    }
+
+                }
             }        
     }
 

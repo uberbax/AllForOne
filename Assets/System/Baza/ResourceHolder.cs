@@ -387,14 +387,14 @@ public class ResourceHolder : MonoBehaviour
             {
                 if (r.dynamic != null)
                 {
-                    txt.text = ConfigLoader.Instance.GetMeLocale(r.dynamic.id + "_descr");
+                    txt.text = ConfigLoader.Instance.GetMeLocale(r.dynamic.id + "_descr", null, r);
                 }
                 else if (r.dbObj != null)
                 {
-                    txt.text = ConfigLoader.Instance.GetMeLocale(r.dbObj.ID + "_descr");
+                    txt.text = ConfigLoader.Instance.GetMeLocale(r.dbObj.ID + "_descr", null, r);
                 }
                 else
-                    txt.text = ConfigLoader.Instance.GetMeLocale(r.RID + "_descr");
+                    txt.text = ConfigLoader.Instance.GetMeLocale(r.RID + "_descr",null, r);
             }
             else if (a.param == "rarity")
             {
