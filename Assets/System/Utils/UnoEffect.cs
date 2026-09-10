@@ -19,7 +19,8 @@ public class UnoEffect : MonoBehaviour
     public Color color = Color.white;
 
     public Transform asOther;
-
+    public GameObject actOther;
+    
     public bool once = true;
     private bool was = false;
     public bool takeWaitFromAnimat = false;
@@ -39,6 +40,14 @@ public class UnoEffect : MonoBehaviour
             {
                 if (this == null) return;
                 Destroy(gameObject);
+            };
+        }
+
+        if (actStr == "act_other" && actOther != null)
+        {
+            act = () =>
+            {
+                actOther.SetActive(true);
             };
         }
         

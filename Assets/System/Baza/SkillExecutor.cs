@@ -208,6 +208,16 @@ public class SkillExecutor : MonoBehaviour
         }
 
         var ll = ResourceHolder.instance.GetMeSkillEtc(who.dbObj, skl.dbObj.ID);
+        //who main player ? self effect ?
+        if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
+        {
+            var kk = Instantiate(ResourceHolder.instance.effSelf);
+            kk.transform.position = who.Position;
+            kk.SetActive(true);
+            kk.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ResourceHolder.instance.skills[skl.dbObj.ID];
+            Destroy(kk, 2);
+        }
+        
         if (ll != null && ll.effSelf != null)
         {
             var kk = Instantiate(ll.effSelf);

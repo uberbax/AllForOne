@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class ResourceHolder : MonoBehaviour
 {
     public GameObject emptyProj;
+    public GameObject effSelf;
+    
     public static ResourceHolder instance;
 
     public StringObjectDictionary monsters;
@@ -135,6 +137,7 @@ public class ResourceHolder : MonoBehaviour
                 return v;
             }
         }
+        
 
         return null;
     }

@@ -338,7 +338,7 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("evt_adorn", EventAdorn);
         EventManager.SUB("switch_class", SwitchMainClass);
         EventManager.SUB("evt_unlock_class", UnlockClass);
-        EventManager.SUB("skill_casted", SkillCasted);
+        EventManager.SUB("manual_cast", SkillCasted);
         
         
 
@@ -370,22 +370,20 @@ public class MainStates : MonoBehaviour
 
     private void SkillCasted(ArgPass obj)
     {
-        //header.text = obj.who.dbObj.ID;
-        //description.text = "uses " + obj.who2.dbObj.ID;  
-        var g0 = obj.who.RID;
-        if (g0 != "second_main") return;
+        //var g0 = obj.who.RID;
+        //if (g0 != "second_main") return;
         
-        var h = lastSkillsUsed.Find(x => x.dbObj.ID == obj.who2.dbObj.ID);
+        var h = lastSkillsUsed.Find(x => x.dbObj.ID == obj.who.dbObj.ID);
         if (h != null) return;
 
         if (lastSkillsUsed.Count < maxQuickSkills)
         {
-            lastSkillsUsed.Add(obj.who2);
+            lastSkillsUsed.Add(obj.who);
         }
         else
         {
             lastSkillsUsed.RemoveAt(0);
-            lastSkillsUsed.Add(obj.who2);
+            lastSkillsUsed.Add(obj.who);
         }
         
     }
@@ -423,6 +421,14 @@ public class MainStates : MonoBehaviour
             {
                 if (i >= y.Count) continue;
                 lastSkillsUsed.Add(y[i]);
+            }
+        }
+        else
+        {
+            var gk = all["second_main"];
+            foreach (var v in lastSkillsUsed)
+            {
+                v.owner = gk;
             }
         }
     }
@@ -1848,6 +1854,7 @@ public class MainStates : MonoBehaviour
                 RObj trg = null;
                 if (o.dbObj.pars["target"] == 0) trg = lastTargetSelected;
                 SkillExecutor.instance.CastSkill(  o.owner != null ? o.owner : lastAllySelected == null ? mainPlayer : lastAllySelected, o, target:trg);
+                EventManager.INV("manual_cast", new ArgPass{who = o});
             }
             else if (SV == "select")
             {
