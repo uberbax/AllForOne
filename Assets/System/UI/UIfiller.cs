@@ -250,8 +250,10 @@ public class UIfiller : MonoBehaviour
                     if (g != null)
                     {
                         g.filler = this;
-                        g.GetComponent<CanvasGroup>().alpha = res[i] != null ? 1 : 0;
-                        g.GetComponent<CanvasGroup>().blocksRaycasts = res[i] != null;
+                        var em = g.GetComponent<CanvasGroup>();
+                        if (em == null) em = g.gameObject.AddComponent<CanvasGroup>();
+                        em.alpha = res[i] != null ? 1 : 0;
+                        em.blocksRaycasts = res[i] != null;
                         g.obj = res[i];
                         //zdes
                         var cc = g.GetComponentsInChildren<UnoAll>();

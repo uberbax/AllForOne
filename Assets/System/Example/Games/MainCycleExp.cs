@@ -205,8 +205,7 @@ public class MainCycleExp : MonoBehaviour
 
         MainStates.manualDt = true;
         TimeManager.LAST_DT = 1;
-
-        MainStates.instance.UI_skills.SetActive(true);
+        
         //
         MainStates.instance.awaitUnits.Clear();
         MainStates.instance.awaitUnits.Add("second_main", 1);
@@ -214,7 +213,8 @@ public class MainCycleExp : MonoBehaviour
 
         //and we do basically start battle
         EventManager.INV("battle_start", null);
-
+        MainStates.instance.UI_skills.SetActive(true);
+        
         //we activate other SCENE
         ActivateOtherScene(true);
     }

@@ -44,7 +44,7 @@ public class UIlevelUp : MonoBehaviour
         activate.SetActive(true);
         wasLevelup = false;
 
-        List<string> stats = new List<string> { "health", "attack", "res", "def" };
+        List<string> stats = new List<string> { "health", "attack", "res", "def", "mana" };
         int levelNow = (int)MainStates.instance.mainPlayer.GetPar("level");
         
         var e1 = Mathf.Pow(1.1f, levelNow - levelWas);

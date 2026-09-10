@@ -1861,6 +1861,10 @@ public class MainStates : MonoBehaviour
             {
                 h.transform.parent.gameObject.SetActive(false);
             }
+            else if (SV == "close_par2")
+            {
+                h.transform.parent.parent.gameObject.SetActive(false);
+            }
             else
             {
                 EventManager.INV(u.param, new ArgPass

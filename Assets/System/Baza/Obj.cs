@@ -373,7 +373,7 @@ public class RObj
 
     public static List<string> scalablePars = new List<string>
     {
-        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc","magic","magic_prc","res"
+        "attack","health","max_health","def","attack_prc","max_health_prc","health_prc","magic","magic_prc","res","mana","max_mana"
     };
         
     
