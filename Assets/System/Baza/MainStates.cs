@@ -70,6 +70,8 @@ public class MainStates : MonoBehaviour
     public RObj curLoot;
     public RObj lastAllySelected;
     public RObj lastTargetSelected;
+    public List<RObj> lastSkillsUsed = new List<RObj>();
+    public int maxQuickSkills = 4;
     public GameObject lastBattleTrigger;
     
     public List<RObj> curSmalls;
@@ -336,6 +338,8 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("evt_adorn", EventAdorn);
         EventManager.SUB("switch_class", SwitchMainClass);
         EventManager.SUB("evt_unlock_class", UnlockClass);
+        EventManager.SUB("skill_casted", SkillCasted);
+        
         
 
         if (trashRoot == null)
@@ -364,6 +368,28 @@ public class MainStates : MonoBehaviour
         
     }
 
+    private void SkillCasted(ArgPass obj)
+    {
+        //header.text = obj.who.dbObj.ID;
+        //description.text = "uses " + obj.who2.dbObj.ID;  
+        var g0 = obj.who.RID;
+        if (g0 != "second_main") return;
+        
+        var h = lastSkillsUsed.Find(x => x.dbObj.ID == obj.who2.dbObj.ID);
+        if (h != null) return;
+
+        if (lastSkillsUsed.Count < maxQuickSkills)
+        {
+            lastSkillsUsed.Add(obj.who2);
+        }
+        else
+        {
+            lastSkillsUsed.RemoveAt(0);
+            lastSkillsUsed.Add(obj.who2);
+        }
+        
+    }
+
     private void EventAdorn(ArgPass obj)
     {
         //refill global
@@ -388,6 +414,16 @@ public class MainStates : MonoBehaviour
             v.spawnByCommand = false;
             v.IsDone = false;
             v.spawnAsBattle = true;
+        }
+        //lastSkills ?
+        var y = GetCommandResult("GET_SKILLS_SELECT", "second_main");
+        if (lastSkillsUsed.Count == 0)
+        {
+            for (int i = 0; i < maxQuickSkills; i++)
+            {
+                if (i >= y.Count) continue;
+                lastSkillsUsed.Add(y[i]);
+            }
         }
     }
 
@@ -1192,6 +1228,11 @@ public class MainStates : MonoBehaviour
                     res.Add(wha.GetSKillReplace(item));
 
                 return res;
+
+        }
+        if (command == "GET_LAST_SKILLS")
+        {
+            return lastSkillsUsed;
 
         }
         if (command == "GET_ALLY_SQUAD")
