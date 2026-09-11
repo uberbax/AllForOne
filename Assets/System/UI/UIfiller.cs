@@ -220,8 +220,10 @@ public class UIfiller : MonoBehaviour
                     var g1 = jj.GetComponentInChildren<AbsHolder>();
                     if (g1 != null)
                     {
-                        g1.id = res[i].RID;
-                        g1.Start();
+                        //g1.id = res[i].RID;
+                        //g1.Start();
+                        g1.GetComponent<CanvasGroup>().alpha = 0;
+                        g1.GetComponent<CanvasGroup>().blocksRaycasts = false;
                         continue;
                     }
                     
@@ -242,6 +244,11 @@ public class UIfiller : MonoBehaviour
                     var g1 = jj.GetComponentInChildren<AbsHolder>();
                     if (g1 != null)
                     {
+                        var em = g1.GetComponent<CanvasGroup>();
+                        if (em == null) em = g1.gameObject.AddComponent<CanvasGroup>();
+                        em.alpha = res[i] != null ? 1 : 0;
+                        em.blocksRaycasts = res[i] != null;
+                        
                         g1.id = res[i].RID;
                         g1.Start();
                         continue;

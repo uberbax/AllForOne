@@ -158,6 +158,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 1
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1328707703090385770
@@ -256,6 +257,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1348847680199345752
@@ -354,6 +356,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1683337677378835699
@@ -488,7 +491,12 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
+  asDBObj: 
   redirect: {fileID: 0}
+  copyTo: {fileID: 0}
+  alsoEnables: []
   ignoreScale: 0
 --- !u!1 &3075624515320489598
 GameObject:
@@ -648,6 +656,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &3232537067264538491
@@ -941,6 +950,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 1
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &3637580837122785535
@@ -1135,7 +1145,12 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
+  asDBObj: 
   redirect: {fileID: 0}
+  copyTo: {fileID: 0}
+  alsoEnables: []
   ignoreScale: 0
 --- !u!1 &3950351584998078496
 GameObject:
@@ -1469,6 +1484,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &4441918773533330437
@@ -1629,6 +1645,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &5256346589375457546
@@ -1722,7 +1739,12 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
+  asDBObj: 
   redirect: {fileID: 0}
+  copyTo: {fileID: 0}
+  alsoEnables: []
   ignoreScale: 0
 --- !u!1 &6018938238534779873
 GameObject:
@@ -1820,6 +1842,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &6410277315538254205
@@ -1918,6 +1941,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &6709738900160439840
@@ -1932,6 +1956,7 @@ GameObject:
   - component: {fileID: 1540416341299151850}
   - component: {fileID: 6404248405831766992}
   - component: {fileID: 7080311339222668951}
+  - component: {fileID: 7081167760013375923}
   m_Layer: 5
   m_Name: OneTaskSmall
   m_TagString: Untagged
@@ -1997,6 +2022,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d33d9bf9eeb3a3499e70bbd7a94bf2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lo: -1
+  hi: -1
+  perPage: 10
+  next: {fileID: 0}
+  prev: {fileID: 0}
   noScale: 1
   ignoreInvAny: 1
   nm: 
@@ -2011,6 +2041,7 @@ MonoBehaviour:
   - {fileID: 9006258726762408090}
   - {fileID: 3408132645457558990}
   root: {fileID: 0}
+  asGrid: 0
   spawn: {fileID: 0}
   otherContext: {fileID: 0}
   context:
@@ -2018,7 +2049,22 @@ MonoBehaviour:
     m_values: []
   take: {fileID: 0}
   deactivateOverCnt: 0
+  subParamChange: 
+  saveAsObj: 
   selfReward: []
+  findRobj: 0
+--- !u!225 &7081167760013375923
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6709738900160439840}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6851913464684830813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,6 +2334,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &7819693802815004718
@@ -2622,6 +2669,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &8560552668009269827
@@ -2928,6 +2976,7 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 1
+  addDlt: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &8745675917943927239

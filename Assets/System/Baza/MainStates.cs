@@ -1436,6 +1436,10 @@ public class MainStates : MonoBehaviour
             {
                 var a = playerData.playerTasks[i];
                 if (a.started < 1) continue;
+                var b1 = DatabaseAll.instance.allTasks[a.id];
+                if (param == "non_daily" && b1.category == ElTasko.Category.daily) continue;
+                if (param == "daily" && b1.category != ElTasko.Category.daily) continue;
+                
                // if (!all.ContainsKey(a.id))
                //{
                //     Debug.Log("No Task: " + a.id);
