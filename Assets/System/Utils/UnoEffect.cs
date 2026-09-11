@@ -26,6 +26,12 @@ public class UnoEffect : MonoBehaviour
     public bool takeWaitFromAnimat = false;
     public void OnEnable()
     {
+        if (UtilsControl.Instance == null)
+        {
+            Invoke("OnEnable", 0.1f);
+            return;
+        }
+        
         if (takeWaitFromAnimat)
         {
             wait = GetComponentInParent<Animato>().wait;
