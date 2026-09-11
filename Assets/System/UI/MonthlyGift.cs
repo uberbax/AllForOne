@@ -12,8 +12,27 @@ public class MonthlyGift : MonoBehaviour
     void Awake()
     {
         instance = this;
+        EventManager.SUB("first_day", NewDay);
+        EventManager.SUB("new_day", NewDay);
     }
-    
+
+    private void FirstDay(ArgPass obj)
+    {
+
+    }
+
+    private void NewDay(ArgPass obj)
+    {
+        ModelStatistics.instance.SetStatValue("monthly_gift_daily_open", 0);
+        ModelStatistics.instance.IncreaseStatValue("monthly_available", 1); 
+        //daily quest add
+        
+        var a = MainStates.instance.playerData.playerTasks.FindAll(x => x.id.IndexOf("daily_") >= 0);
+        var b= a[Random.Range(0, a.Count)];
+        b.started = 1;
+        
+    }
+
     public void MonthlyLogic()
     {
         //not in battle, not level_up ?, level >= 5, and new monthly is available ?
@@ -28,6 +47,8 @@ public class MonthlyGift : MonoBehaviour
         if (!check) return;
         
         var monthlyAvail = ModelStatistics.instance.GetStatValue("monthly_available");
+        if (monthlyAvail < 1) return;
+        
         if (monthlyAvail < 1)
         {
             monthlyAvail = 1;
@@ -51,6 +72,11 @@ public class MonthlyGift : MonoBehaviour
 
     }
 
+    public void DailyLogic()
+    {
+        
+    }
+    
     public bool AnyMonthlyNotTaken()
     {
           var monthlyAvail = ModelStatistics.instance.GetStatValue("monthly_available"); 
@@ -68,6 +94,7 @@ public class MonthlyGift : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DailyLogic();
         MonthlyLogic();
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class ResourceHolder : MonoBehaviour
 {
+    public Sprite defaultTaskIcon;
     public GameObject emptyProj;
     public GameObject effSelf;
     
@@ -192,6 +193,7 @@ public class ResourceHolder : MonoBehaviour
         }
         else if (r.it == ItemType.task)
         {
+            if (!tasks.ContainsKey(r.RID)) return defaultTaskIcon;
             return tasks[r.RID];
         }
 

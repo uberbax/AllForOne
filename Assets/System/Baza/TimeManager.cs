@@ -57,17 +57,45 @@ public class TimeManager : MonoBehaviour
         var hh = GetTimeTillDayEnd();
         if (prevEnd != -1 && hh > prevEnd)
         {
-            NewDay();
+            //NewDay();
         }
         prevEnd = hh;
+        
+        
+        //naverno neto
+        var fo = DateTime.Now.StartOfDay();
+        TimeSpan span= fo.Subtract(new DateTime(2020,1,1,0,0,0)); 
+        
+        TimeSpan span2= DateTime.UtcNow.Subtract(new DateTime(2020,1,1,0,0,0));
+
+        var mm = MainStates.instance.mainPlayer.GetPar("last_login");
+
+        if (mm == 0)
+        {
+            mm = (float)span.TotalDays;
+            MainStates.instance.mainPlayer.SetPar("last_login", mm);
+            FirstDay();
+        }
+
+        var dlt = span2.TotalDays - mm;
+        if (dlt > 1)
+        {
+            MainStates.instance.mainPlayer.SetPar("last_login", (float)span2.TotalDays);
+            NewDay();
+        }
     }
 
+    public void FirstDay()
+    {
+        Debug.Log("FirstDay");
+        EventManager.INV("first_day", new ArgPass());
+    }
+    
     public void NewDay()
     {
         Debug.Log("NewDay");
         //
-        ModelStatistics.instance.SetStatValue("monthly_gift_daily_open", 0);
-        ModelStatistics.instance.IncreaseStatValue("monthly_available", 1); 
+        EventManager.INV("new_day", new ArgPass());
     }
 
     //
