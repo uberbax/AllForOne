@@ -66,7 +66,8 @@ public class TimeManager : MonoBehaviour
     {
         Debug.Log("NewDay");
         //
-        
+        ModelStatistics.instance.SetStatValue("monthly_gift_daily_open", 0);
+        ModelStatistics.instance.IncreaseStatValue("monthly_available", 1); 
     }
 
     //

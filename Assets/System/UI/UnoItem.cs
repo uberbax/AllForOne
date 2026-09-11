@@ -28,7 +28,8 @@ public class UnoItem : MonoBehaviour
     {
         dayText.text = "Day " + dayNum.ToString();
         icon.sprite = ResourceHolder.instance.GetIcon(item);
-        amountText.text = amount.ToString();
+        
+        amountText.text = amount > 1 ? amount.ToString() : "";
         curState = state;
         this.num = num;
         itm = new Bon{Key = item, Value =  amount};
@@ -89,9 +90,8 @@ public class UnoItem : MonoBehaviour
 
     public void FillMonthly()
     {
-        
+        ModelStatistics.instance.SetStatValue("monthly_gift_daily_open", 1); 
         var p = ModelStatistics.instance.GetStatValue("monthly_available");
-        p = 5;
         
         List<ElTasko> tasks = new List<ElTasko>();
         

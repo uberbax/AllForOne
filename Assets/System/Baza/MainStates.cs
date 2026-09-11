@@ -13,6 +13,8 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public GameObject monthlyRewards;
+    
     public int actSkillsLoIndex = 50;
     public int actSkillsHiIndex = 66;
     
@@ -413,7 +415,7 @@ public class MainStates : MonoBehaviour
             v.IsDone = false;
             v.spawnAsBattle = true;
         }
-        //lastSkills ?
+        //lastSkills of SECOND_MAIN ?
         var y = GetCommandResult("GET_SKILLS_SELECT", "second_main");
         if (lastSkillsUsed.Count == 0)
         {
@@ -2936,6 +2938,7 @@ public class MainStates : MonoBehaviour
         allSubs.RemoveAll(x => x.who == null);
 
     }
+    
 
     public void HandleCds(float dt = -1, RObj who = null)
     {
