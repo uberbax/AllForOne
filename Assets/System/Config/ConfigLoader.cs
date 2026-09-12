@@ -1174,6 +1174,9 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "MAGIC") mm.MAGIC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "MAGIC_PRC") mm.MAGIC_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
+                else if (columns[j].ToUpper() == "CRIT_CHANCE") mm.CRIT_CHANCE = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                else if (columns[j].ToUpper() == "CRIT_DMG") mm.CRIT_DMG = float.Parse(tt[j], CultureInfo.InvariantCulture);
+                
                 else if (columns[j].ToUpper() == "HEALTH") mm.HEALTH = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "HEALTH_PRC") mm.HEALTH_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF") mm.DEF = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -2801,6 +2804,8 @@ public class FormatArtefact
     public float MAGIC_PRC;
     public float MAGIC;
     
+    public float CRIT_CHANCE;
+    public float CRIT_DMG;
     
     public float HEALTH;
     public float MAX_HEALTH;

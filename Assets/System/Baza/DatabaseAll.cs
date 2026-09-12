@@ -188,6 +188,10 @@ public class DatabaseAll : MonoBehaviour
             if (v.RES_PRC != 0) o.pars.Add("res_prc", v.RES_PRC);
             if (v.SPEED != 0) o.pars.Add("speed", v.SPEED);
             if (v.PEN_CNT != 0) o.pars.Add("pen_cnt", v.PEN_CNT);
+            
+            o.pars.Add("crit_chance", v.CRIT_CHANCE);
+            o.pars.Add("crit_dmg", v.CRIT_DMG);
+            
             o.pars.Add("instant", v.INSTANT);
             
             if (v.SLOT != "") o.pars.Add("slot", MainStates.slots[v.SLOT]);

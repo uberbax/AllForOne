@@ -184,7 +184,11 @@ public class MainCycleExp : MonoBehaviour
         
         //MainStates.instance.AcquireSkill(secondMain, "basic_melee");
 
-        secondMain.SetScale(true);
+        //?
+        var dd = secondMain.main.GetComponentInChildren<XDinvscale>();
+        if (dd == null)
+            secondMain.SetScale(true);
+        
         //place my others ?
         var bb = MainStates.instance.mainPlayer.inventory.FindAll(x => x.it == ItemType.monster && x.GetPar("used_slot") >= 0);
 

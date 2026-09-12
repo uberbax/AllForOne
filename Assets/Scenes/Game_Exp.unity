@@ -67486,7 +67486,7 @@ RectTransform:
   m_GameObject: {fileID: 491735132}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1218194965}
@@ -154042,6 +154042,7 @@ GameObject:
   - component: {fileID: 1134134068}
   - component: {fileID: 1134134067}
   - component: {fileID: 1134134070}
+  - component: {fileID: 1134134071}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -154230,6 +154231,62 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1134134071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134134065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1134134068}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2086004048}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1134689034
 GameObject:
   m_ObjectHideFlags: 0
@@ -160746,6 +160803,9 @@ MonoBehaviour:
     - gravewarden_charm
     - gravewarden_seal
     - gravewarden_armor
+    - adorn_res
+    - adorn_crit
+    - adorn_critdmg
     m_values:
     - {fileID: 21300000, guid: f562338df1df4224f9ac7027d3c4d4df, type: 3}
     - {fileID: 21300000, guid: 430fd57e41b17074db2c02f860ee9e20, type: 3}
@@ -160820,6 +160880,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 0a0b38a9e820e4cb0a187a7bb7f76afb, type: 3}
     - {fileID: 21300000, guid: 416db2a5721084f68b6927912a217674, type: 3}
     - {fileID: 21300000, guid: da24243c054e049918e7160c8d0ec936, type: 3}
+    - {fileID: 21300000, guid: 18515ac390cbc4107818796f723d8b1e, type: 3}
+    - {fileID: 21300000, guid: 15826823edc0f4f53ba1034367f08876, type: 3}
+    - {fileID: 21300000, guid: 94c9cdd36742340e6bff781b7d9d1034, type: 3}
   buildings:
     m_keys:
     - barracks1
@@ -161103,11 +161166,11 @@ MonoBehaviour:
     - hero_sorcerer
     - hero_archmage
     m_values:
-    - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
-    - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
-    - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
-    - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
-    - {fileID: 1273900211663125247, guid: a07c3181c6da2bf4789325dae1770c03, type: 3}
+    - {fileID: 2856463184211108296, guid: aa23f71d9d01b804f98197e06e96cc02, type: 3}
+    - {fileID: 2235341231298666686, guid: fec8bd7b8fed02b4a8bdba20ad1a0299, type: 3}
+    - {fileID: 5409662461265389629, guid: 717b484e68b9cee4b9a039fcb183650d, type: 3}
+    - {fileID: 4284881394025904617, guid: e228935506b7a84489badaa56a03ab5f, type: 3}
+    - {fileID: 1416644955379415305, guid: 68e66366c07fa1740b13d16d8dd1a681, type: 3}
   heroClassesAvas:
     m_keys:
     - hero_warrior
@@ -161116,11 +161179,11 @@ MonoBehaviour:
     - hero_sorcerer
     - hero_archmage
     m_values:
-    - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
-    - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
-    - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
-    - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
-    - {fileID: 21300000, guid: 548c155f326f95344a7d1250be4556c5, type: 3}
+    - {fileID: 21300000, guid: 9418713c98cb9c6459c45b225d013f6c, type: 3}
+    - {fileID: 21300000, guid: 632370d04e2d2234e9f3a6ceae1afd6f, type: 3}
+    - {fileID: 21300000, guid: 214f5204102197248b7f9aa28b59a00e, type: 3}
+    - {fileID: 21300000, guid: d8b145fcc8734d542b12a5e8ee8956fe, type: 3}
+    - {fileID: 21300000, guid: 8e7d03e6f8db8b7448e287ef39e1d7ae, type: 3}
   toAct: {fileID: 0}
 --- !u!4 &1156669833
 Transform:
@@ -256359,6 +256422,7 @@ MonoBehaviour:
   copyActiveState: 1
   copySpriteEveryFrame: 1
   copyColorEveryFrame: 1
+  syncSortingOrder: 1
 --- !u!1 &1891389791
 GameObject:
   m_ObjectHideFlags: 0
@@ -280101,7 +280165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2086004049
 RectTransform:
   m_ObjectHideFlags: 0

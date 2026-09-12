@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,20 @@ public class SpriteRigToUI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private RectTransform uiParent;
 
-    [Tooltip("How many UI pixels correspond to 1 Unity world/local unit.")]
+    [Tooltip("How many UI pixels correspond to 1 Unity unit.")]
     [SerializeField] private float unitsToPixels = 100f;
 
-    [Header("Options")]
+    [Header("Sync")]
     [SerializeField] private bool copyScale = true;
     [SerializeField] private bool copyActiveState = true;
     [SerializeField] private bool copySpriteEveryFrame = true;
     [SerializeField] private bool copyColorEveryFrame = true;
-
-    private readonly List<Node> nodes = new();
+    [SerializeField] private bool syncSortingOrder = true;
 
     private RectTransform generatedRoot;
+
+    private readonly List<Node> nodes = new();
+    private readonly List<RendererNode> rendererNodes = new();
 
     private class Node
     {
@@ -32,15 +35,20 @@ public class SpriteRigToUI : MonoBehaviour
         public Image targetImage;
     }
 
+    private class RendererNode
+    {
+        public Node node;
+
+        // Used to keep sorting stable when orders are equal.
+        public int creationIndex;
+    }
+
     private void Start()
     {
         if (sourceRoot != null)
             Build(sourceRoot);
     }
 
-    /// <summary>
-    /// Creates a UI copy of the supplied transform hierarchy.
-    /// </summary>
     public RectTransform Build(Transform source)
     {
         Clear();
@@ -49,22 +57,24 @@ public class SpriteRigToUI : MonoBehaviour
 
         if (sourceRoot == null)
         {
-            Debug.LogError("Source root is null.");
+            Debug.LogError("SpriteRigToUI: Source root is null.");
             return null;
         }
 
         if (uiParent == null)
         {
-            Debug.LogError("UI Parent is null.");
+            Debug.LogError("SpriteRigToUI: UI parent is null.");
             return null;
         }
 
-        generatedRoot = CreateRecursive(sourceRoot, uiParent);
+        generatedRoot = CreateRecursive(
+            sourceRoot,
+            uiParent
+        );
 
-        // Make the UI root itself start at zero.
         generatedRoot.anchoredPosition = Vector2.zero;
 
-        SyncPose();
+        SyncAll();
 
         return generatedRoot;
     }
@@ -79,39 +89,49 @@ public class SpriteRigToUI : MonoBehaviour
         );
 
         RectTransform rect = go.GetComponent<RectTransform>();
+
         rect.SetParent(parent, false);
 
         rect.anchorMin = new Vector2(0.5f, 0.5f);
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
 
-        SpriteRenderer sr = source.GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer =
+            source.GetComponent<SpriteRenderer>();
 
         Image image = null;
 
-        if (sr != null)
+        if (spriteRenderer != null)
         {
             image = go.AddComponent<Image>();
 
-            image.sprite = sr.sprite;
-            image.color = sr.color;
+            image.sprite = spriteRenderer.sprite;
+            image.color = spriteRenderer.color;
             image.raycastTarget = false;
+            image.enabled = spriteRenderer.enabled;
 
-            if (sr.sprite != null)
+            if (spriteRenderer.sprite != null)
                 image.SetNativeSize();
-
-            image.enabled = sr.enabled;
         }
 
         Node node = new Node
         {
             source = source,
             target = rect,
-            sourceRenderer = sr,
+            sourceRenderer = spriteRenderer,
             targetImage = image
         };
 
         nodes.Add(node);
+
+        if (spriteRenderer != null)
+        {
+            rendererNodes.Add(new RendererNode
+            {
+                node = node,
+                creationIndex = rendererNodes.Count
+            });
+        }
 
         for (int i = 0; i < source.childCount; i++)
         {
@@ -126,7 +146,15 @@ public class SpriteRigToUI : MonoBehaviour
 
     private void LateUpdate()
     {
+        SyncAll();
+    }
+
+    private void SyncAll()
+    {
         SyncPose();
+
+        if (syncSortingOrder)
+            SyncSorting();
     }
 
     private void SyncPose()
@@ -135,8 +163,11 @@ public class SpriteRigToUI : MonoBehaviour
         {
             Node node = nodes[i];
 
-            if (node.source == null || node.target == null)
+            if (node.source == null ||
+                node.target == null)
+            {
                 continue;
+            }
 
             SyncTransform(node);
 
@@ -153,13 +184,11 @@ public class SpriteRigToUI : MonoBehaviour
         Transform source = node.source;
         RectTransform target = node.target;
 
-        // World/local Unity units -> UI pixels
         target.anchoredPosition = new Vector2(
             source.localPosition.x * unitsToPixels,
             source.localPosition.y * unitsToPixels
         );
 
-        // For 2D animation we generally only care about Z rotation.
         target.localRotation = Quaternion.Euler(
             0f,
             0f,
@@ -170,8 +199,6 @@ public class SpriteRigToUI : MonoBehaviour
         {
             Vector3 scale = source.localScale;
 
-            // SpriteRenderer flip is not part of transform scale,
-            // so reproduce it here.
             if (node.sourceRenderer != null)
             {
                 if (node.sourceRenderer.flipX)
@@ -190,9 +217,13 @@ public class SpriteRigToUI : MonoBehaviour
 
         if (copyActiveState)
         {
-            target.gameObject.SetActive(
-                source.gameObject.activeSelf
-            );
+            if (target.gameObject.activeSelf !=
+                source.gameObject.activeSelf)
+            {
+                target.gameObject.SetActive(
+                    source.gameObject.activeSelf
+                );
+            }
         }
     }
 
@@ -203,31 +234,94 @@ public class SpriteRigToUI : MonoBehaviour
 
         image.enabled = sr.enabled;
 
-        if (copySpriteEveryFrame)
+        if (copySpriteEveryFrame &&
+            image.sprite != sr.sprite)
         {
-            if (image.sprite != sr.sprite)
-            {
-                image.sprite = sr.sprite;
+            image.sprite = sr.sprite;
 
-                if (sr.sprite != null)
-                    image.SetNativeSize();
-            }
+            if (sr.sprite != null)
+                image.SetNativeSize();
         }
 
         if (copyColorEveryFrame)
+        {
             image.color = sr.color;
+        }
+    }
+
+    private void SyncSorting()
+    {
+        /*
+         * Important:
+         *
+         * We don't want to change bone hierarchy,
+         * because bones depend on their parent transforms.
+         *
+         * So instead of changing the actual RectTransform
+         * hierarchy, Image objects should ideally be rendered
+         * using separate Canvas components.
+         *
+         * Each sprite gets its own Canvas, and Canvas.sortingOrder
+         * reproduces SpriteRenderer.sortingOrder.
+         */
+
+        for (int i = 0; i < rendererNodes.Count; i++)
+        {
+            RendererNode rendererNode = rendererNodes[i];
+
+            if (rendererNode.node.targetImage == null ||
+                rendererNode.node.sourceRenderer == null)
+            {
+                continue;
+            }
+
+            EnsureCanvas(rendererNode);
+        }
+    }
+
+    private void EnsureCanvas(RendererNode rendererNode)
+    {
+        Node node = rendererNode.node;
+
+        Canvas canvas =
+            node.target.GetComponent<Canvas>();
+
+        if (canvas == null)
+        {
+            canvas = node.target.gameObject.AddComponent<Canvas>();
+
+            // Required so nested Canvas controls its own order.
+            canvas.overrideSorting = true;
+        }
+
+        SpriteRenderer sr = node.sourceRenderer;
+
+        canvas.overrideSorting = true;
+
+        // Map SpriteRenderer sorting layer/order to Canvas.
+        canvas.sortingLayerID = sr.sortingLayerID;
+        canvas.sortingOrder = sr.sortingOrder;
     }
 
     public void Clear()
     {
         nodes.Clear();
+        rendererNodes.Clear();
 
         if (generatedRoot != null)
         {
             if (Application.isPlaying)
-                Destroy(generatedRoot.gameObject);
+            {
+                Destroy(
+                    generatedRoot.gameObject
+                );
+            }
             else
-                DestroyImmediate(generatedRoot.gameObject);
+            {
+                DestroyImmediate(
+                    generatedRoot.gameObject
+                );
+            }
         }
 
         generatedRoot = null;
