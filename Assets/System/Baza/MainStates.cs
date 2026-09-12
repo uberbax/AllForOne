@@ -2428,7 +2428,8 @@ public class MainStates : MonoBehaviour
         
         mainPlayer.RecalcPars();
         ModelStatistics.instance.SetStatValueStr("current_class", switchTo);
-        
+        //animator ?
+        mainPlayer.visuals["animator"].GetComponent<XDanimator>().Start();
     }
 
 

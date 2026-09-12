@@ -17,7 +17,7 @@ public class XDanimator : ComponentBehavior
     //params:
     //pr
     
-    private void Start()
+    public void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
         
