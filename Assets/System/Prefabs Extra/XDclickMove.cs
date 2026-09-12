@@ -29,13 +29,17 @@ public class XDclickMove : ComponentBehavior
             
             //check click
             
-            endPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            endPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
             endPos.z = 0;
             isMoving = true;
             if (mon.HasVis("animator"))
             {
                 mon.visuals["animator"].GetComponent<XDanimator>().SetState("walk");
             }
+
+            Debug.Log(endPos);
+            var pp = GameObject.Instantiate(UtilsControl.Instance.click);
+            pp.transform.position = endPos - new Vector3(0,0,0.1f);
             
             var h = endPos - mon.main.transform.position;
             if (h.x > 0)

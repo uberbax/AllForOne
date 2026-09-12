@@ -18,6 +18,8 @@ using Random = System.Random;
 
 public class UtilsControl : MonoBehaviour
 {
+    public GameObject click;
+    
     public DamageNumber prefab;
     public DamageNumber prefabPos;
     public DamageNumber prefabPhrase;

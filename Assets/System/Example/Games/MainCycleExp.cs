@@ -158,6 +158,10 @@ public class MainCycleExp : MonoBehaviour
         secondMain.AdjustPosition();
 
         secondMain.actSkills.Clear();
+        
+        var ff = secondMain.visMain.transform.Find("legs");
+        if (ff != null) secondMain.main.transform.position += (secondMain.main.transform.position - ff.position);
+        
 
         for (int i = 0; i < main.inventory.Count; i++)
         {
