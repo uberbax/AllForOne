@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
 using NUnit.Framework;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +14,10 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public TextAsset rndNamesTxt;
+    public string[] rndNames;
+    public TMP_InputField nameField;
+    
     public GameObject monthlyRewards;
     
     public int actSkillsLoIndex = 50;
@@ -262,6 +267,17 @@ public class MainStates : MonoBehaviour
     }
 
 
+    public void RandomizeName()
+    {
+        if (nameField != null)
+            nameField.text = rndNames[Random.Range(0, rndNames.Length)];
+    }
+
+    public void AcceptName()
+    {
+        mainPlayer.nm = nameField.text;
+    }
+
     public RObj FindClosestObj(RObj from, string id, bool isEnemy, bool isNeutral)
     {
         float dst = 1000;
@@ -343,6 +359,8 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("manual_cast", SkillCasted);
         EventManager.SUB("chose_class", ChoseClass);
         
+        if (rndNamesTxt != null)
+            rndNames = rndNamesTxt.text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         
 
         if (trashRoot == null)
@@ -368,6 +386,8 @@ public class MainStates : MonoBehaviour
         {
             reverseDmgTypes.Add(v.Value, v.Key);
         }
+        
+        RandomizeName();
         
     }
 

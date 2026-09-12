@@ -74,6 +74,8 @@ public class Obj
 public class RObj
 {
     //?
+    public string nm = "";
+    
     [NonSerialized]
     public ItemType it;
     
