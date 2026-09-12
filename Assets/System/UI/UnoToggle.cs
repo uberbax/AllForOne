@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UnoToggle : MonoBehaviour
 {
+    public bool sendHolder = false;
     private static Dictionary<string, List<UnoToggle>> toggles = new Dictionary<string, List<UnoToggle>>(); 
     //true false
     public bool state = false;
@@ -92,7 +93,11 @@ public class UnoToggle : MonoBehaviour
         }
         else
         {
-            EventManager.INV(toggleKey, new ArgPass { num = toggleVal, what = toggleVal2});            
+            RObj e = null;
+            if (sendHolder)
+                e = GetComponentInParent<ObjHolder>().obj;
+            
+            EventManager.INV(toggleKey, new ArgPass { num = toggleVal, what = toggleVal2, who = e});            
             var gg = toggles[groupName];
             foreach (var v in gg)
             {

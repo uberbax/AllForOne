@@ -23,6 +23,7 @@ public class EventTrigger : MonoBehaviour
 
     public bool paramAsHolder = false;
     public bool passRobjHolder = false;
+    public string mainCurObj = "";
     public bool addToBtn = true;
     //set cur click
     public bool setAsCurLoot = false;
@@ -46,6 +47,11 @@ public class EventTrigger : MonoBehaviour
                 {
                     var cc = GetComponentInParent<ObjHolder>().obj;
                     arg.who = cc;
+                }
+
+                if (mainCurObj != "")
+                {
+                    arg.who = MainStates.instance.curObjs[mainCurObj];
                 }
 
                 if (setAsCurLoot)

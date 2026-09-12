@@ -341,6 +341,7 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("switch_class", SwitchMainClass);
         EventManager.SUB("evt_unlock_class", UnlockClass);
         EventManager.SUB("manual_cast", SkillCasted);
+        EventManager.SUB("chose_class", ChoseClass);
         
         
 
@@ -368,6 +369,11 @@ public class MainStates : MonoBehaviour
             reverseDmgTypes.Add(v.Value, v.Key);
         }
         
+    }
+
+    private void ChoseClass(ArgPass e)
+    {
+        curObjs["cur_chosen"] = e.who;
     }
 
     private void SkillCasted(ArgPass obj)
