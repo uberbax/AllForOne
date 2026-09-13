@@ -28,6 +28,7 @@ public class ResourceHolder : MonoBehaviour
     public IntStringDictionary rareString;
     public IntSpriteDictionary rareFrame;
     public IntSpriteDictionary slotFrame;
+    public IntSpriteDictionary buildingIcons;
     
     public StringColorDictionary elemColors;
     
@@ -51,6 +52,10 @@ public class ResourceHolder : MonoBehaviour
     [Header("HERO CLASSES")]
     public StringObjectDictionary heroClasses;   
     public StringSpriteDictionary heroClassesAvas;
+    
+    [Header("Dungeons")]
+    public StringSpriteDictionary dungeons;
+    
     
     public Sprite GetDiaAva(string what)
     {

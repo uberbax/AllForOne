@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using LayerLab;
+using PlasticPipe.PlasticProtocol.Messages;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonController : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class DungeonController : MonoBehaviour
     public int cur = 0;
     public int last = 3;
     public SampleCharacterMover mover;
+    public TextMeshProUGUI waveNumber;
     
     private List<List<Bon>> tests = new List<List<Bon>>
     {
@@ -19,8 +22,7 @@ public class DungeonController : MonoBehaviour
         new List<Bon>{ new Bon{ Key = "skeleton_archer", Value = 1} }, 
         new List<Bon>{ new Bon{ Key = "goblin", Value = 1} } 
     };
-
-    public TextMeshProUGUI waveNumber;
+    
     private void Awake()
     {
         instance = this;
@@ -32,7 +34,7 @@ public class DungeonController : MonoBehaviour
         EventManager.SUB("after_battle", C);
         EventManager.SUB("battle_ended", D);
     }
-
+    
     private void D(ArgPass obj)
     {
         MainStates.instance.awaitUnits["second_main"] = 1;

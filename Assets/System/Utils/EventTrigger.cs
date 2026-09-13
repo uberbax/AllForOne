@@ -12,7 +12,8 @@ public class EventTrigger : MonoBehaviour
 
     public bool is3D = false;
     public bool isMouseDown = false;
-    
+
+    public int num;
     //dynamic
     public FormatDynamic dyno;
     public List<GameObject> reverts = new List<GameObject>();
@@ -58,6 +59,7 @@ public class EventTrigger : MonoBehaviour
                 {
                     MainStates.instance.curLoot = arg.who;
                 }
+                arg.num = num;
                     
                 EventManager.INV(evtName, arg);
                 if (dyno.id != "")

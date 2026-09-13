@@ -7,7 +7,8 @@ public class EventSubscribe : MonoBehaviour
     public string eventName = "";
     public string wh = "";
     public string wh1 = "";
-
+    public int num;
+    
     public ObjHolder toInject;
     public ObjHolder toInjectUpgrade;
     public ObjHolder toInjectAscend;
