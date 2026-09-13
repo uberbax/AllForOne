@@ -104,7 +104,7 @@ public class UIfiller : MonoBehaviour
         {
             next.onClick.AddListener(() =>
             {
-                if (lo >= 0)
+                if (lo >= 0 && savedResult.Count > perPage)
                 {
                     lo += perPage;
                     hi += perPage;
