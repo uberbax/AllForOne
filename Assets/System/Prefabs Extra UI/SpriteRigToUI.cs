@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SpriteRigToUI : MonoBehaviour
 {
     [Header("Source")]
-    [SerializeField] private Transform sourceRoot;
+    public Transform sourceRoot;
 
     [Header("UI")]
     [SerializeField] private RectTransform uiParent;
