@@ -2707,7 +2707,13 @@ public class MainStates : MonoBehaviour
             a.SetPar("was_crit", 1);
         
         a.ChangePar("registered_damage", atk);
-        
+        //raid boss ?
+        var rb = a.GetPar("raid_boss");
+        if (rb > 0 && skl.owner != a)
+        {
+            MainStatesServer.instance.DealRaidDamage(a.RID, mainPlayer.dbObj.ID, mainPlayer.nm ,(int)atk);
+        }
+        //
         var dlt = a.GetPar("registered_damage");
         if (dlt < 0)
             a.SetPar("registered_damage", 0);
@@ -2853,6 +2859,13 @@ public class MainStates : MonoBehaviour
         {
             koef = 3;
             who.SetPar("obj_arisen", f);
+        }
+        
+        f = from.GetPar("raid_boss");
+        if (f > 0)
+        {
+            koef = 100;
+            who.SetPar("raid_boss", f);
         }
         
         if (koef > 1)

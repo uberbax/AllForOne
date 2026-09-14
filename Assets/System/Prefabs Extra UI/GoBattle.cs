@@ -33,6 +33,12 @@ public class GoBattle : MonoBehaviour
                     {
                         MainStates.instance.curObjs["last_boss"] = ee[0];
                     }
+                    
+                    if (mon.GetPar("raid_boss") > 0)
+                    {
+                        ee[0].RID = mon.RID;
+                    }
+                    
                     MainStates.instance.curObjs["last_mon"] = ee[0];
                     MainStates.instance.curObjs["last_leg"] = null;
                     MainStates.instance.lastBattleTrigger = mon.main;

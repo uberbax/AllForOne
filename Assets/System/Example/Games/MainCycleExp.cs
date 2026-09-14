@@ -65,6 +65,8 @@ public class MainCycleExp : MonoBehaviour
                 MainStates.instance.inBattle = false;
             }
             ActivateOtherScene(false);
+            
+            //raid_boss ?
             MainStates.instance.curObjs["last_boss"] = null;
             MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });

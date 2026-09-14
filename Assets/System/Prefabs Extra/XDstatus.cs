@@ -6,7 +6,7 @@ public class XDstatus : ComponentBehavior
     private RObj mon;
     private Transform head;
 
-    private List<string> pars = new List<string> { "obj_berserk", "obj_arisen" };
+    private List<string> pars = new List<string> { "obj_berserk", "obj_arisen", "raid_boss" };
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
