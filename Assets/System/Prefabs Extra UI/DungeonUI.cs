@@ -47,6 +47,8 @@ public class DungeonUI : MonoBehaviour, IReceive
                 gameObject.SetActive(false);
             }
         );
-
+        //время до повторного захода
+        
+        
     }
 }

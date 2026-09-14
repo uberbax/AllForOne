@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using LayerLab;
+using NavMeshPlus.Extensions;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -261,6 +263,12 @@ public class MainCycleExp : MonoBehaviour
         main.AddViz("click_move");
         Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
 
+        //
+        main.main.AddComponent<NavMeshAgent>();
+        main.main.AddComponent<AgentOverride2d>();
+        //
+        
+        
         //equipping basic melee
         MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 } });
         var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
