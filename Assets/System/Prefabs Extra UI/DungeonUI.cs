@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,8 +31,11 @@ public class DungeonUI : MonoBehaviour, IReceive
     public TextMeshProUGUI dungeonName;
     public TextMeshProUGUI dungeonDescr;
     public Button enterDungeon;
-
+    public TextMeshProUGUI timerTxt;
+    
+    
     private int curNum = 0;
+    private int minsCd = 1;
     public void Receive(ArgPass arg)
         
     {
@@ -43,12 +47,23 @@ public class DungeonUI : MonoBehaviour, IReceive
         enterDungeon.onClick.RemoveAllListeners();
         enterDungeon.onClick.AddListener(() =>
             {
+
+                var kk = TimeManager.instance.GetCurrentTimeLong();
+                MainStates.instance.mainPlayer.GetPar("timer_dungeon_" + curNum);
+                
                 EventManager.INV("start_dungeon", new ArgPass{num = curNum});
                 gameObject.SetActive(false);
+                
+                MainStates.instance.mainPlayer.SetPar("timer_dungeon_" + curNum, TimeManager.instance.GetCurrentTimeLong() + minsCd * 60);
             }
         );
         //время до повторного захода
         
+        
+    }
+
+    private void Update()
+    {
         
     }
 }

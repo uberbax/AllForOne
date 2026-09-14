@@ -8,7 +8,7 @@ public class WarcraftClick : MonoBehaviour
     private float t = 1;
     void Start()
     {
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
         Destroy(gameObject, 0.3f);
         
         for (int i = 0; i < arrows.Count; i++)
