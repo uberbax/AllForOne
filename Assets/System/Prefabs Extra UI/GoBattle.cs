@@ -22,12 +22,14 @@ public class GoBattle : MonoBehaviour
                 Transitioner.instance.DoFade(1, 1, () =>
                 {
                     EventManager.INV("battle_press", new ArgPass{what = "battle9"});
+
+                    var ff = MainStates.instance.ConvertPars(mon.addedPars);
                     //MainStates.instance.CreateLevelAtPos(2, 30, "LEVEL_1");
                     var ee = WaveSpawner.instance.DoSpawnAnyPos(new List<Bon>{new Bon{Key = mon.dbObj.ID, Value = 1,
-                            Val3 = (int)mon.GetPar("level")}},
+                            Val3 = (int)mon.GetPar("level"), Val2 = ff}},
                         "enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz);
                     
-                    if (mon.dbObj.pars["is_boss"] > 0)
+                    if (mon.GetPar("is_boss") > 0)
                     {
                         MainStates.instance.curObjs["last_boss"] = ee[0];
                     }

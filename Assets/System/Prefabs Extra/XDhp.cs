@@ -26,7 +26,8 @@ public class XDhp : ComponentBehavior
     public bool useMax = false;
     public bool hideIfZero = false;
     private CanvasGroup cg;
-
+    public bool isBoss = false;
+    
     private float dlt3 = 0;
     public void AfterSet(string par)
     {
@@ -45,9 +46,12 @@ public class XDhp : ComponentBehavior
     
     private void Start()
     {
+        cg = GetComponent<CanvasGroup>();
+        if (cg == null) cg = gameObject.AddComponent<CanvasGroup>();
+        
         mon = GetComponentInParent<ObjHolder>().obj;
         head = mon.visMain.transform.Find(trackWhere);
-        cg = GetComponent<CanvasGroup>();
+
 
         if (head == null && trackWhere == "bot_health")
         {
@@ -70,7 +74,7 @@ public class XDhp : ComponentBehavior
             dlt2 = -1 + dlt3;
         }
 
-        if (mon.GetPar("is_boss") > 0)
+        if (mon.GetPar("is_boss") > 0 && !isBoss)
         {
             transform.GetChild(0).gameObject.SetActive(false);
             return;
@@ -129,6 +133,12 @@ public class XDhp : ComponentBehavior
         else
         {
             hp.text = ((int)mon.GetPar(trackWhat)).ToString();
+        }
+        
+        if (mon.GetPar("is_boss") > 0 && !isBoss)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            return;
         }
 
         

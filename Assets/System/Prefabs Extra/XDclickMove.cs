@@ -41,13 +41,6 @@ public class XDclickMove : ComponentBehavior
             var pp = GameObject.Instantiate(UtilsControl.Instance.click);
             pp.transform.position = endPos - new Vector3(0,0,0.1f);
             
-            var mm = mon.main.GetComponent<NavMeshAgent>();
-            if (mm != null)
-            {
-                mm.SetDestination(endPos);
-                return;
-            }
-            
             
             var h = endPos - mon.main.transform.position;
             if (h.x > 0)
@@ -57,7 +50,18 @@ public class XDclickMove : ComponentBehavior
             else if (h.x < 0)
             {
                 mon.SetScale(h.x > 0);
+            }            
+            
+            
+            var mm = mon.main.GetComponent<NavMeshAgent>();
+            if (mm != null)
+            {
+                mm.SetDestination(endPos);
+                return;
             }
+            
+            
+
         }
         
         if (!isMoving) return;

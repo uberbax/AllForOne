@@ -228,6 +228,17 @@ public class MainStates : MonoBehaviour
         if (all.ContainsKey("main_player")) return true;
         return false;
     }
+
+    public string ConvertPars(List<Bon> bons)
+    {
+        string res = "";
+        for (int i = 0; i < bons.Count; i++)
+        {
+            res += bons[i].Key + ":" + bons[i].Value;
+            if (i != bons.Count - 1) res += ",";
+        }
+        return res;
+    }
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {

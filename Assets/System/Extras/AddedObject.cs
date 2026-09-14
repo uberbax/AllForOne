@@ -77,6 +77,8 @@ public class AddedObject : MonoBehaviour
         {
             r.SetPar(v.Key, v.Value);
         }
+
+        r.addedPars = addedPars;
         
         
         if (onAdd != null)
