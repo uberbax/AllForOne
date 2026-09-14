@@ -264,7 +264,8 @@ public class MainCycleExp : MonoBehaviour
         Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
 
         //
-        main.main.AddComponent<NavMeshAgent>();
+        var cc = main.main.AddComponent<NavMeshAgent>();
+        cc.acceleration = 0;
         main.main.AddComponent<AgentOverride2d>();
         //
         

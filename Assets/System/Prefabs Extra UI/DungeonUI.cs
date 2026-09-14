@@ -35,7 +35,7 @@ public class DungeonUI : MonoBehaviour, IReceive
     
     
     private int curNum = 0;
-    private int minsCd = 1;
+    private int minsCd = 10;
     public void Receive(ArgPass arg)
         
     {
@@ -48,13 +48,14 @@ public class DungeonUI : MonoBehaviour, IReceive
         enterDungeon.onClick.AddListener(() =>
             {
 
-                var kk = TimeManager.instance.GetCurrentTimeLong();
-                MainStates.instance.mainPlayer.GetPar("timer_dungeon_" + curNum);
+                //var kk = TimeManager.instance.GetCurrentTimeLong();
+                //MainStates.instance.mainPlayer.GetPar("timer_dungeon_" + curNum);
+                
+                gameObject.SetActive(false);
+                MainStates.instance.mainPlayer.SetLongPar("timer_dungeon_" + curNum, TimeManager.instance.GetCurrentTimeLong() + minsCd * 60);                
                 
                 EventManager.INV("start_dungeon", new ArgPass{num = curNum});
-                gameObject.SetActive(false);
                 
-                MainStates.instance.mainPlayer.SetPar("timer_dungeon_" + curNum, TimeManager.instance.GetCurrentTimeLong() + minsCd * 60);
             }
         );
         //время до повторного захода
@@ -64,6 +65,17 @@ public class DungeonUI : MonoBehaviour, IReceive
 
     private void Update()
     {
-        
+        var hh = MainStates.instance.mainPlayer.GetLongPar("timer_dungeon_" + curNum);
+        var kk = TimeManager.instance.GetCurrentTimeLong();
+        if (hh <= 0 || kk >= hh)
+        {
+            timerTxt.text = "";
+            enterDungeon.interactable = true;
+        }
+        else
+        {
+            timerTxt.text = TimeManager.instance.GetStringTillEnd((long)hh, 0,true);
+            enterDungeon.interactable = false;
+        }
     }
 }

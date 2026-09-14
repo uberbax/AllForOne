@@ -140,7 +140,7 @@ public class TimeManager : MonoBehaviour
         
         if (dt > 0)
             uu = dt * (end - GetCurrentTime().Ticks) / 10000000;
-        else uu = dt * (end - GetCurrentTimeLong()); // / 10000000;
+        else uu = (end - GetCurrentTimeLong()); // / 10000000;
 
         var sec = uu % 60;
         var mins = (uu / 60) % 60;

@@ -88,7 +88,20 @@ public class RObj
     public Dictionary<string, float> upgradePars = new Dictionary<string, float>();
     public Dictionary<string, float> curPars = new Dictionary<string, float>();
     public Dictionary<string, float> dltPars = new Dictionary<string, float>();
+    public Dictionary<string, long> longPars = new Dictionary<string, long>();
 
+    public long GetLongPar(string par)
+    {
+        if (!longPars.ContainsKey(par)) longPars.Add(par, 0);
+        return longPars[par];
+    }
+    
+    public void SetLongPar(string par, long val)
+    {
+        longPars[par] = val;
+    }
+    
+    
     //?????
     [SerializeReference]
     public List<string> tags = new List<string>();
