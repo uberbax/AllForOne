@@ -34,17 +34,17 @@ public class RaidContestants : MonoBehaviour
         Debug.Log(data);
         var str = data.Split(new string[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
         
-        for (int i = 0; i < contHolder.childCount; i++) contHolder.GetChild(i).gameObject.SetActive(false);
+        for (int i = 1; i < contHolder.childCount; i++) contHolder.GetChild(i).gameObject.SetActive(false);
         
         for (int i = 0; i < str.Length; i++)
         {
             var ss = str[i].Split(',');
-            if (i < contHolder.childCount)
+            if (i < contHolder.childCount-1)
             {
-                contHolder.GetChild(i).gameObject.SetActive(true);
-                contHolder.GetChild(i).Find("name").GetComponent<TextMeshProUGUI>().text = ss[0];
-                contHolder.GetChild(i).Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.avas[ss[1]];
-                contHolder.GetChild(i).Find("damage").GetComponent<TextMeshProUGUI>().text = ss[2];
+                contHolder.GetChild(i+1).gameObject.SetActive(true);
+                contHolder.GetChild(i+1).Find("name").GetComponent<TextMeshProUGUI>().text = ss[0];
+                contHolder.GetChild(i+1).Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.avas[ss[1]];
+                contHolder.GetChild(i+1).Find("damage").GetComponent<TextMeshProUGUI>().text = ss[2];
             }
         }
     }
