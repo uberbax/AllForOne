@@ -64,6 +64,7 @@ public class ResourceHolder : MonoBehaviour
     }
     public Sprite GetAva(string str)
     {
+        if (avas.ContainsKey(str)) return avas[str];
         return null;
     }
     public Sprite GetMisc(string str)

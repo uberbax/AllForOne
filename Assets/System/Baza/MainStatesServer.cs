@@ -30,7 +30,23 @@ public class MainStatesServer : MonoBehaviour
         var w = new WWW(url);
         
         yield return w;
+    }
+
+    public void GetRaidData(string raidName, Action<string> act)
+    {
+        StartCoroutine(GetRaidDataA(raidName, act));
+    }
+
+    public IEnumerator GetRaidDataA(string raidName, Action<string> act)
+    {
+        var w = new WWW(servUrl + raidName + ".txt");
         
+        yield return w;
+
+        if (act != null)
+        {
+            act(w.text);
+        }
         
     }
 
