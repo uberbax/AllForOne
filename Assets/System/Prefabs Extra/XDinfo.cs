@@ -12,7 +12,7 @@ public class XDinfo : ComponentBehavior
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
-        if (transform.parent.name.IndexOf("bird_") >= 0)
+        if (transform.parent.name.IndexOf("bird_") >= 0 || mon.GetPar("raid_boss") > 0)
         {
             var aa = gameObject.AddComponent<CircleCollider2D>();
             aa.radius = 0.5f;

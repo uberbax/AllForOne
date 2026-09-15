@@ -123,6 +123,13 @@ public class AddedObject : MonoBehaviour
         
         MainStates.instance.ApplyMonsterExtraParams(r,r);
 
+        var b = addedPars.Find(x => x.Key == "scale");
+        if (b != null)
+        {
+            if (b.Value == -1)
+                r.SetScale(true);
+        }
+
         r.extraMonsters = extraMonsters;
 
     }

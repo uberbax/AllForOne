@@ -46,7 +46,7 @@ public class GoBattle : MonoBehaviour
                     ModelStatistics.instance.SetStatValue("battle",2); 
                     holder.transform.parent.gameObject.SetActive(false);
                     
-                    MainStates.instance.ApplyMonsterExtraParams(ee[0],mon);
+                    //MainStates.instance.ApplyMonsterExtraParams(ee[0],mon);
                     
                     //recreate extra monsters
                     var ee1 = WaveSpawner.instance.DoSpawnAnyPos(mon.extraMonsters,

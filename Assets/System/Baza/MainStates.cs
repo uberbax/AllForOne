@@ -2866,6 +2866,7 @@ public class MainStates : MonoBehaviour
         {
             koef = 100;
             who.SetPar("raid_boss", f);
+            who.visMain.transform.localScale *= 2.5f;
         }
         
         if (koef > 1)
