@@ -2869,6 +2869,7 @@ public class MainStates : MonoBehaviour
             who.visMain.transform.localScale *= 2.5f;
         }
         
+        
         if (koef > 1)
         {
             for (int i = 0; i < pars.Count; i++)

@@ -372,6 +372,10 @@ public class MainCycleExp : MonoBehaviour
         ModelStatistics.instance.SetStatValue("unlocked_hero_thief", 1);
         ModelStatistics.instance.SetStatValue("unlocked_hero_mage", 1);
         ModelStatistics.instance.SetStatValueStr("current_hero", "hero_warrior");
+        
+        //pet time
+        var main_pet = new RObj("empty", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_pet");
+        main_pet.AddViz("pet");
     }
 
     public void BattleEnded(ArgPass obj)
