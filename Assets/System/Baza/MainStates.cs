@@ -2795,7 +2795,7 @@ public class MainStates : MonoBehaviour
         if (hp <= 0 && guts > 0)
         {
             var hm = a.GetPar("max_health");
-            a.SetPar("registered_damage", -hm+1);
+            a.SetPar("registered_damage", hm-1);
             a.ChangePar("guts", -1);
         }
     }
