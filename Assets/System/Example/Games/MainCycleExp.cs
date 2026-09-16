@@ -314,6 +314,8 @@ public class MainCycleExp : MonoBehaviour
         XDdeath.fadeAfter = 1;
 
         XDcombat.oneCast = true;
+
+        Tooltip.noTooltip = true;
         
         UtilsControl.overDrop = 0;
 

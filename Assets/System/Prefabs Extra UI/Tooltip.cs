@@ -5,10 +5,13 @@ using UnityEngine.EventSystems;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public static bool noTooltip = false;
+    
     public GameObject activate;
     public bool outlined;
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (noTooltip) return;
         if (DragObject.inDrag) return;
         
         if (activate) activate.SetActive(true);
@@ -24,6 +27,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (noTooltip) return;
         if (activate) activate.SetActive(false);
         if (outlined)
         {

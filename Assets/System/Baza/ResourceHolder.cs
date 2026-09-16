@@ -55,7 +55,8 @@ public class ResourceHolder : MonoBehaviour
     
     [Header("Dungeons")]
     public StringSpriteDictionary dungeons;
-    
+    [Header("Add resources")]
+    public StringSpriteDictionary addResources;
     
     public Sprite GetDiaAva(string what)
     {
@@ -99,6 +100,7 @@ public class ResourceHolder : MonoBehaviour
         instance = this;
         monsters.AddRange(heroClasses);
         avas.AddRange(heroClassesAvas);
+        items.AddRange(addResources);
     }
     
     public SkillEtc GetMeSkillEtc(Obj who, string sklName)
