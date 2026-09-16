@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Flexalon;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,8 @@ public class UIfiller : MonoBehaviour
     [Header("Subs for events")] 
     public string subParamChange = "";
     
+    [Header("Layouts")]
+    public List<FlexalonFlexibleLayout> layouts = new List<FlexalonFlexibleLayout>();
     
     private void Awake()
     {
@@ -303,6 +306,9 @@ public class UIfiller : MonoBehaviour
         }
         ActivateContext();
         UISystem.instance.Fill(this);
+        
+        for (int i = 0; i < layouts.Count; i++)
+            layouts[i].ForceUpdate();
     }
 
     public void ActivateContext()
