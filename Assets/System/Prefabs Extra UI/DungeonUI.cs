@@ -74,7 +74,7 @@ public class DungeonUI : MonoBehaviour, IReceive
         }
         else
         {
-            timerTxt.text = TimeManager.instance.GetStringTillEnd((long)hh, 0,true);
+            timerTxt.text = "Available in: " + TimeManager.instance.GetStringTillEnd((long)hh, 0,true);
             enterDungeon.interactable = false;
         }
     }

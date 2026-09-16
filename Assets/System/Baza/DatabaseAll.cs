@@ -69,6 +69,7 @@ public class DatabaseAll : MonoBehaviour
             if (v.SPEED != 0) o.pars.Add("speed", v.SPEED);
             if (v.PEN_CNT != 0) o.pars.Add("pen_cnt", v.PEN_CNT);
             o.pars.Add("rarity", v.RARITY);
+            o.pars.Add("tier", v.TIER);
             
             if (v.RANGE != 0)
             {
@@ -202,6 +203,8 @@ public class DatabaseAll : MonoBehaviour
             
             o.pars.Add("level", 1);
             o.pars.Add("adorn_count", v.adornCnt);
+            o.pars.Add("tier", v.tier);
+            
             
             if (v.SLOT == "none")
                 o.pars.Add("max_stack", 1000000);
@@ -249,6 +252,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("slot", -1);
             o.pars.Add("used", v.used);
             o.pars.Add("is_boss", v.isBoss);
+            o.pars.Add("tier", v.tier);
             
             o.pars.Add("difficulty", v.difficulty);
             

@@ -8,6 +8,7 @@ public class RaidContestants : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject contestants;
     public Transform contHolder;
+    private string raidID = "";
     private void OnEnable()
     {
         var b = GetComponentInParent<ObjHolder>();
@@ -20,15 +21,21 @@ public class RaidContestants : MonoBehaviour
         var c = b.obj.GetPar("raid_boss");
         if (c < 1)
         {
+            raidID = "";
             contestants.SetActive(false);
             return;
         }
         contestants.SetActive(true);
+        raidID = b.obj.RID;
 
         MainStatesServer.instance.GetRaidData(b.obj.RID, DataReceived);
         
     }
 
+    public Button btn;
+    public TextMeshProUGUI availableTimer;
+    public static int minsCd = 15;
+    
     public void DataReceived(string data)
     {
         Debug.Log(data);
@@ -46,6 +53,22 @@ public class RaidContestants : MonoBehaviour
                 contHolder.GetChild(i+1).Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.avas[ss[1]];
                 contHolder.GetChild(i+1).Find("damage").GetComponent<TextMeshProUGUI>().text = ss[2];
             }
+        }
+    }
+    
+    private void Update()
+    {
+        var hh = MainStates.instance.mainPlayer.GetLongPar("timer_raid_" + raidID);
+        var kk = TimeManager.instance.GetCurrentTimeLong();
+        if (hh <= 0 || kk >= hh)
+        {
+            availableTimer.text = "";
+            btn.interactable = true;
+        }
+        else
+        {
+            availableTimer.text = "Available in: " + TimeManager.instance.GetStringTillEnd((long)hh, 0,true);
+            btn.interactable = false;
         }
     }
 }

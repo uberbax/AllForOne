@@ -53,6 +53,14 @@ public class GoBattle : MonoBehaviour
                         "enemy", false, applyExtra:true, overridesViz:MainStates.overridesViz, start:1);
 
                     var jj = ee.Concat(ee1).ToList();
+                    
+                    var raid = mon.GetPar("raid_boss");
+                    if (raid > 0)
+                    {
+                        MainStates.instance.mainPlayer.SetLongPar("timer_raid_" + mon.RID,
+                            TimeManager.instance.GetCurrentTimeLong() + RaidContestants.minsCd * 60);
+                    }
+
                     DungeonController.instance.DoLittleRun(jj);
                     
                 }, null);

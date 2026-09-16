@@ -834,6 +834,7 @@ public class ConfigLoader : MonoBehaviour
                     mm.maxHealth = int.Parse(tt[j]);
                 }
                 else if (columns[j].ToUpper() == "LVL") mm.lvl = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "TIER") mm.tier = int.Parse(tt[j]);
                 
                 else if (columns[j].ToUpper() == "MOVE") mm.move = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "LEVEL") mm.level = int.Parse(tt[j]);
@@ -1001,6 +1002,10 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "TAG_APPLY") mm.TAG_APPLY = tt[j];
                 else if (columns[j].ToUpper() == "PEN_CNT") mm.PEN_CNT = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "RARITY") mm.RARITY = int.Parse(tt[j]);
+                
+                else if (columns[j].ToUpper() == "TIER") mm.TIER = int.Parse(tt[j]);
+                
+                
                 else if (columns[j].ToUpper() == "POSITIVE") mm.POSITIVE = int.Parse(tt[j]);
                 
                 
@@ -1195,7 +1200,10 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "SLOT") mm.SLOT = tt[j];
                 else if (columns[j].ToUpper() == "SUBTYPE") mm.SUBTYPE = tt[j];
                 else if (columns[j].ToUpper() == "REF_SKILL") mm.REF_SKILL = tt[j];
+                
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
+                else if (columns[j].ToUpper() == "TIER") mm.tier = int.Parse(tt[j]);
+                
                 
                 else if (columns[j].ToUpper() == "ADORN_CNT") mm.adornCnt = int.Parse(tt[j]);
                 
@@ -2676,6 +2684,7 @@ public class FormatHero
     public int isBoss = 0;
     
     public int lvl = 0;
+    public int tier = 0;
     
     public string foundIn = "";
     public string encounter = "";
@@ -2826,7 +2835,8 @@ public class FormatArtefact
     public string SLOT = "";
     public string RARITY = "";
     public string SUBTYPE = "none";
-    
+
+    public int tier = 0;
 
     public int size = 11;
     public int adornCnt = 0;
@@ -2939,6 +2949,8 @@ public class FormatSkill
     public float CRIT_DMG = 0;
     
     public int RARITY = 0;
+    public int TIER = 0;
+    
     public int POSITIVE = 0;
     
     public string DMG_TYPE = "";
