@@ -274,6 +274,7 @@ public class Buyable : ComponentBehavior
 
     private void Update()
     {
+        if (!MainStates.instance.HasMain()) return;
         if (dynamicID.IndexOf("{") >= 0)
             Recalculate();
         

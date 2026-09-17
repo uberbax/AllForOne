@@ -11,6 +11,7 @@ public class XDpet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!MainStates.instance.HasMain()) return;
         var bb = MainStates.instance.mainPlayer.inventory.FindAll(x => x.it == ItemType.monster && x.GetPar("used_slot") >= 0);
         if (bb.Count > 0)
         {

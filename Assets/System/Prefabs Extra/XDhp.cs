@@ -50,6 +50,10 @@ public class XDhp : ComponentBehavior
         if (cg == null) cg = gameObject.AddComponent<CanvasGroup>();
         
         mon = GetComponentInParent<ObjHolder>().obj;
+        
+        if (mon == null || mon.visMain == null) return;
+            
+            
         head = mon.visMain.transform.Find(trackWhere);
 
 
@@ -103,6 +107,7 @@ public class XDhp : ComponentBehavior
         {
             mon = GetComponentInParent<ObjHolder>().obj;
         }
+        if (mon == null) return;
         
         var mm = mon.GetPar("max_" + trackWhat);
         if (mm == 0) mm = 500; //? its for shield

@@ -25,6 +25,7 @@ public class ObjHolder : MonoBehaviour, IReceive
     public List<GameObject> alsoEnables = new List<GameObject>();
     public void OnEnable()
     {
+        if (UISystem.instance == null) return;
         UISystem.instance.FillItem(this);
         foreach (var a in alsoEnables)
         {
@@ -89,7 +90,7 @@ public class ObjHolder : MonoBehaviour, IReceive
         
         if (asMain)
         {
-            if (MainStates.instance.mainPlayer != null && obj == null)
+            if (MainStates.instance.HasMain() && obj == null)
             {
                 obj = MainStates.instance.mainPlayer;
             }

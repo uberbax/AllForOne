@@ -62,6 +62,7 @@ public class TimeManager : MonoBehaviour
         prevEnd = hh;
         
         
+        if (!MainStates.instance.HasMain()) return;
         //naverno neto
         var fo = DateTime.Now.StartOfDay();
         TimeSpan span= fo.Subtract(new DateTime(2020,1,1,0,0,0)); 

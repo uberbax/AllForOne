@@ -72,6 +72,8 @@ public class PathChecker : MonoBehaviour
     {
         //if (Input.GetMouseButtonDown(1))
         //{
+        if (!MainStates.instance.HasMain()) return;
+        
             var uu = UtilsControl.GetMousePoint();
             var lastMon = MainStates.instance.lastAllySelected == null ? MainStates.instance.mainPlayer : MainStates.instance.lastAllySelected;
             var h = lastMon.Position;

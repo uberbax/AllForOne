@@ -29,6 +29,7 @@ public class CameraFollow : MonoBehaviour {
     
     private void Start()
     {
+        if (target == null) return;
         savedIni = transform.position - target.position;
         tm = savedIni.magnitude / smoothSpeed;
     }

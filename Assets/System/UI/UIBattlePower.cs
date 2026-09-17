@@ -19,6 +19,8 @@ public class UIBattlePower : MonoBehaviour
 
     void Update()
     {
+        if (!MainStates.instance.HasMain()) return;
+        
         if (mon == null)
             mon = MainStates.instance.mainPlayer;
 
