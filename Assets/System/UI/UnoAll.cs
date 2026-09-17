@@ -17,6 +17,7 @@ public class UnoAll : MonoBehaviour
     
     public bool ignoreOnce = false;
     public bool addDlt = false;
+    public int addVal = 0;
     
     public RObj mon;
 

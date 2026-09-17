@@ -19,6 +19,7 @@ public class GoRemove : MonoBehaviour
                 mon.owner2.RecalcPars();
                 mon.owner2 = null;
                 UIfiller.GlobalRefresh();
+                OnEnable();
             }
         );
     }

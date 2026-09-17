@@ -336,6 +336,10 @@ public class ResourceHolder : MonoBehaviour
                 img.fillAmount = s1 / s2;
                 //Debug.Log(r.RID + " " + s1 + " " + s2);
             }
+            else if (a.param == "tier")
+            {
+                img.color = rareColors[(int)r.GetPar("tier")];
+            }
             else if (a.param == "rarity")
             {
                 img.color = rareColors[(int)r.GetPar("rarity")];
@@ -434,9 +438,9 @@ public class ResourceHolder : MonoBehaviour
             }
             else
             {
-                var e = r.GetPar(a.param);
+                var e = r.GetPar(a.param) + a.addVal;
                 if (!a.ignoreOnce && e == 1 && a.param == "amount") txt.text = "";
-                else txt.text = a.pref + r.GetPar(a.param).ToString();
+                else txt.text = a.pref + e.ToString();
 
                 if (a.hideEmpty) a.GetComponent<CanvasGroup>().alpha = e != 0 ? 1 : 0;
             }
