@@ -437,6 +437,7 @@ public class MainStates : MonoBehaviour
 
     public void Adorn(RObj item, RObj adorn)
     {
+        //it can be too many adorns ?
         item.adorments.Add(adorn);
         adorn.owner2 = item;
         adorn.owner2.RecalcPars();

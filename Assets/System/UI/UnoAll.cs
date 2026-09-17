@@ -56,4 +56,9 @@ public class UnoAll : MonoBehaviour
             
         ResourceHolder.instance.GetResult(this, mon);
     }
+
+    private void OnEnable()
+    {
+        Update();
+    }
 }

@@ -1,12 +1,18 @@
 using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Flexalon;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIfiller : MonoBehaviour
 {
+    [Header("Count")] 
+    public TextMeshProUGUI dopText;
+    public string dopAdd = "";
+    
     [Header("Next Prev")]
     public int lo = -1;
     public int hi = -1;
@@ -128,11 +134,12 @@ public class UIfiller : MonoBehaviour
         
         //Debug.Log("~~~~~~" +nm);
         RObj rr = null;
+        int t0 = 0;
         if (findRobj)
         {
             Debug.Log(gameObject.name);
             rr = GetComponentInParent<ObjHolder>().obj;
-            var t0 = (int)rr.GetPar("adorn_count");
+            t0 = (int)rr.GetPar("adorn_count");
             for (int i = 0; i < root.childCount; i++)
             {
                 root.GetChild(i).gameObject.SetActive(i < t0);
@@ -143,6 +150,11 @@ public class UIfiller : MonoBehaviour
         if (saveAsObj != "")
         {
             MainStates.instance.curObjsMany[saveAsObj] = res;
+        }
+
+        if (dopText != null)
+        {
+            dopText.text = dopAdd + res.Count + "/" + t0;
         }
         
         savedResult = res;
@@ -306,9 +318,11 @@ public class UIfiller : MonoBehaviour
         }
         ActivateContext();
         UISystem.instance.Fill(this);
-        
+
         for (int i = 0; i < layouts.Count; i++)
-            layouts[i].ForceUpdate();
+        {
+            if (layouts[i]) layouts[i].ForceUpdate();
+        }
     }
 
     public void ActivateContext()
