@@ -25,6 +25,9 @@ public class ObjHolder : MonoBehaviour, IReceive
     public List<GameObject> alsoEnables = new List<GameObject>();
 
     public CanvasGroup equipBtn;
+    public CanvasGroup slotBtn;
+    public CanvasGroup level;
+    
     public void OnEnable()
     {
         if (UISystem.instance == null) return;
@@ -104,8 +107,24 @@ public class ObjHolder : MonoBehaviour, IReceive
 
         if (equipBtn != null)
         {
-            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"]) equipBtn.alpha = 1;
+            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
+                equipBtn.alpha = 1;
             else equipBtn.alpha = 0;
+        }
+        if (slotBtn != null)
+        {
+            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
+                slotBtn.alpha = 1;
+            else slotBtn.alpha = 0;
+        }
+        if (level != null)
+        {
+            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
+                level.alpha = 1;
+            else level.alpha = 0;
         }
 
         if (ConfigLoader.GetMetaParamValue("auto_track_pos") > 0 && !noTrack)

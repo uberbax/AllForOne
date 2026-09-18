@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 2232744787021777352}
   - component: {fileID: 7831587995661298366}
   - component: {fileID: 2339132394723811018}
+  - component: {fileID: 8098652521409965258}
   m_Layer: 5
   m_Name: level
   m_TagString: Untagged
@@ -296,8 +297,21 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
+--- !u!225 &8098652521409965258
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768594736199740422}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1943854586028713615
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,6 +458,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &3224759717441472336
@@ -457,6 +472,7 @@ GameObject:
   - component: {fileID: 5281208442949277423}
   - component: {fileID: 2526341215095583429}
   - component: {fileID: 3322691076147418287}
+  - component: {fileID: 6248508898283531123}
   m_Layer: 5
   m_Name: slot
   m_TagString: Untagged
@@ -522,6 +538,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &6248508898283531123
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3224759717441472336}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4062433561896710260
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +702,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &6010726721803764678
@@ -848,6 +877,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &7941440358806660291
@@ -1009,6 +1039,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &8666806559895012436
@@ -1125,6 +1156,9 @@ MonoBehaviour:
   redirect: {fileID: 0}
   copyTo: {fileID: 0}
   alsoEnables: []
+  equipBtn: {fileID: 0}
+  slotBtn: {fileID: 6248508898283531123}
+  level: {fileID: 8098652521409965258}
   ignoreScale: 0
 --- !u!114 &290572387161049560
 MonoBehaviour:
@@ -1147,6 +1181,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!225 &5881697525418476796
@@ -1182,6 +1217,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!114 &7690943676338096594
