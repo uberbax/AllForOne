@@ -146,6 +146,8 @@ public class DatabaseAll : MonoBehaviour
             
             o.extraPars = v.PARS;
             o.labelis = v.affected;
+            
+            o.upgradeCost = v.upgradeCost;
 
             foreach (var b in v.EXTRA_PARS)
             {
@@ -216,6 +218,7 @@ public class DatabaseAll : MonoBehaviour
             o.sizeX = v.size / 10;
             o.sizeY = v.size % 10;
             o.price = v.price;
+            o.upgradeCost = v.upgradeCost;
 
             o.pars.Add("roll", v.RARITY_ROLL);
             
@@ -272,6 +275,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("building", v.building);
             
             //thwbbb
+            o.upgradeCost = v.upgradeCost;
             o.price = v.unlockPrice;
             o.pars["slot"] = MainStates.slots["pet"];
             

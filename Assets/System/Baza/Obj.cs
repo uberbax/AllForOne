@@ -67,6 +67,7 @@ public class Obj
     public int sizeX = 1;
     public int sizeY = 1;
     public List<Bon> price = new  List<Bon>();
+    public List<Bon> upgradeCost = new  List<Bon>();
 
 }
 

@@ -857,6 +857,17 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "MANASTEAL_PRC") mm.manastealPrc = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "REGEN") mm.regen = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
+                else if (columns[j].ToUpper() == "UPGRADE_COST")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.upgradeCost.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
+                
                 else if (columns[j].ToUpper() == "UNLOCK_PRICE")
                 {
                     if (tt[j] == "x") continue;
@@ -1133,6 +1144,17 @@ public class ConfigLoader : MonoBehaviour
                         mm.buffApply.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
+                else if (columns[j].ToUpper() == "UPGRADE_COST")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    mm.upgradeCost = new List<Bon>();
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.upgradeCost.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
                 else if (columns[j].ToUpper() == "ALSO_CAST")
                 {
                     if (tt[j] == "x") continue;
@@ -1214,6 +1236,16 @@ public class ConfigLoader : MonoBehaviour
                     {
                         var yp = yh[o].Split(",");  
                         mm.price.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
+                else if (columns[j].ToUpper() == "UPGRADE_COST")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.upgradeCost.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
                 else if (columns[j].ToUpper() == "EXTRAS" )
@@ -2755,6 +2787,8 @@ public class FormatHero
     public string dynamic = "";
 
     public List<Bon> unlockPrice = new List<Bon>();
+    public List<Bon> upgradeCost = new List<Bon>();
+    
     public float GetMeStatVal(string parName)
     {
         //"p_atk","p_def","m_def","max_health","atk_spd","mana","max_mana"
@@ -2847,6 +2881,7 @@ public class FormatArtefact
     
     public int RARITY_ROLL = 0;
     public List<Bon> price = new List<Bon>();
+    public List<Bon> upgradeCost = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
     public List<Bon> EXTRA_PARS = new List<Bon>();
 
@@ -3026,8 +3061,7 @@ public class FormatSkill
     public string onRoundStart = "";
     
     public string spawn = "";
-    
-
+    public List<Bon> upgradeCost = new List<Bon>();
 }
 
 
