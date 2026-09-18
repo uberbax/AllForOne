@@ -23,6 +23,8 @@ public class ObjHolder : MonoBehaviour, IReceive
     public ObjHolder copyTo;
     
     public List<GameObject> alsoEnables = new List<GameObject>();
+
+    public CanvasGroup equipBtn;
     public void OnEnable()
     {
         if (UISystem.instance == null) return;
@@ -31,6 +33,8 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             a.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
         }
+        //?
+        Update();
     }
 
     [ContextMenu("ShowViz")]
@@ -97,7 +101,13 @@ public class ObjHolder : MonoBehaviour, IReceive
         }
         
         if (obj == null || obj.RID == "") return;
-        
+
+        if (equipBtn != null)
+        {
+            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"]) equipBtn.alpha = 1;
+            else equipBtn.alpha = 0;
+        }
+
         if (ConfigLoader.GetMetaParamValue("auto_track_pos") > 0 && !noTrack)
         {
             obj.Position = transform.position;    
