@@ -23,6 +23,8 @@ public class UpgradeSystem : MonoBehaviour
 
         if (what == "upgrade")
         {
+            //good old logic
+            /*
             List<Bon> res = new List<Bon>();
             var str = ConfigLoader.GetMetaParamValueString("upgrade_cost");
             var s1 = str.Split('#');
@@ -33,6 +35,14 @@ public class UpgradeSystem : MonoBehaviour
                 var v1 = CSharpExpression.Evaluate<int>(s0);
                 res.Add(new Bon{Key = s2[0], Value = v1});
             }
+            */
+            List<Bon> res = new List<Bon>();
+            var lvl = (int)(who.GetPar("level"));
+            foreach (var v in who.dbObj.upgradeCost)
+            {
+                res.Add(new Bon{Key = v.Key, Value = v.Value * lvl});
+            }
+            res.Add(new Bon{Key = "gold", Value = lvl*100});
             
             return res;
         }
