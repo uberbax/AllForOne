@@ -982,7 +982,7 @@ public class MainStates : MonoBehaviour
         //
         if (res.reward == "reward")
         {
-            PopupoManager.instance.ShowRewards(reso);
+            PopupoManager.instance.ShowRewards(reso, new List<RObj>());
         }
         else if (res.reward != "")
         {
@@ -1240,8 +1240,15 @@ public class MainStates : MonoBehaviour
         if (command == "BY_SELF")
         {
             var n = t.GetComponentInParent<UIfiller>(true);
-            var b = n.selfReward;
-            var h = CreateItems(b);
+
+            List<RObj> h = new List<RObj>();
+            if (n.selfReward.Count > 0)
+            {
+                var b = n.selfReward;
+                h = CreateItems(b);
+            }
+            else h = n.selfRewardObj;
+
             return h;
         }
         if (command == "BY_DROP_TABLE")

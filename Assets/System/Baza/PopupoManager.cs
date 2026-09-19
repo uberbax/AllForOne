@@ -44,9 +44,10 @@ public class PopupoManager : MonoBehaviour
         }
     }
 
-    public void ShowRewards(List<Bon> rew)
+    public void ShowRewards(List<Bon> rew, List<RObj> rewObj)
     {
         rewards.selfReward = rew;
+        rewards.selfRewardObj = rewObj;
         rewards.gameObject.SetActive(true);
     }
 

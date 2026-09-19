@@ -77,7 +77,9 @@ public class UIfiller : MonoBehaviour
     public string saveAsObj = "";
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
+    public List<RObj> selfRewardObj = new List<RObj>();
 
+    
     public bool findRobj = false;
     private void Start()
     {

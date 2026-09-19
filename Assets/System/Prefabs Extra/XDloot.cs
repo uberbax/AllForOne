@@ -114,7 +114,7 @@ public class XDloot : ComponentBehavior
                else MainStates.instance.AddItems(ss);
                
                if (!asSingeItem)
-                    PopupoManager.instance.ShowRewards(ss);
+                    PopupoManager.instance.ShowRewards(ss, new List<RObj>());
 
                var ff = DatabaseAll.instance.CreateItem(ss[0].Key, ss[0].Value);
                EventManager.INV("show_item", new ArgPass{who = ff});
