@@ -209,14 +209,16 @@ public class MainCycleExp : MonoBehaviour
             ee[0].visMain.transform.localScale *= 0.5f;
         }
 
-        //MainStates.instance.mainPlayer.main.transform.position = playerPos.position;
-        //MainStates.instance.mainPlayer.Position = playerPos.position;
-        //MainStates.instance.mainPlayer.AdjustPosition();
+        foreach (var v in secondMain.actSkills)
+        {
+            v.SetPar("action_req", -1);
+        }
 
         MainStates.instance.UI_unitsPlaced.SetActive(true);
 
         MainStates.manualDt = true;
         TimeManager.LAST_DT = 1;
+        MainStates.summonNextPos = true;
         
         //
         MainStates.instance.awaitUnits.Clear();

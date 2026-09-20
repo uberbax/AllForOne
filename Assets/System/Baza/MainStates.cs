@@ -210,6 +210,7 @@ public class MainStates : MonoBehaviour
 
     public static bool manualDt = false;
     public static float manualTick = 1;
+    public static bool summonNextPos = false;
 
     public static List<(string, string)> overridesViz = null;
 
@@ -2532,9 +2533,44 @@ public class MainStates : MonoBehaviour
 
         if (skl.dbObj.ID.IndexOf("summon") >= 0)
         {
-            var gg = WaveSpawner.instance.DoSpawnAny(skl.dbObj.extraPars, skl.owner.tags[0], null,
-                null, a.visuals["combat"].GetComponent<XDcombat>().curTg == tgBattle,
-                skl.Position, skl.Position, true);
+            List<RObj> gg = new List<RObj>();
+            List<int> occupied = new List<int>();
+            if (summonNextPos)
+            {
+                foreach (var v in combats)
+                {
+                    if (!v.META_TAGS.Contains(metaCreateLevel)) continue;
+                    if (!v.HasVis("combat")) continue;
+                    if (v.GetPar("do_nothing") > 0) continue;
+            
+                    var ll = v.visuals["combat"].GetComponent<XDcombat>();
+                    if (ll == null) continue;
+                    if (v.tags[0] != skl.owner.tags[0]) continue;
+                    if (v.GetPar("health") <= 0) continue;
+                    occupied.Add((int)v.GetPar("spawn_pos"));
+                }
+
+                int min = 1;
+                for (int i = 1; i < 10; i++)
+                {
+                    if (!occupied.Contains(i))
+                    {
+                        min = i;
+                        break;
+                    }
+                }
+                
+                //find min empty
+                gg = WaveSpawner.instance.DoSpawnAnyPos(skl.dbObj.extraPars,
+                    skl.owner.tags[0], false, applyExtra:true, overridesViz:overridesViz, start:min);
+            }
+            else
+            {
+                 gg = WaveSpawner.instance.DoSpawnAny(skl.dbObj.extraPars, skl.owner.tags[0], null,
+                     null, a.visuals["combat"].GetComponent<XDcombat>().curTg == tgBattle,
+                     skl.Position, skl.Position, true);
+            }
+
             foreach (var v in gg)
             {
                 v.AdjustPosition();

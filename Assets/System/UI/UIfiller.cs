@@ -85,9 +85,9 @@ public class UIfiller : MonoBehaviour
     private List<RObj> savedResult = new List<RObj>();
     public List<Bon> selfReward = new List<Bon>();
     public List<RObj> selfRewardObj = new List<RObj>();
-
     
     public bool findRobj = false;
+    public string asMainCur = "";
     private void Start()
     {
         if (subParamChange != "")
@@ -155,7 +155,12 @@ public class UIfiller : MonoBehaviour
             }
         }
 
-        var res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
+        List<RObj> res = new List<RObj>();
+        if (asMainCur != "")
+            res = MainStates.instance.curObjsMany[asMainCur];
+        else res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
+        
+        
         if (saveAsObj != "")
         {
             MainStates.instance.curObjsMany[saveAsObj] = res;

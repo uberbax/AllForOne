@@ -429,6 +429,7 @@ public class WaveSpawner : MonoBehaviour
                 enm1.AddMeta(tg == "enemy" ? "wave" : "my_side");
                 res.Add(enm1);
                 
+                enm1.SetPar("spawn_pos", start + l);
                 if (tg == "enemy")
                 {
                     enm1.main.transform.position = enemyPosHolder.GetChild(start + l).position;
