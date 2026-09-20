@@ -44,11 +44,33 @@ public class PopupoManager : MonoBehaviour
         }
     }
 
-    public void ShowRewards(List<Bon> rew, List<RObj> rewObj)
+    public void ShowRewards(List<Bon> rew, List<RObj> rewObj, 
+        string header = "Rewards", string descr = "You've found",
+        Action onYes = null)
     {
         rewards.selfReward = rew;
         rewards.selfRewardObj = rewObj;
         rewards.gameObject.SetActive(true);
+        
+        rewards.header.text = header;
+        rewards.description.text = descr;
+
+        if (onYes == null)
+        {
+            rewards.yes.gameObject.SetActive(false);
+            rewards.no.GetComponentInChildren<TextMeshProUGUI>().text = "OK";
+        }
+        else
+        {
+            rewards.yes.gameObject.SetActive(true);
+            rewards.yes.onClick.RemoveAllListeners();
+            rewards.yes.onClick.AddListener(() =>
+            {
+                onYes();
+                rewards.gameObject.SetActive(false);
+            });
+            rewards.no.GetComponentInChildren<TextMeshProUGUI>().text = "NO";
+        }
     }
 
     public void ShowRewardsInside(List<Bon> rew, string what)

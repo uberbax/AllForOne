@@ -57,6 +57,13 @@ public class UIfiller : MonoBehaviour
     [Header("Layouts")]
     public List<FlexalonFlexibleLayout> layouts = new List<FlexalonFlexibleLayout>();
     
+    [Header("Some Text")]
+    public TextMeshProUGUI header;
+    public TextMeshProUGUI description;
+    public Button yes;
+    public Button no;
+    
+    
     private void Awake()
     {
         instances.Add(this);
