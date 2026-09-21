@@ -979,9 +979,26 @@ public class RObj
                 }
                 else
                 {
-                    var g = ResourceHolder.instance.itemsGO[dbObj.ID];
-                    var bb = GameObject.Instantiate(g, main.transform);
-                    visuals.Add("vis_main", bb);
+                    GameObject g = null;
+                    if (ResourceHolder.instance.itemsGO.ContainsKey(dbObj.ID))
+                    {
+                        g = ResourceHolder.instance.itemsGO[dbObj.ID];                    
+                        
+                        var bb = GameObject.Instantiate(g, main.transform);
+                                                                                          
+                        visuals.Add("vis_main", bb);
+                    }
+                    else
+                    {
+                        g = new GameObject();
+                        var h = g.AddComponent<SpriteRenderer>();
+                        h.sprite = ResourceHolder.instance.items[dbObj.ID];
+                        
+                        g.transform.SetParent(main.transform);
+                        g.transform.localPosition = Vector3.zero;
+                        visuals.Add("vis_main", g);
+                    }
+
                 }
             }
 

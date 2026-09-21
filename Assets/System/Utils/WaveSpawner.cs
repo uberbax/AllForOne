@@ -450,6 +450,11 @@ public class WaveSpawner : MonoBehaviour
                 {
                     enm1.SetPar("is_summon", 1);
                     if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                    var fz = MainStates.instance.mainPlayer.GetPar("summon_stats");
+                    if (fz > 0)
+                    {
+                        MainStates.instance.MultiplyPars(enm1, fz / 100.0f);
+                    }
                 }
 
                 if (applyExtra)

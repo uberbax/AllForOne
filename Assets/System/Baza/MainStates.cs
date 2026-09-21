@@ -2562,7 +2562,7 @@ public class MainStates : MonoBehaviour
                 
                 //find min empty
                 gg = WaveSpawner.instance.DoSpawnAnyPos(skl.dbObj.extraPars,
-                    skl.owner.tags[0], false, applyExtra:true, overridesViz:overridesViz, start:min);
+                    skl.owner.tags[0], false, applyExtra:true, overridesViz:overridesViz, start:min, isSummon:true);
             }
             else
             {
@@ -2892,6 +2892,17 @@ public class MainStates : MonoBehaviour
         }, null,useRight:false,ignoreFlip:true);
     }
 
+    public void MultiplyPars(RObj who, float mult)
+    {
+        List<string> pars = new List<string> {"max_health","health","attack","def","res"};
+        
+        for (int i = 0; i < pars.Count; i++)
+        {
+            var h = who.GetPar(pars[i]) * (1 + mult);
+            who.SetPar(pars[i], h);
+        }
+    }
+    
     public void ApplyMonsterExtraParams(RObj who, RObj from)
     {
         List<string> pars = new List<string> {"max_health","health","attack","def","res"};

@@ -2644,19 +2644,63 @@ public class ConfigLoader : MonoBehaviour
         var f4 = rr.GetPar("res");
         var f5 = rr.GetPar("health");
         var f6 = rr.GetPar("mana");
+        
+        var f6_1 = rr.GetPar("crit_chance");
+        var f6_2 = rr.GetPar("crit_damage");
+        
+        
+        var f7 = rr.GetPar("summon_stats");
+        var f8 = rr.GetPar("extra_turn");
+        var f9 = rr.GetPar("guts");
+        var f10 = rr.GetPar("col_chance");
+        var f11 = rr.GetPar("col_damage");
+        
+        var f12 = rr.GetPar("shield");
+        
+        var f13 = rr.GetPar("lifesteal_prc");
+        var f14 = rr.GetPar("manasteal_prc");
+        
+        var f15 = rr.GetPar("guard");
+
+        var trg = rr.GetPar("target");
 
         string s = "";
         if (f0 > 0) s += "Deals " + f0 + " " + MainStates.reverseDmgTypes[dt] + " damage" + ", ";
         else if (f0 < 0) s += "Heals for " + -f0+ ", ";
-        if (f1 > 0) s += "Deals " + f1*100 + "% attack as " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
+
+        if (f1 > 0)
+        {
+            s += "Deals " + f1*100 + "% attack as " + MainStates.reverseDmgTypes[dt] + " damage{x}"+ ", ";
+            if (trg == 1) s = s.Replace("{x}", " to self");
+            else  s = s.Replace("{x}", "");
+        }
         else if (f1 < 0) s += "Heals for " + -f1*100 + "% attack"+ ", ";
-        if (f2 > 0) s += "Deals " + f2 + " " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
+
+        if (f2 > 0)
+        {
+            s += "Deals " + f2 + " " + MainStates.reverseDmgTypes[dt] + " damage{x}"+ ", ";
+            if (trg == 1) s = s.Replace("{x}", " to self");
+            else  s = s.Replace("{x}", "");
+        }
         else if (f2 < 0) s += "Heals for " + -f2+ ", ";
+        
         if (f_2 > 0) s += "Deals " + f_2*100 + "% magic as " + MainStates.reverseDmgTypes[dt] + " damage"+ ", ";
         else if (f_2 < 0) s += "Heals for " + -f_2*100 + "% magic"+ ", ";
         
+        
+        
         if (f3 > 0) s += "Increases defence by " + f3+ ", ";
         else if (f3 < 0) s += "Reduces defence by " + -f3+ ", ";
+        
+        
+        
+        if (f6_1 > 0) s += "Increases crit chance by " + f6_1+ ", ";
+        else if (f6_1 < 0) s += "Reduces crit chance by " + -f6_1+ ", ";
+        
+        if (f6_2 > 0) s += "Increases crit damage by " + f6_2 + ", ";
+        else if (f6_2 < 0) s += "Reduces crit damage by " + -f6_2 + ", ";
+        
+        
         
         if (f4 > 0) s += "Increases resistance by " + f4+ ", ";
         else if (f4 < 0) s += "Reduces resistance by " + -f4+ ", ";
@@ -2666,7 +2710,38 @@ public class ConfigLoader : MonoBehaviour
         
         if (f6 > 0) s += "Regen mana for " + f6;
         else if (f6 < 0) s += "Reduces mana by " + -f6;
-
+        
+        
+        
+        if (f7 > 0) s += "Increases summon stats by " + f7 + "%, ";
+        else if (f7 < 0) s += "Reduces summon stats by " + -f7 + "%, ";
+        
+        if (f8 > 0) s += "Increases extra turn chance by " + f8 + "%, ";
+        else if (f8 < 0) s += "Reduces extra turn chance by " + -f8 + "%, ";
+        
+        if (f9 > 0) s += "You will survive one fatal hit, ";
+        //else if (f9 < 0) s += "Reduces summon stats by " + -f8 + "%, ";
+        
+        if (f10 > 0) s += "Increases extra strike chance by " + f10 + "%, ";
+        else if (f10 < 0) s += "Reduces extra strike chance by " + -f10 + "%, ";
+        
+        if (f11 > 0) s += "Increases extra strike damage by " + f11 + "%, ";
+        else if (f11 < 0) s += "Reduces extra strike damage by " + -f11 + "%, ";
+        
+        
+        if (f12 > 0) s += "Gives " + f12 + " shield, ";
+        else if (f12 < 0) s += "Removes " + f12 + " shield, ";
+        
+        //
+        if (f13 > 0) s += "Gives extra " + f13 + "% lifesteal chance, ";
+        else if (f13 < 0) s += "Reduces extra lifesteal chance by " + f13 + "%, ";
+        
+        if (f14 > 0) s += "Gives extra " + f14 + "% manasteal chance, ";
+        else if (f14 < 0) s += "Reduces extra manasteal chance by " + f14 + "%, ";
+        
+        //
+        if (f15 > 0) s += "Takes damage in stead of ally, ";
+        
         if (s == "" && rr.dbObj.alsoCast.Count > 0)
         {
             var obj = DatabaseAll.instance.CreateAny(rr.dbObj.alsoCast[0].Key, false, 1, new GameObject());
