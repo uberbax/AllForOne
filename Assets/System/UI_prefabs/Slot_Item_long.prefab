@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4031849130783195582}
   - component: {fileID: 805454108255163475}
   - component: {fileID: 7063057035413055548}
+  - component: {fileID: 6591971550869035528}
   m_Layer: 5
   m_Name: price
   m_TagString: Untagged
@@ -25,17 +26,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213556035787906863}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3639683173098238640}
+  m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 77.8, y: 0}
-  m_SizeDelta: {x: 105.2695, y: 50}
+  m_AnchoredPosition: {x: 14.805008, y: 0}
+  m_SizeDelta: {x: 60.28, y: 60.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &805454108255163475
 CanvasRenderer:
@@ -92,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -137,6 +138,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6591971550869035528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213556035787906863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 3
+  LayoutPosition: {x: 14.805008, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -180.80998, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 60.28, y: 60.33, z: 0}
+  TransformPosition: {x: -180.80998, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 60.28, y: 60.33}
 --- !u!1 &345162431352438647
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +345,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1408334413625690824
@@ -412,6 +451,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!114 &9157944193158441818
@@ -478,6 +519,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!114 &1086980961875346543
@@ -706,6 +749,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1540079452592069671
@@ -773,6 +818,7 @@ GameObject:
   - component: {fileID: 7665648746667647689}
   - component: {fileID: 6201621027135438928}
   - component: {fileID: 1608482679074856720}
+  - component: {fileID: 4686428557025577986}
   m_Layer: 5
   m_Name: price
   m_TagString: Untagged
@@ -787,17 +833,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724582501586340766}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 867841741563094850}
+  m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 77.8, y: 0}
-  m_SizeDelta: {x: 105.2695, y: 50}
+  m_AnchoredPosition: {x: 150.405, y: 0}
+  m_SizeDelta: {x: 90.42, y: 60.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6201621027135438928
 CanvasRenderer:
@@ -827,7 +873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -854,8 +900,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -899,6 +945,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4686428557025577986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724582501586340766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 5
+  LayoutPosition: {x: 150.405, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 45.21, y: 30.165, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 45.21, y: 30.165, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 45.21, y: 30.165, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -45.20999, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 90.42, y: 60.33, z: 0}
+  TransformPosition: {x: -45.20999, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 90.42, y: 60.33}
 --- !u!1 &2034797750533474470
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +1068,7 @@ GameObject:
   - component: {fileID: 3639683173098238640}
   - component: {fileID: 322027703124642920}
   - component: {fileID: 4663053886449892697}
+  - component: {fileID: 1103810980883266241}
   m_Layer: 5
   m_Name: icon (1)
   m_TagString: Untagged
@@ -1000,18 +1083,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2799048179295355608}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4031849130783195582}
+  m_Children: []
   m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.2098, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -45.33499, y: 0}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &322027703124642920
 CanvasRenderer:
@@ -1043,7 +1125,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1051,6 +1133,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1103810980883266241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799048179295355608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 2
+  LayoutPosition: {x: -45.33499, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -240.94998, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 60, y: 60, z: 0}
+  TransformPosition: {x: -240.94998, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 60, y: 60}
 --- !u!1 &3066507953996186278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,6 +1336,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!114 &6099752885385974546
@@ -1284,6 +1404,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!114 &6994484676676827442
@@ -1588,7 +1710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 19324b49447184e4e93981881a7d4c24, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ff1051affff2fbd488eb9e84863d6102, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1615,7 +1737,15 @@ MonoBehaviour:
   noTrack: 0
   inDrag: 0
   asMain: 0
+  asCurObj: 
+  asObj: 
+  asDBObj: 
   redirect: {fileID: 0}
+  copyTo: {fileID: 0}
+  alsoEnables: []
+  equipBtn: {fileID: 0}
+  slotBtn: {fileID: 0}
+  level: {fileID: 0}
   ignoreScale: 0
 --- !u!114 &9088247763868786440
 MonoBehaviour:
@@ -1624,7 +1754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3883763788661707983}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
   m_Name: 
@@ -1637,6 +1767,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!225 &257995549598463106
@@ -1671,6 +1803,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!114 &7869437110601233627
@@ -2024,7 +2158,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6711946295183158570}
-  - component: {fileID: 5449869642002242709}
+  - component: {fileID: 3908318396045735256}
+  - component: {fileID: 7025079039289660055}
+  - component: {fileID: 3500403493773498833}
   m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
@@ -2045,16 +2181,19 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1537294166714546413}
+  - {fileID: 4405534842259569329}
   - {fileID: 3639683173098238640}
+  - {fileID: 4031849130783195582}
   - {fileID: 867841741563094850}
+  - {fileID: 7665648746667647689}
   m_Father: {fileID: 1335998425107794803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -220.31372, y: 3.6108017}
-  m_SizeDelta: {x: 109.3725, y: -59.9956}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5449869642002242709
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -210.85873, y: 3.6108398}
+  m_SizeDelta: {x: 391.22998, y: 60.33}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &3908318396045735256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2063,23 +2202,116 @@ MonoBehaviour:
   m_GameObject: {fileID: 6507800035779425636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 3
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 0}
+  SiblingIndex: 0
+  LayoutPosition: {x: 0, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: -195.61499, y: 0, z: 0}
+    m_Extent: {x: 195.61499, y: 30.165, z: 0}
+  LayoutBounds:
+    m_Center: {x: -195.61499, y: 0, z: 0}
+    m_Extent: {x: 195.61499, y: 30.165, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: -195.61499, y: 0, z: 0}
+    m_Extent: {x: 195.61499, y: 30.165, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 186.10602, y: 106.0271, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -117.805725, y: 3.6108398, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 391.22998, y: 60.33, z: 0}
+  TransformPosition: {x: -117.805725, y: 3.6108398, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 391.22998, y: 60.33}
+--- !u!114 &7025079039289660055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507800035779425636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b0da67f6b3c9a4e84ed47af9da4884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonObject
+  _version: 4
+  _widthType: 3
+  _width: 100
+  _widthOfParent: 1
+  _heightType: 3
+  _height: 100
+  _heightOfParent: 1
+  _depthType: 3
+  _depth: 1
+  _depthOfParent: 1
+  _minWidthType: 0
+  _minWidth: 0
+  _minWidthOfParent: 0
+  _minHeightType: 0
+  _minHeight: 0
+  _minHeightOfParent: 0
+  _minDepthType: 0
+  _minDepth: 0
+  _minDepthOfParent: 0
+  _maxWidthType: 0
+  _maxWidth: 100
+  _maxWidthOfParent: 1
+  _maxHeightType: 0
+  _maxHeight: 100
+  _maxHeightOfParent: 1
+  _maxDepthType: 0
+  _maxDepth: 1
+  _maxDepthOfParent: 1
+  _offset: {x: 0, y: 0, z: 0}
+  _scale: {x: 1, y: 1, z: 1}
+  _rotation: {x: 0, y: 0, z: 0, w: 1}
+  _marginLeft: 0
+  _marginRight: 0
+  _marginTop: 0
+  _marginBottom: 0
+  _marginFront: 0
+  _marginBack: 0
+  _paddingLeft: 0
+  _paddingRight: 0
+  _paddingTop: 0
+  _paddingBottom: 0
+  _paddingFront: 0
+  _paddingBack: 0
+  _skipLayout: 0
+  _useDefaultAdapter: 1
+--- !u!114 &3500403493773498833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6507800035779425636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcb5ae438b41e3449fdddabaf22c434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonFlexibleLayout
+  _version: 4
+  _direction: 0
+  _wrap: 0
+  _wrapDirection: 3
+  _horizontalAlign: 1
+  _verticalAlign: 1
+  _depthAlign: 1
+  _horizontalInnerAlign: 1
+  _verticalInnerAlign: 1
+  _depthInnerAlign: 2
+  _gapType: 0
+  _gap: 0
+  _wrapGapType: 0
+  _wrapGap: 0
 --- !u!1 &6530401016650469485
 GameObject:
   m_ObjectHideFlags: 0
@@ -2388,10 +2620,10 @@ RectTransform:
   - {fileID: 592932117617775981}
   m_Father: {fileID: 8678987213716946197}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -453, y: 168.6}
-  m_SizeDelta: {x: -982.7071, y: -337.199}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 82.73749, y: -75.15039}
+  m_SizeDelta: {x: 97.2929, y: 103.3008}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6892243208769710743
 CanvasRenderer:
@@ -2451,6 +2683,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &6768827470131459319
@@ -2549,6 +2783,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &6860477008995129284
@@ -2562,6 +2798,7 @@ GameObject:
   - component: {fileID: 867841741563094850}
   - component: {fileID: 3613019930311780940}
   - component: {fileID: 4429007272582790077}
+  - component: {fileID: 2370177888078731284}
   m_Layer: 5
   m_Name: icon (2)
   m_TagString: Untagged
@@ -2576,18 +2813,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6860477008995129284}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7665648746667647689}
+  m_Children: []
   m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.2098, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 75.07001, y: 0}
+  m_SizeDelta: {x: 60.25, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3613019930311780940
 CanvasRenderer:
@@ -2619,7 +2855,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -2627,6 +2863,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2370177888078731284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860477008995129284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 4
+  LayoutPosition: {x: 75.07001, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.125, y: 30, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.125, y: 30, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.125, y: 30, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -120.54498, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 60.25, y: 60, z: 0}
+  TransformPosition: {x: -120.54498, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 60.25, y: 60}
 --- !u!1 &6892751220448587542
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,6 +2910,7 @@ GameObject:
   - component: {fileID: 4405534842259569329}
   - component: {fileID: 1620951209594358159}
   - component: {fileID: 6289886622287850404}
+  - component: {fileID: 7611808525407614514}
   m_Layer: 5
   m_Name: price
   m_TagString: Untagged
@@ -2652,17 +2925,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6892751220448587542}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1537294166714546413}
+  m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 56, y: 0}
-  m_SizeDelta: {x: 105.2695, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -105.474976, y: 0}
+  m_SizeDelta: {x: 60.28, y: 60.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1620951209594358159
 CanvasRenderer:
@@ -2719,10 +2992,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.2
-  m_fontSizeBase: 36
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2764,6 +3037,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7611808525407614514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6892751220448587542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 1
+  LayoutPosition: {x: -105.47499, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30.14, y: 30.165, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -301.08997, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 60.28, y: 60.33, z: 0}
+  TransformPosition: {x: -301.08997, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 60.28, y: 60.33}
 --- !u!1 &6975000545868782656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2912,6 +3221,7 @@ GameObject:
   - component: {fileID: 1537294166714546413}
   - component: {fileID: 2336666312838639096}
   - component: {fileID: 2753120306746561518}
+  - component: {fileID: 1281624491493811627}
   m_Layer: 5
   m_Name: icon
   m_TagString: Untagged
@@ -2926,18 +3236,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7066719723805598768}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4405534842259569329}
+  m_Children: []
   m_Father: {fileID: 6711946295183158570}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.2098, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -165.61499, y: 0}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2336666312838639096
 CanvasRenderer:
@@ -2977,6 +3286,42 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1281624491493811627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7066719723805598768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994c66b6148109b489689ed705d244cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Flexalon::Flexalon.FlexalonResult
+  Parent: {fileID: 6711946295183158570}
+  SiblingIndex: 0
+  LayoutPosition: {x: -165.61499, y: 0, z: 0}
+  LayoutRotation: {x: 0, y: 0, z: 0, w: 1}
+  AdapterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  LayoutBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  RotatedAndScaledBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 30, y: 30, z: 0}
+  ComponentScale: {x: 1, y: 1, z: 1}
+  FillSize: {x: 0, y: 0, z: 0}
+  ShrinkSize: {x: 999999, y: 999999, z: 999999}
+  TargetPosition: {x: -361.22998, y: 0, z: 0}
+  TargetRotation: {x: 0, y: 0, z: 0, w: 1}
+  TargetScale: {x: 1, y: 1, z: 1}
+  TargetRectSize: {x: 60, y: 60, z: 0}
+  TransformPosition: {x: -361.22998, y: 0, z: 0}
+  TransformRotation: {x: 0, y: 0, z: 0, w: 1}
+  TransformScale: {x: 1, y: 1, z: 1}
+  TransformRectSize: {x: 60, y: 60}
 --- !u!1 &7570767280219463909
 GameObject:
   m_ObjectHideFlags: 0
@@ -3135,6 +3480,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &7585716986203441081
@@ -3481,6 +3828,8 @@ MonoBehaviour:
   isMainPar: 0
   hideEmpty: 0
   ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &8409818991705325533
