@@ -2378,10 +2378,18 @@ public class MainStates : MonoBehaviour
     public void DealRegen(RObj who)
     {
         var a = who.GetPar("regen");
-        var h = who.GetPar("registered_damage");
-        h -= a;
-        if (h < 0) h = 0;
-        who.SetPar("registered_damage", h);
+        if (a > 0)
+        {
+            var h = who.GetPar("registered_damage");
+            h -= a;
+            if (h < 0) h = 0;
+            who.SetPar("registered_damage", h);
+        }
+        else
+        {
+            a = who.GetPar("regen_mp");
+            AddMana(who, a);
+        }
         //effect regen possibly
     }
 
@@ -2668,6 +2676,22 @@ public class MainStates : MonoBehaviour
         
         if (atk > 0)
         {
+            //redirect ? 
+            var tg = a.GetPar("guard");
+            if (tg > 0)
+            {
+                var hh = a.timedBuffs.Find(x => x.dbObj.pars.ContainsKey("guard"));
+                DealDamage(hh.owner, skl);
+                return;
+            }
+            
+            var tr = a.GetPar("reflect_prc");
+            if (tr > 0)
+            {
+                DealDamage(skl.owner, skl);
+            }
+            
+            
             if (skl.owner != a)
             {
                 var kk = a.GetPar("dodge");
@@ -3216,13 +3240,20 @@ public class MainStates : MonoBehaviour
             {
                 var tt =  curComateers[i].inventory[j];
                 
-                if (tt.dbObj.onRoundStart == "") continue;
+                if (tt.dbObj.onRoundStart.Count == 0) continue;
                 //var kl = DatabaseAll.instance.skills[tt.dbObj.useSkill];
                 //if (kl.onRoundStart == "") continue;                
                 var hy = tt.GetPar("used_slot");
                 if (hy < 0) continue;
 
-                SkillExecutor.instance.ExecuteSkill(curComateers[i], tt.dbObj.onRoundStart, null);
+                for (int k = 0; k < tt.dbObj.onRoundStart.Count; k++)
+                {
+                    var roll = Random.Range(0, 100);
+                    if (roll < tt.dbObj.onRoundStart[k].Value)
+                    {
+                        SkillExecutor.instance.ExecuteSkill(curComateers[i], tt.dbObj.onRoundStart[k].Key, null);
+                    }
+                }
 
             }
         }

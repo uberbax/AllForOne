@@ -1037,8 +1037,18 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "ON_DEATH") mm.onDeath = tt[j];
                 else if (columns[j].ToUpper() == "ON_DMG") mm.onDmg = tt[j];
-                else if (columns[j].ToUpper() == "ON_ROUND_START") mm.onRoundStart = tt[j];
-                
+                else if (columns[j].ToUpper() == "ON_ROUND_START")
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.onRoundStart = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.onRoundStart.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
+
                 else if (columns[j].ToUpper() == "SPAWN") mm.spawn = tt[j];
                 
                 
@@ -1194,7 +1204,16 @@ public class ConfigLoader : MonoBehaviour
                 if (tt[j]== "x") continue;
                 if (columns[j].ToUpper() == "NAME") mm.skillName = tt[j];
                 else if (columns[j].ToUpper() == "USE_SKILL") mm.useSkill = tt[j];
-                else if (columns[j].ToUpper() == "ON_ROUND_START") mm.onRoundStart = tt[j];
+                else if (columns[j].ToUpper() == "ON_ROUND_START")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.onRoundStart.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
@@ -2636,6 +2655,7 @@ public class ConfigLoader : MonoBehaviour
     private string GenerateSkillDescr(string gg, RObj rr)
     {
         var dt = rr.GetPar("dmg_type");
+        
         var f0 = rr.GetPar("attack");
         var f1 = rr.GetPar("attack_prc");
         var f2 = rr.GetPar("magic");
@@ -2661,6 +2681,44 @@ public class ConfigLoader : MonoBehaviour
         var f14 = rr.GetPar("manasteal_prc");
         
         var f15 = rr.GetPar("guard");
+        
+        var f16 = rr.GetPar("mana_reduction");
+        var f17 = rr.GetPar("mana_siphon");
+        
+        var f18 = rr.GetPar("reflect_prc");
+        var f19 = rr.GetPar("dodge");
+        
+        var f20 = rr.GetPar("regen");
+        var f21 = rr.GetPar("regen_mp");
+        
+        var f22 = rr.GetPar("cooldown");
+        
+        var f23 = rr.GetPar("accuracy");
+        
+        var f24 = rr.GetPar("dmg_block");
+        
+        var f25 = rr.GetPar("aoe");
+        
+        //extra drops
+        
+        var f26 = rr.GetPar("item_drop");
+        var f27 = rr.GetPar("item_quality_drop");
+        var f28 = rr.GetPar("gold_drop");
+        var f29 = rr.GetPar("exp_drop");
+        var f30 = rr.GetPar("res1_drop");
+        
+        //extra resistances
+        
+        var f31 = rr.GetPar("res_water");
+        var f32 = rr.GetPar("res_fire");
+        var f33 = rr.GetPar("res_earth");
+        var f34 = rr.GetPar("res_light");
+        var f35 = rr.GetPar("res_dark");
+        var f36 = rr.GetPar("res_sleep");
+        var f37 = rr.GetPar("res_stun");
+        
+        
+        //
 
         var trg = rr.GetPar("target");
 
@@ -2742,12 +2800,97 @@ public class ConfigLoader : MonoBehaviour
         //
         if (f15 > 0) s += "Takes damage in stead of ally, ";
         
-        if (s == "" && rr.dbObj.alsoCast.Count > 0)
+        
+        if (f16 > 0) s += "Increases manacost of spells by " + f16 + "%, ";
+        else if (f16 < 0) s += "Reduces manacost of spells by " + -f16 + "%, ";
+        
+        if (f17 > 0) s += "Increases chance of spells to not consume mana by " + f17 + "%, ";
+        else if (f17 < 0) s += "Reduces chance of spells to not consume mana by " + -f17 + "%, ";
+        
+        if (f18 > 0) s += "Reflects " + f18 + "% of damage back to attacker, ";
+        //else if (f18 < 0) s += "Reduces chance of spells to not consume mana by " + -f18 + "%, ";
+        
+        if (f19 > 0) s += "Increases dodge chance by " + f19 + "%, ";
+        else if (f19 < 0) s += "Reduces dodge chance by " + -f19 + "%, ";
+        
+        if (f20 > 0) s += "Adds " + f20 + " health regen, ";
+        else if (f20 < 0) s += "Removes " + -f20 + " health regen, ";
+        
+        if (f21 > 0) s += "Adds " + f21 + " mana regen, ";
+        else if (f21 < 0) s += "Removes " + -f21 + " mana regen, ";
+        
+        if (f22 > 0) s += "Has a cd of " + f22 + " ";
+        
+        if (f23 > 0) s += "Increases hit chance by " + f23 + "%, ";
+        else if (f23 < 0) s += "Reduces hit chance by " + -f23 + "%, ";
+        
+        if (f24 > 0) s += "Increases dmg block by " + f24 + "%, ";
+        else if (f24 < 0) s += "Reduces dmb block by " + -f24 + "%, ";
+
+        if (f25 > 0) s += " in aoe";
+        
+        
+        //drops works
+        if (f26 > 0) s += "Increases item drop rate by " + f26 + "%, ";
+        else if (f26 < 0) s += "Reduces item drop rate by " + -f26 + "%, ";
+        
+        if (f27 > 0) s += "Increases item quality rate by " + f27 + "%, ";
+        else if (f27 < 0) s += "Reduces item quality rate by " + -f27 + "%, ";
+        
+        if (f28 > 0) s += "Increases gold drop rate by " + f28 + "%, ";
+        else if (f28 < 0) s += "Reduces gold drop rate by " + -f28 + "%, ";
+
+        if (f29 > 0) s += "Increases exp drop rate by " + f29 + "%, ";
+        else if (f29 < 0) s += "Reduces exp drop rate by " + -f29 + "%, ";
+
+        string sp = GetMeLocale("res1");
+        
+        if (f30 > 0) s += "Increases " + sp + " drop rate by " + f30 + "%, ";
+        else if (f30 < 0) s += "Reduces " + sp + " drop rate by " + -f30 + "%, ";
+        
+        if (f31 > 0) s += "Increases water resistance by " + f31 + "%, ";
+        else if (f31 < 0) s += "Reduces water resistance by " + -f31 + "%, ";
+        
+        if (f32 > 0) s += "Increases fire resistance by " + f32 + "%, ";
+        else if (f32 < 0) s += "Reduces fire resistance by " + -f32 + "%, ";
+        
+        if (f33 > 0) s += "Increases earth resistance by " + f33 + "%, ";
+        else if (f33 < 0) s += "Reduces earth resistance by " + -f33 + "%, ";
+        
+        if (f34 > 0) s += "Increases light resistance by " + f34 + "%, ";
+        else if (f34 < 0) s += "Reduces light resistance by " + -f34 + "%, ";
+        
+        if (f35 > 0) s += "Increases dark resistance by " + f35 + "%, ";
+        else if (f35 < 0) s += "Reduces dark resistance by " + -f35 + "%, ";
+        
+        if (f36 > 0) s += "Increases sleep resistance by " + f36 + "%, ";
+        else if (f36 < 0) s += "Reduces sleep resistance by " + -f36 + "%, ";
+        
+        if (f37 > 0) s += "Increases stun resistance by " + f37 + "%, ";
+        else if (f37 < 0) s += "Reduces stun resistance by " + -f37 + "%, ";
+        
+        if (/*s == "" &&*/ rr.dbObj.alsoCast.Count > 0)
         {
             var obj = DatabaseAll.instance.CreateAny(rr.dbObj.alsoCast[0].Key, false, 1, new GameObject());
             //prc
             if (rr.dbObj.alsoCast[0].Value < 100) s += "Has a chance to ";
             s += GetMeLocale(rr.dbObj.alsoCast[0].Key + "_descr", null, obj);
+        }
+        
+        if (/*s == "" &&*/ rr.dbObj.onRoundStart.Count > 0)
+        {
+            var obj = DatabaseAll.instance.CreateAny(rr.dbObj.onRoundStart[0].Key, false, 1, new GameObject());
+            //prc
+            if (rr.dbObj.onRoundStart[0].Value < 100) s += "On every turn has a chance to ";
+            s += GetMeLocale(rr.dbObj.onRoundStart[0].Key + "_descr", null, obj);
+        }
+        
+        if (/*s == "" &&*/ rr.dbObj.onDmg != "")
+        {
+            var obj = DatabaseAll.instance.CreateAny(rr.dbObj.onDmg, false, 1, new GameObject());
+            //prc
+            s += "When receiving damage ";
+            s += GetMeLocale(rr.dbObj.onDmg + "_descr", null, obj);
         }
 
         if (rr.dbObj.buffsApplied.Count > 0)
@@ -2919,7 +3062,7 @@ public class FormatArtefact
 {
     public string skillName = string.Empty;
     public string useSkill = string.Empty;
-    public string onRoundStart = string.Empty;
+    public List<Bon> onRoundStart = new List<Bon>();
     
     public float ATTACK_PRC;
     public float ATTACK;
@@ -3133,7 +3276,7 @@ public class FormatSkill
 
     public string onDeath = "";
     public string onDmg = "";
-    public string onRoundStart = "";
+    public List<Bon> onRoundStart = new List<Bon>();
     
     public string spawn = "";
     public List<Bon> upgradeCost = new List<Bon>();

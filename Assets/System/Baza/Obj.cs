@@ -49,7 +49,7 @@ public class Obj
     public string drop = "";
     public string onDeath = "";
     public string onDmg = "";
-    public string onRoundStart = "";
+    public List<Bon> onRoundStart = new List<Bon>();
     public string spawn = "";
     
     
