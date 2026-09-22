@@ -137,6 +137,8 @@ public class DatabaseAll : MonoBehaviour
             
             o.onDeath = v.onDeath;
             o.onDmg = v.onDmg;
+            o.onCrit = v.onCrit;
+            
             o.spawn = v.spawn;
             o.onRoundStart = v.onRoundStart;
 
@@ -282,6 +284,8 @@ public class DatabaseAll : MonoBehaviour
             o.drop = v.drop;
             o.onDeath = v.onDeath;
             o.onDmg = v.onDmg;
+            o.onCrit = v.onCrit;
+            
             o.dropPerHit = v.dropPerHit;
             o.dynamic = v.dynamic;
             

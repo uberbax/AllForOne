@@ -924,7 +924,7 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "ON_DEATH") mm.onDeath = tt[j];
                 else if (columns[j].ToUpper() == "ON_DMG") mm.onDmg = tt[j];
-                
+                else if (columns[j].ToUpper() == "ON_CRIT") mm.onCrit = tt[j];
                 
                 else if (columns[j].ToUpper() == "DROP_PER_HIT") mm.dropPerHit = tt[j];
                 
@@ -1037,6 +1037,9 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "ON_DEATH") mm.onDeath = tt[j];
                 else if (columns[j].ToUpper() == "ON_DMG") mm.onDmg = tt[j];
+                else if (columns[j].ToUpper() == "ON_CRIT") mm.onCrit = tt[j];
+                
+                
                 else if (columns[j].ToUpper() == "ON_ROUND_START")
                 {
                     if (tt[j] == "x") continue;
@@ -2708,7 +2711,6 @@ public class ConfigLoader : MonoBehaviour
         var f30 = rr.GetPar("res1_drop");
         
         //extra resistances
-        
         var f31 = rr.GetPar("res_water");
         var f32 = rr.GetPar("res_fire");
         var f33 = rr.GetPar("res_earth");
@@ -2716,9 +2718,14 @@ public class ConfigLoader : MonoBehaviour
         var f35 = rr.GetPar("res_dark");
         var f36 = rr.GetPar("res_sleep");
         var f37 = rr.GetPar("res_stun");
-        
-        
         //
+        
+        //??
+        var f38 = rr.GetPar("lowhp_mult");
+        var f39 = rr.GetPar("lowmp_mult");
+        
+        var f40 = rr.GetPar("dmg_amplify");
+
 
         var trg = rr.GetPar("target");
 
@@ -2825,7 +2832,7 @@ public class ConfigLoader : MonoBehaviour
         else if (f23 < 0) s += "Reduces hit chance by " + -f23 + "%, ";
         
         if (f24 > 0) s += "Increases dmg block by " + f24 + "%, ";
-        else if (f24 < 0) s += "Reduces dmb block by " + -f24 + "%, ";
+        else if (f24 < 0) s += "Reduces dmg block by " + -f24 + "%, ";
 
         if (f25 > 0) s += " in aoe";
         
@@ -2869,6 +2876,16 @@ public class ConfigLoader : MonoBehaviour
         if (f37 > 0) s += "Increases stun resistance by " + f37 + "%, ";
         else if (f37 < 0) s += "Reduces stun resistance by " + -f37 + "%, ";
         
+        if (f38 > 0) s += "Increases stats as your hp drops up to +" + f38 + "%, ";
+        else if (f38 < 0) s += "Decreases stats as your hp drops up to +" + -f38 + "%, ";
+        
+        if (f39 > 0) s += "Increases stats as your mp drops up to +" + f39 + "%, ";
+        else if (f39 < 0) s += "Decreases stats as your mp drops up to +" + -f39 + "%, ";
+        
+        if (f40 > 0) s += "Amplify damage by " + f40 + "%, ";
+        //else if (f40 < 0) s += "Reduces stun resistance by " + -f37 + "%, ";
+        
+        
         if (/*s == "" &&*/ rr.dbObj.alsoCast.Count > 0)
         {
             var obj = DatabaseAll.instance.CreateAny(rr.dbObj.alsoCast[0].Key, false, 1, new GameObject());
@@ -2891,6 +2908,14 @@ public class ConfigLoader : MonoBehaviour
             //prc
             s += "When receiving damage ";
             s += GetMeLocale(rr.dbObj.onDmg + "_descr", null, obj);
+        }
+        
+        if (/*s == "" &&*/ rr.dbObj.onCrit != "")
+        {
+            var obj = DatabaseAll.instance.CreateAny(rr.dbObj.onCrit, false, 1, new GameObject());
+            //prc
+            s += "When crit ";
+            s += GetMeLocale(rr.dbObj.onCrit + "_descr", null, obj);
         }
 
         if (rr.dbObj.buffsApplied.Count > 0)
@@ -2973,6 +2998,7 @@ public class FormatHero
     public string drop = "";
     public string onDeath = "";
     public string onDmg = "";
+    public string onCrit = "";
     
     public string dropPerHit = "";
 
@@ -3276,6 +3302,7 @@ public class FormatSkill
 
     public string onDeath = "";
     public string onDmg = "";
+    public string onCrit = "";
     public List<Bon> onRoundStart = new List<Bon>();
     
     public string spawn = "";

@@ -2520,6 +2520,29 @@ public class MainStates : MonoBehaviour
         
         var h = a.GetPar("registered_damage");
         var sha = a.GetPar("shield");
+
+        var rh1 = a.GetPar("max_health");
+        var rh2 = a.GetPar("health");
+        var rm1 = a.GetPar("max_mana");
+        var rm2 = a.GetPar("mana");
+        
+        var Mrh1 = skl.owner.GetPar("max_health");
+        var Mrh2 = skl.owner.GetPar("health");
+        var Mrm1 = skl.owner.GetPar("max_mana");
+        var Mrm2 = skl.owner.GetPar("mana");
+
+        var HM = skl.owner.GetPar("lowhp_mult");
+        var MM = skl.owner.GetPar("lowmp_mult");
+        
+        if (HM > 0)
+        {
+            atk *=  (1 + (1 - Mrh2/Mrh1)*(HM / 100.0f));
+        }
+        if (MM > 0)
+        {
+            atk *=  (1 + (1 - Mrm2/Mrm1)*(MM / 100.0f));
+        }
+        
         dmgTimes[skl.owner.RID] = Time.time;
 
         if (magic > 0) atk = magic;
@@ -2871,6 +2894,15 @@ public class MainStates : MonoBehaviour
             a.SetPar("registered_damage", hm-1);
             a.ChangePar("guts", -1);
         }
+
+        if (wasCrit)
+        {
+            var g = skl.owner.timedBuffs.FindAll(x => x.dbObj.onCrit != "");
+            foreach (var v in g)
+            {
+                SkillExecutor.instance.ExecuteSkill(skl.owner, v.dbObj.onCrit, null);
+            }
+        }
     }
 
     private void OnDestroy()
@@ -2918,7 +2950,7 @@ public class MainStates : MonoBehaviour
 
     public void MultiplyPars(RObj who, float mult)
     {
-        List<string> pars = new List<string> {"max_health","health","attack","def","res"};
+        List<string> pars = new List<string> {"max_health","health","attack","def","res","magic"};
         
         for (int i = 0; i < pars.Count; i++)
         {
@@ -2929,7 +2961,7 @@ public class MainStates : MonoBehaviour
     
     public void ApplyMonsterExtraParams(RObj who, RObj from)
     {
-        List<string> pars = new List<string> {"max_health","health","attack","def","res"};
+        List<string> pars = new List<string> {"max_health","health","attack","def","res","magic"};
         //
         float koef = 1;
         var f = from.GetPar("obj_berserk");
