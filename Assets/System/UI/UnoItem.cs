@@ -26,7 +26,7 @@ public class UnoItem : MonoBehaviour
     //state: ready, not_available, taken
     public void Fill(int dayNum, int amount, string item, string state, int num)
     {
-        dayText.text = "Day " + dayNum.ToString();
+        dayText.text = "Day " + (dayNum+1).ToString();
         icon.sprite = ResourceHolder.instance.GetIcon(item);
         
         amountText.text = amount > 1 ? amount.ToString() : "";
