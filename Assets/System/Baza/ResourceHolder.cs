@@ -224,6 +224,8 @@ public class ResourceHolder : MonoBehaviour
         {
             var oo = a.GetComponent<GBind>();
             var gg = UpgradeSystem.instance.GetPrice(r, a.param);
+            var o1 = oo.GetComponent<CanvasGroup>();
+            if (o1 == null) oo.AddComponent<CanvasGroup>();
             
             if (r.GetPar("max") == 1 || gg[0].Value < 0)
             {

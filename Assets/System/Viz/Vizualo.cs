@@ -167,10 +167,10 @@ public class Vizualo : MonoBehaviour
             foreach (var req in reqs)
             {
                 //? thwbbb
-                if (req.what.IndexOf("{") >= 0 && id != "")
-                {
-                    req.what = id;
-                }
+                //if (req.what.IndexOf("{") >= 0 && id != "")
+                //{
+                //    req.what = id;
+                //}
             }
 
             var g = ModelStatistics.instance.CheckCondition(reqs, who);
