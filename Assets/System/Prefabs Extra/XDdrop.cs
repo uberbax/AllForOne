@@ -44,6 +44,14 @@ public class XDdrop : ComponentBehavior
                 a.main.transform.position = transform.position;
                 a.main.transform.localScale *= ConfigLoader.GetMetaParamValue("drop_scale");
                 a.main.name += "LOOT";
+                //ok scale ?
+                var gb = a.visMain.GetComponent<SpriteRenderer>();
+                if (gb != null)
+                {
+                    Vector2 size = gb.bounds.size;
+                    if (size.x > 1)
+                        a.main.transform.localScale /= size.x;
+                }
 
                 if (BattleController.instance.startDo || DungeonController.instance.inDungeon || 
                     MainStates.instance.inBattle)

@@ -16,6 +16,7 @@ public class UIturnOrder : MonoBehaviour
         for (int i = holder.childCount - 1; i >= 0; i--)
         {
             var g = holder.GetChild(i);
+            if (obj.whats.Count <= l) break;
             if (obj.whats[l].tags.Contains("player"))
                 g.GetComponent<Image>().color = Color.green;
             else

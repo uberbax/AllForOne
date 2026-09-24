@@ -6,7 +6,9 @@ public class XDshadow : ComponentBehavior
     private Transform head;
     private void Start()
     {
-        mon = GetComponentInParent<ObjHolder>().obj;
+        var t0 = GetComponentInParent<ObjHolder>();
+        if (t0 == null) return;
+        mon = t0.obj;
         head = mon.visMain.transform.Find("legs");
 
         var s1 = mon.visMain.transform.Find("Shadow");
