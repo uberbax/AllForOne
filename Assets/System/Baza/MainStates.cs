@@ -1229,7 +1229,7 @@ public class MainStates : MonoBehaviour
         }
     }
     
-    public List<RObj> GetCommandResult(string command, string param, Transform t = null, string extra = "", RObj rr = null, bool overIndex = false)
+    public List<RObj> GetCommandResult(string command, string param, Transform t = null, string extra = "", RObj rr = null, bool overIndex = false, string param2 = "")
     {
         if (command == "BY_PARENT_TASK")
         {
@@ -1269,7 +1269,17 @@ public class MainStates : MonoBehaviour
         }
         if (command == "GET_SKILLS")
         {
-            return all[param].actSkills;
+            List<RObj> res = all[param].actSkills;
+            if (param2 == "no_basic")
+            {
+                res = res.FindAll(x => x.dbObj.ID != "basic_melee" && x.dbObj.ID != "basic_range");
+            }
+
+            return res;
+        }
+        if (command == "GET_BUFFS")
+        {
+            return all[param].buffs;
         }
         if (command == "GET_SKILLS_SELECT")
         {
@@ -2483,6 +2493,7 @@ public class MainStates : MonoBehaviour
         {
             var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
             mainPlayer.buffs.Add(g);
+            g.SetPar("passive",1);
         }
         
         mainPlayer.RecalcPars();

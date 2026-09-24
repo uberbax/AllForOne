@@ -2728,6 +2728,7 @@ public class ConfigLoader : MonoBehaviour
 
 
         var trg = rr.GetPar("target");
+        var pas = rr.GetPar("passive");
 
         string s = "";
         if (f0 > 0) s += "Deals " + f0 + " " + MainStates.reverseDmgTypes[dt] + " damage" + ", ";
@@ -2826,7 +2827,7 @@ public class ConfigLoader : MonoBehaviour
         if (f21 > 0) s += "Adds " + f21 + " mana regen, ";
         else if (f21 < 0) s += "Removes " + -f21 + " mana regen, ";
         
-        if (f22 > 0) s += "Has a cd of " + f22 + " ";
+        if (f22 > 0 && pas < 1) s += "Has a CD of " + f22 + " ";
         
         if (f23 > 0) s += "Increases hit chance by " + f23 + "%, ";
         else if (f23 < 0) s += "Reduces hit chance by " + -f23 + "%, ";

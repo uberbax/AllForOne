@@ -30,6 +30,7 @@ public class UIfiller : MonoBehaviour
     public string compatibility = "";
     public string command = "";
     public string param = "";
+    public string param2 = "";
     
     public string clickFunc = "";
     public string fillFunc = "";
@@ -158,7 +159,7 @@ public class UIfiller : MonoBehaviour
         List<RObj> res = new List<RObj>();
         if (asMainCur != "")
             res = MainStates.instance.curObjsMany[asMainCur];
-        else res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr);
+        else res = MainStates.instance.GetCommandResult(command, param, transform, rr:rr, param2:param2);
         
         
         if (saveAsObj != "")
