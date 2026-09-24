@@ -109,6 +109,7 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
                 equipBtn.alpha = 1;
             else equipBtn.alpha = 0;
@@ -117,6 +118,7 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
                 slotBtn.alpha = 1;
             else slotBtn.alpha = 0;
@@ -125,6 +127,7 @@ public class ObjHolder : MonoBehaviour, IReceive
         {
             if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
+                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
                 obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
                 level.alpha = 1;
             else level.alpha = 0;

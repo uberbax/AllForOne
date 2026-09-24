@@ -4,7 +4,7 @@ using Flexalon;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GoDismantle : MonoBehaviour
+public class GoUse: MonoBehaviour
 {
     private RObj mon;
     ObjHolder holder;
@@ -18,7 +18,7 @@ public class GoDismantle : MonoBehaviour
     
     void Start()
     {
-        btn.onClick.AddListener(DoDismantle);
+        btn.onClick.AddListener(DoUse);
     }
     private void OnEnable()
     {
@@ -26,6 +26,7 @@ public class GoDismantle : MonoBehaviour
         bind = GetComponent<GBind>();
         btn = GetComponent<Button>();
         
+        /*
         for (int i = 0; i < 3; i++)
         {
             var ss = (i == 0 ? "" : i.ToString());
@@ -46,9 +47,9 @@ public class GoDismantle : MonoBehaviour
             
             savedRes.Add(new Bon{Key = mon.dbObj.upgradeCost[i].Key, Value = (int)(mon.dbObj.upgradeCost[i].Value * lvl)});
         }
+        */
 
-        if (mon.dbObj.pars["subtype"] == MainStates.subtypes["potion"] || mon.dbObj.pars["subtype"] == MainStates.subtypes["adorn"] ||
-            mon.dbObj.pars["subtype"] == MainStates.subtypes["pet"])
+        if (mon.dbObj.useSkill == "")
         {
             //transform.localScale = Vector3.zero;
             var a = transform.GetComponent<FlexalonObject>();
@@ -62,19 +63,16 @@ public class GoDismantle : MonoBehaviour
         }
     }
 
-    public void DoDismantle()
+    public void DoUse()
     {
-        PopupoManager.instance.ShowRewards(new List<Bon>(), new List<RObj>{mon}, 
-            "<color=red>WARNING</color>", "Dismantle this item ?", () =>
-            {
-                mon.owner.inventory.Remove(mon);
-                MainStates.instance.AddItems(savedRes);
-                
-                if (parentObj != null)
-                    parentObj.SetActive(false);
-                //gameObject.SetActive(false);
-                UIfiller.GlobalRefresh();
-            });
+        SkillExecutor.instance.ExecuteSkill(MainStates.instance.mainPlayer, mon.dbObj.useSkill, null);
+        
+        if (parentObj != null)
+            parentObj.SetActive(false);
+        //gameObject.SetActive(false);
+        MainStates.instance.DelItems(new List<Bon>{new Bon{Key = mon.dbObj.ID, Value = 1}});
+        
+        UIfiller.GlobalRefresh();
     }
 
 

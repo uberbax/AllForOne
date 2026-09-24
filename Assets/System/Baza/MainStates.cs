@@ -1416,7 +1416,7 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "other")
                 {
-                    res = res.FindAll(x => x.dbObj.pars["subtype"] == 100);
+                    res = res.FindAll(x => x.dbObj.pars["subtype"] == subtypes["none"] || x.dbObj.pars["subtype"] == subtypes["potion"]);
                 }
                 
                 if (gk[l] == "dynamic")
