@@ -328,6 +328,30 @@ public class DatabaseAll : MonoBehaviour
 
     }
 
+    public List<string> GetByTier(int tier, string tp)
+    {
+        List<string> res = new List<string>();
+        if (tp == "monster")
+        {
+            foreach (var v in heroes)
+            {
+                if (v.Key.IndexOf("hero_") >= 0) continue;
+                if (v.Value.pars["tier"] == tier)
+                    res.Add(v.Key);
+            }
+        }
+        else if (tp == "item")
+        {
+            foreach (var v in items)
+            {
+                if (v.Value.pars["tier"] == tier)
+                    res.Add(v.Key);
+            }
+        }
+
+        return res;
+    }
+    
     public ItemType GetItemType(string id, string other)
     {
         //if (id == "shard") return ItemType.item;

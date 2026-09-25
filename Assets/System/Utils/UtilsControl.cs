@@ -3488,6 +3488,25 @@ public class UtilsControl : MonoBehaviour
             act();
     }
     
+    public Vector3 GetRandomFreeInRange(Vector3 center, float range, float r2 = 0)
+    {
+        //iterate over free fields ? should we ?
+        float al = UnityEngine.Random.Range(0, MathF.PI);
+        var r1 = UnityEngine.Random.Range(r2, range);
+        
+        Vector3 point = Vector3.zero;
+        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        {
+            point = center + new Vector3(r1 * MathF.Cos(al), r1 * MathF.Sin(al), 0);
+        }
+        else
+        {
+            point = center + new Vector3(r1 * MathF.Cos(al), 0, r1 * MathF.Sin(al));
+        }
+
+        return point;
+    }
+    
     //parabolik drop
     private float height = 1f;              //5, 10, 2
     private float distance = 1f;
