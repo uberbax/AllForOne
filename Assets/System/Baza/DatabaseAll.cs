@@ -328,8 +328,11 @@ public class DatabaseAll : MonoBehaviour
 
     }
 
-    public List<string> GetByTier(int tier, string tp)
+    public List<string> GetByTier(int tier, string tp, int slot = 0)
     {
+        //0 - all
+        //1 - maxstack = 1
+        //2 - maxstack > 1
         List<string> res = new List<string>();
         if (tp == "monster")
         {
@@ -344,6 +347,11 @@ public class DatabaseAll : MonoBehaviour
         {
             foreach (var v in items)
             {
+                if (v.Key.IndexOf("empty") >= 0) continue;
+                
+                if (slot == 1 && v.Value.pars["slot"] == -1 ) continue;
+                if (slot == 2 && v.Value.pars["slot"] >= 0 ) continue;
+                
                 if (v.Value.pars["tier"] == tier)
                     res.Add(v.Key);
             }

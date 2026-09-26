@@ -83,7 +83,12 @@ public class AddedObject : MonoBehaviour
         foreach (var v in addedInv)
         {
             var hh = v.Split(',');
-            MainStates.instance.AddItem(r, hh[0], int.Parse(hh[1]), randomizeItemsParams);
+            int rar = 0;
+            if (hh.Length > 2)
+            {
+                rar = int.Parse(hh[2]);
+            }
+            MainStates.instance.AddItem(r, hh[0], int.Parse(hh[1]), randomizeItemsParams, rar);
         }
 
         foreach (var v in addedPars)

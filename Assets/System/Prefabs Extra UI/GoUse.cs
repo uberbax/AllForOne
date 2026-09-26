@@ -18,11 +18,17 @@ public class GoUse: MonoBehaviour
     
     void Start()
     {
+        if (btn == null) btn = GetComponent<Button>();
         btn.onClick.AddListener(DoUse);
     }
     private void OnEnable()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
+        if (mon == null)
+        {
+            Invoke("OnEnable", 0.01f);
+            return;
+        }
         bind = GetComponent<GBind>();
         btn = GetComponent<Button>();
         

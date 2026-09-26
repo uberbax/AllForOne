@@ -24,7 +24,7 @@ public class TierSpawner : MonoBehaviour
         "status"
     };
 
-    private List<string> conf2 = new List<string>
+    private List<string> confChest = new List<string>
     {
         "coll",
         "combat",
@@ -63,7 +63,7 @@ public class TierSpawner : MonoBehaviour
         
         for (int i = 0; i < cnt; i++)
         {
-            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, d0/3.0f*(i+1),d0/3.0f*i);
+            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, (d0/cnt)*(i+1),(d0/cnt)*i);
             
             var ss = monPool[Random.Range(0, monPool.Count)];
             
@@ -110,6 +110,67 @@ public class TierSpawner : MonoBehaviour
 
         }
 
-        Debug.Log("SPWND: " + spawned.Count);
+        //Debug.Log("SPWND: " + spawned.Count);
+        SpawnChest();
+    }
+
+    public void SpawnChest()
+    {
+        //var r = 0;
+        bool b = false;
+        var r = Random.Range(0, 10);
+        if (r < 1)
+        {
+            b = true;
+            //id chest
+            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, d0);
+
+            string ss = "chest";
+            var g = new GameObject();
+            g.name = ss + "_spawned";
+            g.transform.position = pnt;
+
+            var aa = g.AddComponent<AddedObject>();
+            aa.isEnemy = true;
+            aa.addedVis = confChest;
+            aa.id = ss;
+            aa.recreateViz = true;
+            aa.addedMeta.Add("wave");
+            
+            var mp = DatabaseAll.instance.GetByTier(tier-1,"item");
+            var cc = mp[Random.Range(0, mp.Count)];
+            //var bb = DatabaseAll.instance.items[mp[0]];
+            //var b0 = bb.pars["max_stack"];
+            aa.addedInv.Add(cc + ",1" );
+        }
+        
+        r = Random.Range(0, 10);
+        if (r < 10 && !b)
+        {
+            b = true;
+            //id chest
+            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, d0);
+
+            string ss = "chest";
+            var g = new GameObject();
+            g.name = ss + "_spawned";
+            g.transform.position = pnt;
+
+            var aa = g.AddComponent<AddedObject>();
+            aa.isEnemy = true;
+            aa.addedVis = confChest;
+            aa.id = ss;
+            aa.recreateViz = true;
+            aa.addedMeta.Add("wave");
+            
+            //it should be an item
+            //probably tier up ?
+            var mp = DatabaseAll.instance.GetByTier(tier-1,"item", 1);
+            var cc = mp[Random.Range(0, mp.Count)];
+
+            int rar = Random.Range(1, 4);
+            
+            aa.addedInv.Add(cc + ",1," + rar);
+        }
     }
 }

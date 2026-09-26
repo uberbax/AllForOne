@@ -865,7 +865,7 @@ public class MainStates : MonoBehaviour
             {
                 res.Add(new Bon{Key = "shard_" + v.shardID, Value = (int)v.GetPar("amount")});
             }
-            else res.Add(new Bon{Key = v.dbObj.ID, Value = (int)v.GetPar("amount")});
+            else res.Add(new Bon{Key = v.dbObj.ID, Value = (int)v.GetPar("amount"), Val3 = (int)v.GetPar("rarity")});
         }
 
         return res;
@@ -2043,7 +2043,7 @@ public class MainStates : MonoBehaviour
         return res;
     }
 
-    public RObj AddItem(RObj who, string what, int amount, bool randomizeStats = false)
+    public RObj AddItem(RObj who, string what, int amount, bool randomizeStats = false, int rarity = 0)
     {
         if (what == "exp")
         {
@@ -2051,7 +2051,7 @@ public class MainStates : MonoBehaviour
             return null;
         }
         
-        var f = DatabaseAll.instance.CreateItem(what, amount);
+        var f = DatabaseAll.instance.CreateItem(what, amount, rarity:rarity);
         if (f.it == ItemType.item && f.GetPar("slot") >= 0 && randomizeStats)
         {
             RandomizeItemStats(f);

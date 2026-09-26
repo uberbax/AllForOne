@@ -205,6 +205,9 @@ public class RObj
     public List<Bon> extraMonsters = new List<Bon>();
     public List<Bon> addedPars = new List<Bon>();
 
+    [NonSerialized] 
+    public List<RObj> reqKill = new List<RObj>();
+
     public bool IsIntersected(int index, int sizeX, int sizeY, RObj who)
     {
         int szx = -1;
