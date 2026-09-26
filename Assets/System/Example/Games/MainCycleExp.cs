@@ -57,6 +57,17 @@ public class MainCycleExp : MonoBehaviour
             MainStates.instance.UI_unitsPlaced.SetActive(false);
             if (MainStates.instance.lastBattleResult == 0)
             {
+                //update kill chests
+                foreach (var v in MainStates.instance.chests)
+                {
+                    if (v == null) continue;
+                    var rr = MainStates.instance.GetDistance(
+                        MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj, v, out float ff);
+                    if (rr < 5)
+                    {
+                        v.ChangePar("kill", 1);
+                    }
+                }
                 Destroy(MainStates.instance.lastBattleTrigger);
                 MainStates.instance.inBattle = false;
             }

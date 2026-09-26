@@ -175,6 +175,8 @@ public class MainStates : MonoBehaviour
 
     public Dictionary<string, RObj> all = new Dictionary<string, RObj>();
     public Dictionary<string, RObj> empties = new Dictionary<string, RObj>();
+    public List<RObj> chests = new  List<RObj>();
+    
     
     public List<RObj> combats = new List<RObj>();
 

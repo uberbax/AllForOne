@@ -44,6 +44,7 @@ public class PopupoManager : MonoBehaviour
         }
     }
 
+    Vector2 savedDlt = Vector2.zero;
     public void ShowRewards(List<Bon> rew, List<RObj> rewObj, 
         string header = "Rewards", string descr = "You've found",
         Action onYes = null)
@@ -51,6 +52,20 @@ public class PopupoManager : MonoBehaviour
         rewards.selfReward = rew;
         rewards.selfRewardObj = rewObj;
         rewards.gameObject.SetActive(true);
+
+        if (savedDlt == Vector2.zero)
+        {
+            savedDlt = rewards.GetComponent<RectTransform>().sizeDelta;
+        }
+
+        if (rew.Count == 0 && rewObj.Count == 0)
+        {
+            rewards.GetComponent<RectTransform>().sizeDelta = new Vector2(savedDlt.x, savedDlt.y - 200);
+        }
+        else
+        {
+            rewards.GetComponent<RectTransform>().sizeDelta = savedDlt;
+        }
         
         rewards.header.text = header;
         rewards.description.text = descr;

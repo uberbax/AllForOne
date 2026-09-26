@@ -171,6 +171,16 @@ public class TierSpawner : MonoBehaviour
             int rar = Random.Range(1, 4);
             
             aa.addedInv.Add(cc + ",1," + rar);
+
+            aa.onAdd = SpawnedChestWithKill;
+            aa.Inst();
         }
+    }
+
+    public void SpawnedChestWithKill(RObj obj)
+    {
+        MainStates.instance.chests.Add(obj);
+        obj.SetPar("kill", 0);
+        obj.AddViz("kill_req");
     }
 }

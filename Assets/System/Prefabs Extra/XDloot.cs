@@ -69,6 +69,17 @@ public class XDloot : ComponentBehavior
 
     public void Open()
     {
+        //req kill
+        if (mon.HasVis("kill_req"))
+        {
+            var v = mon.visuals["kill_req"].GetComponent<XDkill_req>();
+            if (v != null && !v.done)
+            {
+                PopupoManager.instance.ShowRewards(new List<Bon>(), new List<RObj>(), "WARNING", "Not enough monsters killed around");
+                return;
+            }
+        }
+        
         opened = true;
         //
         if (doMagnet)
@@ -94,6 +105,7 @@ public class XDloot : ComponentBehavior
     
     public void Open2()
     {
+        
            if (mon.HasVis("animator"))
            {
                mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("open");
