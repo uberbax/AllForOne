@@ -20,10 +20,21 @@ public class TierSpawner : MonoBehaviour
         "combat",
         "animator#pr:1",
         "realcol#val:0.2",
-        "info"
+        "info",
+        "status"
     };
 
+    private List<string> conf2 = new List<string>
+    {
+        "coll",
+        "combat",
+        "animator#pr:1",
+        "loot#dst:5",
+        "shiny"
+    };
+    
     private List<string> monPool = new List<string>();
+    List<RObj> spawned = new List<RObj>();
     
     void Start()
     {
@@ -72,8 +83,33 @@ public class TierSpawner : MonoBehaviour
             {
                 aa.addedPars.Add(new Bon{Key = "scale", Value = -1});
             }
+            
+            //obj_berserk, obj_arisen, is_boss
+            bool b = false;
+            r = Random.Range(0, 10);
+            if (r < 1)
+            {
+                aa.addedPars.Add(new Bon{Key = "obj_berserk", Value = 1});
+                b = true;
+            }
+            r = Random.Range(0, 10);
+            if (r < 1 && !b)
+            {
+                aa.addedPars.Add(new Bon{Key = "obj_arisen", Value = 1});
+                b = true;
+            }
+            r = Random.Range(0, 10);
+            if (r < 1 && !b)
+            {
+                aa.addedPars.Add(new Bon{Key = "is_boss", Value = 1});
+                b = true;
+            }
+
+            aa.onAdd = (x) => spawned.Add(x);
+            aa.Inst();
 
         }
 
+        Debug.Log("SPWND: " + spawned.Count);
     }
 }

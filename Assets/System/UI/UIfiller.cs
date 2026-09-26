@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class UIfiller : MonoBehaviour
 {
+    public bool noAlpha = false;
     [Header("Count")] 
     public TextMeshProUGUI dopText;
     public string dopAdd = "";
@@ -261,9 +262,11 @@ public class UIfiller : MonoBehaviour
                     {
                         g.filler = this;
                         g.obj = null;
-                        g.GetComponent<CanvasGroup>().alpha = 0;
-                        g.GetComponent<CanvasGroup>().blocksRaycasts = false;
-                        
+                        if (!noAlpha)
+                        {
+                            g.GetComponent<CanvasGroup>().alpha = 0;
+                            g.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                        }
                         //var kk = g.GetComponent<DragObject>();
                         //if (kk != null) kk.enabled = false;
                     }

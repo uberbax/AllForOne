@@ -35,8 +35,21 @@ public class AddedObject : MonoBehaviour
     
     //
     public List<Bon> extraMonsters = new List<Bon>();
+
+    private bool inst = false;
+    public void Inst()
+    {
+        if (!inst)
+        {
+            Start();
+            inst = true;
+        }
+    }
+    
     void Start()
     {
+        if (inst) return;
+        
         if (!ConfigLoader.parseEnded || !MainStates.instance.all.ContainsKey("main_player"))
         {
             Invoke("Start", 0.1f);
@@ -81,8 +94,7 @@ public class AddedObject : MonoBehaviour
         r.addedPars = addedPars;
         
         
-        if (onAdd != null)
-            onAdd(r);
+
 
         foreach (var v in addedMeta)
         {
@@ -131,7 +143,10 @@ public class AddedObject : MonoBehaviour
         }
 
         r.extraMonsters = extraMonsters;
-
+        inst = true;
+        
+        if (onAdd != null)
+            onAdd(r);
     }
 
     

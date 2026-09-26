@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ObjHolder : MonoBehaviour, IReceive
 {
+    public GameObject deactIfNotNull;
     public RObj obj;
     public GameObject attachedVeh;
 
@@ -101,6 +102,11 @@ public class ObjHolder : MonoBehaviour, IReceive
             {
                 obj = MainStates.instance.mainPlayer;
             }
+        }
+
+        if (deactIfNotNull != null)
+        {
+            deactIfNotNull.SetActive(obj == null || obj.RID == "");
         }
         
         if (obj == null || obj.RID == "") return;

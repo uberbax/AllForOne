@@ -2988,12 +2988,20 @@ public class MainStates : MonoBehaviour
             who.SetPar("obj_arisen", f);
         }
         
+        f = from.GetPar("is_boss");
+        if (f > 0)
+        {
+            koef = 10;
+            who.SetPar("is_boss", f);
+            who.visMain.transform.localScale *= 1.5f;
+        }
+
         f = from.GetPar("raid_boss");
         if (f > 0)
         {
             koef = 100;
             who.SetPar("raid_boss", f);
-            who.visMain.transform.localScale *= 2.5f;
+            who.visMain.transform.localScale *= 2.2f;
         }
         
         

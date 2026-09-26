@@ -10,6 +10,7 @@ public class XDstatus : ComponentBehavior
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
+        var p = mon.visMain.transform.Find("legs");
 
         for (int i = 0; i < pars.Count; i++)
         {
@@ -17,7 +18,7 @@ public class XDstatus : ComponentBehavior
             if (f > 0)
             {
                 var h = Instantiate(ResourceHolder.instance.miscGO[pars[i]], transform);
-                h.transform.localPosition -= new Vector3(0, 0.28f, 0);
+                h.transform.position = p.transform.position + new Vector3(0,0,0.1f);
             }
         }
         
