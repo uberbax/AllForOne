@@ -76,7 +76,7 @@ public class UIfiller : MonoBehaviour
     {
         foreach (var v in instances)
         {
-            if (v.gameObject.activeInHierarchy)
+            if (v.gameObject.activeInHierarchy && v.enabled)
                 v.OnEnable();
         }
         

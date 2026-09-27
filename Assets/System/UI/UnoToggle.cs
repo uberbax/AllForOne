@@ -15,6 +15,7 @@ public class UnoToggle : MonoBehaviour
     public string toggleKey = "0";
     public int toggleVal = 0;
     public string toggleVal2 = "";
+    public string toggleCommand = "";
 
     public GameObject view;
     public List<GameObject> additionalObjs;
@@ -29,6 +30,10 @@ public class UnoToggle : MonoBehaviour
     public Color disabledColor = Color.white;
     public Vector2 disabledSize;
     public Vector2 enabledSize;
+    
+    public UIfiller toEnableFiller;
+    public UIfiller toDisableFiller;
+    
     
     private void Awake()
     {
@@ -57,7 +62,22 @@ public class UnoToggle : MonoBehaviour
         
         if (this == null)
             return;
-            
+
+
+        if (val)
+        {
+            if (toEnableFiller)
+            {
+                toEnableFiller.enabled = val;
+            }
+
+            if (toDisableFiller)
+            {
+                toDisableFiller.enabled = !val;
+            }
+        }
+
+
         if (!val)
         {
             if (actState)

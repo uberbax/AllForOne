@@ -1397,6 +1397,11 @@ public class MainStates : MonoBehaviour
                     res = res.FindAll(x => x.dbObj.pars["subtype"] != subtypes["adorn"] ||
                                            x.dbObj.pars["subtype"] == subtypes["adorn"] && x.owner2 == null);
                 }
+
+                if (gk[l] == "has_slot")
+                {
+                    res = res.FindAll(x => x.GetPar("slot") >= 0);
+                }
                 
                 if (gk[l] == "weapon")
                 {
@@ -1546,6 +1551,11 @@ public class MainStates : MonoBehaviour
                 {
                     res = res.FindAll(x => x.GetPar("amount") > 0 && x.GetPar("used_slot") < 0);
                 }
+                
+                if (gk[l] == "has_slot")
+                {
+                    res = res.FindAll(x => x.GetPar("slot") >= 0);
+                }
 
                 if (gk[l] == "can_equip")
                 {
@@ -1585,6 +1595,11 @@ public class MainStates : MonoBehaviour
                 if (gk[l] == "not_equiped")
                 {
                     res = res.FindAll(x => x.GetPar("amount") > 0 && x.GetPar("used_slot") < 0);
+                }
+                
+                if (gk[l] == "has_slot")
+                {
+                    res = res.FindAll(x => x.GetPar("slot") >= 0);
                 }
 
                 if (gk[l] == "can_equip")
