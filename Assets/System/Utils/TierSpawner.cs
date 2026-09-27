@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.Diagnostics;
+using Random = UnityEngine.Random;
 
 public class TierSpawner : MonoBehaviour
 {
@@ -21,7 +23,8 @@ public class TierSpawner : MonoBehaviour
         "animator#pr:1",
         "realcol#val:0.2",
         "info",
-        "status"
+        "status",
+        "rand_move"
     };
 
     private List<string> confChest = new List<string>
@@ -55,15 +58,23 @@ public class TierSpawner : MonoBehaviour
         DoSpawn();
     }
 
-    public void DoSpawn()
+    public void DoSpawn(int overCnt = -1)
     {
         
         int cnt = (int)(d0 / 1.0f);
-
+        if (overCnt > 0) cnt = overCnt;
         
         for (int i = 0; i < cnt; i++)
         {
-            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, (d0/cnt)*(i+1),(d0/cnt)*i);
+            float r1 = (d0 / cnt) * (i + 1);
+            float r2 = (d0 / cnt) * i;
+            if (overCnt > 0)
+            {
+                r1 = d0;
+                r2 = 0;
+            }
+            
+            var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, r1 , r2);
             
             var ss = monPool[Random.Range(0, monPool.Count)];
             
@@ -105,7 +116,11 @@ public class TierSpawner : MonoBehaviour
                 b = true;
             }
 
-            aa.onAdd = (x) => spawned.Add(x);
+            aa.onAdd = (x) =>
+            {
+                spawned.Add(x);
+                x.main.GetComponent<ObjHolder>().onDestroy += OnDeath;
+            };
             aa.Inst();
 
         }
@@ -145,7 +160,7 @@ public class TierSpawner : MonoBehaviour
         }
         
         r = Random.Range(0, 10);
-        if (r < 10 && !b)
+        if (r < 1 && !b)
         {
             b = true;
             //id chest
@@ -182,5 +197,10 @@ public class TierSpawner : MonoBehaviour
         MainStates.instance.chests.Add(obj);
         obj.SetPar("kill", 0);
         obj.AddViz("kill_req");
+    }
+
+    public void OnDeath(RObj obj)
+    {
+        FunctionTimer.Create(() => DoSpawn(1), 10);
     }
 }

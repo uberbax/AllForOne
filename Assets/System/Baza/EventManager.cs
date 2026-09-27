@@ -23,7 +23,9 @@ public class EventManager : MonoBehaviour
     
     public static void INV(string evt, ArgPass e)
     {
-        Debug.Log(evt + " INVOKED " + (e == null ? "null" : e.what1));
+        if (evt != "MOVE_ENDED")
+            Debug.Log(evt + " INVOKED " + (e == null ? "null" : e.what1));
+        
         if (dynActions.ContainsKey(evt))
         {
             dynActions[evt].Invoke(e);

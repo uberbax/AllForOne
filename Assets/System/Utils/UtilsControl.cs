@@ -1809,7 +1809,7 @@ public class UtilsControl : MonoBehaviour
         //if (ww != null) ww.FastApplyLine(startPos, endPos);
             //ww.LateUpdate();
         
-            Debug.Log(who.name);
+            //Debug.Log(who.name);
             
             if (who != null)
                 EventManager.INV("MOVE_ENDED",new ArgPass{go = who.gameObject});
@@ -3486,6 +3486,16 @@ public class UtilsControl : MonoBehaviour
 
         if (act != null)
             act();
+    }
+    
+    public static bool IsPointOnNavMesh(Vector3 point, float tolerance = 0.1f)
+    {
+        return NavMesh.SamplePosition(
+            point,
+            out NavMeshHit hit,
+            tolerance,
+            NavMesh.AllAreas
+        );
     }
     
     public Vector3 GetRandomFreeInRange(Vector3 center, float range, float r2 = 0)

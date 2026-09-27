@@ -160,15 +160,19 @@ public class ObjHolder : MonoBehaviour, IReceive
         }
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public Action<RObj> onDestroy;
+    public void OnDestroy()
+    {
+        if (noTrack) return;
+        if (obj == null) return;
+        if (onDestroy != null)
+        {
+            onDestroy(obj);
+        }
+    }
+
+
     //trash
     public bool ignoreScale = false;
     public void DoAnim(string anim)
