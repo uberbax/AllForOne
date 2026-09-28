@@ -262,10 +262,24 @@ public class MainCycleExp : MonoBehaviour
     private void B(ArgPass obj)
     {
         Debug.Log("haha");
-        
+        bool succLoad = false;
+        if (MainStates.instance.useSave)
+        {
+            succLoad = MainStates.instance.Load();
+        }
         //
-        main = new RObj("hero_warrior", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
-        MainStates.instance.ApplyPlayerConfigParams(main);
+        if (!succLoad)
+        {
+            main = new RObj("hero_warrior", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+            MainStates.instance.ApplyPlayerConfigParams(main);
+        }
+        else
+        {
+            main = MainStates.instance.mainPlayer;
+        }
+
+
+
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
         main.AddViz("coll#scale:0.5");
@@ -386,7 +400,7 @@ public class MainCycleExp : MonoBehaviour
         ModelStatistics.instance.SetStatValue("unlocked_hero_warrior", 1);
         ModelStatistics.instance.SetStatValue("unlocked_hero_thief", 1);
         ModelStatistics.instance.SetStatValue("unlocked_hero_mage", 1);
-        ModelStatistics.instance.SetStatValueStr("current_hero", "hero_warrior");
+        ModelStatistics.instance.SetStatValueStr("current_class", "hero_warrior");
         
         //pet time
         var main_pet = new RObj("empty", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_pet");
@@ -408,6 +422,7 @@ public class MainCycleExp : MonoBehaviour
             StopCoroutine(coroutine);
             coroutine = null;
         }
+        MainStates.instance.Save();
     }
 
     public void HandleAutomove()

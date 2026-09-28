@@ -45,6 +45,7 @@ public class DungeonController : MonoBehaviour
         if (cur >= last - 1)
         {
             inDungeon = false;
+            MainStates.instance.Save();
             return;
         }
         

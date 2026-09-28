@@ -477,7 +477,7 @@ public partial class ModelStatistics : MonoBehaviour
     {
         if (tp == TaskType.have_item)
         {
-            var td = MainStates.instance.playerData.inventory.Find(x => x.dbObj.ID == val);
+            var td = MainStates.instance.mainPlayer.inventory.Find(x => x.dbObj.ID == val);
             if (td == null) return 0;
             return (int)td.GetPar("amount");
         }
@@ -1110,7 +1110,7 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.have_item)
                     {
-                        var td = MainStates.instance.playerData.inventory.Find(x => x.dbObj.ID == g.what);
+                        var td = MainStates.instance.mainPlayer.inventory.Find(x => x.dbObj.ID == g.what);
                         if (td != null)
                         {
                             me = td.GetPar("amount");
@@ -1358,8 +1358,8 @@ public class PlayerData
     public List<Building> buildings = new List<Building>();
     
     //???
-    public List<RObj> inventory = new List<RObj>();
-
+    //public List<RObj> inventory = new List<RObj>();
+    public RObj mainPlayer = new RObj();
 }
 
 [System.Serializable]

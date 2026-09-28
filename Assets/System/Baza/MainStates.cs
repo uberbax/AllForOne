@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TMPro;
 using Unity.VisualScripting;
@@ -14,6 +15,10 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    [Header("Use Save")] 
+    public bool useSave;
+    
+    [Header("Other")]
     public TextAsset rndNamesTxt;
     public string[] rndNames;
     public TMP_InputField nameField;
@@ -1894,6 +1899,7 @@ public class MainStates : MonoBehaviour
 
                     all["main_player"].RecalcPars();
                     OnBuy(o);
+                    Save();
                 }
                 else
                 {
@@ -1933,6 +1939,7 @@ public class MainStates : MonoBehaviour
                         o.ChangePar(str, 1);
                         EventManager.INV("evt_full_upgrade", new ArgPass{who = o});
                     }
+                    Save();
                 }
                 else
                 {
@@ -1949,6 +1956,7 @@ public class MainStates : MonoBehaviour
                         curLoot);
 
                 DelItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } });
+                Save();
             }
             else if (SV == "take_skill")
             {
@@ -3116,6 +3124,40 @@ public class MainStates : MonoBehaviour
         }
         
         return a1;
+    }
+
+
+    [ContextMenu("Save Save Save")]
+    public void Save()
+    {
+        Debug.Log("SAVED~~~");
+        playerData.mainPlayer = mainPlayer;
+        var gg = JsonConvert.SerializeObject(playerData);
+        PlayerPrefs.SetString("player", gg);
+        Debug.Log(gg);
+    }
+
+    public bool Load()
+    {
+        if (!PlayerPrefs.HasKey("player")) return false;
+        var str = PlayerPrefs.GetString("player");
+        var gg = JsonConvert.DeserializeObject<PlayerData>(str);
+        playerData = gg;
+
+        var ee = ModelStatistics.instance.GetStatStrValue("current_class");
+        if (ee != "")
+        {
+            var main = new RObj(ee, 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+        }
+        else
+        {
+            var main = new RObj("hero", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+        }
+        ModelStatistics.instance.SetStatValueForce("battle", 0);
+        
+        mainPlayer.RecalcPars();
+        //ok we recreate player
+        return true;
     }
     
     
