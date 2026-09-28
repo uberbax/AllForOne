@@ -216,6 +216,8 @@ public class ResourceHolder : MonoBehaviour
             var oo = a.GetComponent<GBind>();
             oo.GetImage("icon").sprite = items[gg[0].Key];
             oo.GetText("price").text = gg[0].Value.ToString();
+            
+            
             //a.transform.Find("icon").GetComponent<Image>().sprite = items[gg[0].Key];
             //a.transform.Find("icon/price").GetComponent<TextMeshProUGUI>().text = gg[0].Value.ToString();
             return;

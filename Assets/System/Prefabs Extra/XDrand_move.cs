@@ -31,7 +31,7 @@ public class XDrand_move : ComponentBehavior
             var g = Random.Range(0, PositionSetter.tupleDltFull.Count);
             var pnt = transform.position + new Vector3(PositionSetter.tupleDltFull[g].Item1, PositionSetter.tupleDltFull[g].Item2, 0);
             var hh = UtilsControl.IsPointOnNavMesh(pnt);
-            if (true)
+            if (hh)
             {
                 mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("walk");
                 UtilsControl.Instance.MoveTo(mon.main.transform, 1, pnt, () =>

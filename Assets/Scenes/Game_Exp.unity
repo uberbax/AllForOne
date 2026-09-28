@@ -63410,7 +63410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90.239685, y: -56.99999}
+  m_AnchoredPosition: {x: 90.239685, y: -57}
   m_SizeDelta: {x: 180, y: 114.2655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &422135795
@@ -73445,7 +73445,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -742.75}
+  m_AnchoredPosition: {x: 90, y: -507.50006}
   m_SizeDelta: {x: 180, y: 114.2655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &480477637
@@ -132220,7 +132220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90.24, y: -628.48}
+  m_AnchoredPosition: {x: 90.24, y: -393.23004}
   m_SizeDelta: {x: 180, y: 114.2655}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &870875933
@@ -142890,7 +142890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &940724977
 RectTransform:
   m_ObjectHideFlags: 0
@@ -173917,9 +173917,9 @@ MonoBehaviour:
   command: GET_ITEMS_OTHER
   param: not_equiped
   param2: 
-  clickFunc: equip,buy
-  fillFunc: buy
-  replaceClick: 
+  clickFunc: 
+  fillFunc: buy,!sell
+  replaceClick: no
   slots: []
   root: {fileID: 513291212}
   asGrid: 1
@@ -173997,9 +173997,9 @@ MonoBehaviour:
   command: GET_ITEMS
   param: not_equiped,has_slot
   param2: 
-  clickFunc: sell
+  clickFunc: 
   fillFunc: sell,!buy
-  replaceClick: 
+  replaceClick: no
   slots: []
   root: {fileID: 513291212}
   asGrid: 1
@@ -224829,7 +224829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1447851446
 RectTransform:
   m_ObjectHideFlags: 0
@@ -255635,7 +255635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1670963243
 RectTransform:
   m_ObjectHideFlags: 0
@@ -308880,7 +308880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2008877494
 RectTransform:
   m_ObjectHideFlags: 0

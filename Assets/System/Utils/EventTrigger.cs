@@ -52,7 +52,7 @@ public class EventTrigger : MonoBehaviour
 
                 if (mainCurObj != "")
                 {
-                    Debug.Log(gameObject.name);
+                    //Debug.Log(gameObject.name);
                     arg.who = MainStates.instance.curObjs[mainCurObj];
                 }
 
