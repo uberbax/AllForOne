@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using Newtonsoft.Json;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
@@ -80,6 +81,8 @@ public class RObj
     
     [NonSerialized]
     public ItemType it;
+
+    public string dbID = "";
     
     public string RID = "";
     public bool invertScale = false;
@@ -103,6 +106,13 @@ public class RObj
         longPars[par] = val;
     }
     
+    [OnDeserialized]
+    private void OnDeserialized(StreamingContext context)
+    {
+        // Runs AFTER all JSON fields have been populated
+        dbObj = DatabaseAll.instance.GetDBItemByID(dbID);
+        it = DatabaseAll.instance.GetItemType(dbID,"");
+    }
     
     //?????
     [SerializeReference]
@@ -836,6 +846,7 @@ public class RObj
     {
         owner = own;
         it = tp;
+        dbID = id;
         
         if (tp == ItemType.monster)
             dbObj = DatabaseAll.instance.heroes[id];

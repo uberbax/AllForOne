@@ -377,12 +377,14 @@ public class DatabaseAll : MonoBehaviour
     
     public Obj GetDBItemByID(string id)
     {
-        if (DatabaseAll.instance.items.ContainsKey(id))
-            return DatabaseAll.instance.items[id];    
-        else if (DatabaseAll.instance.skills.ContainsKey(id))
-            return DatabaseAll.instance.skills[id];
+        if (items.ContainsKey(id))
+            return items[id];
+        else if (heroes.ContainsKey(id))
+            return heroes[id];
+        else if (skills.ContainsKey(id))
+            return skills[id];
         else 
-            return DatabaseAll.instance.buildings[id];
+            return buildings[id];
     }
 
     public RObj CreateItem(string id, int amount, bool withEmpty = false, bool withVisual = false, int rarity = 0)

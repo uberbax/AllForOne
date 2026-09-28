@@ -3145,14 +3145,24 @@ public class MainStates : MonoBehaviour
         playerData = gg;
 
         var ee = ModelStatistics.instance.GetStatStrValue("current_class");
+
+        playerData.mainPlayer.it = ItemType.monster;
         if (ee != "")
         {
-            var main = new RObj(ee, 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+            playerData.mainPlayer.dbObj = DatabaseAll.instance.heroes[ee];
+            //var main = new RObj(ee, 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
         }
         else
         {
-            var main = new RObj("hero", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+            playerData.mainPlayer.dbObj = DatabaseAll.instance.heroes["hero"];
+            //var main = new RObj("hero", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
         }
+        
+        DatabaseAll.instance.CreateOnlyVizual(playerData.mainPlayer, playerData.mainPlayer.Position);
+        all.Add("main_player", playerData.mainPlayer);
+        //mainPlayer.AdjustPosition();
+        
+        
         ModelStatistics.instance.SetStatValueForce("battle", 0);
         
         mainPlayer.RecalcPars();

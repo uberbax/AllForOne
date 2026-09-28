@@ -95,7 +95,7 @@ public class ResourceHolder : MonoBehaviour
         yield return null;
     }
     
-    private void Awake()
+    public void Init()
     {
         instance = this;
         monsters.AddRange(heroClasses);

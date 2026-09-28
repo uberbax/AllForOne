@@ -108,6 +108,7 @@ public class ConfigLoader : MonoBehaviour
     public List<string> stagesSuf = new List<string> { "dragonlair","cave","ruins" };
 
     public DatabaseAll db;
+    public ResourceHolder reso;
     [ContextMenu("Watch")]
     public void Watch()
     {
@@ -175,6 +176,7 @@ public class ConfigLoader : MonoBehaviour
         
         Instance = this;
         db.Init();
+        reso.Init();
         
         if (useLocalExcel)
         {

@@ -34,7 +34,7 @@ public class FunctionTimer : MonoBehaviour
             if (act != null) act();
         }
         else
-            instance.StartCoroutine(instance.CreateP(act, timer, /*callerMethodName*/ "go"));
+            instance?.StartCoroutine(instance.CreateP(act, timer, /*callerMethodName*/ "go"));
     }
 
     public static void Create(Action act, float timer, Func<bool> check)
