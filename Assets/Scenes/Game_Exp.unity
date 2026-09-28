@@ -98100,7 +98100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 2.1066, y: 407.5741}
+  m_AnchoredPosition: {x: 2.1066, y: 227.8241}
   m_SizeDelta: {x: 604.2363, y: 148.2583}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &640827116
@@ -296809,7 +296809,6 @@ GameObject:
   - component: {fileID: 1918649819}
   - component: {fileID: 1918649818}
   - component: {fileID: 1918649817}
-  - component: {fileID: 1918649816}
   m_Layer: 5
   m_Name: Enter
   m_TagString: Untagged
@@ -296837,71 +296836,6 @@ RectTransform:
   m_AnchoredPosition: {x: 4.7849, y: -1679}
   m_SizeDelta: {x: 479.6047, y: 179.74878}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1918649816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1918649814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0efe8f65d4d39144a0de8bb385123a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Minimus::EventTrigger
-  explanation: 
-  keyCode: 
-  evtName: switch_class
-  arg:
-    num: 0
-    what: 
-    what1: 
-    go: {fileID: 0}
-    pos: {x: 0, y: 0, z: 0}
-  is3D: 0
-  isMouseDown: 0
-  num: 0
-  dyno:
-    id: 
-    price: []
-    conds1: []
-    statsInc: []
-    statsExact: []
-    itemsGet: []
-    parUpgrade: []
-    parentUpgrade: []
-    objActivate: []
-    skillUnlock: []
-    unitsBuild: []
-    skillPasUnlock: []
-    eventTrigger: 
-    eventVal: 
-    eventNum: 0
-    subscribe: 
-    create: 
-    reward: 
-    call: 
-    param: 
-    filterNum: -1
-    time: -1
-    dynList: []
-    condList: []
-    toActivate: []
-    toDeactivate: []
-    dialog: 
-    cutscene: 
-    multi: 0
-  reverts: []
-  toActivate: []
-  toDeactivate: []
-  soundTrigger: 
-  paramAsHolder: 0
-  passRobjHolder: 0
-  mainCurObj: cur_chosen
-  addToBtn: 1
-  setAsCurLoot: 0
-  markSecond: 0
-  markFirst: 0
 --- !u!114 &1918649817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313855,6 +313789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Minimus::DungeonController
   inDungeon: 0
   cur: 0
+  curDiff: 0
   last: 3
   mover: {fileID: 430098575}
   waveNumber: {fileID: 1066471483}

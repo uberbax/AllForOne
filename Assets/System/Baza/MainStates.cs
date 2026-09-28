@@ -872,6 +872,32 @@ public class MainStates : MonoBehaviour
 
         return res;
     }
+
+    public List<Bon> GetMeMonsters(List<string> pool, int cnt)
+    {
+        List<string> allowed = new List<string>{"obj_arisen","obj_berserk","is_boss"};
+        
+        List<Bon> res = new List<Bon>();
+
+        for (int i = 0; i < cnt; i++)
+        {
+            var f = pool[Random.Range(0, pool.Count)];
+            var r = Random.Range(0, 10);
+            if (r < 1)
+            {
+                var p = allowed[Random.Range(0, allowed.Count)];
+                res.Add(new Bon{Key = f, Value = 1, Val2 = p + ":1"});
+            }
+            else
+            {
+                res.Add(new Bon{Key = f, Value = 1});
+            }
+        }
+
+
+        return res;
+
+    }
     
     public void ExecuteDone(string id)
     {

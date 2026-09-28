@@ -395,6 +395,7 @@ public class MainCycleExp : MonoBehaviour
 
     public void BattleEnded(ArgPass obj)
     {
+        if (DungeonController.instance.inDungeon) return;
         var d1 = MainStates.instance.lastBattleTrigger.GetComponent<ObjHolder>().obj;
         
         //MainStates.instance.HandleMonsterKilled(d1);

@@ -4,6 +4,7 @@ using LayerLab;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class DungeonController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class DungeonController : MonoBehaviour
     public static DungeonController instance;
     public bool inDungeon = false;
     public int cur = 0;
+    public int curDiff = 0;
+    
     public int last = 3;
     public SampleCharacterMover mover;
     public TextMeshProUGUI waveNumber;
@@ -79,7 +82,11 @@ public class DungeonController : MonoBehaviour
     public List<RObj> CreateField()
     {
             List<Bon> curLevel = new List<Bon>();
-            curLevel = tests[cur];
+            
+            var monPool = DatabaseAll.instance.GetByTier(curDiff,"monster");
+            //curLevel = tests[cur];
+            curLevel = MainStates.instance.GetMeMonsters(monPool, Random.Range(1,4));
+            
             //curLevel.Add(new Bon{Key = "skeleton_archer", Value = 1});
             
             var ee = WaveSpawner.instance.DoSpawnAnyPos(curLevel,
@@ -100,11 +107,13 @@ public class DungeonController : MonoBehaviour
     {
         //we are starting dungeon
         MainStates.instance.inBattle = true;
+        curDiff = obj.num;
+        last = (3 + curDiff)*2;
         //we do battle
                 
         Transitioner.instance.DoFade(1, 1, () =>
         {
-
+            
             inDungeon = true;
             cur = 0;
             ModelStatistics.instance.SetStatValue("battle",2); 
