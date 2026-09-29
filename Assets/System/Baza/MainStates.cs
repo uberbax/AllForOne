@@ -846,8 +846,12 @@ public class MainStates : MonoBehaviour
 
     public void CheckDynamicsCreate(RObj who)
     {
+        //something is completely wrong
         for (int i = 0; i < playerData.dynTaken.Count; i++)
         {
+            //thwbbb ???
+            if (playerData.dynTaken[i] == "") continue;
+            
             var s = ConfigLoader.Instance.allDynamic[playerData.dynTaken[i]];
             if (s.create.IndexOf("create") < 0) continue;
 
@@ -2575,7 +2579,7 @@ public class MainStates : MonoBehaviour
         //when two chests collide ?
         if (skl.owner == null) return;
         
-        Debug.Log("DAMAGE: " +skl.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
+        Debug.Log("DAMAGE: " +skl.owner.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
         var magic = skl.GetMainPar("magic");
         var atk = skl.GetMainPar("attack");
         var sh = skl.GetPar("shield");

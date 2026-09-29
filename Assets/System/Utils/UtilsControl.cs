@@ -2037,6 +2037,7 @@ public class UtilsControl : MonoBehaviour
     
     public static string GetPrev(string sklName)
     {
+        if (sklName == "") return "";
         var tt = sklName[sklName.Length - 1];
         if (tt >= '0' && tt <= '9')
         {
