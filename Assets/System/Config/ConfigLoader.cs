@@ -1003,6 +1003,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "DEF") mm.DEF = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "DEF_PRC") mm.DEF_PRC =float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
+                else if (columns[j].ToUpper() == "DMG_FORMULA") mm.dmgFormula = tt[j];
+                
                 else if (columns[j].ToUpper() == "EXTRA_TURN") mm.EXTRA_TURN =float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
                 else if (columns[j].ToUpper() == "RES") mm.RES = float.Parse(tt[j], CultureInfo.InvariantCulture);
@@ -3310,6 +3312,7 @@ public class FormatSkill
     
     public string spawn = "";
     public List<Bon> upgradeCost = new List<Bon>();
+    public string dmgFormula;
 }
 
 

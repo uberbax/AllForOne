@@ -2573,6 +2573,45 @@ public class MainStates : MonoBehaviour
             }
         }
     }
+
+    public void PrecalcDmg(RObj skl, string dmgFromula, RObj other)
+    {
+        var dv = dmgFromula.Split(":");
+        var clc = PrecalcValue(skl.owner, dv[1], other);
+        skl.SetPar(dv[0], clc);
+    }
+
+    public float PrecalcValue(RObj who, string formula, RObj other)
+    {
+        string s = formula;
+        int oth = s.IndexOf("other.");
+        s = s.Replace("{def}", who.GetPar("def").ToString());
+        s = s.Replace("{atk}", who.GetPar("attack").ToString());
+        s = s.Replace("{health}", who.GetPar("health").ToString());
+        s = s.Replace("{max_health}", who.GetPar("max_health").ToString());
+        s = s.Replace("{res}", who.GetPar("res").ToString());
+        s = s.Replace("{shield}", who.GetPar("shield").ToString());
+        s = s.Replace("{magic}", who.GetPar("magic").ToString());
+        s = s.Replace("{magic_prc}", who.GetPar("magic_prc").ToString());
+        s = s.Replace("{attack_prc}", who.GetPar("attack_prc").ToString());
+        
+        if (oth >= 0)
+        {
+            s = s.Replace("{other.def}", other.GetPar("def").ToString());
+            s = s.Replace("{other.atk}", other.GetPar("attack").ToString());
+            s = s.Replace("{other.health}", other.GetPar("health").ToString());
+            s = s.Replace("{other.max_health}", other.GetPar("max_health").ToString());
+            s = s.Replace("{other.res}", other.GetPar("res").ToString());
+            s = s.Replace("{other.shield}", other.GetPar("shield").ToString());
+            s = s.Replace("{other.magic}", other.GetPar("magic").ToString());
+            s = s.Replace("{other.magic_prc}", other.GetPar("magic_prc").ToString());
+            s = s.Replace("{other.attack_prc}", other.GetPar("attack_prc").ToString());
+        }
+        
+        var f = CSharpExpression.Evaluate<float>(s);
+        
+        return f;
+    }
     
     public void DealDamage(RObj a, RObj skl)
     {
@@ -2580,6 +2619,12 @@ public class MainStates : MonoBehaviour
         if (skl.owner == null) return;
         
         Debug.Log("DAMAGE: " +skl.owner.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
+        //precalc dmg formula
+        if (skl.dbObj.dmgFormula != "" && skl.dbObj.dmgFormula != null)
+        {
+            PrecalcDmg(skl, skl.dbObj.dmgFormula, a);
+        }
+        
         var magic = skl.GetMainPar("magic");
         var atk = skl.GetMainPar("attack");
         var sh = skl.GetPar("shield");

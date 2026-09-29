@@ -80,6 +80,7 @@ public class DatabaseAll : MonoBehaviour
             
             o.pars.Add("instant", v.INSTANT);
             o.pars.Add("subtype", MainStates.subtypes["skill"]);
+            o.dmgFormula = v.dmgFormula;
             
             //player ? eney, all
             if (v.TAG_APPLY == "enemy") o.pars.Add("target",0);

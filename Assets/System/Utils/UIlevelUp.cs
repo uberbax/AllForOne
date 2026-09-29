@@ -44,7 +44,7 @@ public class UIlevelUp : MonoBehaviour
         activate.SetActive(true);
         wasLevelup = false;
 
-        List<string> stats = new List<string> { "max_health", "attack", "res", "def", "max_mana" };
+        List<string> stats = new List<string> { "max_health", "attack", "res", "def", "max_mana", "magic" };
         int levelNow = (int)MainStates.instance.mainPlayer.GetPar("level");
         
         var e1 = Mathf.Pow(1.1f, levelNow - levelWas);
@@ -52,7 +52,7 @@ public class UIlevelUp : MonoBehaviour
         for (int i = 0; i < stats.Count; i++)
         {
             var fg = statHolder.GetChild(i);
-            fg.Find("statName").GetComponent<TextMeshProUGUI>().text = stats[i];
+            fg.Find("statName").GetComponent<TextMeshProUGUI>().text = ConfigLoader.Instance.GetMeLocale(stats[i]);
             var t1 = MainStates.instance.mainPlayer.GetPar(stats[i]);
             fg.Find("statEnd").GetComponent<TextMeshProUGUI>().text = ((int)t1).ToString();
             var dlt = (int)(t1 - t1 / e1);

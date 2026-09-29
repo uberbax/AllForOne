@@ -61,6 +61,7 @@ public class XDbuff : ComponentBehavior
             var bb = mon.timedBuffs[i];
             ii.Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.skills[bb.dbObj.ID];
             ii.Find("txt").GetComponent<TextMeshProUGUI>().text = bb.dbObj.ID + "(" + (int)bb.GetPar("timeLeft") + ")";
+            if (!mon.HasVis(bb.dbObj.ID)) mon.AddViz(bb.dbObj.ID);
         }
 
     }
