@@ -3353,6 +3353,7 @@ public class MainStates : MonoBehaviour
     
     public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false)
     {
+        int did = Random.Range(0, 10000);
         if (InIteration) yield break;
         InIteration = true;
         /*
@@ -3379,7 +3380,13 @@ public class MainStates : MonoBehaviour
             var gg = combats[i].visuals["combat"].GetComponent<XDcombat>();
             if (gg == null) continue;
             
-            curComateers.Add(combats[i]);            
+            curComateers.Add(combats[i]);
+
+            var gl = combats[i].GetPar("is_boss");
+            if (gl > 0 && (!curObjs.ContainsKey("last_boss") || curObjs["last_boss"] == null))
+            {
+                curObjs["last_boss"] = combats[i];
+            }
         }
         //
         

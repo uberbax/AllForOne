@@ -40,6 +40,11 @@ public class MainCycleExp : MonoBehaviour
         {
             MainStates.instance.inBattle = true;
             MainStates.instance.InIteration = false;
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
+            }
         });
         EventManager.SUB("battle_press", BattleClicked);
 
@@ -482,6 +487,14 @@ public class MainCycleExp : MonoBehaviour
             if (!MainStates.instance.InIteration)
             {
                 coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1.7f, "sword", true));
+            }
+        }
+        else
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
             }
         }
     }
