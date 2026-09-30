@@ -48,19 +48,22 @@ public sealed class ForestVillageNavMeshSources2D : NavMeshExtension
         var tileCollider = water.GetComponent<TilemapCollider2D>();
         if (tileCollider != null && tileCollider.hasTilemapChanges)
             tileCollider.ProcessTilemapChanges();
-        if (water is CompositeCollider2D composite &&
+        var waterGeometry = water.compositeOperation != Collider2D.CompositeOperation.None ? water.composite : water;
+        if (waterGeometry == null || !waterGeometry.isActiveAndEnabled)
+            throw new InvalidOperationException("Water has no active collider providing its geometry.");
+        if (waterGeometry is CompositeCollider2D composite &&
             composite.generationType == CompositeCollider2D.GenerationType.Manual)
             composite.GenerateGeometry();
         Physics2D.SyncTransforms();
 
         // Follow NavMeshPlus's per-build mesh lifetime; no generated scene objects or colliders.
         var meshes = state.GetExtraState<BuildMeshes>();
-        var waterMesh = water.CreateMesh(false, false);
+        var waterMesh = waterGeometry.CreateMesh(false, false);
         if (waterMesh != null)
             meshes.Items.Add(waterMesh);
         if (waterMesh == null || waterMesh.vertexCount == 0)
             throw new InvalidOperationException("Water has no closed geometry to exclude from navigation.");
-        var clippedWater = CutBridgePassages(waterMesh);
+        var clippedWater = CutBridgePassages(waterMesh, waterGeometry);
         meshes.Items.Add(clippedWater);
 
         // Rebuild from the assigned sources rather than unrelated scene geometry.
@@ -87,7 +90,7 @@ public sealed class ForestVillageNavMeshSources2D : NavMeshExtension
             transform = Matrix4x4.identity,
             sourceObject = clippedWater,
             area = NotWalkable,
-            component = water
+            component = waterGeometry
         });
         AddObstacleSources(surface, sources, meshes);
         AddTreeSources(surface, sources);
@@ -195,7 +198,7 @@ public sealed class ForestVillageNavMeshSources2D : NavMeshExtension
         if (collider.compositeOperation != Collider2D.CompositeOperation.None)
             collider = collider.composite;
         if (collider == null || !collider.isActiveAndEnabled || (!includeTrigger && collider.isTrigger) ||
-            collider == water || Array.IndexOf(bridgePassages, collider) >= 0 || !collected.Add(collider))
+            (collider == water || collider == water.composite) || Array.IndexOf(bridgePassages, collider) >= 0 || !collected.Add(collider))
             return;
         if (collider is CompositeCollider2D composite &&
             composite.generationType == CompositeCollider2D.GenerationType.Manual)
@@ -223,11 +226,11 @@ public sealed class ForestVillageNavMeshSources2D : NavMeshExtension
         });
     }
 
-    private Mesh CutBridgePassages(Mesh source)
+    private Mesh CutBridgePassages(Mesh source, Collider2D waterGeometry)
     {
         var vertices = source.vertices;
         var triangles = source.triangles;
-        var body = water.attachedRigidbody;
+        var body = waterGeometry.attachedRigidbody;
         var toWorld = body == null ? Matrix4x4.identity :
             Matrix4x4.TRS(body.position, Quaternion.Euler(0f, 0f, body.rotation), Vector3.one);
         for (var i = 0; i < vertices.Length; i++)

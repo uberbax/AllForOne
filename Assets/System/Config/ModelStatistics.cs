@@ -380,6 +380,7 @@ public partial class ModelStatistics : MonoBehaviour
     
     public int GetStatValue(string val, bool withAdd = true)
     {
+
         var gg = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key, val));
         int res = 0;
         if (gg == null)
