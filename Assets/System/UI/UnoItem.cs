@@ -75,6 +75,7 @@ public class UnoItem : MonoBehaviour
                 
                 var h = transform.parent.GetComponentInParent<UnoItem>();
                 h.FillMonthly();
+                MainStates.instance.Save();
             });
         }
     }

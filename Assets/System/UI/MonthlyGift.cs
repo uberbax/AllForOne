@@ -23,7 +23,7 @@ public class MonthlyGift : MonoBehaviour
 
     private void NewDay(ArgPass obj)
     {
-        ModelStatistics.instance.SetStatValue("monthly_gift_daily_open", 0);
+        ModelStatistics.instance.SetStatValueForce("monthly_gift_daily_open", 0);
         ModelStatistics.instance.IncreaseStatValue("monthly_available", 1); 
         //daily quest add
         
