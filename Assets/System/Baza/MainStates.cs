@@ -847,12 +847,13 @@ public class MainStates : MonoBehaviour
     public void CheckDynamicsCreate(RObj who)
     {
         //something is completely wrong
-        for (int i = 0; i < playerData.dynTaken.Count; i++)
+        //for (int i = 0; i < playerData.dynTaken.Count; i++)
+        foreach (var vv in playerData.dynTaken)
         {
             //thwbbb ???
-            if (playerData.dynTaken[i] == "") continue;
+            if (vv == "") continue;
             
-            var s = ConfigLoader.Instance.allDynamic[playerData.dynTaken[i]];
+            var s = ConfigLoader.Instance.allDynamic[vv];
             if (s.create.IndexOf("create") < 0) continue;
 
             var ss = s.create.Substring(7);

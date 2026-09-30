@@ -380,8 +380,9 @@ public partial class ModelStatistics : MonoBehaviour
     
     public int GetStatValue(string val, bool withAdd = true)
     {
-
-        var gg = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key, val));
+        Bon gg = null;
+        var b = MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
+        
         int res = 0;
         if (gg == null)
         {
@@ -394,7 +395,10 @@ public partial class ModelStatistics : MonoBehaviour
 
         if (withAdd)
         {
-            var gg1 = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key,"add_" + val));
+            Bon gg1 = null;
+            var b1 = MainStates.instance.playerData.playerStats.TryGetValue("add_" + val, out gg1);   // Find(x => string.Equals(x.Key,"add_" + val));
+            if (!b1) gg1 = null;
+            
             if (gg1 != null)
                 res += gg1.Value;
         }
@@ -405,7 +409,9 @@ public partial class ModelStatistics : MonoBehaviour
     
     public string GetStatStrValue(string val, bool withAdd = true)
     {
-        var gg = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key, val));
+        Bon gg = null;
+        var b = MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
+        
         string res = "";
         if (gg == null)
         {
@@ -418,9 +424,10 @@ public partial class ModelStatistics : MonoBehaviour
 
         if (withAdd)
         {
-            var gg1 = MainStates.instance.playerData.playerStats.Find(x => string.Equals(x.Key,"add_" + val));
+            Bon gg1 = null;
+            var b1 = MainStates.instance.playerData.playerStats.TryGetValue("add_" + val, out gg1);   //  Find(x => string.Equals(x.Key,"add_" + val));
             if (gg1 != null)
-                res += gg1.Value;
+                res += gg1.Val2;
         }
 
         return res;
@@ -489,10 +496,12 @@ public partial class ModelStatistics : MonoBehaviour
     
     public void SetStatValueForce(string val, int kk)
     {
-        var gg = MainStates.instance.playerData.playerStats.Find(x => x.Key == val);
+        Bon gg = null;
+        var b = MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
+            
         if (gg == null)
         {
-            MainStates.instance.playerData.playerStats.Add(new Bon{Key = val, Value = kk});
+            MainStates.instance.playerData.playerStats.Add(val, new Bon{Key = val, Value = kk});
         }
         else
         {
@@ -509,10 +518,11 @@ public partial class ModelStatistics : MonoBehaviour
     }
     public void SetStatValue(string val, int kk)
     {
-        var gg = MainStates.instance.playerData.playerStats.Find(x => x.Key == val);
+        Bon gg = null;
+        MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
         if (gg == null)
         {
-            MainStates.instance.playerData.playerStats.Add(new Bon{Key = val, Value = kk});
+            MainStates.instance.playerData.playerStats.Add(val, new Bon{Key = val, Value = kk});
         }
         else
         {
@@ -524,10 +534,11 @@ public partial class ModelStatistics : MonoBehaviour
     
     public void SetStatValueStr(string val, string kk)
     {
-        var gg = MainStates.instance.playerData.playerStats.Find(x => x.Key == val);
+        Bon gg = null;
+        var b = MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
         if (gg == null)
         {
-            MainStates.instance.playerData.playerStats.Add(new Bon{Key = val, Value = 0, Val2 = kk});
+            MainStates.instance.playerData.playerStats.Add(val, new Bon{Key = val, Value = 0, Val2 = kk});
         }
         else
         {
@@ -538,10 +549,11 @@ public partial class ModelStatistics : MonoBehaviour
 
     public void IncreaseStatValue(string val, int kk)
     {
-        var gg = MainStates.instance.playerData.playerStats.Find(x => x.Key == val);
+        Bon gg = null;
+        var b = MainStates.instance.playerData.playerStats.TryGetValue(val, out gg);
         if (gg == null)
         {
-            MainStates.instance.playerData.playerStats.Add(new Bon{Key = val, Value = kk});
+            MainStates.instance.playerData.playerStats.Add(val, new Bon{Key = val, Value = kk});
         }
         else
         {
@@ -1351,8 +1363,8 @@ public class PlayerData
     public PGame pGame = new PGame(); 
     public CGame cGame = new CGame(); 
     //
-    public List<Bon> playerStats = new List<Bon>();
-    public List<string> dynTaken = new List<string>();
+    public Dictionary<string, Bon> playerStats = new Dictionary<string, Bon>();
+    public HashSet<string> dynTaken = new HashSet<string>();
     public List<TasksProg> playerTasks = new List<TasksProg>();
     public List<TasksProg> playerShop = new List<TasksProg>();
     public List<TasksProg> playerMail = new List<TasksProg>();
