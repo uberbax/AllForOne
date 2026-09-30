@@ -26,8 +26,8 @@ public class UIbattleLog : MonoBehaviour
 
         FunctionTimer.Create(() =>
         {
-            header.text = obj.who.dbObj.ID;
-            description.text = "uses " + obj.who2.dbObj.ID;            
+            header.text = ConfigLoader.Instance.GetMeLocale(obj.who.dbObj.ID);
+            description.text = "uses " + ConfigLoader.Instance.GetMeLocale(obj.who2.dbObj.ID);            
             
             
             if (!MainStates.instance.queTimes.ContainsKey("LOG"))
@@ -47,7 +47,7 @@ public class UIbattleLog : MonoBehaviour
         });
         //
         
-        string s = obj.who.dbObj.ID + " uses " + obj.who2.dbObj.ID;
+        string s = ConfigLoader.Instance.GetMeLocale(obj.who.dbObj.ID) + " uses " + ConfigLoader.Instance.GetMeLocale(obj.who2.dbObj.ID);
         logs.Add(s);
         string result = "";
         if (logs.Count > numsDisplay)

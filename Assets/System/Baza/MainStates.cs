@@ -195,7 +195,7 @@ public class MainStates : MonoBehaviour
     public GameObject[,] map;
     public Transform[,] mappingPositions;
 
-    private List<float> expCurve = new List<float>{0,100,200,300,400,500,600,700};
+    private List<float> expCurve = new List<float>{0,100,200,300,400,500,600,700,1000};
 
     public string curState = "none";
 
@@ -407,6 +407,11 @@ public class MainStates : MonoBehaviour
         }
         
         RandomizeName();
+        //
+        for (int i = expCurve.Count; i < 200; i++)
+        {
+            expCurve.Add(i*1000);
+        }
         
     }
 

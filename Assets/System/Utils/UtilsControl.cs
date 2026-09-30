@@ -2188,8 +2188,57 @@ public class UtilsControl : MonoBehaviour
         who.name += "_flash";
         
         //Debug.Log("flashy");
-        var spriteRenderer = who.GetComponentInChildren<SpriteRenderer>();
+        var spriteRenderer = who.GetComponentsInChildren<SpriteRenderer>();
+        //well
+        //it can be meshrenderer
+
+
+        Renderer[] rend = spriteRenderer;
+        if (spriteRenderer == null)
+        {
+            rend = who.GetComponentsInChildren<Renderer>();
+        }
+
+        if (rend[0].name == "MeshRoot")
+        {
+            FadeToColor(who, Color.white, 5, () =>
+                FadeToColor(who, new Color(0.5f, 0.5f, 0.5f, 1), 5));
+            yield break;
+        }
         
+            // Get the material that the SpriteRenderer uses, 
+        // so we can switch back to it after the flash ended.
+        var originalMaterial = rend[0].material;
+
+        for (int i = 0; i < rend.Length; i++)
+        {
+            rend[i].material = flashMaterial;
+        }
+        
+
+        // Pause the execution of this function for "duration" seconds.
+        yield return new WaitForSeconds(0.2f);
+
+        // After the pause, swap back to the original material.
+        if (rend.Length > 0)
+        {
+            for (int i = 0; i < rend.Length; i++)
+            {
+                if (rend[i] != null)
+                    rend[i].material = originalMaterial;
+            }
+        }
+
+        if (who) who.name = who.name.Replace("_flash", "");
+    }
+
+    public IEnumerator DoFlashSingle(GameObject who)
+    {
+        if (who.name.IndexOf("_flash") >= 0) yield break;
+        who.name += "_flash";
+        
+        //Debug.Log("flashy");
+        var spriteRenderer = who.GetComponentInChildren<SpriteRenderer>();
         //well
         //it can be meshrenderer
 
@@ -2207,7 +2256,7 @@ public class UtilsControl : MonoBehaviour
             yield break;
         }
         
-            // Get the material that the SpriteRenderer uses, 
+        // Get the material that the SpriteRenderer uses, 
         // so we can switch back to it after the flash ended.
         var originalMaterial = rend.material;
         

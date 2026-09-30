@@ -66,6 +66,7 @@ public class UnoItem : MonoBehaviour
         {
             btn.onClick.AddListener(() =>
             {
+                if (itm.Key == "") return;
                 curState = "taken";
                 ModelStatistics.instance.SetStatValue("monthly_taken" + num, 1);
                 MainStates.instance.AddItems(new List<Bon>{itm});
