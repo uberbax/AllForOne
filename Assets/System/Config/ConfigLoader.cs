@@ -2889,7 +2889,12 @@ public class ConfigLoader : MonoBehaviour
         
         if (f40 > 0) s += "Amplify damage by " + f40 + "%, ";
         //else if (f40 < 0) s += "Reduces stun resistance by " + -f37 + "%, ";
-        
+
+        if (rr.dbObj.dmgFormula != null && rr.dbObj.dmgFormula != "")
+        {
+            var v = rr.dbObj.dmgFormula.Split(':');
+            s += "Deals " + v[0] + " = " + v[1] + " damage";
+        }
         
         if (/*s == "" &&*/ rr.dbObj.alsoCast.Count > 0)
         {

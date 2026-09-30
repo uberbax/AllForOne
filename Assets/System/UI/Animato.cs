@@ -62,7 +62,11 @@ public class Animato : MonoBehaviour
         {
             transform.localScale = Vector3.zero;
             UtilsControl.Instance.ApplyCurve(transform, AnimationCurve.Linear(0, 0, 1, maxScale),
-                UtilsControl.CurveType.ScaleAbs, null, tm, 1 / tm, 1, wait, Color.white);
+                UtilsControl.CurveType.ScaleAbs, () =>
+                {
+                    //thwbbb
+                    transform.localScale = Vector3.one;
+                }, tm, 1 / tm, 1, wait, Color.white);
         }
 
         if (fadeOnStart)

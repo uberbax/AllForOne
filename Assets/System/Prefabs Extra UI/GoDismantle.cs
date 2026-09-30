@@ -67,6 +67,9 @@ public class GoDismantle : MonoBehaviour
         PopupoManager.instance.ShowRewards(new List<Bon>(), new List<RObj>{mon}, 
             "<color=red>WARNING</color>", "Dismantle this item ?", () =>
             {
+                //thwbbb ?? because after load we dont know that owner 
+                if (mon.owner == null) mon.owner = MainStates.instance.mainPlayer;
+                
                 mon.owner.inventory.Remove(mon);
                 MainStates.instance.AddItems(savedRes);
                 

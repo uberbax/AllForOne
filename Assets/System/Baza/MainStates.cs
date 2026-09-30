@@ -3208,6 +3208,16 @@ public class MainStates : MonoBehaviour
         }
         
         DatabaseAll.instance.CreateOnlyVizual(playerData.mainPlayer, playerData.mainPlayer.Position);
+        //adorments ?
+        foreach (var v in playerData.mainPlayer.inventory)
+        {
+            v.owner = playerData.mainPlayer;
+            foreach (var v1 in v.adorments)
+            {
+                v1.owner2 = v;
+            }
+        }
+        
         all.Add("main_player", playerData.mainPlayer);
         //mainPlayer.AdjustPosition();
         
