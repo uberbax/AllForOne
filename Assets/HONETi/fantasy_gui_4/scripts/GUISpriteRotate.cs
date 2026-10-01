@@ -6,11 +6,7 @@ public class GUISpriteRotate : MonoBehaviour {
 
 	public float rotateSpeed = 1f;
 	float rotation;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+	
 	
 	// Update is called once per frame
 	void FixedUpdate () {

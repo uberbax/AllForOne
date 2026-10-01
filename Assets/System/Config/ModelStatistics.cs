@@ -629,7 +629,7 @@ public partial class ModelStatistics : MonoBehaviour
         return stat1;
     }
     
-    public bool IsReady(List<UnoReq> reqs, int startStat, RObj who)
+    public bool IsReady(List<UnoReq> reqs, int startStat, RObj who, GameObject go)
     {
         bool q = true;
                 foreach (var g in reqs)
@@ -688,8 +688,19 @@ public partial class ModelStatistics : MonoBehaviour
                     }
                     else if (g.typo == TaskType.kill)
                     {
-                        var aa = GetStatValue(g.what);
-                        var aa1 = int.Parse("kill_" + g.val);
+                        var aa = GetStatValue("kill_" + g.what);
+                        var aa1 = int.Parse(g.val);
+                        if (g.compar == "==" && aa != aa1) q = false;
+                        if (g.compar == ">=" && aa < aa1) q = false;
+                        if (g.compar == ">" && aa <= aa1) q = false;
+                        if (g.compar == "<=" && aa > aa1) q = false;                        
+                        if (g.compar == "<" && aa >= aa1) q = false;
+                    }
+                    else if (g.typo == TaskType.have_dist)
+                    {
+                        var vec = go.transform.position - MainStates.instance.mainPlayer.Position;
+                        var aa = vec.magnitude;
+                        var aa1 = int.Parse(g.val);
                         if (g.compar == "==" && aa != aa1) q = false;
                         if (g.compar == ">=" && aa < aa1) q = false;
                         if (g.compar == ">" && aa <= aa1) q = false;
@@ -929,7 +940,7 @@ public partial class ModelStatistics : MonoBehaviour
             {
                 //its not started
                 bool q = true;
-                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat, null);
+                q = IsReady(v.reqStart, tt == null ? 0 : tt.startStat, null, null);
                 
                 if (q)
                 {
@@ -1046,13 +1057,13 @@ public partial class ModelStatistics : MonoBehaviour
 
     public bool CheckCondition(UnoCond u)
     {
-        bool b = IsReady(u.reqs, 0, null);
+        bool b = IsReady(u.reqs, 0, null, null);
         return b;
     }
 
-    public bool CheckCondition(List<UnoReq> u, RObj who)
+    public bool CheckCondition(List<UnoReq> u, RObj who, GameObject go)
     {
-        bool b = IsReady(u, 0, who);
+        bool b = IsReady(u, 0, who, go);
         return b;
     }
     public void GetMeProgress(ElTasko v, out float me, out float all)
@@ -1253,7 +1264,8 @@ public enum TaskType
     
     have_obj,
     
-    have_stat_str,    
+    have_stat_str,
+    have_dist
 }
 
 

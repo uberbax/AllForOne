@@ -7,6 +7,15 @@ public class UIMap : MonoBehaviour
     public RectTransform map;
     public RectTransform view;
 
+    public static Vector2 delta = new Vector2(0.23f, 0.12f);
+    
+    public static UIMap instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void OnEnable()
     {
         Calculate();
@@ -50,8 +59,19 @@ public class UIMap : MonoBehaviour
         var dx = MainStates.instance.mainPlayer.Position.x/ lenx;
         var dy = MainStates.instance.mainPlayer.Position.y / leny;
         
-        mainPlayer.anchorMin = new Vector2(dx + 0.23f, dy + 0.12f);
-        mainPlayer.anchorMax = new Vector2(dx + 0.23f, dy + 0.12f);        
+        mainPlayer.anchorMin = new Vector2(dx, dy) + delta;
+        mainPlayer.anchorMax = new Vector2(dx, dy) + delta;        
+    }
+    
+    public Vector2 GetCalc(GameObject go)
+    {
+        float lenx = PositionSetter.instance.high.position.x - PositionSetter.instance.lo.position.x;
+        float leny = PositionSetter.instance.high.position.y - PositionSetter.instance.lo.position.y;
+
+        var dx = go.transform.position.x / lenx;
+        var dy = go.transform.position.y / leny;
+        
+        return (new Vector2(dx, dy) + delta);
     }
     
     void Update()

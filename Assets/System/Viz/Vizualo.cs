@@ -173,7 +173,7 @@ public class Vizualo : MonoBehaviour
                 //}
             }
 
-            var g = ModelStatistics.instance.CheckCondition(reqs, who);
+            var g = ModelStatistics.instance.CheckCondition(reqs, who, forOther != null ? forOther : gameObject);
             Activate(g);
         }
         else if (asOther)

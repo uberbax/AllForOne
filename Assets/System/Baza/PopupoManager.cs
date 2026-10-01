@@ -23,6 +23,10 @@ public class PopupoManager : MonoBehaviour
         instance = this;
         EventManager.SUB("battle_ended", ShowBattleResult);
         EventManager.SUB("show_alert", ShowAlert);
+        EventManager.SUB("show_message", (x) =>
+        {
+            ShowRewards(null,null);
+        });
         
     }
 
@@ -49,6 +53,11 @@ public class PopupoManager : MonoBehaviour
         string header = "Rewards", string descr = "You've found",
         Action onYes = null)
     {
+        if (rew == null)
+            rew = new List<Bon>();
+        if (rewObj == null)
+            rewObj = new List<RObj>();
+        
         rewards.selfReward = rew;
         rewards.selfRewardObj = rewObj;
         rewards.gameObject.SetActive(true);
