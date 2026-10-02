@@ -21,6 +21,13 @@ public class CameraFollow : MonoBehaviour {
     public Vector3 delta =  Vector3.zero;
     public bool smallify = false;
     private float tm = 1;
+    
+    [Header("OffScreen params")]
+    public bool useOffscreen = false;
+    public Transform camLo;
+    public Transform camHi;
+    public float kf = 1.8f;
+    
     [ContextMenu("CalcDelta")]
     public void CalculateDelta()
     {
@@ -71,6 +78,38 @@ public class CameraFollow : MonoBehaviour {
 
         if (smallify)
             transform.localScale -= (Time.deltaTime) * Vector3.one;
+
+        if (useOffscreen)
+        {
+            if (camHi.position.x > PositionSetter.instance.high.position.x)
+            {
+                delta.x = kf * (PositionSetter.instance.high.position.x - camHi.position.x);
+            }
+            else if (camLo.position.x < PositionSetter.instance.lo.position.x)
+            {
+                delta.x = kf * (PositionSetter.instance.lo.position.x - camLo.position.x);
+            }
+            else
+            {
+                delta.x = 0;
+            }
+            //
+            
+            if (camHi.position.y > PositionSetter.instance.high.position.y)
+            {
+                delta.y = kf * (PositionSetter.instance.high.position.y - camHi.position.y);
+            }
+            else if (camLo.position.y < PositionSetter.instance.lo.position.y)
+            {
+                delta.y = kf * (PositionSetter.instance.lo.position.y - camLo.position.y);
+            }
+            else
+            {
+                delta.y = 0;
+            }
+            
+            
+        }
     }
 
 }

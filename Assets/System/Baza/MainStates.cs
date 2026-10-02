@@ -3273,12 +3273,12 @@ public class MainStates : MonoBehaviour
             v.Updateo();
         }
 
-        var gj = ModelStatistics.instance.GetStatValue("battle");
-        bool zz = handleInNoBattle && gj < 2;
+        var battleState = ModelStatistics.instance.GetStatValue("battle");
+        bool zz = handleInNoBattle && battleState < 2;
 
         if (!manualDt)
         {
-            if ((handleInNoBattle && gj < 2) || gj == 2)
+            if ((handleInNoBattle && battleState < 2) || battleState == 2)
                 HandleCds();
         }
 
@@ -3296,8 +3296,29 @@ public class MainStates : MonoBehaviour
 
         allSubs.RemoveAll(x => x.who == null);
 
+        if (battleState < 2)
+            HandleVisibility();
     }
-    
+
+
+    public void HandleVisibility()
+    {
+        
+        foreach (var v in all)
+        {
+            if (v.Value.main == null) continue;
+            var tt = mainPlayer.Position - v.Value.main.transform.position;
+            if (tt.magnitude < 10)
+            {
+                v.Value.main.SetActive(true);
+            }
+            else
+            {
+                if (v.Value.main.activeInHierarchy)
+                    v.Value.main.SetActive(false);
+            }
+        }
+    }
 
     public void HandleCds(float dt = -1, RObj who = null)
     {
