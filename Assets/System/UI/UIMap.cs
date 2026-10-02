@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class UIMap : MonoBehaviour
 {
@@ -11,9 +13,13 @@ public class UIMap : MonoBehaviour
     
     public static UIMap instance;
 
+    public Button travel;
+    public GameObject lastPortal;
+
     private void Awake()
     {
         instance = this;
+        travel.onClick.AddListener(RealTravel);
     }
 
     private void OnEnable()
@@ -47,8 +53,27 @@ public class UIMap : MonoBehaviour
     
     public void ToCenter()
     {
+        travel.gameObject.SetActive(false);
         Calculate();
         CenterMapOnPlayer(map, mainPlayer, view);
+    }
+
+    public void Travel(GameObject go)
+    {
+        lastPortal = go;
+        travel.gameObject.SetActive(true);
+    }
+
+    public void RealTravel()
+    {
+        var pp = MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>();
+        if (pp != null) pp.enabled = false;
+        
+        MainStates.instance.mainPlayer.main.transform.position = lastPortal.transform.position + new Vector3(0, -1, 0);
+        MainStates.instance.mainPlayer.Position = lastPortal.transform.position + new Vector3(0, -1, 0);
+        if (pp != null) pp.enabled = true;
+        
+        gameObject.SetActive(false);
     }
 
     public void Calculate()

@@ -25,7 +25,7 @@ public class PopupoManager : MonoBehaviour
         EventManager.SUB("show_alert", ShowAlert);
         EventManager.SUB("show_message", (x) =>
         {
-            ShowRewards(null,null);
+            ShowRewards(null,null, "INFO", descr:x.what);
         });
         
     }
