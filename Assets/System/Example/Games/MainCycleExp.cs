@@ -13,6 +13,7 @@ public class MainCycleExp : MonoBehaviour
 {
     public Button oneIteration;
 
+    public Transform spawnPoint;
     public bool AlwaysMove = true;
     public Button moveSkill;
     private RObj main;
@@ -118,6 +119,7 @@ public class MainCycleExp : MonoBehaviour
         });
 
         skipTurn.onClick.AddListener(() => SkipTurn());
+        MainStates.handleInNoBattle = false;
     }
 
     public Transform battlePoint;
@@ -275,7 +277,7 @@ public class MainCycleExp : MonoBehaviour
         //
         if (!succLoad)
         {
-            main = new RObj("hero_warrior", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_player");
+            main = new RObj("hero_warrior", 1, 1, true, spawnPoint.position, true, ItemType.monster, "main_player");
             MainStates.instance.ApplyPlayerConfigParams(main);
         }
         else

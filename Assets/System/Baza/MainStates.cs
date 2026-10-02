@@ -218,7 +218,8 @@ public class MainStates : MonoBehaviour
     public static bool manualDt = false;
     public static float manualTick = 1;
     public static bool summonNextPos = false;
-
+    public static bool handleInNoBattle = true;
+    
     public static List<(string, string)> overridesViz = null;
 
     //battle_reward
@@ -3271,9 +3272,15 @@ public class MainStates : MonoBehaviour
             if (!v) continue;
             v.Updateo();
         }
-        
+
+        var gj = ModelStatistics.instance.GetStatValue("battle");
+        bool zz = handleInNoBattle && gj < 2;
+
         if (!manualDt)
-            HandleCds();
+        {
+            if ((handleInNoBattle && gj < 2) || gj == 2)
+                HandleCds();
+        }
 
         for (int i = 0; i < allSubs.Count; i++)
         {

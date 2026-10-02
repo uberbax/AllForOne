@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Diagnostics;
 
 public class XDclickMove : ComponentBehavior
 {
@@ -82,6 +83,10 @@ public class XDclickMove : ComponentBehavior
             {
                 mon.visuals["animator"].GetComponent<XDanimator>().SetState("idle");
             }
+        }
+        else
+        {
+            UtilsControl.CalculateLayer(mon.main, PositionSetter.instance.lo, PositionSetter.instance.high);
         }
     }
 }

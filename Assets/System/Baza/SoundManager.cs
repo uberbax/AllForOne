@@ -34,6 +34,11 @@ public class SoundManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds[sound], Camera.main.transform.position, mon.GetPar("volume_sound"));
         }
     }
+
+    public void PlayMusic()
+    {
+        
+    }
     
     
     

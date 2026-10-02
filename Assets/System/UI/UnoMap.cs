@@ -6,10 +6,12 @@ public class UnoMap : MonoBehaviour
 {
     public GameObject portal;
 
-
+    private Button btn;
     void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => UIMap.instance.Travel(portal));
+        btn = GetComponent<Button>();
+        if (btn != null)
+            btn.onClick.AddListener(() => UIMap.instance.Travel(portal));
     }
     private void Update()
     {
