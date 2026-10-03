@@ -162,6 +162,12 @@ public class TierSpawner : MonoBehaviour
         r = Random.Range(0, 10);
         if (r < 1 && !b)
         {
+            //it should be an item
+            //probably tier up ?
+            var mp = DatabaseAll.instance.GetByTier(tier-1,"item", 1);
+            if (mp.Count == 0) return;
+            var cc = mp[Random.Range(0, mp.Count)];            
+            
             b = true;
             //id chest
             var pnt = UtilsControl.Instance.GetRandomFreeInRange(transform.position, d0);
@@ -178,10 +184,7 @@ public class TierSpawner : MonoBehaviour
             aa.recreateViz = true;
             aa.addedMeta.Add("wave");
             
-            //it should be an item
-            //probably tier up ?
-            var mp = DatabaseAll.instance.GetByTier(tier-1,"item", 1);
-            var cc = mp[Random.Range(0, mp.Count)];
+
 
             int rar = Random.Range(1, 4);
             
