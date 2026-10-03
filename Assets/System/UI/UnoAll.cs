@@ -26,7 +26,7 @@ public class UnoAll : MonoBehaviour
     private bool done = false;
 
     private ObjHolder o;
-    private void Update()
+    public void Update()
     {
         if (true) //(mon == null || mon.RID == "" || mon.RID == null)
         {

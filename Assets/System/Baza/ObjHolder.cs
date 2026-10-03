@@ -158,6 +158,9 @@ public class ObjHolder : MonoBehaviour, IReceive
             GetComponent<RectTransform>().offsetMin = new Vector2(100 * (sy - 1), 0);
             
         }
+        
+        var ee = GetComponentsInChildren<UnoAll>();
+        for (int i = 0; i < ee.Length; i++) ee[i].Update();
 
     }
 
