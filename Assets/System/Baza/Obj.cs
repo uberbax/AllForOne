@@ -168,7 +168,7 @@ public class RObj
         }
     }
 
-    //[NonSerialized]
+    [JsonIgnore]
     public GameObject main
     {
         get { return _main; }
@@ -181,6 +181,7 @@ public class RObj
         }
         
     }
+    [NonSerialized] 
     private GameObject _main;
     [NonSerialized] 
     public Transform _cachedMain;

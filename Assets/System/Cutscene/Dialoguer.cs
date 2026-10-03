@@ -217,7 +217,11 @@ public class Dialoguer : MonoBehaviour
         if (uo.fd.cStart != "x" && uo.fd.cStart != string.Empty)
         {
             if (lastDynamic != null)
-                lastDynamic.dialog =  uo.fd.cStart;
+            {
+                lastDynamic.dialog = uo.fd.cStart;
+                ModelStatistics.instance.SetStatValueStr(lastDynamic.id + "_dialog", lastDynamic.dialog);
+                MainStates.instance.Save();
+            }
         }
         //}
     }

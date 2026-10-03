@@ -858,6 +858,7 @@ public class MainStates : MonoBehaviour
         {
             //thwbbb ???
             if (vv == "") continue;
+            if (!ConfigLoader.Instance.allDynamic.ContainsKey(vv)) continue;
             
             var s = ConfigLoader.Instance.allDynamic[vv];
             if (s.create.IndexOf("create") < 0) continue;
@@ -1056,7 +1057,11 @@ public class MainStates : MonoBehaviour
 
         if (res.dialog != "")
         {
-            Dialoguer.instance.ShowDialogue(res.dialog, whoActivate);
+            var gg = ModelStatistics.instance.GetStatStrValue(res.id + "_dialog");
+            if (!string.IsNullOrEmpty(gg))
+                Dialoguer.instance.ShowDialogue(gg, whoActivate);
+            else 
+                Dialoguer.instance.ShowDialogue(res.dialog, whoActivate);
         }
         
     }
@@ -3265,6 +3270,8 @@ public class MainStates : MonoBehaviour
 
     private void Update()
     {
+        if (!HasMain()) return;
+        
         ShowLastSelected();
         
         foreach (var v in allVisuals)
