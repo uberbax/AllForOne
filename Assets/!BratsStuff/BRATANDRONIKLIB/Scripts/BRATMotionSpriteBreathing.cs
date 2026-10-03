@@ -3,6 +3,8 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public sealed class BRATMotionSpriteBreathing : MonoBehaviour
 {
+    public float sdvig = 0;
+    public bool randomStart = true;
     [Header("Breathing")]
     [Min(1f)] public float breathsPerMinute = 14f;
     [Range(0f, 0.1f)] public float horizontalScale = 0.008f;
@@ -18,8 +20,10 @@ public sealed class BRATMotionSpriteBreathing : MonoBehaviour
 
     private void OnEnable()
     {
-        elapsed = 0f;
-        transform.localScale = baseScale;
+       elapsed = 0f;
+       transform.localScale = baseScale;
+       if (randomStart)
+           elapsed = Random.Range(0, 0.99f);
     }
 
     private void Update()

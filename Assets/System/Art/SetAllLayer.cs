@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SetAllLayer : MonoBehaviour
@@ -6,6 +7,8 @@ public class SetAllLayer : MonoBehaviour
     public Transform lo;
     public Transform high;
 
+    public bool doBreathing = false;
+    
     [ContextMenu("Do set")]
     public void SetAll()
     {
@@ -15,4 +18,21 @@ public class SetAllLayer : MonoBehaviour
             UtilsControl.CalculateLayer(transform.GetChild(i).gameObject, lo, high);
         }
     }
+
+    private void OnEnable()
+    {
+        /*
+        if (doBreathing)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (!transform.GetChild(i).gameObject.activeInHierarchy) continue;
+                var cc =   transform.GetChild(i);
+                //cc.gameObject.AddComponent<Brat>()
+            }
+        }
+        */
+    }
+    
+    
 }

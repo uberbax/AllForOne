@@ -3303,11 +3303,12 @@ public class MainStates : MonoBehaviour
 
     public void HandleVisibility()
     {
+        Vector3 tm = mainPlayer.Position;
         
         foreach (var v in all)
         {
             if (v.Value.main == null) continue;
-            var tt = mainPlayer.Position - v.Value.main.transform.position;
+            var tt = tm - v.Value._cachedMain.position;
             if (tt.magnitude < 10)
             {
                 v.Value.main.SetActive(true);

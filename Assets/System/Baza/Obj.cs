@@ -167,9 +167,23 @@ public class RObj
             return new Vector3(pos_x, pos_y, pos_z);
         }
     }
-    
-    [NonSerialized]
-    public GameObject main;
+
+    //[NonSerialized]
+    public GameObject main
+    {
+        get { return _main; }
+        set
+        {
+            _main = value;
+            if (value)
+                _cachedMain = value.transform;
+            else _cachedMain = null;
+        }
+        
+    }
+    private GameObject _main;
+    [NonSerialized] 
+    public Transform _cachedMain;
     
     [JsonIgnore]
     public GameObject visMain => visuals["vis_main"];
