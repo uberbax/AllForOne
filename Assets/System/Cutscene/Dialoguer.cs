@@ -76,6 +76,12 @@ public class Dialoguer : MonoBehaviour
     private FormatDynamic lastDynamic;
     public void ShowDialogue(string id, GameObject npc = null)
     {
+        if (id == "end")
+        {
+            dialog.SetActive(false);
+            return;
+        }
+        
         lastNpc = npc;
         if (npc != null)
         {
