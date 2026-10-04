@@ -156504,14 +156504,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872057879}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 498669410}
   - {fileID: 1632611419}
-  m_Father: {fileID: 2086004049}
+  m_Father: {fileID: 1633800728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -164291,7 +164291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::Buyable
   disableOnNoCond: 0
-  addToDB: 0
+  addToDB: 1
   runtimeGen: 0
   prices: []
   pref: 
@@ -164316,7 +164316,7 @@ MonoBehaviour:
       compar: <
       meta: 
     reqInactive:
-    - {fileID: 248961100}
+    - {fileID: 2086004048}
     statsInc: []
     statsExact: []
     itemsGet: []
@@ -164344,32 +164344,12 @@ MonoBehaviour:
     cutscene: 
     multi: 0
     tutors:
-    - activate: {fileID: 0}
+    - activate: {fileID: 1728718103}
       copy: {fileID: 0}
       emptyHand: 0
-      waitGone: 0
+      waitGone: 1
       justDeactivate: 0
-    - activate: {fileID: 0}
-      copy: {fileID: 0}
-      emptyHand: 0
-      waitGone: 0
-      justDeactivate: 0
-    - activate: {fileID: 0}
-      copy: {fileID: 0}
-      emptyHand: 0
-      waitGone: 0
-      justDeactivate: 0
-    - activate: {fileID: 0}
-      copy: {fileID: 0}
-      emptyHand: 0
-      waitGone: 0
-      justDeactivate: 0
-    - activate: {fileID: 0}
-      copy: {fileID: 0}
-      emptyHand: 0
-      waitGone: 0
-      justDeactivate: 0
-    tutorStat: 
+    tutorStat: tutor_0
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -221902,14 +221882,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218330862}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 265641605}
   - {fileID: 830546437}
-  m_Father: {fileID: 2086004049}
+  m_Father: {fileID: 1633800728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -284625,6 +284605,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 872057879}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1533257721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301304,6 +301296,9 @@ RectTransform:
   - {fileID: 1541569873}
   - {fileID: 915839615}
   - {fileID: 480405677}
+  - {fileID: 1728718104}
+  - {fileID: 872057880}
+  - {fileID: 1218330863}
   m_Father: {fileID: 1966143097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -317523,14 +317518,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728718103}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1454425368}
   - {fileID: 34116781}
-  m_Father: {fileID: 2086004049}
+  m_Father: {fileID: 1633800728}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -362606,6 +362601,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1218330862}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1970402293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381196,9 +381203,6 @@ RectTransform:
   - {fileID: 248961101}
   - {fileID: 1088744324}
   - {fileID: 1096626413}
-  - {fileID: 1728718104}
-  - {fileID: 872057880}
-  - {fileID: 1218330863}
   m_Father: {fileID: 1966143097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

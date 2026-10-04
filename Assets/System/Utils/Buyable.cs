@@ -192,7 +192,7 @@ public class Buyable : ComponentBehavior
             
             if (toColor) toColor.color = Color.green;
             if (toActivate) toActivate.SetActive(true);
-            if (curDynamic.multi == 0) price.gameObject.SetActive(false);
+            if (curDynamic.multi == 0) price?.gameObject.SetActive(false);
             if (text) text.text = dynamicID + "MAX";
             return;
         }
@@ -225,8 +225,10 @@ public class Buyable : ComponentBehavior
         if (taken && curDynamic.multi <= 0) return;
         
         bool done = true;
+        bool haveAny = false;
         foreach (var v in curDynamic.conds1)
         {
+            haveAny = true;
             if (v.Key == "dst")
             {
                 RObj unit = MainStates.instance.lastAllySelected == null ? MainStates.instance.mainPlayer :  MainStates.instance.lastAllySelected;
@@ -246,11 +248,13 @@ public class Buyable : ComponentBehavior
 
         if (done && curDynamic.reqs.Count > 0)
         {
+            haveAny = true;
             done = ModelStatistics.instance.CheckCondition(curDynamic.reqs, null, gameObject);
         }
 
         if (done && curDynamic.reqInactive.Count > 0)
         {
+            haveAny = true;
             foreach (var v in curDynamic.reqInactive)
             {
                 if (v.activeInHierarchy) done = false;
@@ -263,7 +267,7 @@ public class Buyable : ComponentBehavior
                 curDynamic.toActivate[0].SetActive(false);
         }
 
-        if (done && curDynamic.conds1.Count > 0 && (!taken || curDynamic.multi > 0))
+        if (done && haveAny && (!taken || curDynamic.multi > 0))
         {
             Fulfill();
         }

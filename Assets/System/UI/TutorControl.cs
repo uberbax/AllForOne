@@ -19,6 +19,13 @@ public class TutorControl : MonoBehaviour
     public void DoTutor(List<UnoTutor> activate, string endStat, int cur = 0)
     {
         if (bb != null) DestroyImmediate(bb);
+
+        //stat at start ?
+        if (cur == 0)
+        {
+            ModelStatistics.instance.SetStatValue(endStat, 1);
+        }
+        
         if (cur >= activate.Count)
         {
             ModelStatistics.instance.SetStatValue(endStat, 1);
@@ -36,8 +43,15 @@ public class TutorControl : MonoBehaviour
         {
             overlay.GetComponent<Image>().color = new Color(0, 0, 0, 0.9f);
         }
-        
-        hand.transform.position = activate[cur].copy.transform.position;
+
+        if (activate[cur].copy != null)
+        {
+            hand.transform.position = activate[cur].copy.transform.position;
+        }
+        else
+        {
+            hand.transform.position = new Vector3(10000, 10000, 10000);
+        }
 
         if (activate[cur].emptyHand)
         {
