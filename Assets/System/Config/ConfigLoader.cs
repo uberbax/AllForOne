@@ -3435,6 +3435,10 @@ public class FormatDynamic
     public List<Bon> price = new List<Bon>();
     public List<Bon1> conds1 = new List<Bon1>();
     
+    //in editor
+    public List<UnoReq> reqs = new List<UnoReq>();
+    public List<GameObject> reqInactive = new List<GameObject>();
+    //
     public List<Bon> statsInc = new List<Bon>();
     public List<Bon> statsExact = new List<Bon>();
     public List<Bon> itemsGet = new List<Bon>();
@@ -3469,6 +3473,10 @@ public class FormatDynamic
     public string cutscene = string.Empty;
 
     public int multi = 0;
+
+    [Header("Tutor")] 
+    public List<UnoTutor> tutors = new List<UnoTutor>();
+    public string tutorStat = "";
 
 }
 

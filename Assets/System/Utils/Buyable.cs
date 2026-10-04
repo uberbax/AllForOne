@@ -244,6 +244,19 @@ public class Buyable : ComponentBehavior
             
         }
 
+        if (done && curDynamic.reqs.Count > 0)
+        {
+            done = ModelStatistics.instance.CheckCondition(curDynamic.reqs, null, gameObject);
+        }
+
+        if (done && curDynamic.reqInactive.Count > 0)
+        {
+            foreach (var v in curDynamic.reqInactive)
+            {
+                if (v.activeInHierarchy) done = false;
+            }
+        }
+
         if (!done && disableOnNoCond)
         {
             if (curDynamic.toActivate.Count > 0)

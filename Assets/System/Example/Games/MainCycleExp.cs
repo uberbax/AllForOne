@@ -25,6 +25,32 @@ public class MainCycleExp : MonoBehaviour
     public SampleCharacterMover mover;
     [Header("Other")] public Button skipTurn;
 
+
+    [Header("<color=red>MENU</color>")] 
+    public Button start;
+    public GameObject loading;
+    public GameObject logo;
+    public GameObject firstSlide;
+    public void DoMenu(bool hasRun)
+    {
+        if (hasRun)
+        {
+            start.onClick.AddListener( ()=>
+                Transitioner.instance.Simple(loading)
+            );
+        }
+        else
+        {
+            start.onClick.AddListener(() =>
+                {
+                    logo.SetActive(false);
+                    firstSlide.SetActive(true);
+                }
+            );
+        }
+    }
+    
+    
     private void Awake()
     {
         EventManager.SUB("PARSE_ENDED", B);
@@ -285,7 +311,7 @@ public class MainCycleExp : MonoBehaviour
             main = MainStates.instance.mainPlayer;
         }
 
-
+        DoMenu(succLoad);
 
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
@@ -453,6 +479,7 @@ public class MainCycleExp : MonoBehaviour
         HandleAutomove();
 
 
+        /*
         if (Input.GetKeyDown("i"))
         {
             var u0 = MainStates.instance.UI_inventory.activeSelf;
@@ -483,6 +510,7 @@ public class MainCycleExp : MonoBehaviour
                 MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "sword", Value = 1}});
             }
         }
+        */
 
         if (MainStates.instance.inBattle)
         {

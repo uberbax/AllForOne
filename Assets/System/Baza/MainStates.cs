@@ -1063,6 +1063,11 @@ public class MainStates : MonoBehaviour
             else 
                 Dialoguer.instance.ShowDialogue(res.dialog, whoActivate);
         }
+
+        if (res.tutors.Count > 0)
+        {
+            TutorControl.instance.DoTutor(res.tutors, res.tutorStat, 0);
+        }
         
     }
     
