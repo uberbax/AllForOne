@@ -161,7 +161,7 @@ public class Dialoguer : MonoBehaviour
             if (ld[i + 1].action == "task")
             {
                 var fo = MainStates.instance.playerData.playerTasks.Find(x => x.id == ld[i + 1].ava1);
-                if (fo != null)
+                if (fo != null && fo.started > 0)
                 {
                     options[i].GetComponent<CanvasGroup>().alpha = 0.8f;
                     options[i].GetComponent<Button>().interactable = false;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +34,7 @@ public class AbsHolder : MonoBehaviour, IReceive
         
         done = true;
         b = new RObj(id, ItemType.task);
-        var a = gameObject.AddComponent<ObjHolder>();
+        var a = gameObject.GetOrAddComponent<ObjHolder>();
         a.obj = b;
         Recalc();
 
