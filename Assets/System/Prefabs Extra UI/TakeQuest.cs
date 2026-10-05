@@ -17,6 +17,7 @@ public class TakeQuest : MonoBehaviour
             {
                 var a = MainStates.instance.playerData.playerTasks.Find(x => x.id == holder.id);
                 a.started = 1;
+                MainStates.instance.Save();
             }
         );
     }

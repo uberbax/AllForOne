@@ -139,7 +139,9 @@ public class Buyable : ComponentBehavior
         if (addToDB)
         {
             dynamicID = curDynamic.id;
-            ConfigLoader.Instance.allDynamic.Add(curDynamic.id, curDynamic);
+            //?
+            //thwbbb
+            ConfigLoader.Instance.allDynamic.TryAdd(curDynamic.id, curDynamic);
         }
         
         if (runtimeGen && dynamicID == "")

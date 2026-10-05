@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,10 @@ public class TutorControl : MonoBehaviour
     public GameObject overlay;
     public GameObject hand;
     public GameObject bb;
-
+    public TextMeshProUGUI header;
+    public TextMeshProUGUI description;
+    
+    
     public static TutorControl instance;
 
     private void Awake()
@@ -19,7 +23,8 @@ public class TutorControl : MonoBehaviour
     public void DoTutor(List<UnoTutor> activate, string endStat, int cur = 0)
     {
         if (bb != null) DestroyImmediate(bb);
-
+        
+        
         //stat at start ?
         if (cur == 0)
         {
@@ -31,6 +36,17 @@ public class TutorControl : MonoBehaviour
             ModelStatistics.instance.SetStatValue(endStat, 1);
             overlay.SetActive(false);
             return;
+        }
+
+        if (activate[cur].header == "")
+        {
+            header.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            header.transform.parent.gameObject.SetActive(true);
+            header.text = activate[cur].header;
+            description.text = activate[cur].description;
         }
         
         overlay.SetActive(true);
@@ -103,4 +119,7 @@ public class UnoTutor
     public bool emptyHand = false;
     public bool waitGone = false;
     public bool justDeactivate = false;
+
+    public string header = "";
+    public string description = "";
 }

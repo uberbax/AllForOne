@@ -696,6 +696,19 @@ public partial class ModelStatistics : MonoBehaviour
                         if (g.compar == "<=" && aa > aa1) q = false;                        
                         if (g.compar == "<" && aa >= aa1) q = false;
                     }
+                    else if (g.typo == TaskType.time_from)
+                    {
+                        float aa = 1000;
+                        if (g.what == "level")
+                            aa = Time.time - UIlevelUp.tmLevelUp;
+                        
+                        var aa1 = int.Parse(g.val);
+                        if (g.compar == "==" && aa != aa1) q = false;
+                        if (g.compar == ">=" && aa < aa1) q = false;
+                        if (g.compar == ">" && aa <= aa1) q = false;
+                        if (g.compar == "<=" && aa > aa1) q = false;                        
+                        if (g.compar == "<" && aa >= aa1) q = false;
+                    }
                     else if (g.typo == TaskType.have_dist)
                     {
                         var vec = go.transform.position - MainStates.instance.mainPlayer.Position;
@@ -1265,7 +1278,8 @@ public enum TaskType
     have_obj,
     
     have_stat_str,
-    have_dist
+    have_dist,
+    time_from
 }
 
 

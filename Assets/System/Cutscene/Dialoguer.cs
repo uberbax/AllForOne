@@ -35,24 +35,28 @@ public class Dialoguer : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        /*
         nextBtn.onClick.AddListener(() =>
         {
-            if (lastDialog[1].phrase == "next")
+            var ee = lastDialog.Find(x => x.phrase == "next");
+            
+            if (ee != null)
             {
-                if (lastDialog[1].action == "end")
+                if (ee.action == "end")
                 {
                     Hide();
                 }
-                else if (lastDialog[1].action == "cut")
+                else if (ee.action == "cut")
                 {
                     Hide();
-                    Cutscener.instance.ExecuteCutscene(lastDialog[1].ava1);
+                    Cutscener.instance.ExecuteCutscene(ee.ava1);
                 }
                 else
-                    ShowDialogue(lastDialog[1].action);
+                    ShowDialogue(ee.action);
             }
 
         });
+        */
     }
 
     public void Hide()
@@ -82,7 +86,9 @@ public class Dialoguer : MonoBehaviour
             return;
         }
         
-        lastNpc = npc;
+        if (npc != null)
+            lastNpc = npc;
+        
         if (npc != null)
         {
             MainStates.instance.curLoot = npc.GetComponentInParent<ObjHolder>().obj;
@@ -138,12 +144,33 @@ public class Dialoguer : MonoBehaviour
             options[i].GetComponentInChildren<TextMeshProUGUI>().text = ld[i + 1].phrase;
             options[i].GetComponent<UnoOption>().fd = ld[i + 1];
             options[i].transform.Find("price").gameObject.SetActive(false);
+            //
+            options[i].GetComponent<CanvasGroup>().alpha = 1f;
+            options[i].GetComponent<Button>().interactable = true;
+            //
+            
+            
             if (ld[i + 1].req_trigger != "x" && ld[i + 1].req_trigger.Length > 2)
             {
                 Debug.Log("x " + ld[i + 1].req_trigger);
                 var ds = ld[i + 1].req_trigger.Split(",");
                 options[i].transform.Find("price").gameObject.SetActive(true);
                 options[i].transform.Find("price").GetComponentInChildren<TextMeshProUGUI>().text = ds[1];
+            }
+
+            if (ld[i + 1].action == "task")
+            {
+                var fo = MainStates.instance.playerData.playerTasks.Find(x => x.id == ld[i + 1].ava1);
+                if (fo != null)
+                {
+                    options[i].GetComponent<CanvasGroup>().alpha = 0.8f;
+                    options[i].GetComponent<Button>().interactable = false;
+                }
+                else
+                {
+                    options[i].GetComponent<CanvasGroup>().alpha = 1f;
+                    options[i].GetComponent<Button>().interactable = true;
+                }
             }
         }
     }
