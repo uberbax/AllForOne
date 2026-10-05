@@ -18,6 +18,14 @@ public static class CharacterTraitSetup
     static CharacterTraitSetup() { EditorApplication.delayCall += RunRequested; }
     private static void RunRequested()
     {
+        if (File.Exists("work/trait-balance-update.request"))
+        {
+            if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            { EditorApplication.delayCall += RunRequested; return; }
+            File.Delete("work/trait-balance-update.request");
+            try { UpdateBalanceArea(); }
+            catch (Exception e) { File.WriteAllText("work/trait-balance-update-result.txt", e.ToString()); Debug.LogException(e); }
+        }
         if (File.Exists("work/trait-cost-update.request"))
         {
             if (EditorApplication.isCompiling || EditorApplication.isUpdating)
@@ -270,12 +278,82 @@ public static class CharacterTraitSetup
                 frames[i].Find("Icon").GetComponent<Image>().sprite = sprite;
             }
             so.ApplyModifiedPropertiesWithoutUndo(); root.SetActive(true);
+            ConfigureBalanceArea(root);
             // The opaque background and viewport must receive clicks/drags outside the nodes too.
             root.transform.Find("Background").GetComponent<Image>().raycastTarget = true;
             root.transform.Find("Middle/ScrollRect/Viewport").GetComponent<Image>().raycastTarget = true;
             PrefabUtility.SaveAsPrefabAsset(root, Output + "Character_Trait.prefab");
         }
         finally { PrefabUtility.UnloadPrefabContents(root); }
+    }
+
+    [MenuItem("Tools/Character Traits/Update TraitBalance icons")]
+    public static void UpdateBalanceArea()
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Exit Play Mode first.");
+        var path = Output + "Character_Trait.prefab";
+        var root = PrefabUtility.LoadPrefabContents(path);
+        try
+        {
+            ConfigureBalanceArea(root);
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+        }
+        finally { PrefabUtility.UnloadPrefabContents(root); }
+        AssetDatabase.SaveAssets();
+        File.WriteAllText("work/trait-balance-update-result.txt", "SUCCESS: TraitBalance/Gold and TraitBalance/Res1; amounts and ResourceHolder icons assigned.\n");
+    }
+
+    private static void ConfigureBalanceArea(GameObject root)
+    {
+        var balance = root.transform.Find("TraitBalance");
+        var template = balance.GetComponent<TMP_Text>();
+        template.text = "";
+        template.enabled = false;
+        var layout = balance.GetComponent<HorizontalLayoutGroup>() ?? balance.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.spacing = 40; layout.padding = new RectOffset();
+        layout.childControlWidth = layout.childControlHeight = true;
+        layout.childForceExpandWidth = layout.childForceExpandHeight = false;
+        var data = new SerializedObject(root.GetComponent<CharacterTraitController>());
+        ConfigureBalanceGroup(balance, template, data, "Gold", "gold");
+        ConfigureBalanceGroup(balance, template, data, "Res1", "res1");
+        data.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void ConfigureBalanceGroup(Transform parent, TMP_Text template, SerializedObject data, string name, string itemId)
+    {
+        var group = parent.Find(name);
+        if (group == null)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(HorizontalLayoutGroup));
+            go.layer = parent.gameObject.layer; go.transform.SetParent(parent, false);
+            group = go.transform;
+        }
+        var iconTransform = group.Find("Icon");
+        if (iconTransform == null)
+        {
+            var go = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
+            go.layer = parent.gameObject.layer; go.transform.SetParent(group, false);
+            iconTransform = go.transform;
+        }
+        var icon = iconTransform.GetComponent<Image>();
+        var holder = UnityEngine.Object.FindAnyObjectByType<ResourceHolder>(FindObjectsInactive.Include);
+        icon.sprite = holder != null ? holder.GetIcon(itemId) : null;
+        icon.enabled = icon.sprite != null; icon.preserveAspect = true; icon.raycastTarget = false;
+        var iconLayout = icon.GetComponent<LayoutElement>();
+        iconLayout.minWidth = iconLayout.preferredWidth = 40;
+        iconLayout.minHeight = iconLayout.preferredHeight = 40;
+        var amount = group.Find("Amount")?.GetComponent<TMP_Text>() ?? NewText("Amount", group, template, 32);
+        amount.text = "0"; amount.alignment = TextAlignmentOptions.Left;
+        var amountLayout = amount.GetComponent<LayoutElement>() ?? amount.gameObject.AddComponent<LayoutElement>();
+        amountLayout.minWidth = 40; amountLayout.preferredWidth = 200;
+        var layout = group.GetComponent<HorizontalLayoutGroup>();
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.spacing = 8; layout.padding = new RectOffset();
+        layout.childControlWidth = layout.childControlHeight = true;
+        layout.childForceExpandWidth = layout.childForceExpandHeight = false;
+        Set(data, itemId + "BalanceIcon", icon);
+        Set(data, itemId + "BalanceText", amount);
     }
 
     private static void Prepare(GameObject root)

@@ -9,6 +9,10 @@ public sealed class CharacterTraitController : MonoBehaviour
     [SerializeField] private CharacterTraitEnhance enhance;
     [SerializeField] private Button closeButton;
     [SerializeField] private TMPro.TMP_Text balanceText;
+    [SerializeField] private TMPro.TMP_Text goldBalanceText;
+    [SerializeField] private Image goldBalanceIcon;
+    [SerializeField] private TMPro.TMP_Text res1BalanceText;
+    [SerializeField] private Image res1BalanceIcon;
 
     private CharacterTraitDefinition pending;
     private RObj pendingPlayer;
@@ -106,7 +110,13 @@ public sealed class CharacterTraitController : MonoBehaviour
     public void Refresh()
     {
         bool ready = TryGetPlayer(out var state, out var player);
-        if (balanceText != null) balanceText.text = ready
+        if (goldBalanceText != null && res1BalanceText != null)
+        {
+            if (balanceText != null) balanceText.text = "";
+            RefreshBalance("gold", goldBalanceText, goldBalanceIcon, player, ready);
+            RefreshBalance("res1", res1BalanceText, res1BalanceIcon, player, ready);
+        }
+        else if (balanceText != null) balanceText.text = ready
             ? CharacterTraitProgression.GetAmount(player, "gold") + " gold     " + CharacterTraitProgression.GetAmount(player, "res1") + " res1"
             : "Loading...";
         if (nodes != null)
@@ -122,6 +132,14 @@ public sealed class CharacterTraitController : MonoBehaviour
         int level = CharacterTraitProgression.GetLevel(state.playerData, pending);
         if (level != pendingLevel) { CancelUpgrade(); return; }
         enhance.Refresh(pending, level, player, CharacterTraitProgression.CanAfford(player, pending));
+    }
+
+    private static void RefreshBalance(string itemId, TMPro.TMP_Text amountText, Image icon, RObj player, bool ready)
+    {
+        var sprite = ResourceHolder.instance != null ? ResourceHolder.instance.GetIcon(itemId) : null;
+        if (icon != null) { icon.sprite = sprite; icon.enabled = sprite != null; }
+        string amount = ready ? CharacterTraitProgression.GetAmount(player, itemId).ToString() : "...";
+        amountText.text = sprite != null ? amount : amount + " " + itemId;
     }
 
     private static bool TryGetPlayer(out MainStates state, out RObj player)
