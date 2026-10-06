@@ -21,6 +21,8 @@ public sealed class CharacterTraitController : MonoBehaviour
     private bool upgrading;
     private Coroutine refreshRoutine;
 
+    public Color colorCan = Color.white;
+
     private void Awake()
     {
         if (closeButton != null) closeButton.onClick.AddListener(Hide);

@@ -11,6 +11,14 @@ public sealed class CharacterTraitNode : MonoBehaviour
     [SerializeField] private GameObject normal;
     [SerializeField] private GameObject upgraded;
     [SerializeField] private GameObject upgradeArrow;
+    
+    [SerializeField] private GameObject disabled;
+    [SerializeField] private GameObject locked;
+    [SerializeField] private GameObject line;
+    
+    [SerializeField] private CharacterTraitNode depend;
+    
+    
     private CharacterTraitController controller;
     private int index;
 
@@ -22,8 +30,10 @@ public sealed class CharacterTraitNode : MonoBehaviour
     private void OnDestroy() { if (button != null) button.onClick.RemoveListener(Select); }
     private void Select() { if (controller != null) controller.RequestUpgrade(index); }
 
+    public int lvl;
     public void Refresh(CharacterTraitDefinition trait, int level, bool ready)
     {
+        this.lvl = level;
         if (label != null) label.text = trait?.Label ?? "";
         if (icon != null && trait?.Icon != null) icon.sprite = trait.Icon;
         if (levelText != null) levelText.text = level + "/" + CharacterTraitProgression.MaxLevel;
@@ -31,5 +41,38 @@ public sealed class CharacterTraitNode : MonoBehaviour
         if (normal != null) normal.SetActive(level == 0);
         if (upgraded != null) upgraded.SetActive(level > 0);
         if (upgradeArrow != null) upgradeArrow.SetActive(ready && level < CharacterTraitProgression.MaxLevel);
+        
+        Recalc();
+    }
+
+    void Recalc()
+    {
+        if (line != null)
+        {
+            if (lvl == CharacterTraitProgression.MaxLevel)
+            {
+                line.GetComponent<Image>().color = controller.colorCan;
+            }
+        }
+        //
+
+        if (depend != null)
+        {
+            if (depend.lvl == CharacterTraitProgression.MaxLevel)
+            {
+                disabled.SetActive(false);
+                locked.SetActive(false);
+                button.interactable = true;
+
+            }
+            else
+            {
+                disabled.SetActive(true);
+                locked.SetActive(true);
+                levelText.text = "";
+                upgradeArrow.SetActive(false);
+                button.interactable = false;
+            }
+        }
     }
 }
