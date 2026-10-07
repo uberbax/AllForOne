@@ -9,6 +9,8 @@ public class UIlevelUp : MonoBehaviour
     public List<GameObject> waitWhat = new List<GameObject>();
 
     public static float tmLevelUp = 0;
+    
+    
     public static bool wasLevelup = false;
     public static int levelWas = -1;
     // Update is called once per frame

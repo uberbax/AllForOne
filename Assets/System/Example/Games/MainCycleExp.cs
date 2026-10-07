@@ -83,6 +83,7 @@ public class MainCycleExp : MonoBehaviour
             MainStates.manualDt = false;
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle", 1);
+            MainStates.lastBattleTime = Time.time;
             mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(false);

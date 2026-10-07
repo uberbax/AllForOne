@@ -3477,6 +3477,7 @@ public class MainStates : MonoBehaviour
     public bool InIteration = false;
     public string lastBattle;
     public int lastBattleResult = 0;
+    public static float lastBattleTime;
 
     public List<RObj> GetMines(string meta)
     {
@@ -3760,7 +3761,14 @@ public class MainStates : MonoBehaviour
 
     public int HaveUncollectedMail()
     {
-        return 0;
+        int res = 0;
+        foreach (var v in ConfigLoader.Instance.allMails)
+        {
+            var d0 = ModelStatistics.instance.GetStatValue("mail_" + v.id);
+            if (d0 == 0) res = 1;
+        }
+
+        return res;
     }
 }
 

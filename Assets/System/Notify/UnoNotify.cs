@@ -26,6 +26,8 @@ public class UnoNotify : MonoBehaviour
     
     public bool haveUncollectedDailyOrWeekly;
     
+    public bool haveUncollectedMonthly;
+    
     public bool haveUncollectedMail;
     
     public bool haveAnyTaskCompletedNoTaken = false;
@@ -122,12 +124,12 @@ public class UnoNotify : MonoBehaviour
         }
         
         //1
-        bool check = true;
+        bool checkZ = false;
         if (haveItemCountOver)
         {
             int cnt = MainStates.instance.GetItemsCount(itemID);
-            if (cnt < itemCountOver)
-                check = false;
+            if (cnt >= itemCountOver)
+                checkZ = true;
         }
 
         if (haveTaskCompletedNoTaken)
@@ -137,8 +139,8 @@ public class UnoNotify : MonoBehaviour
                 task = MainStates.instance.playerData.playerTasks.Find(x => x.id == taskId1);
             }
 
-            if (!task.completed)
-                check = false;
+            if (task.completed)
+                checkZ = true;
         }
 
         bool hud = false;
@@ -160,6 +162,12 @@ public class UnoNotify : MonoBehaviour
                 hud = true;
         }
 
+        if (haveUncollectedMonthly)
+        {
+            if (MonthlyGift.instance.AnyMonthlyNotTaken())
+                hud = true;
+        }
+
         
         int cntM = 0;
         if (haveUncollectedMail)
@@ -170,22 +178,26 @@ public class UnoNotify : MonoBehaviour
 
         if (haveUncollectedDailyOrWeekly)
         {
-            check = check && (hud || hud_w);
+            checkZ = checkZ || (hud || hud_w);
         }
-        else if (haveUncollectedDaily)
+        if (haveUncollectedDaily)
         {
-            check = check && hud;
+            checkZ = checkZ || hud;
         }
-        else if (haveUncollectedWeeky)
+        if (haveUncollectedMonthly)
         {
-            check = check && hud_w;
+            checkZ = checkZ || hud;
         }
-        else if (haveUncollectedMail)
+        if (haveUncollectedWeeky)
         {
-            check = check && (cntM > 0);
+            checkZ = checkZ || hud_w;
+        }
+        if (haveUncollectedMail)
+        {
+            checkZ = checkZ || (cntM > 0);
         }
 
-        if (check)
+        if (checkZ)
             return 1;
 
         return 0;

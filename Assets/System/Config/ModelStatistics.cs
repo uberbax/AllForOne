@@ -701,6 +701,8 @@ public partial class ModelStatistics : MonoBehaviour
                         float aa = 1000;
                         if (g.what == "level")
                             aa = Time.time - UIlevelUp.tmLevelUp;
+                        if (g.what == "battle")
+                            aa = Time.time - MainStates.lastBattleTime;
                         
                         var aa1 = int.Parse(g.val);
                         if (g.compar == "==" && aa != aa1) q = false;
