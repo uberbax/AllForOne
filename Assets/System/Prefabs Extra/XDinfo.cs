@@ -11,6 +11,10 @@ public class XDinfo : ComponentBehavior
     public RObj mon;
     private void Start()
     {
+        var cc = GetComponent<CircleCollider2D>();
+        if (cc != null)
+            cc.offset = new Vector2(0, 0.24f);
+        
         mon = GetComponentInParent<ObjHolder>().obj;
         if (transform.parent.name.IndexOf("bird_") >= 0 || mon.GetPar("raid_boss") > 0 
          || mon.GetPar("is_boss") > 0 || transform.parent.name.IndexOf("jellyfish") >= 0)

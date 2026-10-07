@@ -468,7 +468,10 @@ public class SkillEtc
     public GameObject projHit;
     public GameObject proj;
     public float projDelay;
-
     public string projHitMark = "";
+
+    //1 is above
+    public int projSpawnType = 0;
+
     //public GameObject 
 }

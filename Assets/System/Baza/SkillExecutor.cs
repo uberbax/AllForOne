@@ -210,6 +210,7 @@ public class SkillExecutor : MonoBehaviour
         }
 
         var ll = ResourceHolder.instance.GetMeSkillEtc(who.dbObj, skl.dbObj.ID);
+        int projSpawnType = 0;
         //who main player ? self effect ?
         if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
         {
@@ -224,6 +225,11 @@ public class SkillExecutor : MonoBehaviour
                 kk.transform.localScale /= size.x;
             
             Destroy(kk, 2);
+        }
+
+        if (ll != null)
+        {
+            projSpawnType = ll.projSpawnType;
         }
         
         if (ll != null && ll.effSelf != null)
@@ -291,6 +297,12 @@ public class SkillExecutor : MonoBehaviour
                         var tt1 = who.visMain.transform.Find("head");
                         var hh = who.GetScale();
                         ro.main.transform.position = (tt.position + tt1.position) / 2 + new Vector3(hh * 0.2f, 0, 0);
+
+                        if (projSpawnType == 1)
+                        {
+                            ro.main.transform.position =
+                                (tt.position + targ[0].main.transform.position)/2 + new Vector3(0, 4, 0);
+                        }
                         //
                         ro.AddViz("coll");
                     }
