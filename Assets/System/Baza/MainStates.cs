@@ -435,7 +435,9 @@ public class MainStates : MonoBehaviour
         }
         else
         {
-            lastSkillsUsed.RemoveAt(0);
+            if (lastSkillsUsed[0].dbID == "basic_melee" || lastSkillsUsed[0].dbID == "basic_range" || lastSkillsUsed[0].dbID == "basic_magic")
+                lastSkillsUsed.RemoveAt(1);
+            else lastSkillsUsed.RemoveAt(0);
             lastSkillsUsed.Add(obj.who);
         }
         
