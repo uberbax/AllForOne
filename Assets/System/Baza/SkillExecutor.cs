@@ -18,6 +18,8 @@ public class SkillExecutor : MonoBehaviour
     public Targeter curTargeter;
     
     public PathChecker movePath;
+    
+    public static float timeWait = 0.5f;
     private void Awake()
     {
         instance = this;
@@ -212,9 +214,15 @@ public class SkillExecutor : MonoBehaviour
         if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
         {
             var kk = Instantiate(ResourceHolder.instance.effSelf);
-            kk.transform.position = who.Position;
+            //find head
+            kk.transform.position = who.Position + new Vector3(0, 2, 0);
             kk.SetActive(true);
             kk.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ResourceHolder.instance.skills[skl.dbObj.ID];
+            //sprite bounds
+            Vector2 size = kk.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.size;
+            if (size.x > 1)
+                kk.transform.localScale /= size.x;
+            
             Destroy(kk, 2);
         }
         
@@ -279,7 +287,11 @@ public class SkillExecutor : MonoBehaviour
                         ro = DatabaseAll.instance.CreateProjectile(who, skl.dbObj.ID, overPos == default ? Vector3.zero : overPos - who.Position, addPars:addPars);
                         //ro = skl.Clone();
                         //?
-                        
+                        var tt = who.visMain.transform.Find("legs");
+                        var tt1 = who.visMain.transform.Find("head");
+                        var hh = who.GetScale();
+                        ro.main.transform.position = (tt.position + tt1.position) / 2 + new Vector3(hh * 0.2f, 0, 0);
+                        //
                         ro.AddViz("coll");
                     }
                     else
@@ -308,6 +320,12 @@ public class SkillExecutor : MonoBehaviour
                         }
                     }
 
+                    ro.main.SetActive(false);
+                    FunctionTimer.Create(() =>
+                    {
+                        ro.main.SetActive(true);
+                    }, timeWait);
+                    
                     FunctionTimer.Create(() =>
                     {
                         UtilsControl.Instance.MoveTo(ro.main.transform, skl.GetPar("speed"),
@@ -330,7 +348,7 @@ public class SkillExecutor : MonoBehaviour
                                     Destroy(ro.main);
                                 }
 
-                            }, null);
+                            }, null, dltTime:timeWait);
                     }, dt * (float)j);
 
 

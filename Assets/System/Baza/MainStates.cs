@@ -2211,6 +2211,23 @@ public class MainStates : MonoBehaviour
         }
         
     }
+
+    public void UnequipBasicSkill()
+    {
+        var skl = mainPlayer.inventory.Find(x => x.dbObj.ID == "basic_melee");
+        if (skl == null)
+        {
+            skl = mainPlayer.inventory.Find(x => x.dbObj.ID == "basic_range");
+        }
+        if (skl == null)
+        {
+            skl = mainPlayer.inventory.Find(x => x.dbObj.ID == "basic_magic");
+        }
+        skl.SetPar("used_slot", -1);
+        mainPlayer.inventory.Remove(skl);
+    }
+    
+    
     public void Equip(RObj who, RObj what, int overSlot = -1)
     {
         if (!who.inventory.Contains(what))
@@ -2546,6 +2563,11 @@ public class MainStates : MonoBehaviour
     
     public void SwitchMainClass(ArgPass e)
     {
+        if (e.who == null)
+        {
+            e.who = DatabaseAll.instance.CreateAny("hero_warrior", false, 1, new GameObject());
+        }
+        
         string switchTo = e.who.dbObj.ID;
         Debug.Log("Switched to: " + switchTo);
         ReplaceVisual(mainPlayer, ResourceHolder.instance.monsters[switchTo]);
@@ -2555,10 +2577,19 @@ public class MainStates : MonoBehaviour
         var dbObj = DatabaseAll.instance.heroes[switchTo];
         mainPlayer.dbObj = dbObj;
         
+        UnequipBasicSkill();
+        
         foreach (var v in dbObj.skills)
         {
             var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
+            var ii = mainPlayer.GetFreeIndexFrom(actSkillsLoIndex, actSkillsHiIndex);
             mainPlayer.actSkills.Add(g);
+            if (ii >= 0)
+            {
+                AddItems(new List<Bon> { new Bon { Key = v, Value = 1 } });
+                var skl = mainPlayer.inventory.Find(x => x.dbObj.ID == v);
+                Equip(mainPlayer, skl, ii);
+            }
         }
         
         foreach (var v in dbObj.traits)

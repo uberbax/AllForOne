@@ -210511,7 +210511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1199.9999}
+  m_AnchoredPosition: {x: 0, y: 1199.9995}
   m_SizeDelta: {x: 1080, y: 1534.0834}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1144502871
@@ -213121,6 +213121,7 @@ MonoBehaviour:
     - buff_guts1
     - mana_siphon1
     - def_strike
+    - basic_magic
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -213190,6 +213191,7 @@ MonoBehaviour:
     - {fileID: -533630196540813971, guid: c1e6951064df73047b5072b31fd14cc1, type: 3}
     - {fileID: 21300000, guid: 595b9b4427848884bb7fb5c9a1ed6aaf, type: 3}
     - {fileID: 21300000, guid: d996dc7d2a1bf92449c243502252acef, type: 3}
+    - {fileID: 21300000, guid: e755888d9b5f1441ead164d78166d916, type: 3}
   pars:
     m_keys:
     - health
@@ -213581,6 +213583,14 @@ MonoBehaviour:
     - basic_range
     projHit: {fileID: 1848735471868635181, guid: 496ef22e7576b0e45890be36679db2ce, type: 3}
     proj: {fileID: 5791081373872930961, guid: 2f559c004c6d92746b0a5455952b3183, type: 3}
+    projDelay: 0
+    projHitMark: 
+  - effSelf: {fileID: 0}
+    conds:
+    - _any
+    - basic_magic
+    projHit: {fileID: -2253911629886400664, guid: c1047a7eea8c90b4b9018630e1deac88, type: 3}
+    proj: {fileID: 104352, guid: 11d1d43da6ba38c41b5c72adf1edcd6a, type: 3}
     projDelay: 0
     projHitMark: 
   - effSelf: {fileID: 0}
@@ -303810,6 +303820,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 151387087}
     m_Modifications:
+    - target: {fileID: 6675203977689948228, guid: b00514bf05d53ac4695070c586972f68, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 50a1485f38b044d0a9c5b7720b87c0f2, type: 3}
     - target: {fileID: 8329845098251078454, guid: b00514bf05d53ac4695070c586972f68, type: 3}
       propertyPath: m_Name
       value: warn_exclamation
@@ -399649,6 +399663,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1358687392}
     m_Modifications:
+    - target: {fileID: 6675203977689948228, guid: b00514bf05d53ac4695070c586972f68, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 50a1485f38b044d0a9c5b7720b87c0f2, type: 3}
     - target: {fileID: 8329845098251078454, guid: b00514bf05d53ac4695070c586972f68, type: 3}
       propertyPath: m_Name
       value: warn_exclamation

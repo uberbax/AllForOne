@@ -159,6 +159,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &1723151175974744251
@@ -395,6 +396,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &2967934728560765535
@@ -494,6 +496,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1 &4061025126534042762
@@ -809,6 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee53179e0d86e741888aea1d8e93f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deactIfNotNull: {fileID: 0}
   attachedVeh: {fileID: 0}
   filler: {fileID: 0}
   noTrack: 0
@@ -816,8 +820,13 @@ MonoBehaviour:
   asMain: 0
   asCurObj: 
   asObj: 
+  asDBObj: 
   redirect: {fileID: 0}
   copyTo: {fileID: 0}
+  alsoEnables: []
+  equipBtn: {fileID: 0}
+  slotBtn: {fileID: 0}
+  level: {fileID: 0}
   ignoreScale: 0
 --- !u!225 &1819915924165033447
 CanvasGroup:
@@ -852,6 +861,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!114 &4380970319473448688
@@ -1120,6 +1130,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!114 &5419066531626149637
@@ -1187,6 +1198,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 1
   closeObj: {fileID: 0}
 --- !u!1 &6070563813794843838
@@ -1402,6 +1414,7 @@ MonoBehaviour:
   hideEmpty: 0
   ignoreOnce: 0
   addDlt: 0
+  addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
 --- !u!1001 &19737032272155609
@@ -1866,6 +1879,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7842309179116302534}
     m_Modifications:
+    - target: {fileID: 6675203977689948228, guid: b00514bf05d53ac4695070c586972f68, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 50a1485f38b044d0a9c5b7720b87c0f2, type: 3}
     - target: {fileID: 8329845098251078454, guid: b00514bf05d53ac4695070c586972f68, type: 3}
       propertyPath: m_Name
       value: warn_exclamation

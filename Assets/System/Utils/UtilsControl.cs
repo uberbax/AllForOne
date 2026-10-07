@@ -1593,7 +1593,8 @@ public class UtilsControl : MonoBehaviour
         }
         */
 
-        if (ConfigLoader.GetMetaParamValue("over_proj_spd") < 0 && dltTime > 0)
+        //?????
+        if (/*ConfigLoader.GetMetaParamValue("over_proj_spd") < 0 &&*/ dltTime > 0)
         yield return new WaitForSeconds(dltTime);
         //max lifetime ? 10
         float maxLifeTime = 10;

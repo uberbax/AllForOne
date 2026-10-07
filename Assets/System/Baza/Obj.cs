@@ -344,6 +344,18 @@ public class RObj
         return find;
     }
 
+    public int GetFreeIndexFrom(int start, int hi)
+    {
+        int l = -1;
+        for (int i = start; i <= hi; i++)
+        {
+            var a = inventory.Find(x => x.curPars["used_slot"] == i);
+            if (a == null) return i;
+        }
+
+        return l;
+    }
+    
     public void RecalcInvSpace(int[,] space)
     {
         int szx = 10;
@@ -1128,6 +1140,13 @@ public class RObj
         {
             visMain.transform.localScale = new Vector3(Mathf.Abs(cc.x), cc.y, cc.z);
         }
+    }
+
+    public float GetScale()
+    {
+        var cc = visMain.transform.localScale;
+        if (invertScale) cc.x *= -1;
+        return Mathf.Sign(cc.x);
     }
     
 }
