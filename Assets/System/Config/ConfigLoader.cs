@@ -2124,6 +2124,15 @@ public class ConfigLoader : MonoBehaviour
                         mm.rewards.Add(new Bon { Key = yp[0], Value = int.Parse(yp[1]) });
                     }
                 }
+                else if (columns[j].ToUpper() == "REWARDS_PREMIUM")
+                {
+                    var jj = tt[j].Split('#');
+                    for (int k = 0; k < jj.Length; k++)
+                    {
+                        var yp = jj[k].Split(",");
+                        mm.rewardsPremium.Add(new Bon { Key = yp[0], Value = int.Parse(yp[1]) });
+                    }
+                }
                 else if (columns[j].ToUpper() == "REQITEMS")
                 {
                     var jj = tt[j].Split('#');

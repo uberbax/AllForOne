@@ -1311,6 +1311,7 @@ public class ElTasko
     
     public string id;
     public List<Bon> rewards = new List<Bon>();
+    public List<Bon> rewardsPremium = new List<Bon>();
     public List<UnoReq> reqStart = new List<UnoReq>();
     public List<UnoReq> reqFinish = new List<UnoReq>();
     public List<Bon> reqItems = new List<Bon>();
