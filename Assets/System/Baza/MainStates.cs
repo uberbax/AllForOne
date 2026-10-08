@@ -1991,7 +1991,10 @@ public class MainStates : MonoBehaviour
                     AddItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } },
                         curLoot);
 
-                DelItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } });
+                var cnt = (int)o.GetPar("count_sell");
+                if (cnt < 1) cnt = 1;
+                
+                DelItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = cnt/*(int)o.upgradePars["amount"]*/ } });
                 Save();
             }
             else if (SV == "take_skill")
