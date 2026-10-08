@@ -46,7 +46,6 @@ public class DatabaseAll : MonoBehaviour
 
     private void OnSkillsParsed(List<FormatSkill> objs)
     {
-        Debug.Log("hah " + objs.Count);
         foreach (var v in objs)
         {
             var o = new Obj();
@@ -174,7 +173,6 @@ public class DatabaseAll : MonoBehaviour
 
     private void OnItemsParsed(List<FormatArtefact> objs)
     {
-        Debug.Log("hah " + objs.Count);
         foreach (var v in objs)
         {
             var o = new Obj();
@@ -237,7 +235,6 @@ public class DatabaseAll : MonoBehaviour
 
     private void OnHeroesParsed(List<FormatHero> objs)
     {
-        Debug.Log("hah " + objs.Count);
         foreach (var v in objs)
         {
             var o = new Obj();
