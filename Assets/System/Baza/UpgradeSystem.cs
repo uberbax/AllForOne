@@ -57,7 +57,18 @@ public class UpgradeSystem : MonoBehaviour
             return res;
         }
         */
+        var ee = (int)who.GetPar("count_sell");
+        if (ee == 0) ee = 1;
 
+        if (ee > 1)
+        {
+            List<Bon> res = new List<Bon>();
+            foreach (var v in who.dbObj.price)
+            {
+                res.Add(new Bon{Key = v.Key, Value = v.Value * ee});
+            }
+            return res;
+        }
         return who.dbObj.price;
         return new List<Bon> { new Bon{Key = "gold", Value = 100} };
     }

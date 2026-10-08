@@ -704,9 +704,14 @@ public class MainStates : MonoBehaviour
         return (playerData.dynTaken.Contains(id));
     }
 
-    public void DelItems(List<Bon> what)
+    public void DelItems(List<Bon> what, RObj who = null)
     {
-        var a = all["main_player"].inventory;
+        List<RObj> a = new List<RObj>();
+        if (who == null)
+            a = all["main_player"].inventory;
+        else
+            a = who.inventory;
+        
         List<RObj> toDelete = new List<RObj>();
         foreach (var v in what)
         {
@@ -1918,7 +1923,15 @@ public class MainStates : MonoBehaviour
                 {
                     DelItems(gg);
                     if (o.it == ItemType.projectile && skillBuyingBuff) AddBuff(all["main_player"], o);
-                    else AddItem(all["main_player"], o);
+                    else
+                    {
+                        var cnt = (int)o.GetPar("count_sell");
+                        if (cnt == 0) cnt = 1;
+                        AddItems(new List<Bon>{new Bon{Key = o.dbObj.ID, Value = cnt}});
+                        DelItems(new List<Bon>{new Bon{Key = o.dbObj.ID, Value = cnt}}, o.owner);
+                        
+                        //AddItem(all["main_player"], o);
+                    }
 
                     all["main_player"].RecalcPars();
                     OnBuy(o);
@@ -2227,6 +2240,24 @@ public class MainStates : MonoBehaviour
         }
         skl.SetPar("used_slot", -1);
         mainPlayer.inventory.Remove(skl);
+    }
+
+    public void UnEquipAllSkills()
+    {
+        List<RObj> allSkills = new List<RObj>();
+        foreach (var skl in mainPlayer.inventory)
+        {
+            if (skl.it == ItemType.projectile)
+            {
+                skl.SetPar("used_slot", -1);
+                allSkills.Add(skl);
+            }
+        }
+
+        foreach (var v in allSkills)
+        {
+            mainPlayer.inventory.Remove(v);
+        }
     }
     
     
@@ -2580,6 +2611,13 @@ public class MainStates : MonoBehaviour
         mainPlayer.dbObj = dbObj;
         
         UnequipBasicSkill();
+
+        if (e.num == 1)
+        {
+            //unequip all skills
+            UnEquipAllSkills();
+            
+        }
         
         foreach (var v in dbObj.skills)
         {

@@ -1160,6 +1160,22 @@ public class Bon
     public string Val2 = "";
     public int Val3 = 0;
     public int ValLvl = 0;
+    public static Bon operator *(Bon bon, int k)
+    {
+        if (bon == null) throw new ArgumentNullException(nameof(bon));
+        return new Bon
+        {
+            Key = bon.Key,
+            Value = bon.Value * k,
+            Val2 = bon.Val2,
+            Val3 = bon.Val3,
+            ValLvl = bon.ValLvl
+        };
+    }
+
+    public static Bon operator *(int k, Bon bon) => bon * k;
+    
+    
 }
 
 [System.Serializable]

@@ -1427,7 +1427,7 @@ public class UtilsControl : MonoBehaviour
         }
         return result;
     }
-
+    
     public static Vector3 GetMousePoint()
     {
         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)

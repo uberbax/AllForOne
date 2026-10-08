@@ -16,10 +16,11 @@ public class SkillExecutor : MonoBehaviour
 
     public Transform targetersRoot;
     public Targeter curTargeter;
-    
+
     public PathChecker movePath;
-    
+
     public static float timeWait = 0.5f;
+
     private void Awake()
     {
         instance = this;
@@ -28,13 +29,14 @@ public class SkillExecutor : MonoBehaviour
 
     public static Dictionary<string, int> mapFilter = new Dictionary<string, int>
     {
-        {"any", -1},
-        {"lowest", 0},
-        {"highest", 1},
+        { "any", -1 },
+        { "lowest", 0 },
+        { "highest", 1 },
     };
 
     //my_side wave
-    public List<RObj> GetAllTargets(RObj who, RObj skl, string meta1 = "", string meta2 = "", List<string> metas = null, Vector3 overPos = default, List<RObj> except = null)
+    public List<RObj> GetAllTargets(RObj who, RObj skl, string meta1 = "", string meta2 = "", List<string> metas = null,
+        Vector3 overPos = default, List<RObj> except = null)
     {
         List<RObj> targets = new List<RObj>();
         foreach (var v in MainStates.instance.combats)
@@ -49,25 +51,26 @@ public class SkillExecutor : MonoBehaviour
                 d = MainStates.instance.GetDistance(who, v, out float dd);
             else
                 d = MainStates.instance.GetDistance(overPos, v, out float dd);
-            
+
             if (d > skl.GetPar("range")) continue;
-            
+
             targets.Add(v);
         }
 
-        targets = GetTargets(who, targets, "filter_target", "x",(int)skl.GetPar("target"), overPos);
-        targets = GetTargets(who, targets, "filter_self", "x",(int)skl.GetPar("filter_self"), overPos);
-        targets = GetTargets(who, targets, "filter_val", "range",(int)skl.GetPar("filter_range"), overPos);
-        targets = GetTargets(who, targets, "filter_ratio_val", "health",(int)skl.GetPar("filter_hp"), overPos);
-        targets = GetTargets(who, targets, "filter_val", "attack",(int)skl.GetPar("filter_atk"), overPos);
-        
+        targets = GetTargets(who, targets, "filter_target", "x", (int)skl.GetPar("target"), overPos);
+        targets = GetTargets(who, targets, "filter_self", "x", (int)skl.GetPar("filter_self"), overPos);
+        targets = GetTargets(who, targets, "filter_val", "range", (int)skl.GetPar("filter_range"), overPos);
+        targets = GetTargets(who, targets, "filter_ratio_val", "health", (int)skl.GetPar("filter_hp"), overPos);
+        targets = GetTargets(who, targets, "filter_val", "attack", (int)skl.GetPar("filter_atk"), overPos);
+
         return targets;
     }
-    
-    public List<RObj> GetTargets(RObj who, List<RObj> targets, string filterName, string filterPar, int filterVal, Vector3 overPos = default)
+
+    public List<RObj> GetTargets(RObj who, List<RObj> targets, string filterName, string filterPar, int filterVal,
+        Vector3 overPos = default)
     {
         if (filterVal == -1) return targets;
-        
+
         if (filterName == "filter_target")
         {
             if (filterVal == 0)
@@ -78,7 +81,7 @@ public class SkillExecutor : MonoBehaviour
             {
                 return targets;
             }
-            else 
+            else
             {
                 return targets.FindAll(x => x.tags[0] == who.tags[0]);
             }
@@ -96,9 +99,11 @@ public class SkillExecutor : MonoBehaviour
             else
             {
                 if (overPos == default)
-                    targets = targets.OrderBy(x => 10000 - MainStates.instance.GetDistance(who, x, out float dd)).ToList();
+                    targets = targets.OrderBy(x => 10000 - MainStates.instance.GetDistance(who, x, out float dd))
+                        .ToList();
                 else
-                    targets = targets.OrderBy(x => 10000 - MainStates.instance.GetDistance(overPos, x, out float dd)).ToList();
+                    targets = targets.OrderBy(x => 10000 - MainStates.instance.GetDistance(overPos, x, out float dd))
+                        .ToList();
             }
 
             return targets;
@@ -113,7 +118,7 @@ public class SkillExecutor : MonoBehaviour
 
             return targets;
         }
-        
+
         if (filterName == "filter_ratio_val")
         {
             if (filterVal == 1)
@@ -127,7 +132,7 @@ public class SkillExecutor : MonoBehaviour
 
             return targets;
         }
-        
+
         if (filterName == "filter_val")
         {
             if (filterVal == 1)
@@ -141,13 +146,13 @@ public class SkillExecutor : MonoBehaviour
 
             return targets;
         }
-        
+
         return new List<RObj>();
     }
 
     public ExecReso ExecuteSkill(RObj who, string skl, RObj target, Dictionary<string, float> addPars = null)
     {
-        var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false, addPars: addPars); 
+        var h0 = DatabaseAll.instance.CreateProjectile(who, skl, Vector3.zero, false, false, addPars: addPars);
         return ExecuteSkill(who, h0, target, addPars: addPars);
     }
 
@@ -155,14 +160,15 @@ public class SkillExecutor : MonoBehaviour
     {
         ExecuteSkill(e.who, e.what, null);
     }
-    
-    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false, List<RObj> except = null, Bon change = null, bool useSame = false,
+
+    public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false,
+        List<RObj> except = null, Bon change = null, bool useSame = false,
         string reqTag = "", Dictionary<string, float> addPars = null)
     {
         float d = 1e+10f;
         //cur weapon skill ?
         skl = who.GetSKillReplace(skl);
-        
+
         var targ = GetAllTargets(who, skl, reqTag, "", null, overPos, except);
         if (targ.Count == 0) return ExecReso.NO_TARGETS;
         else
@@ -175,10 +181,10 @@ public class SkillExecutor : MonoBehaviour
                 targ.Insert(0, target);
             }
         }
-        
+
         if (target == null)
         {
-            target = MainStates.instance.GetClosestEnemy(who, out d, reqTag:reqTag);
+            target = MainStates.instance.GetClosestEnemy(who, out d, reqTag: reqTag);
         }
         else
         {
@@ -189,20 +195,22 @@ public class SkillExecutor : MonoBehaviour
             else
                 d = MainStates.instance.GetDistance(overPos, target, out float dd);
         }
-        
+
         if (d > skl.GetPar("range")) return ExecReso.NO_TARGETS;
         if (targ.Count == 0) return ExecReso.NO_TARGETS;
-        float mr1 =  (1 + who.GetPar("mana_reduction")/100.0f);
-        if (who.GetPar("mana") < skl.GetPar("manacost")*mr1 && !overCd) return ExecReso.NO_MANA;
+        float mr1 = (1 + who.GetPar("mana_reduction") / 100.0f);
+        if (who.GetPar("mana") < skl.GetPar("manacost") * mr1 && !overCd) return ExecReso.NO_MANA;
 
         if (ConfigLoader.GetMetaParamValue("req_line_sight") > 0)
         {
             RaycastHit2D h;
             if (overPos == default)
-                h =Physics2D.Raycast(who.Position, target.Position - who.Position, skl.GetPar("range"), 1 << LayerMask.NameToLayer("Nopass"));
+                h = Physics2D.Raycast(who.Position, target.Position - who.Position, skl.GetPar("range"),
+                    1 << LayerMask.NameToLayer("Nopass"));
             else
-                h =Physics2D.Raycast(overPos, target.Position - overPos, skl.GetPar("range"), 1 << LayerMask.NameToLayer("Nopass"));
-            
+                h = Physics2D.Raycast(overPos, target.Position - overPos, skl.GetPar("range"),
+                    1 << LayerMask.NameToLayer("Nopass"));
+
             if (h.collider != null)
             {
                 return ExecReso.NO_SIGHT;
@@ -211,8 +219,12 @@ public class SkillExecutor : MonoBehaviour
 
         var ll = ResourceHolder.instance.GetMeSkillEtc(who.dbObj, skl.dbObj.ID);
         int projSpawnType = 0;
-        //who main player ? self effect ?
-        if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
+        bool isEmpty = false;
+        if (ll == null || ll.proj == null || ll.proj.name == "empty")
+            isEmpty = true;
+
+//who main player ? self effect ?
+    if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
         {
             var kk = Instantiate(ResourceHolder.instance.effSelf);
             //find head
@@ -332,11 +344,13 @@ public class SkillExecutor : MonoBehaviour
                         }
                     }
 
+                    float yy = timeWait;
+                    if (isEmpty) yy -= 0.3f;
                     ro.main.SetActive(false);
                     FunctionTimer.Create(() =>
                     {
                         ro.main.SetActive(true);
-                    }, timeWait);
+                    }, yy);
                     
                     FunctionTimer.Create(() =>
                     {
@@ -360,7 +374,7 @@ public class SkillExecutor : MonoBehaviour
                                     Destroy(ro.main);
                                 }
 
-                            }, null, dltTime:timeWait);
+                            }, null, dltTime:yy);
                     }, dt * (float)j);
 
 

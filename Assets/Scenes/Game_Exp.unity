@@ -7642,7 +7642,7 @@ Transform:
   m_GameObject: {fileID: 34535937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.74, y: 0.88, z: 0}
+  m_LocalPosition: {x: 128.76, y: 34.630005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7676,6 +7676,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -7929,6 +7930,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3941227456490627433, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5225999855243305600, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
       propertyPath: m_SortingOrder
       value: 800
@@ -7944,6 +7949,10 @@ PrefabInstance:
     - target: {fileID: 8637733675270507087, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
       propertyPath: m_fontSizeBase
       value: 99.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637733675270507087, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9038,7 +9047,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -20002,11 +20011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
@@ -44965,11 +44970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
@@ -47647,11 +47648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
@@ -92711,11 +92708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
@@ -96958,7 +96951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -109136,11 +109129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
@@ -128180,11 +128169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
@@ -130035,7 +130020,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -141273,7 +141258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -175892,7 +175877,7 @@ Transform:
   m_GameObject: {fileID: 970305389}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.14, y: -1.02, z: 0}
+  m_LocalPosition: {x: 136.64, y: 32.730003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -175926,6 +175911,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -179264,7 +179250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -193198,7 +193184,7 @@ Transform:
   m_GameObject: {fileID: 1063826304}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.44, y: 0.9200001, z: 0}
+  m_LocalPosition: {x: 140.94, y: 34.670006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -193232,7 +193218,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
-  - status
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars:
@@ -198252,7 +198238,7 @@ Transform:
   m_GameObject: {fileID: 1086837050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.71, y: -1.51, z: 0}
+  m_LocalPosition: {x: 129.79, y: 32.240005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -198286,6 +198272,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -207631,7 +207618,7 @@ MonoBehaviour:
   param: not_equiped
   param2: 
   clickFunc: buy
-  fillFunc: buy,!sell
+  fillFunc: buy,!sell,count_sell
   replaceClick: buy
   slots: []
   root: {fileID: 513291212}
@@ -207711,7 +207698,7 @@ MonoBehaviour:
   param: not_equiped,has_slot
   param2: 
   clickFunc: sell
-  fillFunc: sell,!buy
+  fillFunc: sell,!buy,count_sell
   replaceClick: sell
   slots: []
   root: {fileID: 513291212}
@@ -213991,6 +213978,7 @@ MonoBehaviour:
     - col_strike
     - fireball
     - basic_magic
+    - lightning_strike
     m_values:
     - {fileID: 8300000, guid: db3fc47d7c9ab4f49a60cbfebc36b836, type: 3}
     - {fileID: 8300000, guid: 8d3f502a33436ad45868e60e7b2aa5f5, type: 3}
@@ -214010,6 +213998,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: db3fc47d7c9ab4f49a60cbfebc36b836, type: 3}
     - {fileID: 8300000, guid: 0eb5d476a09d09a4d9dc7d8820a5fb76, type: 3}
     - {fileID: 8300000, guid: 8726efdd65e8bc44ba3503904f93e52e, type: 3}
+    - {fileID: 8300000, guid: 47d95f9cb585f9c4e94d4fc54e60b225, type: 3}
   heroClasses:
     m_keys:
     - hero_warrior
@@ -216358,7 +216347,7 @@ Transform:
   m_GameObject: {fileID: 1171895229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.22, y: 1.56, z: 0}
+  m_LocalPosition: {x: 138.72, y: 35.310005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -216392,6 +216381,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -226058,7 +226048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -226607,7 +226597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -238027,6 +238017,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -256421,6 +256412,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3941227456490627433, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5225999855243305600, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
       propertyPath: m_SortingOrder
       value: 800
@@ -256436,6 +256431,10 @@ PrefabInstance:
     - target: {fileID: 8637733675270507087, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
       propertyPath: m_fontSizeBase
       value: 99.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637733675270507087, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -259782,7 +259781,7 @@ Transform:
   m_GameObject: {fileID: 1418709308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.59, y: 0.09, z: 0}
+  m_LocalPosition: {x: 136.09, y: 33.840004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -259816,6 +259815,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -313225,7 +313225,7 @@ MonoBehaviour:
     pos: {x: 0, y: 0, z: 0}
   is3D: 0
   isMouseDown: 0
-  num: 0
+  num: 1
   dyno:
     id: 
     price: []
@@ -313808,7 +313808,7 @@ Transform:
   m_GameObject: {fileID: 1687923245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.84, y: 1.56, z: 0}
+  m_LocalPosition: {x: 135.34, y: 35.310005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -313842,6 +313842,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -317122,6 +317123,89 @@ MonoBehaviour:
   slotBtn: {fileID: 0}
   level: {fileID: 0}
   ignoreScale: 0
+--- !u!1 &1706186896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706186897}
+  - component: {fileID: 1706186899}
+  - component: {fileID: 1706186898}
+  m_Layer: 5
+  m_Name: ClickParticles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1706186897
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706186896}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1966143097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1706186898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706186896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4218b1e943c064f42a686ce07e4f4da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::UIClickParticles
+  emitOnClick: 1
+  particleSprite: {fileID: 0}
+  particleColor: {r: 1, g: 0.85, b: 0.35, a: 1}
+  particlesPerClick: 12
+  maxParticles: 128
+  lifetime: {x: 0.3, y: 0.6}
+  speed: {x: 90, y: 260}
+  size: {x: 6, y: 14}
+  gravity: {x: 0, y: -250}
+  useUnscaledTime: 1
+--- !u!223 &1706186899
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706186896}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1706333305
 GameObject:
   m_ObjectHideFlags: 0
@@ -337764,7 +337848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -359499,7 +359583,7 @@ Transform:
   m_GameObject: {fileID: 1925381293}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.1, y: 0.15, z: 0}
+  m_LocalPosition: {x: 129.4, y: 33.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -359533,6 +359617,7 @@ MonoBehaviour:
   - animator#pr:1
   - realcol#val:0.2
   - info
+  - rand_move
   addedInvLoot: 
   addedInv: []
   addedPars: []
@@ -366581,6 +366666,7 @@ RectTransform:
   - {fileID: 2086004049}
   - {fileID: 1922303009}
   - {fileID: 1633800728}
+  - {fileID: 1706186897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -402245,6 +402331,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3546234629122181302, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941227456490627433, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637733675270507087, guid: a9f0f030ad017904dae5d7730a091ca3, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

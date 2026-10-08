@@ -214,8 +214,10 @@ public class ResourceHolder : MonoBehaviour
         {
             var gg = UpgradeSystem.instance.GetPrice(r, a.param);
             var oo = a.GetComponent<GBind>();
+            var ff = (int)r.GetPar("count_sell");
+            if (ff == 0) ff = 1;
             oo.GetImage("icon").sprite = items[gg[0].Key];
-            oo.GetText("price").text = gg[0].Value.ToString();
+            oo.GetText("price").text = (gg[0].Value * ff).ToString();
             
             
             //a.transform.Find("icon").GetComponent<Image>().sprite = items[gg[0].Key];

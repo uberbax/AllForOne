@@ -225,13 +225,16 @@ public class UIfiller : MonoBehaviour
                         a.transform.SetAsLastSibling();
                         continue;
                     }
+                    
+                    if (res[i] == null)
+                        a.GetComponentInChildren<CanvasGroup>().alpha = 0;
+                    else a.gameObject.SetActive(true);                    
                         
                     a.GetComponent<ObjHolder>().obj = res[i];
                     a.GetComponent<ObjHolder>().noTrack = true;
                     a.GetComponent<ObjHolder>().filler = this;
                     a.GetComponent<ObjHolder>().OnEnable();
-                    if (res[i] == null)
-                        a.GetComponentInChildren<CanvasGroup>().alpha = 0;
+
                     //a.transform.SetAsLastSibling();
                 }
             }
