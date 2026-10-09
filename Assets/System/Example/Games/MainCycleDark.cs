@@ -35,22 +35,54 @@ public class MainCycleDark : MonoBehaviour
     public Button start;
     [HelpBox("Set this", MessageMode.Warning)]
     public GameObject loading;
+    public List<GameObject> activateAfterLoading;
+    
     public GameObject logo;
     public GameObject firstSlide;
+
+    [Header("Lift")] 
+    public Button goDownPrison;
+    public GameObject cages;
+    public GameObject lift;
+    public GameObject dynScreen;
+    public Transform liftLo;
+    public Transform liftHi;
+    public Transform dynScreenLo;
+    public Transform dynScreenHi;
+    public GameObject character;
+    public GameObject door;
+    
+    public void HandleLift()
+    {
+        Transitioner.instance.Simple(null, new List<GameObject>{cages}, () =>
+        {
+            UtilsControl.Instance.MoveTo(lift.transform, 200f, liftLo.position, () =>
+            {
+                UtilsControl.Instance.MoveTo(dynScreen.transform, 200f, dynScreenLo.position, () =>
+                {
+                    //particles dust ?
+                    door.GetComponent<SpriterAnim>().CrossFade("open", 0.1f);
+                    //enable movement
+                    
+                }, null, useRight:false);
+            }, null, useRight:false);
+        });
+    }
+    
+    
     public void DoMenu(bool hasRun)
     {
         if (hasRun)
         {
             start.onClick.AddListener( ()=>
-                Transitioner.instance.Simple(loading)
+                Transitioner.instance.Simple(loading, activateAfterLoading)
             );
         }
         else
         {
             start.onClick.AddListener(() =>
                 {
-                    logo.SetActive(false);
-                    firstSlide.SetActive(true);
+                    Transitioner.instance.Simple(loading, activateAfterLoading);
                 }
             );
         }
@@ -90,7 +122,7 @@ public class MainCycleDark : MonoBehaviour
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle", 1);
             MainStates.lastBattleTime = Time.time;
-            mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
+            //mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(false);
             MainStates.instance.UI_unitsPlaced.SetActive(false);
@@ -128,7 +160,7 @@ public class MainCycleDark : MonoBehaviour
             BattleController.instance.Flee();
             BattleController.instance.Clean();
             ModelStatistics.instance.SetStatValueForce("battle", 1);
-            mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
+            //mainCamera.GetComponent<CameraFollow>().target = main.main.transform;
             secondMain.Destroy();
             MainStates.instance.UI_skills.SetActive(false);
             //MainStates.instance.UI_unitsPlaced.SetActive(false);
@@ -140,9 +172,9 @@ public class MainCycleDark : MonoBehaviour
             MainStates.instance.dropTables["battle_reward"] = new List<Bon>();
         });
 
-        EventManager.SUB("go_home", (x) => { Camera.main.GetComponent<CameraFollow>().target = basePos; });
+        //EventManager.SUB("go_home", (x) => { Camera.main.GetComponent<CameraFollow>().target = basePos; });
 
-        EventManager.SUB("go_map", (x) => { Camera.main.GetComponent<CameraFollow>().target = main.main.transform; });
+        //EventManager.SUB("go_map", (x) => { Camera.main.GetComponent<CameraFollow>().target = main.main.transform; });
 
         EventManager.SUB("battle_ended", BattleEnded);
         
@@ -152,7 +184,9 @@ public class MainCycleDark : MonoBehaviour
         });
 
         skipTurn.onClick.AddListener(() => SkipTurn());
-        MainStates.handleInNoBattle = false;
+        MainStates.handleCDInNoBattle = false;
+        goDownPrison.onClick.AddListener(HandleLift);
+        
     }
 
     public Transform battlePoint;
@@ -176,7 +210,7 @@ public class MainCycleDark : MonoBehaviour
         MainStates.instance.UI_squadList.SetActive(false);
 
 
-        mainCamera.GetComponent<CameraFollow>().target = battlePoint;
+        //mainCamera.GetComponent<CameraFollow>().target = battlePoint;
         MainStates.instance.mainPlayer.ResetCDs();
 
         //we need to create player clone basically, but with available skills
@@ -330,7 +364,7 @@ public class MainCycleDark : MonoBehaviour
         main.AddMeta("my_side");
         //
         main.AddViz("click_move");
-        Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
+        //Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
 
         //
         var cc = main.main.AddComponent<NavMeshAgent>();

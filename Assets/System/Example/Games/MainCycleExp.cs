@@ -146,7 +146,7 @@ public class MainCycleExp : MonoBehaviour
         });
 
         skipTurn.onClick.AddListener(() => SkipTurn());
-        MainStates.handleInNoBattle = false;
+        MainStates.handleCDInNoBattle = false;
     }
 
     public Transform battlePoint;

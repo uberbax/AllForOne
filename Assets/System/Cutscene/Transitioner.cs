@@ -121,13 +121,22 @@ public class Transitioner : MonoBehaviour
         Cutscener.instance.ExecuteCutscene("id_dragon");
     }
 
-    public void Simple(GameObject go)
+    public void Simple(GameObject go, List<GameObject> toActivate = null, Action end = null)
     {
         DoFade(1, 1, () =>
                 {
-                    go.SetActive(false);
+                    if (go)
+                        go.SetActive(false);
                     
-                }, null);
+                    if (toActivate != null)
+                        foreach (var a in toActivate)
+                            a.SetActive(true);
+                    
+                }, () =>
+        {
+            if (end != null)
+                end();
+        });
     }
 
     public void ClearSteps()
