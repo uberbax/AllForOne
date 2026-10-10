@@ -479,6 +479,8 @@ public class MainCycleExp : MonoBehaviour
 
     public static float tm = 1.7f;
     public static bool waitMove = true;
+    public static bool exceptMain = false;
+    
     
     private void Update()
     {
@@ -522,7 +524,7 @@ public class MainCycleExp : MonoBehaviour
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, tm, "sword", true, waitMove));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(exceptMain, tm, "sword", true, waitMove));
             }
         }
         else

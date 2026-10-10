@@ -29,6 +29,8 @@ public class XDshoot : ComponentBehavior
             ro.AddViz("coll");
             var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+            ro.main.name = "BOMBOM";
+            
             var dlt = pos - holder.transform.position - vv;
             UtilsControl.Instance.MoveTo(ro.main.transform, 15, holder.transform.position + new Vector3(dlt.x, dlt.y, 0)*100, null, null);
         }

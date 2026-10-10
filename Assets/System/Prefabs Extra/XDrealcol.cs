@@ -32,6 +32,10 @@ public class XDrealcol : ComponentBehavior
 
             // ? pomojet li
             rigidbody.freezeRotation = true;
+            
+            //
+            col.offset = new Vector2(0, 0.23f);
+            col.radius = 0.28f;
         }
         else
         {

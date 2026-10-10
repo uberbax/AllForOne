@@ -3003,7 +3003,8 @@ public class MainStates : MonoBehaviour
         
         if (wasCrit)
             a.SetPar("was_crit", 1);
-        
+
+        atk = (int)atk;
         a.ChangePar("registered_damage", atk);
         //raid boss ?
         var rb = a.GetPar("raid_boss");
@@ -3696,7 +3697,9 @@ public class MainStates : MonoBehaviour
             }
             
 
-            yield return new WaitForSeconds(tm);
+            if (tm > 0)
+                yield return new WaitForSeconds(tm);
+            
             if (manualDt)
             {
                 HandleCds( manualTick, combats[i]);

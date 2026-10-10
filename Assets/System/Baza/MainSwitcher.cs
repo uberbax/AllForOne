@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class MainSwitcher : MonoBehaviour
@@ -38,6 +39,7 @@ public class MainSwitcher : MonoBehaviour
             {
                 v.Value.AddMeta("sword");
                 v.Value.RemoveViz("rand_move");
+                v.Value.RemoveViz("info");
             }
         }
         
@@ -56,6 +58,18 @@ public class MainSwitcher : MonoBehaviour
 
         MainCycleExp.tm = 0;
         MainCycleExp.waitMove = false;
+        MainCycleExp.exceptMain = true;
+        
+        MainStates.instance.mainPlayer.RemoveViz("click_move");
+        MainStates.instance.mainPlayer.AddViz("move");
+        MainStates.instance.mainPlayer.AddViz("shoot");
+        
+        Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
+        //awaietrs
+        //MainStates.instance.awaitUnits.Clear();
+        //MainStates.instance.awaitUnits.Add("second_main", 1);
+        //
+        
         
     }
 
