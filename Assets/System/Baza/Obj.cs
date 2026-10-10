@@ -188,6 +188,11 @@ public class RObj
     
     [JsonIgnore]
     public GameObject visMain => visuals["vis_main"];
+    
+    public bool HasVisMain()
+    {
+        return visuals.TryGetValue("vis_main", out GameObject visMainObj);
+    }
 
     [NonSerialized] 
     public GameObject effect;

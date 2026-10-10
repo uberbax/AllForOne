@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class XDshoot : ComponentBehavior
 {
-    
+    public static bool is3Dshoot = false;
     private ObjHolder holder;
     
     Vector3 vv = Vector3.zero;
@@ -27,7 +27,16 @@ public class XDshoot : ComponentBehavior
         {
             var ro = DatabaseAll.instance.CreateProjectile(holder.obj, "basic_range", vv);
             ro.AddViz("coll");
-            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 pos = Vector3.zero;
+            if (is3Dshoot)
+            {
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                var h1 = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
+                pos = hit.point;
+                pos.z = 0;
+            }
+            else 
+                pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             ro.main.name = "BOMBOM";
             

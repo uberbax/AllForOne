@@ -3616,7 +3616,10 @@ public class UtilsControl : MonoBehaviour
             float yOffset = 4f * height * (t - t * t) + dY * t;
             
             who.position = new Vector3(horizontalPos.x, startPos.y + yOffset, STAY_Z/*horizontalPos.z*/);
-            who.transform.Rotate(0,0,180* Time.deltaTime);
+            //who.transform.Rotate(0,0,180* Time.deltaTime);
+            
+            a.visMain.transform.RotateAround(Camera.main.transform.forward, 10* Time.deltaTime);
+
             
             elapsedTime += Time.deltaTime;
             yield return null;

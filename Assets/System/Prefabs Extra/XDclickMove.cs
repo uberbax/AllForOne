@@ -6,7 +6,7 @@ using UnityEngine.Diagnostics;
 
 public class XDclickMove : ComponentBehavior
 {
-
+    public static bool is3Dclick = false;
     bool isMoving = false;
     private Vector3 endPos;
     private float speed = 3;
@@ -30,9 +30,20 @@ public class XDclickMove : ComponentBehavior
             //it also might be select or interactable
             
             //check click
-            
-            endPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            endPos.z = 0;
+
+            if (is3Dclick)
+            {
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                var h1 = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
+                endPos = hit.point;
+                endPos.z = 0;
+            }
+            else
+            {
+                endPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                endPos.z = 0;
+            }
+
             isMoving = true;
             if (mon.HasVis("animator"))
             {

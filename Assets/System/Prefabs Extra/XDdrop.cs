@@ -53,6 +53,11 @@ public class XDdrop : ComponentBehavior
                         a.main.transform.localScale /= size.x;
                 }
 
+                if (MainStates.isCameraFace)
+                {
+                    a.visMain.transform.forward = -Camera.main.transform.forward;
+                }
+
                 if (BattleController.instance.startDo || DungeonController.instance.inDungeon || 
                     MainStates.instance.inBattle)
                 {

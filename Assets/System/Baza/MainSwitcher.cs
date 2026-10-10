@@ -61,7 +61,7 @@ public class MainSwitcher : MonoBehaviour
         MainCycleExp.exceptMain = true;
         
         MainStates.instance.mainPlayer.RemoveViz("click_move");
-        MainStates.instance.mainPlayer.AddViz("move");
+        MainStates.instance.mainPlayer.AddViz("move#val:3");
         MainStates.instance.mainPlayer.AddViz("shoot");
         
         Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
@@ -70,8 +70,46 @@ public class MainSwitcher : MonoBehaviour
         //MainStates.instance.awaitUnits.Add("second_main", 1);
         //
         
-        
     }
+
+    public List<Transform> toRotate = new List<Transform>();
+    public List<Transform> toExclude = new List<Transform>();
+    
+    
+    [EditorAttributes.Button("Make 3D")]
+    public void Make3D()
+    {
+        Camera.main.orthographic = false;
+        Camera.main.GetComponent<CameraFollow>().useOffscreen = false;
+        Camera.main.transform.localEulerAngles = new Vector3(-30, 0, 0);
+        Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, -5.22f, 0);
+        //
+        XDclickMove.is3Dclick = true;
+        XDshoot.is3Dshoot = true;
+        MainStates.isCameraFace = true;
+        
+        foreach (var v in MainStates.instance.all)
+        {
+            if (v.Value.HasVisMain())
+                v.Value.visMain.transform.forward = Camera.main.transform.forward;
+        }
+
+        foreach (var v in toRotate)
+        {
+            for (int u = 0; u < v.childCount; u++)
+            {
+                var b = v.GetChild(u);
+                if (!b.gameObject.activeInHierarchy) continue;
+                if (toExclude.Contains(b)) continue;
+                
+                b.transform.forward = Camera.main.transform.forward;
+            }
+        }
+
+    }
+    
+    //nado еще make manhatta, isometric, hex
+    
 
     private void BattleClicked(ArgPass obj)
     {

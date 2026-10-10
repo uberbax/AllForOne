@@ -51,7 +51,8 @@ public class XDanimator : ComponentBehavior
             if (anim.GetComponent<AnimConvert>() != null)
             {
                 var cc = anim.GetComponent<AnimConvert>(); 
-                sNew = cc.anims[state];
+                if (cc.anims.ContainsKey(state))
+                    sNew = cc.anims[state];
             }
             anim.CrossFade(sNew, 0.2f);
         }

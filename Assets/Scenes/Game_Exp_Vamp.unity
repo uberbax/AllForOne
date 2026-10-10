@@ -20011,11 +20011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
@@ -26332,7 +26328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.5466309, y: 2.2490234}
+  m_AnchoredPosition: {x: -401.79663, y: 201.24902}
   m_SizeDelta: {x: -7.0999756, y: -4.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &138382126
@@ -45319,11 +45315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
@@ -48001,11 +47993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
@@ -94068,11 +94056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
@@ -110718,11 +110702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
@@ -129762,11 +129742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
@@ -167493,13 +167469,13 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 74.000916, y: 66, z: 0}
   ComponentScale: {x: 1, y: 1, z: 1}
-  FillSize: {x: 1080, y: 607.5, z: 0}
+  FillSize: {x: 1920, y: 1080, z: 0}
   ShrinkSize: {x: 999999, y: 999999, z: 999999}
   TargetPosition: {x: 812, y: -412, z: 0}
   TargetRotation: {x: -0, y: -0, z: -0, w: 1}
   TargetScale: {x: 1, y: 1, z: 1}
   TargetRectSize: {x: 148.00183, y: 132, z: 0}
-  TransformPosition: {x: 392, y: -175.75, z: 0}
+  TransformPosition: {x: 812, y: -412, z: 0}
   TransformRotation: {x: -0, y: -0, z: -0, w: 1}
   TransformScale: {x: 1, y: 1, z: 1}
   TransformRectSize: {x: 148.00183, y: 132}
@@ -185817,6 +185793,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015310381}
   m_CullTransparentMesh: 1
+--- !u!65 &1015333683
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109954320}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 200, y: 200, z: 1}
+  m_Center: {x: 50, y: 50, z: -1}
 --- !u!1 &1015475160 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 442654368022978758, guid: acd91e07681b847e5983b94b4cc559fe, type: 3}
@@ -205687,6 +205684,11 @@ MonoBehaviour:
   breathsPerMinute: 14
   horizontalScale: 0.008
   verticalScale: 0.018
+--- !u!1 &1109954320 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5682680340698572803, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+  m_PrefabInstance: {fileID: 1531750283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1110228851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 760023507910354144, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -212384,7 +212386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1200}
+  m_AnchoredPosition: {x: 0, y: 994.08356}
   m_SizeDelta: {x: 1080, y: 1534.0834}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1144502871
@@ -277902,6 +277904,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512806878}
   m_CullTransparentMesh: 1
+--- !u!4 &1513707189 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5056213842915750813, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+  m_PrefabInstance: {fileID: 1531750283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1515152869 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 442654367826999897, guid: acd91e07681b847e5983b94b4cc559fe, type: 3}
@@ -283319,6 +283326,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ForestVillage
       objectReference: {fileID: 0}
+    - target: {fileID: 5682680340698572803, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 5806043822873120372, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
       propertyPath: m_SortingOrder
       value: 456
@@ -284358,6 +284369,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 52575052}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5682680340698572803, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1015333683}
     - targetCorrespondingSourceObject: {fileID: 5682062365705240373, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
       insertIndex: -1
       addedObject: {fileID: 849476512}
@@ -310392,6 +310406,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!4 &1654309526 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3644483336214577502, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+  m_PrefabInstance: {fileID: 1531750283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1654456715
 GameObject:
   m_ObjectHideFlags: 0
@@ -328001,6 +328020,11 @@ MonoBehaviour:
   lo: {fileID: 230528101}
   high: {fileID: 575567974}
   doBreathing: 0
+--- !u!4 &1763516494 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4606649103581714507, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+  m_PrefabInstance: {fileID: 1531750283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1763732309 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4609427020153649061, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -333049,6 +333073,11 @@ SpriteRenderer:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 442654367826999897, guid: acd91e07681b847e5983b94b4cc559fe, type: 3}
   m_PrefabInstance: {fileID: 1416769174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1792649366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7188715693540220701, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
+  m_PrefabInstance: {fileID: 1531750283}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1792940527
 GameObject:
@@ -341376,6 +341405,14 @@ MonoBehaviour:
   battlePoint: {fileID: 2009177075}
   playerPos: {fileID: 1852905119}
   doRuntime: 0
+  toRotate:
+  - {fileID: 849476511}
+  - {fileID: 1531750284}
+  - {fileID: 1513707189}
+  - {fileID: 1792649366}
+  toExclude:
+  - {fileID: 1763516494}
+  - {fileID: 1654309526}
 --- !u!1 &1839860934
 GameObject:
   m_ObjectHideFlags: 0
@@ -368606,7 +368643,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1080, y: 2400}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

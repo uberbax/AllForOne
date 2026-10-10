@@ -15,6 +15,7 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public static bool isCameraFace = false;
     [Header("Use Save")] 
     public bool useSave;
     
