@@ -22,7 +22,41 @@ public class MainSwitcher : MonoBehaviour
     {
         instance = this;
         
-        EventManager.SUB("battle_press", BattleClicked);
+        //EventManager.SUB("battle_press", BattleClicked);
+    }
+
+    [EditorAttributes.Button("Make vampire")]
+    public void MakeVampire()
+    {
+        ModelStatistics.instance.SetStatValue("battle", 2);
+
+        foreach (var v in MainStates.instance.all)
+        {
+            var dir = MainStates.instance.mainPlayer.Position - v.Value.Position;
+            dir.z = 0;
+            if (dir.magnitude < 10)
+            {
+                v.Value.AddMeta("sword");
+                v.Value.RemoveViz("rand_move");
+            }
+        }
+        
+        MainStates.instance.mainPlayer.AddMeta("sword");
+        
+        MainStates.instance.inBattle = true;
+        MainStates.instance.InIteration = false;
+        
+        ConfigLoader.SetMetaParamValue("use_naprig", 0);
+        //
+        
+        foreach (var v in DatabaseAll.instance.skills)
+        {
+            v.Value.pars["range"] = v.Value.pars["saved_range"];
+        }
+
+        MainCycleExp.tm = 0;
+        MainCycleExp.waitMove = false;
+        
     }
 
     private void BattleClicked(ArgPass obj)

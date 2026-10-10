@@ -70,6 +70,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("rarity", v.RARITY);
             o.pars.Add("tier", v.TIER);
             
+            o.pars.Add("saved_range", v.RANGE);
             if (v.RANGE != 0)
             {
                 var over = ConfigLoader.GetMetaParamValue("skill_range");

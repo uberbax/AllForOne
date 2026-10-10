@@ -3528,7 +3528,7 @@ public class MainStates : MonoBehaviour
         return cc;
     }
     
-    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false)
+    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false, bool waitMove = true)
     {
         int did = Random.Range(0, 10000);
         if (InIteration) yield break;
@@ -3685,10 +3685,13 @@ public class MainStates : MonoBehaviour
             {
                 var h = gg.Iteration(true, reqTag: metaContain);
                 if (h != "move") break;
-                
-                while (combats[i].main.name.IndexOf("_move") >= 0)
+
+                if (waitMove)
                 {
-                    yield return null;
+                    while (combats[i].main.name.IndexOf("_move") >= 0)
+                    {
+                        yield return null;
+                    }
                 }
             }
             
@@ -3757,6 +3760,12 @@ public class MainStates : MonoBehaviour
                 }
 
             }
+            /*
+            else if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
+            {
+                mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position);
+            }
+            */
             else
             {
                 var vec = (c.Position - mon.Position).normalized;

@@ -399,10 +399,12 @@ public class MainCycleExp : MonoBehaviour
         XDloot.doMagnet = true;
 
         //set all ranges to 100
+        /*
         foreach (var v in DatabaseAll.instance.skills)
         {
             v.Value.pars["range"] = 100;
         }
+        */
 
         PlacerSystem.instance.onDragEach = (x) => { XDdrag.Boogey(x.main.transform); };
 
@@ -475,6 +477,9 @@ public class MainCycleExp : MonoBehaviour
 
     Coroutine coroutine;
 
+    public static float tm = 1.7f;
+    public static bool waitMove = true;
+    
     private void Update()
     {
         HandleAutomove();
@@ -517,7 +522,7 @@ public class MainCycleExp : MonoBehaviour
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1.7f, "sword", true));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, tm, "sword", true, waitMove));
             }
         }
         else
