@@ -118,9 +118,9 @@ public class PositionSetter : MonoBehaviour
     public Transform wallRoot;
     public Transform wallRootOther;
     public Transform fogRoot;
-    public UnoDir[,] floors = new UnoDir[200,200];
-    public Transform[,] walls = new Transform[200,200];
-    public Transform[,] fog = new Transform[200,200];
+    public UnoDir[,] floors = new UnoDir[300,300];
+    public Transform[,] walls = new Transform[300,300];
+    public Transform[,] fog = new Transform[300,300];
 
     public void ClearWalls()
     {
@@ -554,7 +554,7 @@ public class PositionSetter : MonoBehaviour
 
     public static PositionSetter instance;
 
-    private void Awake()
+    public void Awake()
     {
         if (main)
             instance = this;

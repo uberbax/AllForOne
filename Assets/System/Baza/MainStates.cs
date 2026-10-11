@@ -700,6 +700,23 @@ public class MainStates : MonoBehaviour
         return res;
     }
 
+    public static int[] RandomPermutation(int n)
+    {
+        int[] result = new int[n];
+
+        for (int i = 0; i < n; i++)
+            result[i] = i;
+
+        for (int i = n - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+
+            (result[i], result[j]) = (result[j], result[i]);
+        }
+
+        return result;
+    }
+    
     public bool HaveDynamic(string id)
     {
         return (playerData.dynTaken.Contains(id));

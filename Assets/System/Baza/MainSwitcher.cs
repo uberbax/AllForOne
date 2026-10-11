@@ -109,7 +109,32 @@ public class MainSwitcher : MonoBehaviour
     }
     
     //nado еще make manhatta, isometric, hex
-    
+
+    [EditorAttributes.Button("Make Hex")]
+    public void MakeHex()
+    {
+        ConfigLoader.SetMetaParamValue("mode_hex", 1);
+        
+        PositionSetter.instance.RecreatePByTile();
+        PositionSetter.instance.Awake();
+        //?
+        //PositionSetter.instance.n--;
+        //PositionSetter.instance.m--;
+        
+        
+        
+        foreach (var v in MainStates.instance.all)
+        {
+            if (v.Value.HasVisMain())
+            {
+                var hh = PositionSetter.instance.GetClosestPos(v.Value.Position);
+                v.Value.Position = hh.Item3;
+                v.Value.ref_pos_x = v.Value.ref_pos_x;
+                v.Value.ref_pos_y = v.Value.ref_pos_y;
+                v.Value.AdjustPosition();
+            }
+        }
+    }
 
     private void BattleClicked(ArgPass obj)
     {
