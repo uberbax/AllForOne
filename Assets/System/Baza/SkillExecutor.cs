@@ -346,6 +346,9 @@ public class SkillExecutor : MonoBehaviour
 
                     float yy = timeWait;
                     if (isEmpty) yy -= 0.3f;
+
+                    if (ro.dbObj.ID == "move") yy = 0;
+                    
                     ro.main.SetActive(false);
                     FunctionTimer.Create(() =>
                     {

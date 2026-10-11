@@ -1492,7 +1492,10 @@ public class UtilsControl : MonoBehaviour
 
             if (mon != null && ConfigLoader.GetMetaParamValue("mode_manhattan") < 1)
             {
-                mon.obj.Position = new Vector2(path[cur].Item1, path[cur].Item2);
+                mon.obj.Position = pp;
+                mon.obj.ref_pos_x = path[cur].Item1;
+                mon.obj.ref_pos_y = path[cur].Item2;
+                
             }
 
             if (mon) mon.DoAnim("walk");
@@ -1500,7 +1503,10 @@ public class UtilsControl : MonoBehaviour
             MoveTo(who, speed, pp + MainStates.instance.dlt, () =>
             {
                 var bb = who.GetComponent<ObjHolder>();
-                if (bb != null) bb.obj.Position = new Vector2(path[cur].Item1, path[cur].Item2);
+                if (bb != null)
+                {
+                    bb.obj.Position = new Vector2(path[cur].Item1, path[cur].Item2);
+                }
                 if (onEach != null) onEach();
                 MoveToMany(who, speed, path, cur + 1, act);
             }, null, useRight:false);

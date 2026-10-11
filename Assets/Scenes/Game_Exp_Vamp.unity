@@ -82040,7 +82040,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1606.2186}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &453703601
@@ -196461,11 +196461,6 @@ MonoBehaviour:
     what: manacost
     val: owner.mana
     compar: <=
-    meta: 
-  - typo: 8
-    what: owner.can_cast
-    val: 0
-    compar: '>'
     meta: 
   forOther: {fileID: 0}
   alsoActive: []
@@ -332676,7 +332671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -138}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1789155074
@@ -332725,7 +332720,7 @@ MonoBehaviour:
   nm: 
   compatibility: 
   command: GET_SKILLS
-  param: second_main
+  param: main_player
   param2: 
   clickFunc: 
   fillFunc: 
@@ -341513,6 +341508,8 @@ MonoBehaviour:
   toExclude:
   - {fileID: 1763516494}
   - {fileID: 1654309526}
+  skills: {fileID: 1789155072}
+  manhattanTarg: {fileID: 1184600410}
 --- !u!1 &1839860934
 GameObject:
   m_ObjectHideFlags: 0

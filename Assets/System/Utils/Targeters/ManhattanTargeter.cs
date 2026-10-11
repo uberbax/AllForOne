@@ -13,6 +13,7 @@ public class ManhattanTargeter : Targeter
     private void Start()
     {
         var go = new GameObject();
+        go.name = "EMTPTY_MAN";
         empty = DatabaseAll.instance.CreateAny("empty", false, 1, go);
     }
 
@@ -123,6 +124,7 @@ public class ManhattanTargeter : Targeter
 
     private void Update()
     {
+        if (SkillExecutor.instance.lastSkl == null) return;
         //do range
         var skl = SkillExecutor.instance.lastSkl.GetPar("range");
         var sklAoe = SkillExecutor.instance.lastSkl.GetPar("aoe");

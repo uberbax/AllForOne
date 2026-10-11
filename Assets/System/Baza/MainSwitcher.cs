@@ -69,6 +69,18 @@ public class MainSwitcher : MonoBehaviour
         //MainStates.instance.awaitUnits.Clear();
         //MainStates.instance.awaitUnits.Add("second_main", 1);
         //
+
+        if (isHex)
+        {
+            MainStates.instance.mainPlayer.RemoveViz("move");
+            MainStates.instance.mainPlayer.RemoveViz("shoot");
+            
+            MainStates.instance.awaitUnits.Clear();
+            MainStates.instance.awaitUnits.Add("main_player", 1);
+            
+            MainCycleExp.tm = 1.7f;
+            MainCycleExp.waitMove = true;
+        }
         
     }
 
@@ -109,7 +121,10 @@ public class MainSwitcher : MonoBehaviour
     }
     
     //nado еще make manhatta, isometric, hex
-
+    public GameObject skills;
+    public GameObject manhattanTarg;
+    private bool isHex = false;
+    
     [EditorAttributes.Button("Make Hex")]
     public void MakeHex()
     {
@@ -134,6 +149,11 @@ public class MainSwitcher : MonoBehaviour
                 v.Value.AdjustPosition();
             }
         }
+        
+        skills.SetActive(true);
+        manhattanTarg.SetActive(true);
+        MainStates.instance.mainPlayer.RemoveViz("click_move");
+        isHex = true;
     }
 
     private void BattleClicked(ArgPass obj)
