@@ -1430,16 +1430,18 @@ public class UtilsControl : MonoBehaviour
     
     public static Vector3 GetMousePoint()
     {
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
-        {
-            return Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-        else
+        
+        if (MainStates.is3D)
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var h = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
             return hit.point;
+        }        
+        else /* if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0 ) */
+        {
+            return Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
+
     }
     
     public void MoveToMany(Transform who, float speed, List<(float, float, float)> path, int cur, Action act, Action onEach = null)

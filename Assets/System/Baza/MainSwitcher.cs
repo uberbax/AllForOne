@@ -80,6 +80,7 @@ public class MainSwitcher : MonoBehaviour
             
             MainCycleExp.tm = 1.7f;
             MainCycleExp.waitMove = true;
+            MainCycleExp.exceptMain = false;
         }
         
     }
@@ -96,9 +97,9 @@ public class MainSwitcher : MonoBehaviour
         Camera.main.transform.localEulerAngles = new Vector3(-30, 0, 0);
         Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, -5.22f, 0);
         //
-        XDclickMove.is3Dclick = true;
-        XDshoot.is3Dshoot = true;
         MainStates.isCameraFace = true;
+        MainStates.is3D = true;
+        
         
         foreach (var v in MainStates.instance.all)
         {

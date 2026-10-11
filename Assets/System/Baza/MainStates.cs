@@ -16,6 +16,8 @@ using Random = UnityEngine.Random;
 public class MainStates : MonoBehaviour
 {
     public static bool isCameraFace = false;
+    public static bool is3D = false;
+    
     [Header("Use Save")] 
     public bool useSave;
     
@@ -2557,11 +2559,18 @@ public class MainStates : MonoBehaviour
         return res;
     }
 
+    public void HideRange()
+    {
+        rangeHolder.transform.position = new Vector3(1000, 1000, 1000);
+    }
+    
     public void ShowRange(LineRenderer range, Vector3 pos, float skl, float size)
     {
+        var gg = PositionSetter.instance.GetClosestPos(pos);
+        string calcStr = gg.Item1 + "x" + gg.Item2 + "x" + skl;
+        
         if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
         {
-            var gg = PositionSetter.instance.GetClosestPos(pos);
 
             if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
             {
@@ -2588,7 +2597,44 @@ public class MainStates : MonoBehaviour
                 range.SetPositions(poses);
             }
         }
+        else if (ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+        {
+            if (calcStr == lastR)
+            {
+                rangeHolder.transform.position = pos;
+            }
+            else
+            {
+                for (int i = 0; i < rangeHolder.transform.childCount; i++)
+                {
+                    rangeHolder.transform.GetChild(i).gameObject.SetActive(false);
+                }                
+                
+                lastR = calcStr;
+                var x = PositionSetter.instance.GetAllCellsInRange(pos, (int)skl);
+                rangeHolder.transform.position = pos;
+                for (int i = 0; i < x.Count; i++)
+                {
+                    GameObject b = null;
+                    if (i >= rangeHolder.transform.childCount)
+                    {
+                        b = Instantiate(PositionSetter.instance.greenCell, rangeHolder.transform);
+                    }
+                    else
+                    {
+                        b = rangeHolder.transform.GetChild(i).gameObject;
+                        b.SetActive(true);
+                    }
+                    b.transform.position = PositionSetter.instance.floors[x[i].Item1, x[i].Item2].transform.position;
+                }
+            }
+            
+
+        }
     }
+
+    public string lastR = "";
+    public GameObject rangeHolder;
 
     public void RandomizeItemStats(RObj who)
     {

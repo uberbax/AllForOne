@@ -14,6 +14,8 @@ public class PositionSetter : MonoBehaviour
     //unwalkable
     public GameObject wall;
     public GameObject frameBlack;
+    public GameObject greenCell;
+    public GameObject redCell;
     
     public enum CoordMode
     {
@@ -668,7 +670,7 @@ public class PositionSetter : MonoBehaviour
     {
         if (!fogRoot.gameObject.activeInHierarchy) return;
         var sz = ConfigLoader.GetMetaParamValue("fog_open");
-        var ll = GetAllFog(pos, (int)sz);
+        var ll = GetAllCellsInRange(pos, (int)sz);
         foreach (var v in lastOpen)
         {
             var bb = fog[v.Item1, v.Item2].GetComponent<SpriteRenderer>();
@@ -838,7 +840,7 @@ public class PositionSetter : MonoBehaviour
         return path;
     }
 
-    public List<(int, int, int, int, int)> GetAllFog(Vector3 from, int size)
+    public List<(int, int, int, int, int)> GetAllCellsInRange(Vector3 from, int size, bool includeIni = false)
     {
         List<(int, int, int)> path = new List<(int, int, int)>();
         var g0 = GetClosestPos(from);
@@ -855,7 +857,7 @@ public class PositionSetter : MonoBehaviour
             if (que[yk2].Item5 >= size) continue;
             var cur = floors[que[yk2].Item1, que[yk2].Item2];
             
-            if (tileMode == TileMode.Manhattan)
+            if (tileMode == TileMode.Manhattan || tileMode == TileMode.Isometric || tileMode == TileMode.Hex )
             {
                 foreach (var b in cur.Dirs)
                 {
@@ -879,6 +881,9 @@ public class PositionSetter : MonoBehaviour
             if (find)
                 break;
         }
+        
+        if (!includeIni)
+            que=que.GetRange(1, que.Count - 1);
 
         return que;
     }

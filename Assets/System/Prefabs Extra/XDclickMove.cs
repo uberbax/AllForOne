@@ -6,7 +6,6 @@ using UnityEngine.Diagnostics;
 
 public class XDclickMove : ComponentBehavior
 {
-    public static bool is3Dclick = false;
     bool isMoving = false;
     private Vector3 endPos;
     private float speed = 3;
@@ -31,7 +30,7 @@ public class XDclickMove : ComponentBehavior
             
             //check click
 
-            if (is3Dclick)
+            if (MainStates.is3D)
             {
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 var h1 = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));

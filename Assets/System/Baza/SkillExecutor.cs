@@ -421,8 +421,9 @@ public class SkillExecutor : MonoBehaviour
         
         lastSkl = skl;
         lastWho = who;
-        
-        if (MainStates.instance.awaitUnits.ContainsKey(who.RID))
+
+        var actReq = skl.GetPar("action_req") > 0;
+        if (MainStates.instance.awaitUnits.ContainsKey(who.RID) && !actReq)
         {
             MainStates.instance.awaitUnits[who.RID]--;
         }
@@ -538,6 +539,7 @@ public class SkillExecutor : MonoBehaviour
     {
         if (curTargeter != null) curTargeter.Deactivate();
         reqAction = false;
+        MainStates.instance.HideRange();
     }
 
     public void Update()
@@ -558,6 +560,7 @@ public class SkillExecutor : MonoBehaviour
             {
                 curTargeter.Deactivate();
                 reqAction = false;
+                MainStates.instance.HideRange();
                 return;
             }
         }
@@ -565,17 +568,19 @@ public class SkillExecutor : MonoBehaviour
         if (reqAction)
         {
             Vector3 pos = Vector3.zero;
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
-            {
-                pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                pos.z = -0.1f;
-            }
-            else
+            
+            if (MainStates.is3D)
             {
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 var h = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
                 pos = hit.point;
+            }            
+            else if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            {
+                pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                pos.z = -0.1f;
             }
+
 
             curTargeter.MouseMoved(pos);
         }
@@ -590,6 +595,14 @@ public class SkillExecutor : MonoBehaviour
                 var pos = UtilsControl.GetMousePoint();
                 curTargeter.Deactivate();
                 reqAction = false;
+                
+                MainStates.instance.HideRange();
+                
+                //?
+                if (MainStates.instance.awaitUnits.ContainsKey(lastWho.RID))
+                {
+                    MainStates.instance.awaitUnits[lastWho.RID]--;
+                }
 
                 if (MainStates.instance.freeTargeting)
                 {

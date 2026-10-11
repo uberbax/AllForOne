@@ -48,9 +48,17 @@ public class XDdrop : ComponentBehavior
                 var gb = a.visMain.GetComponent<SpriteRenderer>();
                 if (gb != null)
                 {
+                    float width = gb.bounds.size.x;
+
+                    if (width > 0f)
+                    {
+                        gb.transform.localScale *= (1f / width) * 0.5f;
+                    }
+                    /*
                     Vector2 size = gb.bounds.size;
                     if (size.x > 1)
                         a.main.transform.localScale /= size.x;
+                        */
                 }
 
                 if (MainStates.isCameraFace)
