@@ -192,6 +192,10 @@ public partial class SuperCharacterController:MonoBehaviour
 		if (debugGrounding) { currentGround.DebugGround(true, true, true, true, true); }
 
 		if (AfterSingleUpdate != null) { AfterSingleUpdate(); }
+
+
+		transform.parent.position += transform.localPosition;
+		transform.localPosition = Vector3.zero;
 	}
 
 	private void ProbeGround(int iter)

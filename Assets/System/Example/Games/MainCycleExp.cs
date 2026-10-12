@@ -444,6 +444,8 @@ public class MainCycleExp : MonoBehaviour
         //pet time
         var main_pet = new RObj("empty", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_pet");
         main_pet.AddViz("pet");
+        
+        EventManager.INV("after_load", new ArgPass());
     }
 
     public void BattleEnded(ArgPass obj)

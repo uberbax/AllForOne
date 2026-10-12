@@ -16,7 +16,16 @@ public class MainSwitcher : MonoBehaviour
     [Header("PRESS 1: do runtime")]
     public bool doRuntime;
 
-    
+    public bool is3D = false;
+    public void AfterLoad()
+    {
+        if (is3D)
+        {
+            MainStates.instance.mainPlayer.RemoveViz("click_move");
+            Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
+            
+        }
+    }
     
     
     private void Awake()
@@ -24,6 +33,7 @@ public class MainSwitcher : MonoBehaviour
         instance = this;
         
         //EventManager.SUB("battle_press", BattleClicked);
+        EventManager.SUB("after_load", pass => AfterLoad());
     }
 
     [EditorAttributes.Button("Make vampire")]
@@ -178,7 +188,7 @@ public class MainSwitcher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update0()
     {
         //runtime
        if (Input.GetKeyDown("1"))
