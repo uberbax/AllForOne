@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -178,16 +178,16 @@ public partial class SuperCharacterController:MonoBehaviour
 
 		ProbeGround(2);
 
-		if (slopeLimiting) { SlopeLimit(); }
+		if (slopeLimiting && currentGround.hasGround) { SlopeLimit(); }
 
 		ProbeGround(3);
 
-		if (clamping) { ClampToGround(); }
+		if (clamping && currentGround.hasGround) { ClampToGround(); }
 
 		bool isClamping = clamping || currentlyClampedTo != null;
 		Transform clampedTo = currentlyClampedTo != null ? currentlyClampedTo : currentGround.transform;
 
-		if (isClamping) { lastGroundPosition = clampedTo.position; }
+		if (isClamping && clampedTo != null) { lastGroundPosition = clampedTo.position; }
 
 		if (debugGrounding) { currentGround.DebugGround(true, true, true, true, true); }
 

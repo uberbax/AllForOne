@@ -20381,6 +20381,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46214,6 +46221,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49164,6 +49178,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96092,6 +96113,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98881,9 +98909,9 @@ MonoBehaviour:
   endDst: 0.1
   resetTargetOnEnd: 0
   holdZ: 0
-  delta: {x: 0, y: 0, z: 0}
+  delta: {x: 0, y: 8.05, z: 0}
   smallify: 0
-  useOffscreen: 1
+  useOffscreen: 0
   camLo: {fileID: 316997818}
   camHi: {fileID: 1993556762}
   kf: 2.2
@@ -113306,6 +113334,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132770,6 +132805,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221318,6 +221360,7 @@ MonoBehaviour:
     - pet
     - kill_req
     - rand_move
+    - coll3D
     m_values:
     - {fileID: 1651707953261391744, guid: f86804f86ef6d2d4cba08c01f59d4352, type: 3}
     - {fileID: 4461510688263357733, guid: 573ed837b1ecb23428d1c477d161cfa7, type: 3}
@@ -221363,6 +221406,7 @@ MonoBehaviour:
     - {fileID: 7440557169979966714, guid: b0e207c7cf2f9ac418b78ab28164ab8d, type: 3}
     - {fileID: 2993133939482401829, guid: 4106f0ef4564c0843a333d65ae51544a, type: 3}
     - {fileID: 4883399933547705982, guid: 34ed8e8efbcc6be448298ea0c5d4bb8d, type: 3}
+    - {fileID: 8015720412391402969, guid: c95a7343003ec4644a6c691590c753a2, type: 3}
   miscGO:
     m_keys:
     - obj_berserk
@@ -284305,6 +284349,10 @@ PrefabInstance:
     - target: {fileID: 1000010876330294, guid: 55ce8e060ebbb7742ba54dcc89842d76, type: 3}
       propertyPath: m_Name
       value: SnowyHillFlat (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010876330294, guid: 55ce8e060ebbb7742ba54dcc89842d76, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4000011508918566, guid: 55ce8e060ebbb7742ba54dcc89842d76, type: 3}
       propertyPath: m_RootOrder

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public partial class SuperCharacterController
 {
@@ -30,6 +30,8 @@ public partial class SuperCharacterController
 		private readonly QueryTriggerInteraction triggerInteraction;
 
 		private GroundHit primaryGround;
+        private bool warnedMissingGround;
+        public bool hasGround => primaryGround != null;
 		private GroundHit nearGround;
 		private GroundHit farGround;
 		private GroundHit stepGround;
@@ -51,7 +53,8 @@ public partial class SuperCharacterController
 		/// (3 are run each frame for the controller)</param>
 		public void ProbeGround(Vector3 origin, int iter)
 		{
-			ResetGrounds();
+			if (primaryGround != null) { warnedMissingGround = false; }
+            ResetGrounds();
 
 			Vector3 up = controller.up;
 			Vector3 down = -up;
@@ -155,7 +158,10 @@ public partial class SuperCharacterController
 				{ primaryGround = new GroundHit(sphereCastHit.point, sphereCastHit.normal, sphereCastHit.distance); }
 				else { primaryGround = new GroundHit(hit.point, hit.normal, hit.distance); }
 			}
-			else { Debug.LogWarning("[SuperCharacterController.cs]: WALKABLE LAYER NOT SET OR MISSING 'TempCast' LAYER.  SEE README FILE."); }
+			else if (!warnedMissingGround) {
+                warnedMissingGround = true;
+                Debug.LogWarning("[SuperCharacterController]: No ground collider found in the configured Walkable mask.", controller);
+            }
 		}
 
 		private void ResetGrounds()
@@ -165,6 +171,8 @@ public partial class SuperCharacterController
 			farGround = null;
 			flushGround = null;
 			stepGround = null;
+            transform = null;
+            superCollisionType = null;
 		}
 
 		public bool IsGrounded(bool currentlyGrounded, float distance)

@@ -111,6 +111,9 @@ namespace RPGCharacterAnims
 			// Check to make sure Navigation Action exists.
             if (!rpgCharacterController.HandlerExists(HandlerTypes.Navigation)) { return; }
 
+            // The demo navigation UI requires its scene pointer.
+            if (nav == null) { useNavigation = false; return; }
+
             useNavigation = GUI.Toggle(new Rect(550, 105, 100, 30), useNavigation, "Navigation");
 
 			// Check to see if there's a navigation pointer object.
@@ -145,7 +148,7 @@ namespace RPGCharacterAnims
 					rpgCharacterController.EndAction(HandlerTypes.Navigation);
 				}
 			}
-			else { Debug.LogWarning("No navigation pointer object set for NavMesh Navigation.", this); }
+			
 		}
 
 		private void Attacks()

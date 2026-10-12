@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PerfectLookAt:MonoBehaviour
@@ -13,6 +13,7 @@ public class PerfectLookAt:MonoBehaviour
 	public byte LegStabilizerMaxIterations = 20;
 	public bool m_DrawDebugLookAtLines = false;
 	private bool m_IsValid = true;
+    private bool m_WarnedMissingTarget;
 	public PerfectLookAtData[] m_LookAtBones;
 	private Quaternion[] m_BlendedRotations;
 	private Quaternion[] m_LastFrameRotations;
@@ -261,6 +262,7 @@ public class PerfectLookAt:MonoBehaviour
 
 	private void Update()
 	{
+        if (m_TargetObject == null) { return; }
 		if (m_LookAtBones.Length > 0) {
 			if (m_DrawDebugLookAtLines) {
 				Vector3 destination = m_TargetObject.transform.position - m_LookAtBones[0].m_Bone.position;
@@ -289,10 +291,14 @@ public class PerfectLookAt:MonoBehaviour
 	private void LateUpdate()
 	{
 		if (m_TargetObject == null) {
-			Debug.LogWarning("No target object set for the component. Component won't work without a target object", this);
+			if (!m_WarnedMissingTarget) {
+                Debug.LogWarning("PerfectLookAt has no target; head tracking is inactive until a target is assigned.", this);
+                m_WarnedMissingTarget = true;
+            }
 			return;
 		}
 
+        m_WarnedMissingTarget = false;
 		if (!m_IsValid) {
 			Debug.LogWarning("Missing bones in PerfectlookAt component. Component won't work unless all bones are set", this);
 			return;
