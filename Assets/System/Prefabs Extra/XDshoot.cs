@@ -32,15 +32,22 @@ public class XDshoot : ComponentBehavior
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 var h1 = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
                 pos = hit.point;
-                pos.z = 0;
             }
             else 
                 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             ro.main.name = "BOMBOM";
             
+            holder.obj.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
+            //attack
             var dlt = pos - holder.transform.position - vv;
-            UtilsControl.Instance.MoveTo(ro.main.transform, 15, holder.transform.position + new Vector3(dlt.x, dlt.y, 0)*100, null, null);
+
+            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            {
+                dlt.z = 0;
+            }
+            
+            UtilsControl.Instance.MoveTo(ro.main.transform, 15, holder.transform.position + new Vector3(dlt.x, dlt.y, dlt.z)*100, null, null);
         }
     }
 }

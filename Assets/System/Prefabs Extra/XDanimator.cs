@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RPGCharacterAnims;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class XDanimator : ComponentBehavior
     private SpriterAnim anim1;
     private PrAnimat anim2;
     
+    GUIControls guiControls;
     //params:
     //pr
     
@@ -32,6 +34,8 @@ public class XDanimator : ComponentBehavior
         }        
         
         anim2 = mon.visuals["vis_main"].GetComponent<PrAnimat>();
+        
+        guiControls = mon.visuals["vis_main"].GetComponent<GUIControls>();
     }
 
     public string prevState = "";
@@ -43,6 +47,12 @@ public class XDanimator : ComponentBehavior
         if (state == "attack")
         {
             FunctionTimer.Create(() => SetState("idle"), 0.5f);
+        }
+
+        if (guiControls != null)
+        {
+            guiControls.CrossFade(prevState, 0.2f);
+            return;
         }
 
         if (anim != null && anim.enabled)

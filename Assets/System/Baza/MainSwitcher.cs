@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using RPGCharacterAnims;
+using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -21,9 +23,12 @@ public class MainSwitcher : MonoBehaviour
     {
         if (is3D)
         {
+            MainStates.is3D = true;
             MainStates.instance.mainPlayer.RemoveViz("click_move");
-            Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
             
+            MainStates.instance.mainPlayer.AddViz("shoot");
+            
+            Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
         }
     }
     
@@ -35,6 +40,14 @@ public class MainSwitcher : MonoBehaviour
         //EventManager.SUB("battle_press", BattleClicked);
         EventManager.SUB("after_load", pass => AfterLoad());
     }
+
+    [EditorAttributes.Button("Equip Pistols")]
+    public void EquipPistols()
+    {
+          var g = MainStates.instance.mainPlayer.main.GetComponentInChildren<GUIControls>();
+          g.EquipDualWeapons(Weapon.LeftPistol, Weapon.RightPistol);
+    }
+    
 
     [EditorAttributes.Button("Make vampire")]
     public void MakeVampire()
