@@ -15,6 +15,7 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public float visDistCheck = 10;
     public static bool isCameraFace = false;
     public static bool is3D = false;
     
@@ -3460,7 +3461,7 @@ public class MainStates : MonoBehaviour
         {
             if (v.Value.main == null) continue;
             var tt = tm - v.Value._cachedMain.position;
-            if (tt.magnitude < 10)
+            if (tt.magnitude < visDistCheck)
             {
                 v.Value.main.SetActive(true);
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AddedObject : MonoBehaviour
 {
@@ -152,6 +153,12 @@ public class AddedObject : MonoBehaviour
         
         if (onAdd != null)
             onAdd(r);
+
+        if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0 && ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+        {
+            r.main.AddComponent<NavMeshAgent>();
+        }
+        
     }
 
     
