@@ -46,7 +46,11 @@ public class XDanimator : ComponentBehavior
 
         if (state == "attack")
         {
-            FunctionTimer.Create(() => SetState("idle"), 0.5f);
+            FunctionTimer.Create(() =>
+            {
+                if (mon.GetPar("health") > 0)
+                    SetState("idle");
+            }, 0.5f);
         }
 
         if (guiControls != null)

@@ -143,6 +143,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc976eb2eaa5bf046bac916a8db11e9e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 569328495589245362}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc976eb2eaa5bf046bac916a8db11e9e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3233602080962050236}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dc976eb2eaa5bf046bac916a8db11e9e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2439447852850830491}
   m_SourcePrefab: {fileID: 100100000, guid: dc976eb2eaa5bf046bac916a8db11e9e, type: 3}
 --- !u!1 &177611436018950081 stripped
 GameObject:
@@ -159,7 +165,7 @@ Animator:
   m_GameObject: {fileID: 177611436018950081}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5b428ac4870d5aa43a515ec52454e895, type: 3}
-  m_Controller: {fileID: 9100000, guid: 850470bff92dc4c48a0ca993c865c9e8, type: 2}
+  m_Controller: {fileID: 9100000, guid: d1b1aeb666adb5f4d804dd1e71681e53, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -171,6 +177,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3233602080962050236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177611436018950081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f718dcfc0fb680a46831d0e3d73b7cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimFix
+--- !u!114 &2439447852850830491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177611436018950081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c76f62b14cb27646859334f65e653f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AnimConvert
+  anims:
+    m_keys:
+    - attack
+    m_values:
+    - attack_bow
 --- !u!4 &665635562375644539 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dc976eb2eaa5bf046bac916a8db11e9e, type: 3}

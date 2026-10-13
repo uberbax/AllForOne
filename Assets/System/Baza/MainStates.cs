@@ -3831,8 +3831,12 @@ public class MainStates : MonoBehaviour
             }
             else if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
             {
+                var mm1 = mon.GetBasicSkill();
+                float range = 1;
+                if (mm1 != null) range = mm1.GetPar("range");
+                
                 var vec = -c.main.transform.position + mon.Position;
-                mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position + vec.normalized);
+                mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position + vec.normalized * (range - 0.5f));
             }
             else
             {

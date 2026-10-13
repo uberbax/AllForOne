@@ -357,8 +357,11 @@ public class SkillExecutor : MonoBehaviour
                     
                     FunctionTimer.Create(() =>
                     {
+                        var tt_1 = targ[i].visMain.transform.Find("legs");
+                        var tt_2 = targ[i].visMain.transform.Find("head");
+                        
                         UtilsControl.Instance.MoveTo(ro.main.transform, skl.GetPar("speed"),
-                            targ[i].Position + new Vector3(0, MainStates.instance.LIFT_PROJ, 0),
+                            (tt_1.position + tt_2.position) / 2,
                             () =>
                             {
                                 Debug.Log("NYAM");

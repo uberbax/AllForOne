@@ -739,7 +739,7 @@ namespace RPGCharacterAnims
 
 		private void RotateTowardsDirection(Vector3 direction)
 		{
-			if (debugMessages) { Debug.Log($"RotateTowardsDirection: {direction}"); }
+			//if (debugMessages) { Debug.Log($"RotateTowardsDirection: {direction}"); }
 			var lookDirection = new Vector3(direction.x, 0, -direction.y);
 			var lookRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
 			transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);

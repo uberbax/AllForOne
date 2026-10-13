@@ -56,5 +56,6 @@ public class XDrealcol : ComponentBehavior
     {
         Destroy(rigidbody);
         Destroy(col);
+        Destroy(col3D);
     }
 }

@@ -238,6 +238,24 @@ public class RObj
     [NonSerialized] 
     public List<RObj> reqKill = new List<RObj>();
 
+    public RObj GetBasicSkill()
+    {
+        foreach (var v in actSkills)
+        {
+            if (v.dbObj.ID == "basic_melee" || v.dbObj.ID == "basic_range" || v.dbObj.ID == "basic_magic")
+                return v;
+        }
+
+        return null;
+    }
+    
+    public RObj GetWeapon()
+    {
+        var a = inventory.Find(x => x.GetPar("used_slot") == MainStates.slots["weapon"]);
+        return a;
+    }
+    
+
     public bool IsIntersected(int index, int sizeX, int sizeY, RObj who)
     {
         int szx = -1;

@@ -2242,6 +2242,11 @@ public class UtilsControl : MonoBehaviour
             rend = who.GetComponentsInChildren<Renderer>();
         }
 
+        if (rend.Length == 0)
+        {
+            rend = who.GetComponentsInChildren<SkinnedMeshRenderer>();
+        }
+
         if (rend[0].name == "MeshRoot")
         {
             FadeToColor(who, Color.white, 5, () =>
@@ -2836,11 +2841,14 @@ public class UtilsControl : MonoBehaviour
 
     public Color GetColor(GameObject who)
     {
+        Debug.Log(who);
         var rend = who.GetComponentInChildren<Renderer>();
         var rend1 = who.GetComponent<Image>();
+        var rend2 = who.GetComponentInChildren<SkinnedMeshRenderer>();
 
         if (rend1) return rend1.color;
-        return rend.material.color;
+        if (rend) return rend.material.color;
+        return rend2.material.color;
     }
     
     public IEnumerator FadeToColorA(GameObject who, Color endColor, float spd, Action end)

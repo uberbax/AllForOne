@@ -109,7 +109,7 @@ public class XDhp : ComponentBehavior
         }
         if (mon == null) return;
         
-        var mm = mon.GetPar("max_" + trackWhat);
+        var mm = (int)mon.GetPar("max_" + trackWhat);
         if (mm == 0) mm = 500; //? its for shield
         var mm0 = mon.GetPar(trackWhat);
         if (hideIfZero)
@@ -133,7 +133,7 @@ public class XDhp : ComponentBehavior
 
         if (useMax)
         {
-            hp.text = mon.GetPar(trackWhat) + "/" + mon.GetPar("max_" + trackWhat);
+            hp.text = (int)mon.GetPar(trackWhat) + "/" + (int)mon.GetPar("max_" + trackWhat);
         }
         else
         {

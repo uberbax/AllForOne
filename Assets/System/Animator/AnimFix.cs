@@ -16,4 +16,9 @@ public class AnimFix : MonoBehaviour
     {
         
     }
+    
+    public void Shoot()
+    {
+        
+    }
 }

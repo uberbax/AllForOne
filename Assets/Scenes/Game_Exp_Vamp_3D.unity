@@ -20382,7 +20382,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
@@ -46218,7 +46222,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
@@ -49171,7 +49179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
@@ -63890,6 +63902,80 @@ MonoBehaviour:
   m_EditorClassIdentifier: Minimus::ViewStat
   statName: lost_any
   statText: {fileID: 337316604}
+--- !u!1 &337323598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 337323599}
+  - component: {fileID: 337323600}
+  m_Layer: 0
+  m_Name: mons1_skeleton_mage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &337323599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337323598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2990408, y: 0, z: 0, w: 0.9542404}
+  m_LocalPosition: {x: -769, y: 5, z: -557}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 34.8, y: 0, z: 0}
+--- !u!114 &337323600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337323598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: skeleton_mage
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll#val:0.5
+  - dmg_track
+  - flash
+  - death
+  - drop
+  - combat
+  - animator#pr:1
+  - realcol#val:0.2
+  - info
+  - rand_move
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!4 &337473433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010695874706, guid: 43ccada6edf137d45a1a61238462411e, type: 3}
@@ -96102,7 +96188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
@@ -113319,7 +113409,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
@@ -132786,7 +132880,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
@@ -147196,6 +147294,9 @@ Transform:
   - {fileID: 661297426}
   - {fileID: 1710109826}
   - {fileID: 1418709309}
+  - {fileID: 1971728489}
+  - {fileID: 1820171130}
+  - {fileID: 337323599}
   - {fileID: 970305390}
   - {fileID: 1487063498}
   - {fileID: 1687923246}
@@ -182347,7 +182448,7 @@ GameObject:
   - component: {fileID: 970305390}
   - component: {fileID: 970305391}
   m_Layer: 0
-  m_Name: mons1 (2)
+  m_Name: mons1_goblin2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220445,6 +220546,7 @@ MonoBehaviour:
     - wolf_demon
     - wolf_gray
     - skeleton_mage
+    - skeleton_warrior
     m_values:
     - {fileID: 100004, guid: b1cc94d26cd016d479aa5b522d88da0a, type: 3}
     - {fileID: 8424926222593651006, guid: 64b085c85e5d1164787fcc45644958e5, type: 3}
@@ -220523,6 +220625,7 @@ MonoBehaviour:
     - {fileID: 8556868708077610411, guid: 93d191320ecee0c4c90f5145d842c7eb, type: 3}
     - {fileID: 7454506752429640450, guid: 22b58f19592df994a8ca5d2c7dca5218, type: 3}
     - {fileID: 394777321222441831, guid: ec1a6903cac5a00479b5a60935f07b68, type: 3}
+    - {fileID: 7424775608911457230, guid: 8997ba3131fa115419c0b657fa74a6d9, type: 3}
   misc:
     m_keys: []
     m_values: []
@@ -270573,7 +270676,7 @@ GameObject:
   - component: {fileID: 1418709309}
   - component: {fileID: 1418709310}
   m_Layer: 0
-  m_Name: mons1
+  m_Name: mons1_goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342157,6 +342260,80 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3ca55d6fd8e590479a3ec1a06dd4960, type: 3}
+--- !u!1 &1820171129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1820171130}
+  - component: {fileID: 1820171131}
+  m_Layer: 0
+  m_Name: mons1_skeleton_archer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1820171130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820171129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2990408, y: 0, z: 0, w: 0.9542404}
+  m_LocalPosition: {x: -771, y: 5, z: -559}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 34.8, y: 0, z: 0}
+--- !u!114 &1820171131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820171129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: skeleton_archer
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll#val:0.5
+  - dmg_track
+  - flash
+  - death
+  - drop
+  - combat
+  - animator#pr:1
+  - realcol#val:0.2
+  - info
+  - rand_move
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1820396556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -374382,6 +374559,80 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1971728488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1971728489}
+  - component: {fileID: 1971728490}
+  m_Layer: 0
+  m_Name: mons1_skeleton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1971728489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971728488}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2990408, y: 0, z: 0, w: 0.9542404}
+  m_LocalPosition: {x: -777, y: 5, z: -560}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780494580}
+  m_LocalEulerAnglesHint: {x: 34.8, y: 0, z: 0}
+--- !u!114 &1971728490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971728488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis:
+  - coll#val:0.5
+  - dmg_track
+  - flash
+  - death
+  - drop
+  - combat
+  - animator#pr:1
+  - realcol#val:0.2
+  - info
+  - rand_move
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta:
+  - wave
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1971984304
 GameObject:
   m_ObjectHideFlags: 0
