@@ -38,7 +38,8 @@ public class XDtake : ComponentBehavior
             if (MainStates.pickOverHead)
             {
                 tr = a.visMain.transform;
-                if (tr.Find("head") != null) tr = tr.Find("head");
+                var bb = tr.Find("head");
+                if (bb != null) tr = bb;
             }
 
             UtilsControl.Instance.FlyTextUI(tr, ConfigLoader.Instance.GetMeLocale(mon.dbObj.ID) + " x" + mon.GetPar("amount"), Color.white,

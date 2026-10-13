@@ -193,7 +193,15 @@ public class UtilsControl : MonoBehaviour
         
         var ff = Instantiate(flyUItext, root);
         ff.transform.position = where.position + new Vector3(0, dltY, 0);
+        FunctionTimer.Create(() =>
+        {
+            ff.GetComponent<UnoEffect>().enabled = true;
+        }, 0.1f);
+        
+        //var ff = Instantiate(flyUItext, where.position + new Vector3(0, dltY, 0), Quaternion.identity);
+        //ff.transform.parent = root;
 
+        
         if (doCam)
         {
             //Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, where.position);

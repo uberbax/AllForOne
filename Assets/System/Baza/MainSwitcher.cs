@@ -27,6 +27,7 @@ public class MainSwitcher : MonoBehaviour
             MainStates.instance.mainPlayer.RemoveViz("click_move");
             
             MainStates.instance.mainPlayer.AddViz("shoot");
+            MainStates.pickOverHead = true;
             
             Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
         }
