@@ -3828,12 +3828,10 @@ public class MainStates : MonoBehaviour
                 }
 
             }
-            /*
             else if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
             {
                 mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position);
             }
-            */
             else
             {
                 var vec = (c.Position - mon.Position).normalized;

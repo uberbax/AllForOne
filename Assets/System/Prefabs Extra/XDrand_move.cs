@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -14,12 +15,14 @@ public class XDrand_move : ComponentBehavior
     public RObj mon;
 
     private float t = 1;
-    
+    public static float distMult = 1;
+    private NavMeshAgent mAgent;
     
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
         t = Random.Range(2, 5f);
+        mAgent = mon.main.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -53,15 +56,31 @@ public class XDrand_move : ComponentBehavior
             }
             else
             {
-                var pnt = transform.position + new Vector3(PositionSetter.tupleDltFull[g].Item1,
-                    PositionSetter.tupleDltFull[g].Item2, 0);
+                Vector3 pnt = Vector3.zero;
+                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+                    pnt = transform.position + new Vector3(PositionSetter.tupleDltFull[g].Item1 * distMult, PositionSetter.tupleDltFull[g].Item2 * distMult, 0);
+                else
+                {
+                    pnt = transform.position + new Vector3(PositionSetter.tupleDltFull[g].Item1 * distMult, 0, PositionSetter.tupleDltFull[g].Item2 * distMult);
+                }
+                
                 var hh = UtilsControl.IsPointOnNavMesh(pnt);
                 if (hh)
                 {
                     mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("walk");
-                    UtilsControl.Instance.MoveTo(mon.main.transform, 1, pnt,
-                        () => { mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("idle"); }, null,
-                        useRight: false);
+                    if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
+                    {
+                        //if (!mAgent.isStopped) return;
+                        mAgent.SetDestination(pnt);
+                        UtilsControl.Instance.StartCoroutine(UtilsControl.Instance.CheckEndNavmesh(mAgent));
+                    }
+                    else
+                    {
+                           UtilsControl.Instance.MoveTo(mon.main.transform, 1, pnt,
+                               () => { mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("idle"); }, null,
+                               useRight: false);   
+                    }
+
                 }
 
             }

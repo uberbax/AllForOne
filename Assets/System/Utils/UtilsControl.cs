@@ -1529,7 +1529,31 @@ public class UtilsControl : MonoBehaviour
                 act();
         }
     }
-        
+
+    public IEnumerator CheckEndNavmesh(NavMeshAgent mNavMeshAgent, Action act = null)
+    {
+        while (true)
+        {
+            if (!mNavMeshAgent.pathPending)
+            {
+                if (mNavMeshAgent.remainingDistance <= mNavMeshAgent.stoppingDistance)
+                {
+                    if (!mNavMeshAgent.hasPath || mNavMeshAgent.velocity.sqrMagnitude == 0f)
+                    {
+                        // Done
+                        var mm = mNavMeshAgent.GetComponentInChildren<XDanimator>();
+                        if (mm != null) mm.SetState("idle");
+                        if (act != null) act();
+                        yield break;
+                    }
+                }
+            }
+
+            yield return null;
+        }
+    }
+    
+    
     public void MoveTo(Transform who, float speed, Vector3 endPos, Action act, Transform target, float x0 = -1, float y0 = -1, float z0 = -1, bool? useRight = null, TravelType travelType = TravelType.linear, float dltTime = 0, bool penetrate = false, Transform dopTravel = null, Vector3 fPos = default, bool useMoveCurve = false, float dAcc = 1.0f, string lalk = "xx", float travelTm =-1,
         Action<Transform> eachF = null, Func<Transform, bool> inter = null, bool ignoreFlip = false)
     {

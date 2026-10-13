@@ -156,7 +156,10 @@ public class AddedObject : MonoBehaviour
 
         if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0 && ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
         {
-            r.main.AddComponent<NavMeshAgent>();
+            var m = r.main.AddComponent<NavMeshAgent>();
+            //m.acceleration = 0;
+            m.angularSpeed = 1200;
+
         }
         
     }

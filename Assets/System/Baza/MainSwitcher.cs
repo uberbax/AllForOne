@@ -28,6 +28,8 @@ public class MainSwitcher : MonoBehaviour
             
             MainStates.instance.mainPlayer.AddViz("shoot");
             MainStates.pickOverHead = true;
+
+            XDrand_move.distMult = 2;
             
             Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
         }
@@ -59,7 +61,7 @@ public class MainSwitcher : MonoBehaviour
         {
             var dir = MainStates.instance.mainPlayer.Position - v.Value.Position;
             dir.z = 0;
-            if (dir.magnitude < 10)
+            if (dir.magnitude < MainStates.instance.visDistCheck)
             {
                 v.Value.AddMeta("sword");
                 v.Value.RemoveViz("rand_move");
