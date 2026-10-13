@@ -67,10 +67,10 @@ public class XDrand_move : ComponentBehavior
                 var hh = UtilsControl.IsPointOnNavMesh(pnt);
                 if (hh)
                 {
-                    mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("walk");
+                    
                     if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
                     {
-                        //if (!mAgent.isStopped) return;
+                        if (!mAgent) return;
                         mAgent.SetDestination(pnt);
                         UtilsControl.Instance.StartCoroutine(UtilsControl.Instance.CheckEndNavmesh(mAgent));
                     }
@@ -80,7 +80,7 @@ public class XDrand_move : ComponentBehavior
                                () => { mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("idle"); }, null,
                                useRight: false);   
                     }
-
+                    mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("walk");
                 }
 
             }

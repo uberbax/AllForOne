@@ -3795,6 +3795,7 @@ public class MainStates : MonoBehaviour
         {
             if (ConfigLoader.GetMetaParamValue("use_2d_navmesh") > 0)
             {
+                //thwbbb? мы вроде отказались от этого на навмеш+
                 var g = mon.main.GetOrAddComponent<PathfindingMovement>();
                 
                 //g.target = c.main.transform;
@@ -3830,7 +3831,8 @@ public class MainStates : MonoBehaviour
             }
             else if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
             {
-                mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position);
+                var vec = -c.main.transform.position + mon.Position;
+                mon.main.GetComponent<NavMeshAgent>().SetDestination(c.main.transform.position + vec.normalized);
             }
             else
             {

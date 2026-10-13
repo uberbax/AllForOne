@@ -87,7 +87,11 @@ public class MainSwitcher : MonoBehaviour
         MainCycleExp.exceptMain = true;
         
         MainStates.instance.mainPlayer.RemoveViz("click_move");
-        MainStates.instance.mainPlayer.AddViz("move#val:3");
+
+        var ee = MainStates.instance.mainPlayer.main.GetComponentInChildren<RPGCharacterMovementController>();
+        if (ee == null)
+            MainStates.instance.mainPlayer.AddViz("move#val:3");
+        
         MainStates.instance.mainPlayer.AddViz("shoot");
         
         Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());

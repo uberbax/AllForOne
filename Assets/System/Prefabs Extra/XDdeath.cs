@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SpriteFracture;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class XDdeath : ComponentBehavior
@@ -31,6 +32,8 @@ public class XDdeath : ComponentBehavior
         mon.RemoveViz("realcol");
         mon.RemoveViz("shadow");
         mon.RemoveViz("combat");
+        Destroy(mon.main.GetComponent<NavMeshAgent>());
+        
         var g = mon.visMain.transform.Find("shadow");
         if (g != null) Destroy(g.gameObject);
         g = mon.visMain.transform.Find("shadow (1)");

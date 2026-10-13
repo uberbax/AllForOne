@@ -11,4 +11,9 @@ public class AnimFix : MonoBehaviour
     {
         
     }
+    
+    public void Hit()
+    {
+        
+    }
 }

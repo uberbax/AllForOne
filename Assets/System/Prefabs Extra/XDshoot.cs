@@ -38,6 +38,11 @@ public class XDshoot : ComponentBehavior
 
             ro.main.name = "BOMBOM";
             
+            //inbetween ?
+            var tt = holder.obj.visMain.transform.Find("legs");
+            var tt1 = holder.obj.visMain.transform.Find("head");
+            ro.main.transform.position = (tt.position + tt1.position) / 2;
+            
             holder.obj.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
             //attack
             var dlt = pos - holder.transform.position - vv;

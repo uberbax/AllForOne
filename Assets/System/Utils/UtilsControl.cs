@@ -1534,6 +1534,8 @@ public class UtilsControl : MonoBehaviour
     {
         while (true)
         {
+            if (!mNavMeshAgent) yield break;
+                
             if (!mNavMeshAgent.pathPending)
             {
                 if (mNavMeshAgent.remainingDistance <= mNavMeshAgent.stoppingDistance)
