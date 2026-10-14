@@ -254,6 +254,22 @@ public class RObj
         var a = inventory.Find(x => x.GetPar("used_slot") == MainStates.slots["weapon"]);
         return a;
     }
+
+    public RObj GetNextWeapon()
+    {
+        var tt = GetWeapon();
+        int ee = 0;
+        if (tt != null)
+            ee = inventory.IndexOf(tt);
+        
+        RObj find = null;
+        for (int i = ee + 1; i < inventory.Count; i++)
+            if (inventory[i].GetPar("slot") == MainStates.slots["weapon"])
+                return  inventory[i];
+
+        return inventory.Find(x => x.GetPar("used_slot") == MainStates.slots["weapon"]);
+
+    }
     
 
     public bool IsIntersected(int index, int sizeX, int sizeY, RObj who)

@@ -1252,6 +1252,8 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "SIZE") mm.size = int.Parse(tt[j]);
                 else if (columns[j].ToUpper() == "TIER") mm.tier = int.Parse(tt[j]);
                 
+                else if (columns[j].ToUpper() == "ANIM_TYPE") mm.animType = int.Parse(tt[j]);
+                
                 
                 else if (columns[j].ToUpper() == "ADORN_CNT") mm.adornCnt = int.Parse(tt[j]);
                 
@@ -3147,7 +3149,7 @@ public class FormatArtefact
     public List<Bon> upgradeCost = new List<Bon>();
     public List<Bon> extras = new List<Bon>();
     public List<Bon> EXTRA_PARS = new List<Bon>();
-
+    public int animType = 0;
 }
 
 

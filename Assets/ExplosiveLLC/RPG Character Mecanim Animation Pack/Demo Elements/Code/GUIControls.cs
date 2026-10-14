@@ -70,8 +70,13 @@ namespace RPGCharacterAnims
 
         public void CrossFade(string anim, float tm = 0.1f)
         {
+	        
 	        if (anim == "attack")
+		        PressButton(Button.Attack);
+	        if (anim == "attackL")
 		        PressButton(Button.AttackL);
+		        
+	        
         }
         
         /// <summary>Executes a demo button immediately, without an OnGUI event. False means unavailable.</summary>
@@ -469,7 +474,7 @@ namespace RPGCharacterAnims
                 DrawToggle(new Rect(dxGui + 550, dyGui + 105, 100, 30), ToggleControl.Navigation, "Navigation");
         }
 
-		private void Attacks()
+		public void Attacks()
 		{
 			// Check if Attack Action exists.
 			if (!rpgCharacterController.HandlerExists(HandlerTypes.Attack)) { return; }

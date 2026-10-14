@@ -26,10 +26,13 @@ public class MainSwitcher : MonoBehaviour
             MainStates.is3D = true;
             MainStates.instance.mainPlayer.RemoveViz("click_move");
             
-            MainStates.instance.mainPlayer.AddViz("shoot");
+            //MainStates.instance.mainPlayer.AddViz("shoot");
+            //MainStates.instance.mainPlayer.AddViz("fight");
+            
             MainStates.pickOverHead = true;
 
             XDrand_move.distMult = 2;
+            XDdmgTrack.scaleMult = 0.3f;
             
             Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
         }
@@ -208,7 +211,7 @@ public class MainSwitcher : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update0()
+    void Update()
     {
         //runtime
        if (Input.GetKeyDown("1"))
@@ -352,5 +355,18 @@ public class MainSwitcher : MonoBehaviour
             });
         }
         
+        //
+        if (Input.GetKeyDown("3"))
+        {
+            //swap weapon
+            var v = MainStates.instance.mainPlayer.GetNextWeapon();
+            if (v != null)
+            {
+                MainStates.instance.Equip(MainStates.instance.mainPlayer, v);
+                var fb = MainStates.instance.mainPlayer.main.GetComponentInChildren<GUIControls>();
+                fb.EquipWeapon(MainStates.instance.GetWeaponByString(v.dbID));
+                //GUIControls
+            }
+        }
     }
 }

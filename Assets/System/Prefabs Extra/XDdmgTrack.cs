@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class XDdmgTrack : ComponentBehavior
 {
+    public static float scaleMult = 1;
     // Start is called before the first frame update
     private RObj mon;
 
@@ -67,6 +68,8 @@ public class XDdmgTrack : ComponentBehavior
                     newDamageNumber.rightText = "!";
                     mon.SetPar("was_crit", 0);
                 }
+                
+                newDamageNumber.gameObject.transform.localScale *= scaleMult;
             }
             else
             {
@@ -80,6 +83,8 @@ public class XDdmgTrack : ComponentBehavior
                     newDamageNumber.rightText = "!";
                     mon.SetPar("was_crit", 0);
                 }
+                
+                newDamageNumber.gameObject.transform.localScale *= scaleMult;
 
             }
         }

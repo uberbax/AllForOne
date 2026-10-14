@@ -207,6 +207,8 @@ public class DatabaseAll : MonoBehaviour
             
             o.pars.Add("level", 1);
             o.pars.Add("adorn_count", v.adornCnt);
+            o.pars.Add("anim_type", v.animType);
+            
             o.pars.Add("tier", v.tier);
             
             

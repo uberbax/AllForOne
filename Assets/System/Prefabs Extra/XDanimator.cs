@@ -55,7 +55,22 @@ public class XDanimator : ComponentBehavior
 
         if (guiControls != null)
         {
-            guiControls.CrossFade(prevState, 0.2f);
+            //guiControls.Attacks();
+            string da = "";
+            
+            
+            var mm = mon.GetWeapon();
+            if (mm != null && prevState == "attack")
+            {
+                var t = mm.GetPar("anim_type");
+                if (t == 1)
+                {
+                    da = "L";
+                }
+            }
+            
+            
+            guiControls.CrossFade(prevState + da, 0.2f);
             return;
         }
 

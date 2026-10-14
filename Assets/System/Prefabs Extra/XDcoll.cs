@@ -15,6 +15,22 @@ public class XDcoll : ComponentBehavior
         
     }
 
+    private void Start()
+    {
+        var mon = GetComponentInParent<ObjHolder>().obj;
+        if (mon.it == ItemType.monster)
+        {
+            var head = mon.visMain.transform.Find("head");
+            var legs = mon.visMain.transform.Find("legs");
+            var hh = GetComponent<BoxCollider>();
+            if (hh != null)
+            {
+                transform.position = (head.position + legs.position) / 2;
+                hh.size = new Vector3(hh.size.x, hh.size.y * (head.position.y - legs.position.y), hh.size.z);
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         var mm = GetComponentInParent<ObjHolder>();

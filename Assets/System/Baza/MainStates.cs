@@ -6,6 +6,7 @@ using System.Threading;
 using GameDevWare.Dynamic.Expressions.CSharp;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using RPGCharacterAnims.Lookups;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -3870,6 +3871,19 @@ public class MainStates : MonoBehaviour
         }
         
         return Vector3.zero;
+    }
+
+    public Weapon GetWeaponByString(string nm)
+    {
+        foreach(Weapon foo in Enum.GetValues(typeof(Weapon)))
+        {
+            if (foo.ToString().ToLower().IndexOf(nm) >= 0)
+            {
+                return foo;
+            }
+        }
+
+        return Weapon.Unarmed;
     }
 
     public bool IsItemLevelapable(RObj item)
