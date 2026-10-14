@@ -27,7 +27,7 @@ public class MainSwitcher : MonoBehaviour
             MainStates.instance.mainPlayer.RemoveViz("click_move");
             
             //MainStates.instance.mainPlayer.AddViz("shoot");
-            //MainStates.instance.mainPlayer.AddViz("fight");
+            MainStates.instance.mainPlayer.AddViz("fight");
             
             MainStates.pickOverHead = true;
 

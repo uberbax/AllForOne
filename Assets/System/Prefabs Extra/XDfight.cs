@@ -25,7 +25,9 @@ public class XDfight : ComponentBehavior
         if (Input.GetMouseButtonDown(0))
         {
             var hWeapon = holder.obj.GetWeapon();
-
+            holder.obj.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
+            return;
+            
             RObj ro = null;
 
             if (hWeapon == null)

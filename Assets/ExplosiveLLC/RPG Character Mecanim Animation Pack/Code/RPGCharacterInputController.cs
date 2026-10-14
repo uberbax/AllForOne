@@ -91,8 +91,8 @@ namespace RPGCharacterAnims
         private void Inputs()
         {
 	        try {
-		        inputJump = Input.GetButtonDown("Jump");
-		        isJumpHeld = Input.GetButton("Jump");
+		        inputJump = Input.GetButtonDown("L3");
+		        isJumpHeld = Input.GetButton("L3");
 		        inputLightHit = Input.GetButtonDown("LightHit");
 		        inputDeath = Input.GetButtonDown("Death");
 		        inputAttackL = Input.GetButtonDown("AttackL");
@@ -108,7 +108,7 @@ namespace RPGCharacterAnims
 		        inputFace = Input.GetMouseButton(1);
 		        inputFacingHorizontal = Input.GetAxisRaw("FacingHorizontal");
 		        inputFacingVertical = Input.GetAxisRaw("FacingVertical");
-		        inputRoll = Input.GetButtonDown("L3");
+		        inputRoll = Input.GetButtonDown("Jump");
 		        inputShield = Input.GetButtonDown("Shield");
 		        inputRelax = Input.GetButtonDown("Relax");
 

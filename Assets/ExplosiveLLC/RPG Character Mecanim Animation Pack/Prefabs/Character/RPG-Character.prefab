@@ -645,6 +645,8 @@ GameObject:
   - component: {fileID: 629651416}
   - component: {fileID: 632551360}
   - component: {fileID: 631420160}
+  - component: {fileID: 5550444712199038252}
+  - component: {fileID: 4388412361987166471}
   m_Layer: 0
   m_Name: 2Hand-Sword
   m_TagString: Untagged
@@ -725,6 +727,44 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5550444712199038252
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629156792}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.45359898, y: 0.36258805, z: 2.865279}
+  m_Center: {x: -0.17673005, y: -0.076671734, z: 0.9112761}
+--- !u!114 &4388412361987166471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629156792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53663ac91026b754998390947506637e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::SkillWorld
+  id: basic_melee
+  penCnt: 100
+  reactTime: -1
+  destrParent: 0
+  destrSelf: 0
 --- !u!1 &725567080
 GameObject:
   m_ObjectHideFlags: 0
