@@ -52,6 +52,15 @@ public class MainCycleDark : MonoBehaviour
     public GameObject character;
     public GameObject door;
     
+    [Header("Embark")]
+    public Button embark;
+    public GameObject map;
+    public GameObject prev;
+    
+    [Header("Town Back")]
+    public Button townBack;
+
+    
     public void HandleLift()
     {
         Transitioner.instance.Simple(null, new List<GameObject>{cages}, () =>
@@ -185,8 +194,20 @@ public class MainCycleDark : MonoBehaviour
 
         skipTurn.onClick.AddListener(() => SkipTurn());
         MainStates.handleCDInNoBattle = false;
-        goDownPrison.onClick.AddListener(HandleLift);
         
+        goDownPrison.onClick.AddListener(HandleLift);
+        embark.onClick.AddListener(HandleEmbark);
+        townBack.onClick.AddListener(HandleBack);
+    }
+
+    public void HandleEmbark()
+    {
+        Transitioner.instance.Simple(prev, new List<GameObject> { map }, null);
+    }
+    
+    public void HandleBack()
+    {
+        Transitioner.instance.Simple(map, null, null);
     }
 
     public Transform battlePoint;
