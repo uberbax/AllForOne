@@ -14,7 +14,7 @@ public class MainCycleDark : MonoBehaviour
 {
     [HelpBox("Set this", MessageMode.Warning)]  
     public Button oneIteration;
-
+    [HelpBox("Set this", MessageMode.Warning)]  
     public Transform spawnPoint;
     public bool AlwaysMove = true;
     public Button moveSkill;
@@ -60,6 +60,15 @@ public class MainCycleDark : MonoBehaviour
     [Header("Town Back")]
     public Button townBack;
 
+    [Header("Map Markers")]
+    public List<Button> missions = new List<Button>();
+    public GameObject infoBattle;
+    public Button goBattle;
+    public GameObject backs;
+    public GameObject heroes;
+    public GameObject battleUI;
+    
+    public GameObject managment;
     
     public void HandleLift()
     {
@@ -198,6 +207,27 @@ public class MainCycleDark : MonoBehaviour
         goDownPrison.onClick.AddListener(HandleLift);
         embark.onClick.AddListener(HandleEmbark);
         townBack.onClick.AddListener(HandleBack);
+        
+        HandleMarkers();
+    }
+
+    public void HandleMarkers()
+    {
+        foreach (var v in missions)
+        {
+            v.onClick.AddListener(() =>
+            {
+                infoBattle.gameObject.SetActive(true);
+            });
+        }
+
+        goBattle.onClick.AddListener(() =>
+            {
+                //infoBattle.gameObject.SetActive(false);
+                Transitioner.instance.Simple(map, new List<GameObject> { backs, heroes, battleUI }, null, 
+                    new List<GameObject> { managment } );
+            }
+        );
     }
 
     public void HandleEmbark()
