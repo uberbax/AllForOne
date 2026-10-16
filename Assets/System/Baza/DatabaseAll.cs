@@ -74,7 +74,7 @@ public class DatabaseAll : MonoBehaviour
             if (v.RANGE != 0)
             {
                 var over = ConfigLoader.GetMetaParamValue("skill_range");
-                if (over > 0) o.pars.Add("range", over);
+                if (over > 0) o.pars.Add("range", 100);
                 else o.pars.Add("range", v.RANGE);
             }
             
