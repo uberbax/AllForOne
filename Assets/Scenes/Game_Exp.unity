@@ -4041,7 +4041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7607843}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14193,6 +14193,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -20468,6 +20469,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: obj_berserk
@@ -22415,6 +22417,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22777,11 +22786,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 18.700012
       objectReference: {fileID: 0}
     - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 761.88995
+      value: 434.89
       objectReference: {fileID: 0}
     - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -28293,6 +28302,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -30506,6 +30516,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -32227,15 +32238,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32271,7 +32282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 74.06152
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 3501643404840439333, guid: 9f173fc8d517bf74cb5de56d4856f441, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -37217,7 +37228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 89.35034}
+  m_AnchoredPosition: {x: 0, y: 89.350586}
   m_SizeDelta: {x: 0, y: 178.7007}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &174138785
@@ -45151,6 +45162,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 12
     what: current_class
@@ -46716,6 +46728,22 @@ PrefabInstance:
     - target: {fileID: 1803829530115307293, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_FillAmount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -53596,6 +53624,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56508,6 +56543,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61880,6 +61922,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -62000,7 +62043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7607843}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -64540,6 +64583,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: portal_2
@@ -66533,6 +66577,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -68049,6 +68094,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: portal_3
@@ -69831,7 +69877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -76141,7 +76187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.025, y: 116.52759}
+  m_AnchoredPosition: {x: -0.025, y: 116.52734}
   m_SizeDelta: {x: 21.05, y: 181.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &354781272
@@ -81023,6 +81069,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 12
     what: current_class
@@ -86223,7 +86270,6 @@ GameObject:
   - component: {fileID: 410812597}
   - component: {fileID: 410812600}
   - component: {fileID: 410812599}
-  - component: {fileID: 410812598}
   m_Layer: 5
   m_Name: Header (1)
   m_TagString: Untagged
@@ -86250,30 +86296,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &410812598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410812596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pref: 
-  param: id
-  param2: 
-  isStat: 0
-  isPar: 0
-  isMainPar: 0
-  hideEmpty: 0
-  ignoreOnce: 0
-  addDlt: 0
-  addVal: 0
-  isButton: 0
-  closeObj: {fileID: 0}
 --- !u!114 &410812599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86466,7 +86488,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &411270089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -91881,6 +91903,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -95290,6 +95313,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -96440,6 +96464,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -130613,7 +130638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6646502432945296762, guid: 475a04e62266d4a139e3aedf6be708c2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 81.073425
+      value: 81.07324
       objectReference: {fileID: 0}
     - target: {fileID: 6646502432981374756, guid: 475a04e62266d4a139e3aedf6be708c2, type: 3}
       propertyPath: m_Color.a
@@ -153998,7 +154023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1885624538105013132, guid: ecccdc040504b7846aba0cdf76cb4c2f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 108.019775
+      value: 108.01953
       objectReference: {fileID: 0}
     - target: {fileID: 1885624538105013132, guid: ecccdc040504b7846aba0cdf76cb4c2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -154591,6 +154616,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -155026,6 +155052,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156228,6 +156261,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -158606,7 +158640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -165103,6 +165137,7 @@ RectTransform:
   - {fileID: 1152967104}
   - {fileID: 1026740342}
   - {fileID: 411270089}
+  - {fileID: 556451637}
   - {fileID: 192071410}
   - {fileID: 674746438}
   - {fileID: 1094597815}
@@ -165118,7 +165153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -1922.0002, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &550321223
@@ -165615,6 +165650,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 11
     what: last_leg
@@ -171943,6 +171979,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5095819317966850124, guid: 093ef035eec8e9744bb7f6e8fb4f4228, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -56.200195
+      objectReference: {fileID: 0}
     - target: {fileID: 5098695701063886749, guid: 093ef035eec8e9744bb7f6e8fb4f4228, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
@@ -177300,6 +177340,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555676954}
   m_CullTransparentMesh: 1
+--- !u!1001 &556451636
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 550321222}
+    m_Modifications:
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 36.4731
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 63.8494
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -518.2998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -256
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5257156045839926970, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+      propertyPath: m_Name
+      value: tier
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+--- !u!224 &556451637 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5024496273502246902, guid: 1c42ec38c23f0e7458465fcbd445c3aa, type: 3}
+  m_PrefabInstance: {fileID: 556451636}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &556671827
 GameObject:
   m_ObjectHideFlags: 0
@@ -181387,6 +181529,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -182028,6 +182171,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -185437,6 +185581,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187714,6 +187865,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: is_boss
@@ -193825,6 +193977,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: level
@@ -198004,6 +198157,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: portal_4
@@ -200975,6 +201129,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -205272,6 +205427,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -206055,6 +206211,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: obj_berserk
@@ -206232,6 +206389,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206272,7 +206436,7 @@ RectTransform:
   m_GameObject: {fileID: 692501184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1974204209}
@@ -208982,6 +209146,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -217274,6 +217439,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -217551,6 +217717,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: portal_1
@@ -219615,6 +219782,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -223666,7 +223834,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 83.192505, y: -58.0962}
+  m_AnchoredPosition: {x: 83.19238, y: -58.0962}
   m_SizeDelta: {x: 109.50061, y: 102.923096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &791082467
@@ -224563,6 +224731,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -224720,6 +224889,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -229513,6 +229683,7 @@ GameObject:
   - component: {fileID: 819417990}
   - component: {fileID: 819417992}
   - component: {fileID: 819417991}
+  - component: {fileID: 819417993}
   m_Layer: 0
   m_Name: Floor_Frame
   m_TagString: Untagged
@@ -229577,6 +229748,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 819417989}
   m_CullTransparentMesh: 1
+--- !u!114 &819417993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819417989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 0
+  asOther: {fileID: 0}
+  asOtherTxt: {fileID: 1066471483}
+  reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &819581286
 GameObject:
   m_ObjectHideFlags: 0
@@ -230925,6 +231126,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -247688,6 +247890,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -250331,6 +250534,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: obj_arisen
@@ -250568,6 +250772,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 550321221}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -256490,6 +256695,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -259539,6 +259745,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 12
     what: current_class
@@ -264654,7 +264861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -267036,6 +267243,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -275198,6 +275406,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -277386,6 +277595,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: portal_5
@@ -281652,6 +281862,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: can_cast
@@ -282383,6 +282594,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -283978,6 +284190,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -287954,6 +288167,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -288619,6 +288833,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 636982751}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -289570,6 +289785,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -291927,7 +292143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -62.508545}
+  m_AnchoredPosition: {x: 0, y: -62.50879}
   m_SizeDelta: {x: 0, y: 125.0171}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1108795026
@@ -294972,6 +295188,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -299137,6 +299354,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -300495,11 +300713,11 @@ MonoBehaviour:
   ComponentScale: {x: 1, y: 1, z: 1}
   FillSize: {x: 0, y: 0, z: 0}
   ShrinkSize: {x: 999999, y: 999999, z: 999999}
-  TargetPosition: {x: 0, y: -857.2283, z: 0}
+  TargetPosition: {x: -110.604614, y: 203.10498, z: 0}
   TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   TargetScale: {x: 1, y: 1, z: 1}
   TargetRectSize: {x: 1080, y: 505.75, z: 0}
-  TransformPosition: {x: 0, y: -857.2283, z: 0}
+  TransformPosition: {x: -110.604614, y: 203.10498, z: 0}
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1, y: 1, z: 1}
   TransformRectSize: {x: 1080, y: 505.75}
@@ -300572,7 +300790,7 @@ MonoBehaviour:
   _offset: {x: 0, y: 0, z: 0}
   _scale: {x: 1, y: 1, z: 1}
   _rotation: {x: 0, y: 0, z: 0, w: 1}
-  _marginLeft: 0
+  _marginLeft: -213
   _marginRight: 0
   _marginTop: 0
   _marginBottom: 0
@@ -301198,6 +301416,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -303088,6 +303307,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 13
     what: 
@@ -303370,6 +303590,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -305450,7 +305671,7 @@ MonoBehaviour:
     - {fileID: 4461510688263357733, guid: e70883a5ba742c44d890bb93eb578b91, type: 3}
     - {fileID: 8151565470958176459, guid: dae51e8a156dc8544b38e4f4dcf118ec, type: 3}
     - {fileID: 5387101109141316433, guid: 673f399c5c934344dbc6507080850d25, type: 3}
-    - {fileID: 4461510688263357733, guid: 5bf5733dd3382df48ab44a5075aa0ca6, type: 3}
+    - {fileID: 4461510688263357733, guid: 268a83bf7a8bd4c40ac364b6277f41c5, type: 3}
     - {fileID: 7440557169979966714, guid: b0e207c7cf2f9ac418b78ab28164ab8d, type: 3}
     - {fileID: 2993133939482401829, guid: 4106f0ef4564c0843a333d65ae51544a, type: 3}
     - {fileID: 4883399933547705982, guid: 34ed8e8efbcc6be448298ea0c5d4bb8d, type: 3}
@@ -306352,7 +306573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000022888, y: -50.92993}
+  m_AnchoredPosition: {x: 0.000022888, y: -50.930176}
   m_SizeDelta: {x: 715.8051, y: 102.47009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1162233745
@@ -315504,6 +315725,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: is_boss
@@ -315567,7 +315789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -320737,6 +320959,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -322815,6 +323038,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -324803,6 +325027,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -328914,6 +329139,7 @@ MonoBehaviour:
   noConditionMatch: 1
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -334139,6 +334365,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -346844,6 +347071,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -349827,6 +350055,22 @@ PrefabInstance:
     - target: {fileID: 1803829530115307293, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_FillAmount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2347992299595640718, guid: 803bf0aab80c75648953d763d0a7ff9e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -356516,6 +356760,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -363480,6 +363725,7 @@ MonoBehaviour:
   noConditionMatch: 1
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -381667,6 +381913,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: battle
@@ -395700,6 +395947,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: obj_arisen
@@ -398559,6 +398807,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -403113,6 +403362,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 13
     what: 
@@ -406222,6 +406472,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -411689,7 +411940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13333334, g: 0.76470596, b: 0.9960785, a: 1}
+  m_Color: {r: 0.13333334, g: 0.76470596, b: 0.9960785, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -414646,7 +414897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 145.71997}
+  m_AnchoredPosition: {x: 0, y: 145.71973}
   m_SizeDelta: {x: 0, y: 7}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1653107727
@@ -414951,6 +415202,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: can_cast
@@ -423658,6 +423910,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -425781,6 +426034,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: can_cast
@@ -431212,6 +431466,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -431336,6 +431591,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -436904,6 +437160,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -441355,11 +441612,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248430812775321443, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 770541048375606143, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 1045327051208032268, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -441371,15 +441628,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1915083523678108728, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 2212212516906984731, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 2460853115528135579, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 3021375355893449516, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -441391,7 +441648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3413535186288096715, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 3464699154158628709, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -441411,7 +441668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4709605744342916113, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 5346119065609538720, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -441423,11 +441680,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5809013611935593411, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 5824166841122861579, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 5855543542744303537, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -441443,7 +441700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6304308153781799134, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 6304308153781799134, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -441455,7 +441712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6962917909581104299, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 7105733567464010713, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Pivot.x
@@ -441543,15 +441800,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8506727205970736472, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 8913717793939896006, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 8979857740483272706, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00061035156
+      value: -0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 9158945802396715589, guid: b6c23dffb29ac724ba7f2d290d1a29ca, type: 3}
       propertyPath: m_Material
@@ -446970,6 +447227,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 1954304204}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -457227,6 +457485,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -463995,6 +464254,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -466415,6 +466675,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -472692,6 +472953,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -473825,6 +474087,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -474583,6 +474846,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 13
     what: 
@@ -475489,7 +475753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1885624538105013132, guid: ecccdc040504b7846aba0cdf76cb4c2f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 125.13446
+      value: 125.13428
       objectReference: {fileID: 0}
     - target: {fileID: 1885624538105013132, guid: ecccdc040504b7846aba0cdf76cb4c2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -475981,6 +476245,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -477944,6 +478209,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -478122,6 +478388,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: level
@@ -480903,6 +481170,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -481107,6 +481375,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 3
     what: unlocked_{db_id}
@@ -481242,7 +481511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -482379,6 +482648,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -490459,7 +490729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787076712471516486, guid: 17b7c646cb1b95643ba87c029372ccd4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -496383,6 +496653,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: raid_boss
@@ -497536,6 +497807,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 13
     what: 
@@ -500664,6 +500936,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: manacost
@@ -519464,6 +519737,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -526478,6 +526752,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []
@@ -528626,6 +528901,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 1
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs:
   - typo: 8
     what: can_cast
@@ -529213,6 +529489,7 @@ MonoBehaviour:
   noConditionMatch: 0
   asHolderCond: 0
   asOther: {fileID: 0}
+  asOtherTxt: {fileID: 0}
   reqs: []
   forOther: {fileID: 0}
   alsoActive: []

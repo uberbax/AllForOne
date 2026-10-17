@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,7 @@ public class Vizualo : MonoBehaviour
     //common case
     [Header("also IS NOT counted")]
     public GameObject asOther;
+    public TextMeshProUGUI asOtherTxt;
     public List<UnoReq> reqs = new List<UnoReq>();
     
     public GameObject forOther;
@@ -179,6 +181,10 @@ public class Vizualo : MonoBehaviour
         else if (asOther)
         {
             Activate(isNot ? !asOther.activeSelf :  asOther.activeSelf);
+        }
+        else if (asOtherTxt)
+        {
+            Activate(isNot ? asOtherTxt.text == "" :  asOtherTxt.text != "");
         }
         else if (condID != "")
         {

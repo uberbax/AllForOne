@@ -111,6 +111,7 @@ public sealed class MailController : MonoBehaviour
         }
         finally { claiming = false; }
         RefreshState();
+        MainStates.instance.Save();
         return true;
     }
 
@@ -120,6 +121,8 @@ public sealed class MailController : MonoBehaviour
         var pending = new List<FormatMail>(mails);
         foreach (var mail in pending)
             if (mail != null) ClaimMail(mail.id);
+        
+        //MainStates.instance.Save();
     }
 
     private void RefreshState()
