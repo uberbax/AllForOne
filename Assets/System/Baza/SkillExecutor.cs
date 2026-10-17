@@ -223,8 +223,9 @@ public class SkillExecutor : MonoBehaviour
         if (ll == null || ll.proj == null || ll.proj.name == "empty")
             isEmpty = true;
 
+        var jj = skl.GetPar("target");
 //who main player ? self effect ?
-    if (ll == null && (who.RID == "second_main" || who.RID == "main_player"))
+    if (ll == null && (who.RID == "second_main" || who.RID == "main_player") && jj == 1)
         {
             var kk = Instantiate(ResourceHolder.instance.effSelf);
             //find head
