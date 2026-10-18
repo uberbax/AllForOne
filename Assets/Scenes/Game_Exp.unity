@@ -22420,7 +22420,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
@@ -53626,7 +53630,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
@@ -56541,7 +56549,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
@@ -155055,7 +155067,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
@@ -185584,7 +185600,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
@@ -206405,7 +206425,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
   text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
@@ -305083,6 +305107,22 @@ MonoBehaviour:
     - basic_magic
     - lightning_strike
     - fireball
+    - stun_dart
+    - sleep_dart
+    - froze_dart
+    - doublecut
+    - tricut
+    - protection
+    - protection2
+    - threaten
+    - fortify
+    - barrier
+    - auto_shield
+    - every_shield
+    - battle_dance
+    - double_edge
+    - apothecary
+    - mega_crits
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -305155,6 +305195,22 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e755888d9b5f1441ead164d78166d916, type: 3}
     - {fileID: -8073884052667703520, guid: dd56be1a33c1d1f4088313ee03567131, type: 3}
     - {fileID: -8127487528002223245, guid: 297925ece73b0944199aac7cf2006cd8, type: 3}
+    - {fileID: 21300000, guid: 446bc3f7db6084cabb654e8f9b729b24, type: 3}
+    - {fileID: 21300000, guid: c08d4f1df3b84c343b48a76e07bd9650, type: 3}
+    - {fileID: 21300000, guid: 1fbb195c49f194e31a15d81f967970f5, type: 3}
+    - {fileID: 2374783286164579621, guid: 1c5cd996da9122c4e9c936b9df883763, type: 3}
+    - {fileID: 2576906388042833136, guid: 543873f91717d0343bd1a3981dc533c7, type: 3}
+    - {fileID: 21300000, guid: 919d447f741bd4bebb0f787c7b6f78e1, type: 3}
+    - {fileID: 21300000, guid: 919d447f741bd4bebb0f787c7b6f78e1, type: 3}
+    - {fileID: 8144572990843885226, guid: 0280dd1d3fe5db54c8288f1d51a83b82, type: 3}
+    - {fileID: 21300000, guid: 19039dc306ecead499757ca4e6c65c71, type: 3}
+    - {fileID: 21300000, guid: 51b99607e670f7f47a23a89742fd28d9, type: 3}
+    - {fileID: 21300000, guid: 6dad4645109345647b9594f542519ed2, type: 3}
+    - {fileID: 21300000, guid: d71c2d59f6dcc5644948a8e3523d24bf, type: 3}
+    - {fileID: 21300000, guid: 3710ed6bd998b434a866c1be5b908b4a, type: 3}
+    - {fileID: 21300000, guid: e0ed2a990ee91164291a924a6d640369, type: 3}
+    - {fileID: 21300000, guid: 63ceb5a67359c5e47b1117581eef105b, type: 3}
+    - {fileID: 21300000, guid: 6dfe666e0d4160a429750fd2794d6e22, type: 3}
   pars:
     m_keys:
     - health
@@ -305818,12 +305874,20 @@ MonoBehaviour:
     - hero_mage
     - hero_sorcerer
     - hero_archmage
+    - hero_strider
+    - hero_knight
+    - hero_centurion
+    - hero_battlemaster
     m_values:
     - {fileID: 2856463184211108296, guid: aa23f71d9d01b804f98197e06e96cc02, type: 3}
     - {fileID: 2235341231298666686, guid: fec8bd7b8fed02b4a8bdba20ad1a0299, type: 3}
     - {fileID: 5409662461265389629, guid: 717b484e68b9cee4b9a039fcb183650d, type: 3}
     - {fileID: 4284881394025904617, guid: e228935506b7a84489badaa56a03ab5f, type: 3}
     - {fileID: 1416644955379415305, guid: 68e66366c07fa1740b13d16d8dd1a681, type: 3}
+    - {fileID: 2391355435782313561, guid: d4fe8397439a50d4a9e872decc5f4523, type: 3}
+    - {fileID: 2541381554379886797, guid: 0c2da5ea4b6446147b9adecd7be80074, type: 3}
+    - {fileID: 1955825236468670149, guid: ce8fae3ed5a58df4e96af96274a80eb0, type: 3}
+    - {fileID: 388667595591473169, guid: b1e24f7caee10c5468ae0d72765f6346, type: 3}
   heroClassesAvas:
     m_keys:
     - hero_warrior
@@ -305831,12 +305895,20 @@ MonoBehaviour:
     - hero_mage
     - hero_sorcerer
     - hero_archmage
+    - hero_knight
+    - hero_centurion
+    - hero_strider
+    - hero_battlemaster
     m_values:
     - {fileID: 21300000, guid: 9418713c98cb9c6459c45b225d013f6c, type: 3}
     - {fileID: 21300000, guid: 632370d04e2d2234e9f3a6ceae1afd6f, type: 3}
     - {fileID: 21300000, guid: 214f5204102197248b7f9aa28b59a00e, type: 3}
     - {fileID: 21300000, guid: d8b145fcc8734d542b12a5e8ee8956fe, type: 3}
     - {fileID: 21300000, guid: 8e7d03e6f8db8b7448e287ef39e1d7ae, type: 3}
+    - {fileID: 21300000, guid: 56da794d1652b884098318f986a8c3e2, type: 3}
+    - {fileID: 21300000, guid: 870abcd5a00cf4a408c875cd84e3c5f5, type: 3}
+    - {fileID: 21300000, guid: 11d81f5cf3376b948928e9b6cce22306, type: 3}
+    - {fileID: 21300000, guid: 3889819288d62ef4cb5515f6f350bd9a, type: 3}
   dungeons:
     m_keys:
     - 
