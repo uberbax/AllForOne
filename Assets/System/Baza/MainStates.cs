@@ -95,7 +95,8 @@ public class MainStates : MonoBehaviour
     public Transform posClick;
     public bool isPaused;
     public bool inBattle;
-
+    public int roundNum = 0;
+        
     public List<WaveSpawner> spawners = new List<WaveSpawner>();
     public RObj mainPlayer => all["main_player"];
 
@@ -2944,6 +2945,8 @@ public class MainStates : MonoBehaviour
         var f1 = skl.GetPar("dmg_type");
         var mana = skl.GetPar("mana");
         var health = skl.GetPar("health");
+        var heal_amplify = skl.GetPar("heal_amplify");
+        
         var f2 = a.GetPar("res_" + reverseDmgTypes[f1]);
         if (f2 < 0)
         {
@@ -3037,6 +3040,11 @@ public class MainStates : MonoBehaviour
 
         if (health > 0)
         {
+            if (heal_amplify != 0)
+            {
+                health *= (1 + heal_amplify / 100);
+            }
+            
             var m1 = a.GetPar("registered_damage");
             if (m1 < health) a.SetPar("registered_damage", 0);
             else a.ChangePar("registered_damage", -health);
@@ -3071,6 +3079,12 @@ public class MainStates : MonoBehaviour
             a.SetPar("was_crit", 1);
 
         atk = (int)atk;
+        
+        if (heal_amplify != 0 && atk < 0)
+        {
+            atk *= (1 + heal_amplify / 100);
+        }
+        
         a.ChangePar("registered_damage", atk);
         //raid boss ?
         var rb = a.GetPar("raid_boss");
@@ -3129,6 +3143,11 @@ public class MainStates : MonoBehaviour
         {
             var v1 = skl.GetPar("lifesteal_prc");
             var vv = atk * (skl.owner.GetPar("lifesteal_prc") + v1)/100.0f;
+            if (heal_amplify != 0)
+            {
+                vv *= (1 + heal_amplify / 100);
+            }
+            
             if (vv > 0)
             {
                 DealHeal(skl.owner, vv);
@@ -3595,7 +3614,7 @@ public class MainStates : MonoBehaviour
         return cc;
     }
     
-    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false, bool waitMove = true)
+    public IEnumerator OneIteration(bool exceptMain = false, float tm = 0.5f, string metaContain = "", bool awaitUnits = false, bool waitMove = true, int roundNum = 0)
     {
         int did = Random.Range(0, 10000);
         if (InIteration) yield break;
@@ -3642,8 +3661,7 @@ public class MainStates : MonoBehaviour
                 var tt =  curComateers[i].inventory[j];
                 
                 if (tt.dbObj.onRoundStart.Count == 0) continue;
-                //var kl = DatabaseAll.instance.skills[tt.dbObj.useSkill];
-                //if (kl.onRoundStart == "") continue;                
+              
                 var hy = tt.GetPar("used_slot");
                 if (hy < 0) continue;
 

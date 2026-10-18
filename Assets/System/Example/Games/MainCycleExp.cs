@@ -66,6 +66,7 @@ public class MainCycleExp : MonoBehaviour
         EventManager.SUB("battle_start", (x) =>
         {
             MainStates.instance.inBattle = true;
+            MainStates.instance.roundNum = 0;
             MainStates.instance.InIteration = false;
             if (coroutine != null)
             {
@@ -533,7 +534,8 @@ public class MainCycleExp : MonoBehaviour
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(exceptMain, tm, "sword", true, waitMove));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(exceptMain, tm, "sword", true, waitMove, MainStates.instance.roundNum));
+                MainStates.instance.roundNum++;
             }
         }
         else

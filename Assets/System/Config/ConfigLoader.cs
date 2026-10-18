@@ -1055,6 +1055,18 @@ public class ConfigLoader : MonoBehaviour
                         mm.onRoundStart.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
                     }
                 }
+                
+                else if (columns[j].ToUpper() == "ON_BATTLE_START")
+                {
+                    if (tt[j] == "x") continue;
+                    var yy = tt[j].Split("#");
+                    mm.onBattleStart = new List<Bon>();
+                    for (int k = 0; k < yy.Length; k++)
+                    {
+                        var bb = yy[k].Split(",");
+                        mm.onBattleStart.Add(new Bon{Key = bb[0], Value = int.Parse(bb[1])});
+                    }
+                }
 
                 else if (columns[j].ToUpper() == "SPAWN") mm.spawn = tt[j];
                 
@@ -1221,6 +1233,18 @@ public class ConfigLoader : MonoBehaviour
                         mm.onRoundStart.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
                     }
                 }
+                else if (columns[j].ToUpper() == "ON_BATTLE_START")
+                {
+                    if (tt[j] == "x") continue;
+                    var yh = tt[j].Split("#");
+                    for (int o = 0; o < yh.Length; o++)
+                    {
+                        var yp = yh[o].Split(",");  
+                        mm.onBattleStart.Add(new Bon{Key = yp[0], Value = int.Parse(yp[1])});                        
+                    }
+                }
+                
+                
                 else if (columns[j].ToUpper() == "ATTACK") mm.ATTACK = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 else if (columns[j].ToUpper() == "ATTACK_PRC") mm.ATTACK_PRC = float.Parse(tt[j], CultureInfo.InvariantCulture);
                 
@@ -2740,6 +2764,8 @@ public class ConfigLoader : MonoBehaviour
         var f39 = rr.GetPar("lowmp_mult");
         
         var f40 = rr.GetPar("dmg_amplify");
+        
+        var f41 = rr.GetPar("heal_amplify");
 
 
         var trg = rr.GetPar("target");
@@ -2901,6 +2927,10 @@ public class ConfigLoader : MonoBehaviour
         if (f40 > 0) s += "Amplify damage by " + f40 + "%, ";
         //else if (f40 < 0) s += "Reduces stun resistance by " + -f37 + "%, ";
 
+        if (f41 > 0) s += "Amplify heal by " + f41 + "%, ";
+        else if (f41 < 0) s += "Reduce healing by " + f41 + "%, ";
+        
+        
         if (rr.dbObj.dmgFormula != null && rr.dbObj.dmgFormula != "")
         {
             var v = rr.dbObj.dmgFormula.Split(':');
@@ -2920,7 +2950,17 @@ public class ConfigLoader : MonoBehaviour
             var obj = DatabaseAll.instance.CreateAny(rr.dbObj.onRoundStart[0].Key, false, 1, new GameObject());
             //prc
             if (rr.dbObj.onRoundStart[0].Value < 100) s += "On every turn has a chance to ";
+            else s += "On every turn ";
             s += GetMeLocale(rr.dbObj.onRoundStart[0].Key + "_descr", null, obj);
+        }
+        
+        if (/*s == "" &&*/ rr.dbObj.onBattleStart.Count > 0)
+        {
+            var obj = DatabaseAll.instance.CreateAny(rr.dbObj.onBattleStart[0].Key, false, 1, new GameObject());
+            //prc
+            if (rr.dbObj.onBattleStart[0].Value < 100) s += "On battle start has a chance to ";
+            else s += "On battle start ";
+            s += GetMeLocale(rr.dbObj.onBattleStart[0].Key + "_descr", null, obj);
         }
         
         if (/*s == "" &&*/ rr.dbObj.onDmg != "")
@@ -3150,6 +3190,7 @@ public class FormatArtefact
     public List<Bon> extras = new List<Bon>();
     public List<Bon> EXTRA_PARS = new List<Bon>();
     public int animType = 0;
+    public List<Bon> onBattleStart;
 }
 
 
@@ -3329,6 +3370,7 @@ public class FormatSkill
     public string spawn = "";
     public List<Bon> upgradeCost = new List<Bon>();
     public string dmgFormula;
+    public List<Bon> onBattleStart;
 }
 
 

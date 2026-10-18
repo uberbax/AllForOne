@@ -142,6 +142,7 @@ public class DatabaseAll : MonoBehaviour
             
             o.spawn = v.spawn;
             o.onRoundStart = v.onRoundStart;
+            o.onBattleStart = v.onBattleStart;
 
             o.buffsApplied = v.buffApply;
             o.alsoCast = v.alsoCast;
@@ -154,7 +155,9 @@ public class DatabaseAll : MonoBehaviour
 
             foreach (var b in v.EXTRA_PARS)
             {
-                o.pars.Add(b.Key, b.Value);
+                if (o.pars.ContainsKey(b.Key))
+                    o.pars[b.Key] += b.Value;
+                else o.pars.Add(b.Key, b.Value);
             }
             
             o.pars.Add("slot", -1);
@@ -204,6 +207,7 @@ public class DatabaseAll : MonoBehaviour
             o.pars.Add("subtype", MainStates.subtypes[v.SUBTYPE]);
             o.useSkill = v.useSkill;
             o.onRoundStart = v.onRoundStart;
+            o.onBattleStart = v.onBattleStart;
             
             o.pars.Add("level", 1);
             o.pars.Add("adorn_count", v.adornCnt);

@@ -52,6 +52,8 @@ public class Obj
     public string onDmg = "";
     public string onCrit = "";
     public List<Bon> onRoundStart = new List<Bon>();
+    public List<Bon> onBattleStart = new List<Bon>();
+    
     public string spawn = "";
     
     
