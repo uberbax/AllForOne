@@ -132,7 +132,9 @@ public class XDcoll : ComponentBehavior
 
             if (mm.obj.effect != null)
             {
-                var g = Instantiate(mm.obj.effect, transform.position, transform.rotation);
+                //var g = Instantiate(mm.obj.effect, transform.position, transform.rotation);
+                var g = Instantiate(mm.obj.effect);
+                g.transform.position = m0.obj.Position;
                 Destroy(g, 1);
             }
             
@@ -178,7 +180,9 @@ public class XDcoll : ComponentBehavior
             //end effect ?
             if (mm.obj.effect != null)
             {
-                var g = Instantiate(mm.obj.effect, m0.transform.position, transform.rotation);
+                //var g = Instantiate(mm.obj.effect, m0.transform.position, transform.rotation);
+                var g = Instantiate(mm.obj.effect);
+                g.transform.position = m0.obj.Position;
                 Destroy(g, 1);
             }
 

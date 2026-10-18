@@ -220,12 +220,12 @@ public class SkillExecutor : MonoBehaviour
         var ll = ResourceHolder.instance.GetMeSkillEtc(who.dbObj, skl.dbObj.ID);
         int projSpawnType = 0;
         bool isEmpty = false;
-        if (ll == null || ll.proj == null || ll.proj.name == "empty")
+        if (ll == null || ll.proj == null || ll.proj.name.ToLower().IndexOf("empty") >= 0)
             isEmpty = true;
 
         var jj = skl.GetPar("target");
-//who main player ? self effect ?
-    if (ll == null && (who.RID == "second_main" || who.RID == "main_player") && jj == 1)
+        //who main player ? self effect ?
+        if (ll == null && (who.RID == "second_main" || who.RID == "main_player") && jj == 1)
         {
             var kk = Instantiate(ResourceHolder.instance.effSelf);
             //find head
@@ -238,6 +238,17 @@ public class SkillExecutor : MonoBehaviour
                 kk.transform.localScale /= size.x;
             
             Destroy(kk, 2);
+        }
+
+        if (ll == null && jj == 0)
+        {
+            var dmgType = skl.GetPar("dmg_type");
+            ll = new SkillEtc();
+            ll.projHit = ResourceHolder.instance.defaultSlashes[(int)dmgType];
+            ll.conds.Add("_any");
+            ll.conds.Add(skl.dbObj.ID);
+            ll.angle = 45;
+            ResourceHolder.instance.skillEffects.Add(ll);
         }
 
         if (ll != null)
@@ -714,7 +725,8 @@ public class SkillExecutor : MonoBehaviour
                                     if (ro.effect != null)
                                     {
                                         var go = Instantiate(ro.effect);
-                                        go.transform.position = ro.main.transform.position;
+                                        go.transform.position = ep; //ro.main.transform.position;
+                                        go.transform.Rotate(0,0, ro.angle);
                                         Destroy(go, 1);
                                         ro.RemoveViz("vis_main");
                                     }

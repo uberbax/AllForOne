@@ -194,6 +194,8 @@ public class RObj
         return visuals.TryGetValue("vis_main", out GameObject visMainObj);
     }
 
+    public float angle = 0;
+    
     [NonSerialized] 
     public GameObject effect;
     
@@ -1025,6 +1027,7 @@ public class RObj
                 visuals.Add("vis_main", bb);   
                 effect = c == null ? projHit : c.projHit;
                 selfEffect = c == null ? null : c.effSelf;
+                angle = c == null ? 0 : c.angle;
             }
             else if (tp == ItemType.monster)
             {

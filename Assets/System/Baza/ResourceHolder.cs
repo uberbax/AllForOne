@@ -58,6 +58,9 @@ public class ResourceHolder : MonoBehaviour
     [Header("Add resources")]
     public StringSpriteDictionary addResources;
     
+    [Header("Default slashes")]
+    public IntObjectDictionary defaultSlashes;
+    
     public Sprite GetDiaAva(string what)
     {
         if (what == "") return null;
@@ -472,6 +475,7 @@ public class SkillEtc
     public float projDelay;
     public string projHitMark = "";
 
+    public float angle = 0;
     //1 is above
     public int projSpawnType = 0;
 

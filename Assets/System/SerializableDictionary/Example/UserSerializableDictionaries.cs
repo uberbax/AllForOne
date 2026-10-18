@@ -13,6 +13,9 @@ public class ObjectColorDictionary : SerializableDictionary<UnityEngine.Object, 
 public class StringObjectDictionary : SerializableDictionary<string, UnityEngine.GameObject> { }
 
 [Serializable]
+public class IntObjectDictionary : SerializableDictionary<int, UnityEngine.GameObject> { }
+
+[Serializable]
 public class StringAudioclipDictionary : SerializableDictionary<string, AudioClip> { }
 
 [Serializable]
