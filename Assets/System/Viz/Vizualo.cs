@@ -14,6 +14,8 @@ public class Vizualo : MonoBehaviour
     private AbsHolder abs;
     
     public Button relButton;
+    public Button relButton2;
+    
     public GameObject relPrice;
     
     //other
@@ -212,24 +214,34 @@ public class Vizualo : MonoBehaviour
         if (forOther != null)
         {
             if (activateScale) forOther.transform.localScale = ls;
-            else if (halfCanvasGroup) forOther.GetComponent<CanvasGroup>().alpha = cg;
+            else if (halfCanvasGroup)
+            {
+                forOther.GetComponent<CanvasGroup>().alpha = cg;
+            }
             else
                 forOther.SetActive(val);
         }
         else
         {
             if (activateScale) transform.localScale = ls;
-            else if (halfCanvasGroup) c.alpha = cg;
+            else if (halfCanvasGroup)
+            {
+                c.alpha = cg;
+            }
             else
                 gameObject.SetActive(val);
         }
         
         if (relButton != null) relButton.interactable = isNot ? !val : val;
+        if (relButton2 != null) relButton2.interactable = isNot ? !val : val;
 
         foreach (var v in alsoActive)
         {
             if (activateScale) v.transform.localScale = ls;
-            else if (halfCanvasGroup) v.GetComponent<CanvasGroup>().alpha = cg;
+            else if (halfCanvasGroup)
+            {
+                v.GetComponent<CanvasGroup>().alpha = cg;
+            }
             else
                 v.SetActive(val);
         }

@@ -257,6 +257,13 @@ public class MainCycleExp : MonoBehaviour
         foreach (var v in secondMain.actSkills)
         {
             v.SetPar("action_req", -1);
+            v.SetPar("cd", 0);
+        }
+        
+        foreach (var v in MainStates.instance.lastSkillsUsed)
+        {
+            v.SetPar("action_req", -1);
+            v.SetPar("cd", 0);
         }
 
         MainStates.instance.UI_unitsPlaced.SetActive(true);
