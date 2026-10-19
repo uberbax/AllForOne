@@ -91,6 +91,10 @@ public class RObj
     // should be an id right ?
     [NonSerialized]
     public Obj dbObj;
+
+    public List<Bon> onBattleStart = new List<Bon>();
+    public List<Bon> onRoundStart = new List<Bon>();
+    
     
     public Dictionary<string, float> upgradePars = new Dictionary<string, float>();
     public Dictionary<string, float> curPars = new Dictionary<string, float>();
@@ -482,6 +486,10 @@ public class RObj
     {
 
         curPars.Clear();
+        
+        onRoundStart.Clear();
+        onBattleStart.Clear();
+        
         if (dbObj != null)
         {
             curPars.Add("level", dbObj.pars["level"] + upgradePars["level"]);
@@ -525,6 +533,10 @@ public class RObj
             
             //thwbbb
             if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            
+            onBattleStart.AddRange(v.onBattleStart);
+            onRoundStart.AddRange(v.onRoundStart);     
+                
             foreach (var a in  v.curPars)//v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
@@ -535,6 +547,7 @@ public class RObj
                 if (a.Key == "subtype") continue;
                 if (a.Key == "adorn_count") continue;
                 
+
                 
                 AddFinal(a.Key, v.GetPar(a.Key));
             }
@@ -563,6 +576,9 @@ public class RObj
         
         foreach (var v in buffs)
         {
+            onBattleStart.AddRange(v.onBattleStart);
+            onRoundStart.AddRange(v.onRoundStart);
+            
             //if (v.upgradePars["used_slot"] < 0) continue;
             foreach (var a in v.dbObj.pars)
             {
@@ -577,6 +593,10 @@ public class RObj
         foreach (var v in timedBuffs)
         {
             if (v.GetPar("instant") == 1) continue;
+            
+            onBattleStart.AddRange(v.onBattleStart);
+            onRoundStart.AddRange(v.onRoundStart);
+            
             foreach (var a in v.dbObj.pars)
             {
                 if (a.Key == "amount") continue;
@@ -596,6 +616,10 @@ public class RObj
                 if (v.dbObj.ID.IndexOf("global") >= 0)
                 {
                     if (v.dbObj.labelis.Count > 0 && !v.dbObj.labelis.Contains(dbObj.ID)) continue;
+                    
+                    onBattleStart.AddRange(v.onBattleStart);
+                    onRoundStart.AddRange(v.onRoundStart);
+                    
                     foreach (var v1 in  v.dbObj.pars)
                     {
                         if (v1.Key == "amount") continue;

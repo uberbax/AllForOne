@@ -3654,6 +3654,7 @@ public class MainStates : MonoBehaviour
         //
         
         //cast on round start
+        /*
         for (int i = 0; i < curComateers.Count; i++)
         {
             for (int j = 0; j < curComateers[i].inventory.Count; j++)
@@ -3676,6 +3677,32 @@ public class MainStates : MonoBehaviour
 
             }
         }
+        */
+
+        for (int i = 0; i < curComateers.Count; i++)
+        {
+            for (int j = 0; j < curComateers[i].onRoundStart.Count; j++)
+            {
+                var roll = Random.Range(0, 100);
+                if (roll < curComateers[i].onRoundStart[j].Value)
+                {
+                    SkillExecutor.instance.ExecuteSkill(curComateers[i], curComateers[i].onRoundStart[j].Key, null);
+                }
+            }
+
+            if (roundNum == 0)
+            {
+                for (int j = 0; j < curComateers[i].onBattleStart.Count; j++)
+                {
+                    var roll = Random.Range(0, 100);
+                    if (roll < curComateers[i].onBattleStart[j].Value)
+                    {
+                        SkillExecutor.instance.ExecuteSkill(curComateers[i], curComateers[i].onBattleStart[j].Key, null);
+                    }
+                }
+            }
+        }
+
 
         curComateers.AddRange(curComateers);
         curComateers.AddRange(curComateers);
