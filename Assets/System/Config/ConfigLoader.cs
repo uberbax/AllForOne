@@ -3190,7 +3190,7 @@ public class FormatArtefact
     public List<Bon> extras = new List<Bon>();
     public List<Bon> EXTRA_PARS = new List<Bon>();
     public int animType = 0;
-    public List<Bon> onBattleStart;
+    public List<Bon> onBattleStart = new List<Bon>();
 }
 
 
@@ -3370,7 +3370,7 @@ public class FormatSkill
     public string spawn = "";
     public List<Bon> upgradeCost = new List<Bon>();
     public string dmgFormula;
-    public List<Bon> onBattleStart;
+    public List<Bon> onBattleStart = new List<Bon>();
 }
 
 

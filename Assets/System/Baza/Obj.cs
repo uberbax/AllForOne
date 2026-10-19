@@ -1079,6 +1079,9 @@ public class RObj
                     else visuals.Add("vis_main", bb);                    
                 }
                 
+                if (!MainStates.instance.allMons.ContainsKey(RID))
+                    MainStates.instance.allMons.Add(RID, this);
+                
             }
             else if (tp == ItemType.item)
             {

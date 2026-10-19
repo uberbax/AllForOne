@@ -185,6 +185,9 @@ public class MainStates : MonoBehaviour
     };
 
     public Dictionary<string, RObj> all = new Dictionary<string, RObj>();
+    public Dictionary<string, RObj> allMons = new Dictionary<string, RObj>();
+    
+    
     public Dictionary<string, RObj> empties = new Dictionary<string, RObj>();
     public List<RObj> chests = new  List<RObj>();
     
@@ -3476,10 +3479,19 @@ public class MainStates : MonoBehaviour
     public void HandleVisibility()
     {
         Vector3 tm = mainPlayer.Position;
+        int cnt = 0;
         
-        foreach (var v in all)
+        foreach (var v in allMons)
         {
-            if (v.Value.main == null) continue;
+            //thwbbb checking == 
+            //if (v.Value.main is null) continue;
+            if (v.Value.main == null)
+            {
+                cnt++;
+                continue;
+            }
+
+
             var tt = tm - v.Value._cachedMain.position;
             if (tt.magnitude < visDistCheck)
             {
@@ -3491,6 +3503,8 @@ public class MainStates : MonoBehaviour
                     v.Value.main.SetActive(false);
             }
         }
+        
+        //Debug.Log(cnt);
     }
 
     public void HandleCds(float dt = -1, RObj who = null)
