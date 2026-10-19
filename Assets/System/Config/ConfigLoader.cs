@@ -2876,7 +2876,7 @@ public class ConfigLoader : MonoBehaviour
         if (f24 > 0) s += "Increases dmg block by " + f24 + "%, ";
         else if (f24 < 0) s += "Reduces dmg block by " + -f24 + "%, ";
 
-        if (f25 > 0) s += " in aoe";
+        if (f25 > 0) s += " in AoE ";
         
         
         //drops works
