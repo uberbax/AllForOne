@@ -1159,6 +1159,7 @@ public class MainStates : MonoBehaviour
         RObj ans = null;
         foreach (var v in combats)
         {
+            if (v == null || v.tags.Count == 0) continue;
             if (v.tags[0] == who.tags[0]) continue;
             if (v.GetPar("health") <= 0) continue;
             if (reqViz != "" && !v.HasVis(reqViz)) continue;
@@ -2694,6 +2695,13 @@ public class MainStates : MonoBehaviour
         
         foreach (var v in dbObj.skills)
         {
+            //
+            var v1 = mainPlayer.actSkills.Find(x => x.dbID == v);
+            if (v1 != null) continue;
+            var v2 = mainPlayer.inventory.Find(x => x.dbID == v);
+            if (v2 != null) continue;
+            //
+            
             var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
             var ii = mainPlayer.GetFreeIndexFrom(actSkillsLoIndex, actSkillsHiIndex);
             mainPlayer.actSkills.Add(g);
@@ -2707,6 +2715,13 @@ public class MainStates : MonoBehaviour
         
         foreach (var v in dbObj.traits)
         {
+            //
+            var v1 = mainPlayer.buffs.Find(x => x.dbID == v);
+            if (v1 != null) continue;
+            var v2 = mainPlayer.inventory.Find(x => x.dbID == v);
+            if (v2 != null) continue;
+            //
+            
             var g = DatabaseAll.instance.CreateProjectile(mainPlayer, v, Vector3.zero, false, false);
             mainPlayer.buffs.Add(g);
             g.SetPar("passive",1);
@@ -2720,7 +2735,8 @@ public class MainStates : MonoBehaviour
         //
         Save();
         
-        EventManager.INV("class_changed", new ArgPass());
+        if (e.num == 0)
+            EventManager.INV("class_changed", new ArgPass());
     }
 
 
@@ -3698,6 +3714,7 @@ public class MainStates : MonoBehaviour
         }
         */
 
+        int kk = 0;
         for (int i = 0; i < curComateers.Count; i++)
         {
             for (int j = 0; j < curComateers[i].onRoundStart.Count; j++)
@@ -3705,6 +3722,7 @@ public class MainStates : MonoBehaviour
                 var roll = Random.Range(0, 100);
                 if (roll < curComateers[i].onRoundStart[j].Value)
                 {
+                    kk++;
                     SkillExecutor.instance.ExecuteSkill(curComateers[i], curComateers[i].onRoundStart[j].Key, null);
                 }
             }
@@ -3716,11 +3734,20 @@ public class MainStates : MonoBehaviour
                     var roll = Random.Range(0, 100);
                     if (roll < curComateers[i].onBattleStart[j].Value)
                     {
+                        kk++;
                         SkillExecutor.instance.ExecuteSkill(curComateers[i], curComateers[i].onBattleStart[j].Key, null);
                     }
                 }
             }
         }
+
+        if (kk > 0)
+        {
+            //start buffs
+            yield return new WaitForSeconds(0.6f);
+        }
+        
+        HandleCds(0);
 
 
         curComateers.AddRange(curComateers);

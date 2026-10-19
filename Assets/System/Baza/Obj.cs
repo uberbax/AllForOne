@@ -534,8 +534,8 @@ public class RObj
             //thwbbb
             if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
             
-            onBattleStart.AddRange(v.onBattleStart);
-            onRoundStart.AddRange(v.onRoundStart);     
+            onBattleStart.AddRange(v.dbObj.onBattleStart);
+            onRoundStart.AddRange(v.dbObj.onRoundStart);     
                 
             foreach (var a in  v.curPars)//v.dbObj.pars)
             {
@@ -561,6 +561,9 @@ public class RObj
                 v.upgradePars.Add("used_slot", -1);    
             }
             
+            onBattleStart.AddRange(v.dbObj.onBattleStart);
+            onRoundStart.AddRange(v.dbObj.onRoundStart);  
+            
             //thwbbb
             //if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
             
@@ -576,8 +579,8 @@ public class RObj
         
         foreach (var v in buffs)
         {
-            onBattleStart.AddRange(v.onBattleStart);
-            onRoundStart.AddRange(v.onRoundStart);
+            onBattleStart.AddRange(v.dbObj.onBattleStart);
+            onRoundStart.AddRange(v.dbObj.onRoundStart);
             
             //if (v.upgradePars["used_slot"] < 0) continue;
             foreach (var a in v.dbObj.pars)
