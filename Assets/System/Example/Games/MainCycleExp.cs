@@ -266,6 +266,12 @@ public class MainCycleExp : MonoBehaviour
             v.SetPar("action_req", -1);
             v.SetPar("cd", 0);
         }
+        //reassign last skills used
+        for (int i = 0; i < MainStates.instance.lastSkillsUsed.Count; i++)
+        {
+            var g0 = secondMain.actSkills.Find(x => x.dbObj.ID ==  MainStates.instance.lastSkillsUsed[i].dbID);
+            if (g0 != null) MainStates.instance.lastSkillsUsed[i] = g0;
+        }
 
         MainStates.instance.UI_unitsPlaced.SetActive(true);
 

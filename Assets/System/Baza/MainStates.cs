@@ -436,7 +436,14 @@ public class MainStates : MonoBehaviour
         //if (g0 != "second_main") return;
         
         var h = lastSkillsUsed.Find(x => x.dbObj.ID == obj.who.dbObj.ID);
-        if (h != null) return;
+        if (h != null)
+        {
+            if (h.RID != obj.who.RID)
+            {
+                lastSkillsUsed[lastSkillsUsed.IndexOf(h)] = obj.who;
+            }
+            return;
+        }
 
         if (lastSkillsUsed.Count < maxQuickSkills)
         {

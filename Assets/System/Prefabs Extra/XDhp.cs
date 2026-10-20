@@ -103,6 +103,9 @@ public class XDhp : ComponentBehavior
 
         }
 
+        if (isBoss)
+            mon = GetComponentInParent<ObjHolder>().obj;
+        
         if (mon == null)
         {
             mon = GetComponentInParent<ObjHolder>().obj;

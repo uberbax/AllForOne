@@ -1198,6 +1198,14 @@ public class RObj
     public void Destroy()
     {
         MainStates.instance.all.Remove(RID);
+        //we destroy its skills and passives
+        /*
+        foreach (var v in actSkills)
+        {
+            MainStates.instance.all.Remove(RID);
+        }
+        */
+        
         GameObject.Destroy(this.main);
     }
 
