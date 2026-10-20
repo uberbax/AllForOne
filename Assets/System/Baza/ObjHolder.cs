@@ -46,6 +46,9 @@ public class ObjHolder : MonoBehaviour, IReceive
     {
         Debug.Log(obj);
         Debug.Log(obj.dbObj.ID);
+        Debug.Log(obj.RID);
+        if (obj.owner != null) Debug.Log(obj.owner.RID);
+        
         foreach (var v in obj.visuals)
         {
             Debug.Log(v);

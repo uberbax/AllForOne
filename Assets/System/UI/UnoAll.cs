@@ -14,6 +14,8 @@ public class UnoAll : MonoBehaviour
     public bool isPar;
     public bool isMainPar = false;
     public bool hideEmpty;
+    public bool hideEmptyAndBelow;
+    
     
     public bool ignoreOnce = false;
     public bool addDlt = false;

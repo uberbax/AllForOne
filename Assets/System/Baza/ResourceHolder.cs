@@ -212,6 +212,11 @@ public class ResourceHolder : MonoBehaviour
     }
     public void GetResult(UnoAll a, RObj r)
     {
+        float reso = 0;
+        if (a.param == "cd")
+        {
+            int h = 0;
+        }
         //prices ?
         if (a.param == "sell")
         {
@@ -284,6 +289,7 @@ public class ResourceHolder : MonoBehaviour
                 else rr = r.GetPar(a.param);
                 if (g.HasKey("icon"))  g.GetImage("icon").sprite = pars[a.param];
 
+                reso = rr;
                 string extra = "";
                 if (a.addDlt)
                 {
@@ -296,6 +302,7 @@ public class ResourceHolder : MonoBehaviour
                 }
                 
                 g.GetText("value").text = ((int)rr).ToString() + extra;
+                //
                 if (a.hideEmpty)
                 {
                     if (rr == 0)
@@ -309,14 +316,33 @@ public class ResourceHolder : MonoBehaviour
                         a.GetComponent<LayoutElement>().ignoreLayout = false;
                     }
                 }
+                //
+                if (a.hideEmptyAndBelow)
+                {
+                    if (rr <= 0)
+                    {
+                        a.GetComponent<CanvasGroup>().alpha = 0;
+                        a.GetComponent<LayoutElement>().ignoreLayout = true;
+                    }
+                    else
+                    {
+                        a.GetComponent<CanvasGroup>().alpha = 1;
+                        a.GetComponent<LayoutElement>().ignoreLayout = false;
+                    }
+                }
+                //
             }
 
             if (a.param == "health" || a.param == "mana" || a.param == "c_exp")
             {
+                reso = r.GetPar(a.param);
                 if (g)
                 {
                     if (g.HasKey("fill"))
+                    {
                         g.GetImage("fill").fillAmount = r.GetPar(a.param) / r.GetPar("max_" + a.param);
+                    }
+                        
                 }
                 else
                 {
@@ -343,19 +369,23 @@ public class ResourceHolder : MonoBehaviour
                 var s1 = r.GetPar("cd");
                 var s2 = r.GetPar("cooldown");
                 img.fillAmount = s1 / s2;
+                reso = s1;
                 //Debug.Log(r.RID + " " + s1 + " " + s2);
             }
             else if (a.param == "tier")
             {
-                img.color = rareColors[(int)r.GetPar("tier")];
+                reso = (int)r.GetPar("tier");
+                img.color = rareColors[(int)reso];
             }
             else if (a.param == "rarity")
             {
-                img.color = rareColors[(int)r.GetPar("rarity")];
+                reso = (int)r.GetPar("rarity");
+                img.color = rareColors[(int)reso];
             }
             else if (a.param == "rarity_frame")
             {
-                img.sprite = rareFrame[(int)r.GetPar("rarity")];
+                reso = (int)r.GetPar("rarity");
+                img.sprite = rareFrame[(int)reso];
             }
             else if (a.param == "slot")
             {
@@ -452,6 +482,7 @@ public class ResourceHolder : MonoBehaviour
                 else txt.text = a.pref + e.ToString();
 
                 if (a.hideEmpty) a.GetComponent<CanvasGroup>().alpha = e != 0 ? 1 : 0;
+                if (a.hideEmptyAndBelow) a.GetComponent<CanvasGroup>().alpha = e > 0 ? 1 : 0;
             }
             
             if (a.param2 == "is_met")

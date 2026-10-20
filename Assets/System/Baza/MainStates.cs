@@ -3609,6 +3609,15 @@ public class MainStates : MonoBehaviour
                 v.Value.RemoveViz("shield");
             //
 
+            if (who != null)
+            {
+                foreach (var v1 in v.Value.actSkills)
+                {
+                    v1.ChangePar("cd", -TimeManager.LAST_DT);
+                }
+            }
+
+
         }        
     }
 

@@ -159,6 +159,9 @@ public class SkillExecutor : MonoBehaviour
     public void SubExecute(ArgPass e)
     {
         ExecuteSkill(e.who, e.what, null);
+        //nea, manual dt
+        //MainStates.instance.HandleCds(1, e.who);
+        
     }
 
     public ExecReso ExecuteSkill(RObj who, RObj skl, RObj target = null, Vector3 overPos = default, bool overCd = false,
