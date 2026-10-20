@@ -9,12 +9,19 @@ namespace BRATANDRONIKLIB
     public sealed class BRATEffectBattle : MonoBehaviour
     {
         [Header("Scene references")]
+        [Tooltip("Камера, которая снимает бой. Назначить до первого включения объекта: исходное состояние запоминается в Awake.")]
         public Camera targetCamera;
+        [Tooltip("SpriteRenderer атакующего героя. Для PlayStrike и PlayHeavyStrike он атакует Enemy; для PlayHeal получает лечение.")]
         public SpriteRenderer hero;
+        [Tooltip("SpriteRenderer цели удара. Нужен для PlayStrike и PlayHeavyStrike. Герой и цель должны быть активны.")]
         public SpriteRenderer enemy;
+        [Tooltip("SpriteRenderer лекаря. Нужен для PlayHeal вместе с Hero. Оба объекта должны быть активны.")]
         public SpriteRenderer healer;
+        [Tooltip("Необязательно: спрайты боевого окружения для затемнения и размытия. Можно оставить массив пустым или отдельные элементы None — эффекты участников продолжат работать без обработки этого фона. Фон отдельно не двигается; тряска выполняется камерой. Назначить до Awake; кешируются только активные объекты. Не включать интерфейс и фон другого меню.")]
         public SpriteRenderer[] sceneSprites;
+        [Tooltip("Материал BattleEffects для спрайтов: поддерживает _BattleTint, _BattleBlur и _BattleFlash. Обязателен для всех эффектов.")]
         public Material spriteEffectMaterial;
+        [Tooltip("Материал процедурных боевых VFX из модуля BattleEffects. Обязателен для всех эффектов.")]
         public Material vfxMaterial;
 
         [Header("Framing")]

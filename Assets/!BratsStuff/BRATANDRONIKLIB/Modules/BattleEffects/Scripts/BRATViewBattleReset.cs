@@ -6,7 +6,9 @@ namespace BRATANDRONIKLIB
     [DisallowMultipleComponent]
     public sealed class BRATViewBattleReset : MonoBehaviour
     {
+        [Tooltip("Та же камера, что в BRATEffectBattle. ResetScene возвращает её положение и зум к состоянию Awake.")]
         public Camera targetCamera;
+        [Tooltip("Корни участников и боевого фона. ResetScene восстанавливает трансформы и спрайты активных при Awake потомков. UI сюда не добавлять.")]
         public Transform[] sceneRoots;
 
         public event System.Action BeforeReset;
