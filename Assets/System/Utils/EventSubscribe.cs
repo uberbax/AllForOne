@@ -27,16 +27,18 @@ public class EventSubscribe : MonoBehaviour
                 if (wh != "" && x.what != wh) return;
                 if (wh1 != "" && x.what1 != wh1) return;
 
-                gameObject.SetActive(false);
-                gameObject.SetActive(true);
-
                 if (toActivate != null)
                 {
                     var b = toActivate.GetComponent<IReceive>();
                     if (b != null) b.Receive(x);
                     toActivate.SetActive(true);
                     //toActivate.SendMessage("Receive", x);
-                }
+                }                
+                
+                //huinya
+                gameObject.SetActive(false);
+                gameObject.SetActive(true);
+                
 
                 if (toDeactivate != null)
                 {

@@ -18,10 +18,14 @@ public class UIturnOrder : MonoBehaviour
             var g = holder.GetChild(i);
             if (obj.whats.Count <= l) break;
             if (obj.whats[l].tags.Contains("player"))
+            {
                 g.GetComponent<Image>().color = Color.green;
+                g.transform.Find("icon").localScale = new Vector3(2, 2, 2);
+            }
             else
             {
                 g.GetComponent<Image>().color = Color.red;
+                g.transform.Find("icon").localScale = new Vector3(1, 1, 1);
             }
 
             g.Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.avas[obj.whats[l].dbObj.ID];
