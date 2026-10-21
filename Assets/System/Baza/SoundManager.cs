@@ -27,11 +27,19 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, mon.GetPar("volume_sound"));
     }
 
-    public void PlayAny(string sound)
+    public void PlayAny(string sound, int spellType = 0)
     {
         if (ResourceHolder.instance.sounds.ContainsKey(sound))
         {
             AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds[sound], Camera.main.transform.position, mon.GetPar("volume_sound"));
+        }
+        else if (spellType == 1)
+        {
+            AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds["buff"], Camera.main.transform.position, mon.GetPar("volume_sound"));
+        }
+        else if (spellType == 2)
+        {
+            AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds["spell"], Camera.main.transform.position, mon.GetPar("volume_sound"));
         }
     }
 

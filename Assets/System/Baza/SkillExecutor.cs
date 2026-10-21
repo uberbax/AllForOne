@@ -228,6 +228,8 @@ public class SkillExecutor : MonoBehaviour
 
         var jj = skl.GetPar("target");
         //who main player ? self effect ?
+        int spellType = 0;
+        
         if (ll == null && (who.RID == "second_main" || who.RID == "main_player") && jj == 1)
         {
             var kk = Instantiate(ResourceHolder.instance.effSelf);
@@ -239,7 +241,8 @@ public class SkillExecutor : MonoBehaviour
             Vector2 size = kk.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.size;
             if (size.x > 1)
                 kk.transform.localScale /= size.x;
-            
+
+            spellType = 1;
             Destroy(kk, 2);
         }
 
@@ -272,9 +275,13 @@ public class SkillExecutor : MonoBehaviour
         //animation attack
         if (who.visuals.ContainsKey("animator") && overPos == default)
             who.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
-        
+
+        if (ll != null && ll.angle == 45) spellType = 2;
         if (overPos == default)
-            SoundManager.instance.PlayAny(skl.dbObj.ID);
+        {
+            SoundManager.instance.PlayAny(skl.dbObj.ID, spellType);
+        }
+            
         
         int p = (int)skl.GetPar("proj_amount");
         float dt = skl.GetPar("dt");

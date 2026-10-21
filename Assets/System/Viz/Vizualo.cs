@@ -43,7 +43,8 @@ public class Vizualo : MonoBehaviour
     
     public bool activateScale = false;
     public bool halfCanvasGroup = false;
-    
+
+    private bool hasStarted = false;
     private void OnEnable1()
     {
         if (asHolderCond)
@@ -56,7 +57,7 @@ public class Vizualo : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Start()
     {
         c = GetComponent<CanvasGroup>();
         if (c == null) c = gameObject.AddComponent<CanvasGroup>();
@@ -90,7 +91,8 @@ public class Vizualo : MonoBehaviour
             }
         }
         
-        MainStates.allVisuals.Add(this);
+        if (!MainStates.allVisuals.Contains(this))
+            MainStates.allVisuals.Add(this);
 
         var hu = transform.parent.GetComponentInChildren<FPrice>();
         if (hu != null) relPrice = hu.gameObject;

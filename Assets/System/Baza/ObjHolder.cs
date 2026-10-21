@@ -39,6 +39,14 @@ public class ObjHolder : MonoBehaviour, IReceive
         }
         //?
         Update();
+
+        var hh = GetComponentsInChildren<Vizualo>(true);
+        for (int i = 0; i < hh.Length; i++)
+        {
+            hh[i].Start();
+            hh[i].Updateo();
+        }
+        
     }
 
     [ContextMenu("ShowViz")]

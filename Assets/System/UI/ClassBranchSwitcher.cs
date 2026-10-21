@@ -40,8 +40,16 @@ public sealed class ClassBranchSwitcher : MonoBehaviour
     {
         if (branches.Length == 0) return;
         currentIndex = Mathf.Clamp(index, 0, branches.Length - 1);
+
         for (int i = 0; i < branches.Length; i++)
-            if (branches[i] != null) branches[i].SetActive(i == currentIndex);
+        {
+            //if (branches[i] != null) branches[i].SetActive(i == currentIndex);
+            if (branches[i] != null)
+            {
+                branches[i].transform.localScale = (i == currentIndex ? Vector3.one : Vector3.zero);
+            }
+        }
+        
         foreach (var button in previousButtons) if (button != null) button.interactable = currentIndex > 0;
         foreach (var button in nextButtons) if (button != null) button.interactable = currentIndex < branches.Length - 1;
     }
