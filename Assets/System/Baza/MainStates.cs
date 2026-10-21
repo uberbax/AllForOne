@@ -3054,6 +3054,19 @@ public class MainStates : MonoBehaviour
                 return;
             }
 
+            if (f1 == 0)
+            {
+                //its phys
+                var def = a.GetPar("def");
+                atk = (atk * 100) / (100 + def);
+            }
+            else
+            {
+                //its magic
+                var res = a.GetPar("res");
+                atk = (atk * 100) / (100 + res);
+            }
+
             var db = a.GetPar("dmg_block");
             var k = Mathf.Min(atk, db);
             atk -= k;
