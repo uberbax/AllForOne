@@ -27,8 +27,10 @@ public sealed class BattlePassController : MonoBehaviour
     public IReadOnlyList<ElTasko> Stages => tasks;
     private static bool Ready => ConfigLoader.Instance != null && ModelStatistics.instance != null &&
         MainStates.instance != null && MainStates.instance.playerData != null && MainStates.instance.HasMain();
-    public int Points => Ready ? Mathf.Max(0, ModelStatistics.instance.GetStatValue(PointsStat, false)) : 0;
-    public bool HasPremium => Ready && ModelStatistics.instance.GetStatValue(PremiumStat, false) == 1;
+    private static int CurrentPoints => Ready ? Mathf.Max(0, MainStates.instance.GetItemsCount(PointsStat)) : 0;
+    private static bool PremiumUnlocked => Ready && ModelStatistics.instance.GetStatValue(PremiumStat, false) == 1;
+    public int Points => CurrentPoints;
+    public bool HasPremium => PremiumUnlocked;
 
     private void Awake()
     {
@@ -64,7 +66,7 @@ public sealed class BattlePassController : MonoBehaviour
     public static int RequiredPoints(ElTasko task)
     {
         if (task == null) return -1;
-        // TASKS currently labels this have_item; the battle pass explicitly tracks the statistic instead.
+        // Read the inventory threshold configured for battlepass_point.
         foreach (var requirement in task.reqFinish)
             if (requirement.what == PointsStat && int.TryParse(requirement.val, out var points) && points >= 0) return points;
         return -1;
@@ -87,7 +89,8 @@ public sealed class BattlePassController : MonoBehaviour
         for (int i = tasks.Count; i < rows.Count; i++) rows[i].gameObject.SetActive(false);
         RefreshState();
     }
-    public bool IsTaken(string id, bool premium)
+    public bool IsTaken(string id, bool premium) => IsRewardTaken(id, premium);
+    private static bool IsRewardTaken(string id, bool premium)
     {
         if (!Ready) return false;
         if (ModelStatistics.instance.GetStatValue(TakenStat(id, premium), false) >= 1) return true;
@@ -96,9 +99,21 @@ public sealed class BattlePassController : MonoBehaviour
     }
     public bool CanClaim(string id, bool premium)
     {
-        if (!Ready || (premium && !HasPremium) || IsTaken(id, premium)) return false;
-        var task = tasks.Find(t => t.id == id);
-        return task != null && Points >= RequiredPoints(task) && (premium ? task.rewardsPremium : task.rewards).Count > 0;
+        return CanClaim(tasks.Find(t => t.id == id), premium);
+    }
+    private static bool CanClaim(ElTasko task, bool premium)
+    {
+        if (!Ready || task == null || (premium && !PremiumUnlocked) || IsRewardTaken(task.id, premium)) return false;
+        return CurrentPoints >= RequiredPoints(task) && (premium ? task.rewardsPremium : task.rewards).Count > 0;
+    }
+    /// <summary>Checks both reward tracks, including while the battle pass window is closed.</summary>
+    public static bool HasClaimableReward()
+    {
+        if (!Ready) return false;
+        foreach (var task in ConfigLoader.Instance.allTasks.Values)
+            if (task != null && IsStageId(task.id) && RequiredPoints(task) >= 0 &&
+                (CanClaim(task, false) || CanClaim(task, true))) return true;
+        return false;
     }
     public bool Claim(string id, bool premium)
     {
@@ -128,6 +143,7 @@ public sealed class BattlePassController : MonoBehaviour
         }
         finally { claiming = false; }
         RefreshState();
+        MainStates.instance.Save();
         return true;
     }
     public void ClaimAll()
@@ -155,6 +171,6 @@ public sealed class BattlePassController : MonoBehaviour
         if (levelText != null) levelText.text = reached.ToString();
         if (premiumText != null) premiumText.text = HasPremium ? "Premium Active" : "Premium Locked";
         foreach (var row in rows) if (row != null && row.gameObject.activeSelf) row.RefreshState();
-        if (claimAllButton != null) claimAllButton.interactable = tasks.Exists(t => CanClaim(t.id, false) || CanClaim(t.id, true));
+        if (claimAllButton != null) claimAllButton.interactable = HasClaimableReward();
     }
 }

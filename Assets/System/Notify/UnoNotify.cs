@@ -37,6 +37,10 @@ public class UnoNotify : MonoBehaviour
     public bool haveUncollectedCodex;
 
     public bool haveSingleUncollectedCodex;
+    
+    public bool haveUncollectedBattlePass;
+    
+    
     /*
     //have any daily chest uncollected
     public bool haveDailyChestUncollected = false; 
@@ -98,6 +102,13 @@ public class UnoNotify : MonoBehaviour
             }
 
             return 0;
+        }
+
+        if (haveUncollectedBattlePass)
+        {
+            var ee = BattlePassController.HasClaimableReward();
+            if (ee) return 1;
+            else return 0;
         }
 
         if (haveAutoreward)

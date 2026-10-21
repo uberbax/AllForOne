@@ -3337,6 +3337,7 @@ public class MainStates : MonoBehaviour
         aa.Add(new Bon{Key = "exp", Value = e0});
         aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
         aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
+        aa.Add(new Bon{Key = "battlepass_point", Value = 50});
         
         //if there was a levelup
         var l1 = mainPlayer.GetPar("level");

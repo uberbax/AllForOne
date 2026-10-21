@@ -34,11 +34,11 @@ internal static class BattlePassValidation
             var controller = prefab.GetComponent<BattlePassController>(); controller.RefreshTasks();
             Require(controller.Stages.Count == tasks.Count, "Real TASKS records bind to all stages");
             Require(tasks.Select(t => t.id).SequenceEqual(prefab.GetComponentsInChildren<BattlePassLevelView>(true).Select(v => v.TaskId)), "Prefab row order and IDs");
-            state.AddItems(new List<Bon>{new Bon{Key=BattlePassController.PointsStat,Value=5000}});
-            Require(controller.Points == 0 && !controller.Claim(tasks[0].id, false), "Inventory points must not unlock the statistic-based track");
-            ModelStatistics.instance.SetStatValueForce(BattlePassController.PointsStat, BattlePassController.RequiredPoints(tasks[0]) - 1);
+            ModelStatistics.instance.SetStatValueForce(BattlePassController.PointsStat, 5000);
+            Require(controller.Points == 0 && !controller.Claim(tasks[0].id, false), "Statistics must not unlock the inventory-based track");
+            state.AddItems(new List<Bon>{new Bon{Key=BattlePassController.PointsStat,Value=BattlePassController.RequiredPoints(tasks[0]) - 1}});
             Require(!controller.Claim(tasks[0].id, false), "Reward threshold boundary");
-            ModelStatistics.instance.SetStatValueForce(BattlePassController.PointsStat, BattlePassController.RequiredPoints(tasks[0]));
+            state.AddItems(new List<Bon>{new Bon{Key=BattlePassController.PointsStat,Value=1}});
             Require(controller.Claim(tasks[0].id, false), "Free reward grant");
             Require(!controller.Claim(tasks[0].id, false), "Duplicate free reward blocked");
             Require(!controller.Claim(tasks[0].id, true), "Premium blocked while unpurchased");
@@ -47,8 +47,8 @@ internal static class BattlePassValidation
             ModelStatistics.instance.SetStatValueForce(BattlePassController.PremiumStat, 1);
             Require(controller.Claim(tasks[0].id, true), "Late premium purchase can claim an already reached stage");
             Require(!controller.Claim(tasks[0].id, true), "Duplicate premium reward blocked");
-            Require(controller.Points == BattlePassController.RequiredPoints(tasks[0]) && state.GetItemsCount(BattlePassController.PointsStat) == 5000, "Claim consumes neither statistic nor inventory points");
-            ModelStatistics.instance.SetStatValueForce(BattlePassController.PointsStat, tasks.Max(BattlePassController.RequiredPoints));
+            Require(controller.Points == BattlePassController.RequiredPoints(tasks[0]) && state.GetItemsCount(BattlePassController.PointsStat) == BattlePassController.RequiredPoints(tasks[0]), "Claim does not consume inventory points");
+            state.AddItems(new List<Bon>{new Bon{Key=BattlePassController.PointsStat,Value=tasks.Max(BattlePassController.RequiredPoints) - state.GetItemsCount(BattlePassController.PointsStat)}});
             controller.ClaimAll();
             foreach (var task in tasks)
                 Require(controller.IsTaken(task.id, false) && controller.IsTaken(task.id, true), "Both tracks claimed: " + task.id);
@@ -58,7 +58,7 @@ internal static class BattlePassValidation
             state.playerData.playerStats = JsonConvert.DeserializeObject<Dictionary<string, Bon>>(persisted);
             controller.RefreshTasks(); controller.ClaimAll();
             foreach (var reward in expected) Require(state.GetItemsCount(reward.Key) == reward.Value, "Saved claim markers prevent repeat grants");
-            return "Verified statistic thresholds, exact premium flag, free/premium independence, late purchase, all configured rewards, duplicate prevention, saved markers and unchanged points.";
+            return "Verified inventory thresholds, ignored point statistic, exact premium flag, free/premium independence, late purchase, all configured rewards, duplicate prevention, saved markers and unchanged points.";
         }
         finally { UnityEngine.Object.DestroyImmediate(root); BattlePassPrefabSetup.RestoreStatics(saved); }
     }
