@@ -386,7 +386,7 @@ public class SkillExecutor : MonoBehaviour
                             (tt_1.position + tt_2.position) / 2,
                             () =>
                             {
-                                Debug.Log("NYAM");
+                                //Debug.Log("NYAM");
                                 ro.RemoveViz("coll");
                                 if (ro.GetPar("aoe") > 0)
                                 {

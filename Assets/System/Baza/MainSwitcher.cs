@@ -44,11 +44,18 @@ public class MainSwitcher : MonoBehaviour
         {
             Make3D();
             MainStates.instance.mainPlayer.RemoveViz("click_move");
-            MainStates.instance.mainPlayer.RemoveViz("shoot");
             MainStates.instance.mainPlayer.AddViz("move");
             MakeVampire();
             MainStates.handleVampire = true;
             XDmove.useNavmesh = true;
+            MainCycleExp.exceptMain = false;
+            MainStates.instance.mainPlayer.RemoveViz("shoot");
+            
+            foreach (var v in MainStates.instance.mainPlayer.actSkills)
+            {
+                v.SetPar("action_req", -1);
+                v.SetPar("cd", 0);
+            }
         }
     }
     

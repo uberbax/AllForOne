@@ -28,6 +28,11 @@ public class XDcoll : ComponentBehavior
                 transform.position = (head.position + legs.position) / 2;
                 hh.size = new Vector3(hh.size.x, hh.size.y * (head.position.y - legs.position.y), hh.size.z);
             }
+
+            //if (!mon.HasVis("coll3D"))
+            //{
+            //    mon.AddViz("coll3D");
+            //}
         }
     }
 

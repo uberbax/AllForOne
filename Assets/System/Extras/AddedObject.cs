@@ -164,7 +164,9 @@ public class AddedObject : MonoBehaviour
         
         if (MainStates.isCameraFace)
         {
-            r.visMain.transform.forward = Camera.main.transform.forward;
+            //thwbbb
+            if (r.HasVisMain())
+                r.visMain.transform.forward = Camera.main.transform.forward;
         }
     }
 

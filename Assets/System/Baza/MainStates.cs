@@ -3587,17 +3587,25 @@ public class MainStates : MonoBehaviour
     public void HandleCds(float dt = -1, RObj who = null)
     {
         if (dt >= 0)
+        {
             TimeManager.LAST_DT = dt;
+            //Debug.Log(TimeManager.LAST_DT);
+        }
+        //Debug.Log("TTTT: " + TimeManager.LAST_DT);
+
+        if (!allMons.ContainsKey("main_player"))
+        {
+            allMons.Add("main_player", mainPlayer);
+        }
+        
         //decrease cds !    
-        foreach (var v in all)
+        foreach (var v in allMons)
         {
             if (who != null && v.Value != who) continue;
             
-            if (v.Value.it == ItemType.projectile && v.Value.upgradePars["cd"] >= 0)
-            {
-                //v.Value.upgradePars["cd"] -= TimeManager.LAST_DT;
-                v.Value.ChangePar("cd", -TimeManager.LAST_DT, false);
-            }
+            //if (v.Value.it == ItemType.projectile && v.Value.upgradePars["cd"] >= 0)
+            //    v.Value.ChangePar("cd", -TimeManager.LAST_DT, false);
+            
 
             int cnt = 0;
             List<RObj> toDelete = new List<RObj>();
@@ -3665,14 +3673,13 @@ public class MainStates : MonoBehaviour
                 v.Value.RemoveViz("shield");
             //
 
-            if (who != null)
-            {
+            //if (who != null)
+            //{
                 foreach (var v1 in v.Value.actSkills)
                 {
-                    v1.ChangePar("cd", -TimeManager.LAST_DT);
+                    v1.ChangePar("cd", -TimeManager.LAST_DT, false);
                 }
-            }
-
+            //}
 
         }        
     }
@@ -3812,8 +3819,11 @@ public class MainStates : MonoBehaviour
             //start buffs
             yield return new WaitForSeconds(0.6f);
         }
-        
-        HandleCds(0);
+
+        if (manualDt)
+        {
+            HandleCds(0);
+        }
 
 
         curComateers.AddRange(curComateers);
@@ -3936,6 +3946,10 @@ public class MainStates : MonoBehaviour
             }
         }
 
+        //if (!manualDt)
+        //{
+        //    HandleCds(Time.deltaTime);
+        //}
 
         
         InIteration = false;

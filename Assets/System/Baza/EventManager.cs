@@ -23,7 +23,7 @@ public class EventManager : MonoBehaviour
     
     public static void INV(string evt, ArgPass e)
     {
-        if (evt != "MOVE_ENDED" && evt != "turn_order")
+        if (evt != "MOVE_ENDED" && evt != "turn_order" && evt != "skill_casted")
             Debug.Log(evt + " INVOKED " + (e == null ? "null" : e.what1));
         
         if (dynActions.ContainsKey(evt))
