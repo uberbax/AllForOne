@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using OfficeOpenXml;
+using System.Text;
 
 public class ExcelTable
 {
@@ -142,7 +143,7 @@ public class ExcelTable
     public string ToTSV()
     {
 
-        string res = "";
+        var res = new StringBuilder();
         
         for (int row = 1; row <= NumberOfRows; row++)
         {
@@ -157,16 +158,16 @@ public class ExcelTable
                 //    continue;
                 
                 if (column != 1)
-                    res += "\t";
+                    res.Append('\t');
                 
-                res += string.Format("{0}", yy);
+                res.AppendFormat("{0}", yy);
             }
-            res += "\n";
+            res.Append('\n');
         }
         
         
 
-        return res;
+        return res.ToString();
     }
 
 

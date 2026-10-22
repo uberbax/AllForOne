@@ -19,6 +19,9 @@ public class MainSwitcher : MonoBehaviour
     public bool doRuntime;
 
     public bool is3D = false;
+
+    [Header("Rumble CASE")] 
+    public bool isRumble;
     public void AfterLoad()
     {
         if (is3D)
@@ -35,6 +38,13 @@ public class MainSwitcher : MonoBehaviour
             XDdmgTrack.scaleMult = 0.3f;
             
             Destroy(MainStates.instance.mainPlayer.main.GetComponent<NavMeshAgent>());
+        }
+
+        if (isRumble)
+        {
+            Make3D();
+            MainStates.instance.mainPlayer.RemoveViz("click_move");
+            MainStates.instance.mainPlayer.AddViz("move");
         }
     }
     
