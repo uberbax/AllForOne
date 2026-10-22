@@ -9,7 +9,8 @@ public class XDmove : ComponentBehavior
     private Transform mon;
     private RObj rMon;
     private float spd = 6;
-
+    public static bool useNavmesh = false; 
+    
     public void AfterSet(string val)
     {
         spd =  float.Parse(pars["val"], CultureInfo.InvariantCulture);
@@ -35,6 +36,13 @@ public class XDmove : ComponentBehavior
             {
                 //cant mode
                 return;
+            }
+
+            if (useNavmesh)
+            {
+                var hh = mon.position + new Vector3(h * Time.deltaTime * spd, v * Time.deltaTime * spd, 0);
+                var f = UtilsControl.IsPointOnNavMesh(hh);
+                if (!f) return;
             }
         }
         else

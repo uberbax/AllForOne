@@ -3515,6 +3515,9 @@ public class MainStates : MonoBehaviour
 
         if (battleState < 2)
             HandleVisibility();
+        
+        if (handleVampire)
+            HandleVampireEnable();
     }
 
 
@@ -3549,6 +3552,38 @@ public class MainStates : MonoBehaviour
         //Debug.Log(cnt);
     }
 
+    public void HandleVampireEnable()
+    {
+        Vector3 tm = mainPlayer.Position;
+        int cnt = 0;
+        
+        foreach (var v in allMons)
+        {
+            //thwbbb checking == 
+            //if (v.Value.main is null) continue;
+            if (v.Value.main == null)
+            {
+                cnt++;
+                continue;
+            }
+
+
+            var tt = tm - v.Value._cachedMain.position;
+            if (v.Value.META_TAGS.Contains("sword")) continue;
+            if (tt.magnitude < visDistCheck)
+            {
+                v.Value.AddMeta("sword");
+                v.Value.RemoveViz("rand_move");
+                v.Value.RemoveViz("info");
+            }
+            else
+            {
+                
+            }
+        }
+        
+        //Debug.Log(cnt);
+    }
     public void HandleCds(float dt = -1, RObj who = null)
     {
         if (dt >= 0)
@@ -3671,6 +3706,7 @@ public class MainStates : MonoBehaviour
     public bool InIteration = false;
     public string lastBattle;
     public int lastBattleResult = 0;
+    public static bool handleVampire;
     public static float lastBattleTime;
 
     public List<RObj> GetMines(string meta)

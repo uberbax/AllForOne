@@ -44,7 +44,11 @@ public class MainSwitcher : MonoBehaviour
         {
             Make3D();
             MainStates.instance.mainPlayer.RemoveViz("click_move");
+            MainStates.instance.mainPlayer.RemoveViz("shoot");
             MainStates.instance.mainPlayer.AddViz("move");
+            MakeVampire();
+            MainStates.handleVampire = true;
+            XDmove.useNavmesh = true;
         }
     }
     
@@ -63,25 +67,30 @@ public class MainSwitcher : MonoBehaviour
           var g = MainStates.instance.mainPlayer.main.GetComponentInChildren<GUIControls>();
           g.EquipDualWeapons(Weapon.LeftPistol, Weapon.RightPistol);
     }
-    
 
+    public bool withDist = true;
+    
     [EditorAttributes.Button("Make vampire")]
     public void MakeVampire()
     {
         ModelStatistics.instance.SetStatValue("battle", 2);
 
-        foreach (var v in MainStates.instance.all)
+        if (withDist)
         {
-            var dir = MainStates.instance.mainPlayer.Position - v.Value.Position;
-            dir.z = 0;
-            if (dir.magnitude < MainStates.instance.visDistCheck)
+            foreach (var v in MainStates.instance.all)
             {
-                v.Value.AddMeta("sword");
-                v.Value.RemoveViz("rand_move");
-                v.Value.RemoveViz("info");
+                if (v.Value.main == null) continue;
+                var dir = MainStates.instance.mainPlayer.Position - v.Value.Position;
+                dir.z = 0;
+                if (dir.magnitude < MainStates.instance.visDistCheck)
+                {
+                    v.Value.AddMeta("sword");
+                    v.Value.RemoveViz("rand_move");
+                    v.Value.RemoveViz("info");
+                }
             }
         }
-        
+
         MainStates.instance.mainPlayer.AddMeta("sword");
         
         MainStates.instance.inBattle = true;

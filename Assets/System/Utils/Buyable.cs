@@ -290,6 +290,11 @@ public class Buyable : ComponentBehavior
     {
         lastClickTime = Time.time;
     }
+    
+    public void OnMouseUp()
+    {
+        lastClickTime = Time.time;
+    }
 
     private void Update()
     {
