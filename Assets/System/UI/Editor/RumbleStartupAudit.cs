@@ -16,6 +16,7 @@ public static class RumbleStartupAudit
     [InitializeOnLoadMethod]
     private static void Requested()
     {
+        if(File.Exists(Work+"/rumble-reader.request")) EditorApplication.delayCall += ReaderAudit;
         if (File.Exists(Work + "/rumble-startup-trace.request") && !File.Exists(Work + "/rumble-startup-audit.request"))
             EditorApplication.delayCall += StartTrace;
         if (!File.Exists(Work + "/rumble-startup-audit.request")) return;
@@ -89,6 +90,71 @@ public static class RumbleStartupAudit
         report["slowRecordedFrames"] = frames;
         File.WriteAllText(Work + "/rumble-startup-audit.json",Newtonsoft.Json.JsonConvert.SerializeObject(report,Newtonsoft.Json.Formatting.Indented));
     }
+    [MenuItem("Tools/Diagnostics/Rumble Excel readers")]
+    public static void ReaderAudit()
+    {
+        File.Delete(Work+"/rumble-reader.request");
+        try
+        {
+            var reports=new List<object>();
+            foreach(var name in new[]{"Config_exp.xlsx","loc.xlsx"})
+            {
+                byte[] bytes;
+                using(var file=new FileStream(Path.Combine(Application.streamingAssetsPath,name),FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete))
+                using(var buffer=new MemoryStream()) { file.CopyTo(buffer); bytes=buffer.ToArray(); }
+                var timer=Stopwatch.StartNew();
+                Excel legacy;
+                double packageMs, copyMs;
+                using(var stream=new MemoryStream(bytes))
+                using(var package=new OfficeOpenXml.ExcelPackage(stream))
+                {
+                    packageMs=timer.Elapsed.TotalMilliseconds;
+                    timer.Restart(); legacy=LegacyCopy(package.Workbook); copyMs=timer.Elapsed.TotalMilliseconds;
+                    timer.Restart(); var optimized=new Excel(package.Workbook); double optimizedMs=timer.Elapsed.TotalMilliseconds;
+                    var equal=legacy.Tables.Count==optimized.Tables.Count && legacy.Tables.Zip(optimized.Tables,(a,b)=>a.TableName==b.TableName && a.NumberOfRows==b.NumberOfRows && a.NumberOfColumns==b.NumberOfColumns && a.ToTSV()==b.ToTSV()).All(v=>v);
+                    reports.Add(new {name,kind="constructor",previousMs=copyMs,currentMs=optimizedMs,identical=equal,tableCount=legacy.Tables.Count});
+                }
+                timer.Restart();
+                Excel xml;
+                using(var stream=new MemoryStream(bytes)) xml=ExcelHelper.LoadOpenXml(stream);
+                double xmlMs=timer.Elapsed.TotalMilliseconds;
+                var comparisons=new List<object>();
+                foreach(var table in legacy.Tables)
+                {
+                    var other=xml.Tables.Find(t=>t.TableName==table.TableName);
+                    string a=table.ToTSV(), b=other==null?null:other.ToTSV();
+                    int firstDifference=-1;
+                    if(a!=b && b!=null) { int i=0; while(i<Math.Min(a.Length,b.Length)&&a[i]==b[i])i++; firstDifference=i; }
+                    comparisons.Add(new {name=table.TableName,identical=a==b,rows=table.NumberOfRows,columns=table.NumberOfColumns,xmlRows=other==null?-1:other.NumberOfRows,xmlColumns=other==null?-1:other.NumberOfColumns,firstDifference,
+                        legacySample=firstDifference<0?null:a.Substring(Math.Max(0,firstDifference-30),Math.Min(90,a.Length-Math.Max(0,firstDifference-30))),
+                        xmlSample=firstDifference<0?null:b.Substring(Math.Max(0,firstDifference-30),Math.Min(90,b.Length-Math.Max(0,firstDifference-30)))});
+                }
+                reports.Add(new {name,packageMs,copyMs,xmlMs,comparisons});
+            }
+            File.WriteAllText(Work+"/rumble-reader.json",Newtonsoft.Json.JsonConvert.SerializeObject(reports,Newtonsoft.Json.Formatting.Indented));
+        }
+        catch(Exception e) { File.WriteAllText(Work+"/rumble-reader.json","FAIL: "+e); }
+    }
+
+    private static Excel LegacyCopy(OfficeOpenXml.ExcelWorkbook workbook)
+    {
+        var excel=new Excel();
+        for(int i=1;i<=workbook.Worksheets.Count;i++)
+        {
+            var sheet=workbook.Worksheets[i];
+            var table=new ExcelTable {TableName=sheet.Name, NumberOfRows=sheet.Dimension==null?0:sheet.Dimension.Rows, NumberOfColumns=sheet.Dimension==null?0:sheet.Dimension.Columns};
+            for(int row=1;row<=table.NumberOfRows;row++)
+            for(int col=1;col<=table.NumberOfColumns;col++)
+            {
+                string value="";
+                if(sheet.Cells[row,col].Value!=null) value=sheet.Cells[row,col].Value.ToString();
+                table.SetValue(row,col,value);
+            }
+            excel.Tables.Add(table);
+        }
+        return excel;
+    }
+
     private static string LegacyTsv(ExcelTable table)
     {
         string result="";
@@ -112,6 +178,15 @@ public static class RumbleStartupAudit
     private static int firstTraceFrame;
     private static bool wasProfiling, wasEditorProfiling;
 
+    [MenuItem("Tools/Diagnostics/Rumble startup trace")]
+    public static void TraceStartup()
+    {
+        File.WriteAllText(Work+"/rumble-startup-trace.request","capture");
+        StartTrace();
+    }
+
+    private static int traceArmUpdates;
+
     private static void StartTrace()
     {
         string request=Work+"/rumble-startup-trace.request";
@@ -123,14 +198,23 @@ public static class RumbleStartupAudit
         wasEditorProfiling=UnityEditorInternal.ProfilerDriver.profileEditor;
         UnityEditorInternal.ProfilerDriver.profileEditor=true;
         UnityEditorInternal.ProfilerDriver.enabled=true;
+        traceArmUpdates=0;
+        EditorApplication.update+=ArmTrace;
+    }
+    private static void ArmTrace()
+    {
+        if(++traceArmUpdates<3) return;
+        EditorApplication.update-=ArmTrace;
         firstTraceFrame=UnityEditorInternal.ProfilerDriver.lastFrameIndex;
-        enteredPlayMs=-1; traceUpdates=0; traceTimer=Stopwatch.StartNew();
+        enteredPlayMs=-1; traceUpdates=0; traceEvents.Clear(); traceTimer=Stopwatch.StartNew();
         EditorApplication.playModeStateChanged+=TraceMode;
         EditorApplication.update+=TraceUpdate;
         EditorApplication.EnterPlaymode();
     }
+    private static readonly List<object> traceEvents=new List<object>();
     private static void TraceMode(PlayModeStateChange change)
     {
+        traceEvents.Add(new {name=change.ToString(),ms=traceTimer.Elapsed.TotalMilliseconds});
         if(change==PlayModeStateChange.EnteredPlayMode) enteredPlayMs=traceTimer.Elapsed.TotalMilliseconds;
     }
     private static void TraceUpdate()
@@ -156,7 +240,7 @@ public static class RumbleStartupAudit
                 }
                 frames.Add(new {frame=f,ms=view.frameTimeMs,samples});
             }
-            File.WriteAllText(Work+"/rumble-startup-trace.json",Newtonsoft.Json.JsonConvert.SerializeObject(new {enterPlayMs=enteredPlayMs,totalCaptureMs=traceTimer.Elapsed.TotalMilliseconds,frames},Newtonsoft.Json.Formatting.Indented));
+            File.WriteAllText(Work+"/rumble-startup-trace.json",Newtonsoft.Json.JsonConvert.SerializeObject(new {enterPlayMs=enteredPlayMs,totalCaptureMs=traceTimer.Elapsed.TotalMilliseconds,events=traceEvents,frames},Newtonsoft.Json.Formatting.Indented));
         }
         catch(Exception e) { File.WriteAllText(Work+"/rumble-startup-trace.json","FAIL: "+e); }
         finally

@@ -35,15 +35,13 @@ public class ExcelTable
 	}
         for (int row = 1; row <= NumberOfRows; row++)
         {
+            var rowCells = new Dictionary<int, ExcelTableCell>(NumberOfColumns);
             for (int column = 1; column <= NumberOfColumns; column++)
             {
-                string value = ""; //default value for empty cell
-		if (sheet.Cells [row, column].Value != null)
-		{
-			value = sheet.Cells [row, column].Value.ToString ();
-		}
-                SetValue(row, column, value);
+                object value = sheet.GetValue(row, column);
+                rowCells.Add(column, new ExcelTableCell(row, column, value == null ? "" : value.ToString()));
             }
+            cells.Add(row, rowCells);
         }
     }
 
