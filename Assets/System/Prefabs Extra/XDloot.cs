@@ -34,13 +34,19 @@ public class XDloot : ComponentBehavior
             dstTake = float.Parse(pars["dst"], CultureInfo.InvariantCulture);
     }
 
+    public float lastTm = -1;
+    private void OnMouseUp()
+    {
+        lastTm = Time.time;
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonUp(0))
         {
             if (UtilsControl.IsPointerOverUIElement()) return;
             var d = UtilsControl.CheckClick();
-            if (d != gameObject) return;
+            if (d != gameObject && Time.time - lastTm > 0.3f) return;
             
             Debug.Log("BOM");
             var a = MainStates.instance.lastAllySelected == null
@@ -89,7 +95,7 @@ public class XDloot : ComponentBehavior
                 : MainStates.instance.lastAllySelected;
             
             var b = mon.main.AddComponent<CameraFollow>();
-            b.smoothSpeed = 0.01f;
+            b.smoothSpeed = 0.02f;
             b.look = false;
             b.smallify = true;
             b.target = a.main.transform;

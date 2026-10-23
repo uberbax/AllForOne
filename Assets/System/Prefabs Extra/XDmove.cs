@@ -9,7 +9,9 @@ public class XDmove : ComponentBehavior
     private Transform mon;
     private RObj rMon;
     private float spd = 6;
+    
     public static bool useNavmesh = false; 
+    public static bool useMobileJoystick = false; 
     
     public void AfterSet(string val)
     {
@@ -27,11 +29,24 @@ public class XDmove : ComponentBehavior
     {
         var h = Input.GetAxis("Horizontal");
         var v = Input.GetAxis("Vertical");
-
+        
+        Vector3 dVec = new Vector3(h * Time.deltaTime * spd, v * Time.deltaTime * spd);
         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
         {
+            
+            if (useMobileJoystick)
+            {
+                //Debug.Log(MainStates.instance.joystick.Horizontal);
+                //Debug.Log(MainStates.instance.joystick.Vertical);
+                //Debug.Log(MainStates.instance.joystick.Value);
+                
+                dVec = MainStates.instance.joystick.Value * Time.deltaTime * spd;
+                
+                //Debug.Log(dVec);
+            }
+            
             var rh = Physics2D.Raycast(transform.position,
-                new Vector2(h * Time.deltaTime * spd, v * Time.deltaTime * spd), 0.3f, LayerMask.GetMask("Nopass"));
+                dVec, 0.3f, LayerMask.GetMask("Nopass"));
             if (rh.collider != null)
             {
                 //cant mode
@@ -40,7 +55,7 @@ public class XDmove : ComponentBehavior
 
             if (useNavmesh)
             {
-                var hh = mon.position + new Vector3(h * Time.deltaTime * spd, v * Time.deltaTime * spd, 0);
+                var hh = mon.position + dVec;
                 var f = UtilsControl.IsPointOnNavMesh(hh);
                 if (!f) return;
             }
@@ -56,12 +71,17 @@ public class XDmove : ComponentBehavior
                 return;
             }
         }
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
-            mon.position += new Vector3(h * Time.deltaTime * spd, v * Time.deltaTime * spd, 0);
-        else
-            mon.position += new Vector3(h * Time.deltaTime * spd, 0, v * Time.deltaTime * spd);
 
-        var c = Mathf.Abs(h) + Mathf.Abs(v);
+        Vector3 dVecXY = new Vector3(dVec.x, dVec.y, 0);
+        Vector3 dVecXZ = new Vector3(dVec.x, 0, dVec.z);
+        
+        
+        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            mon.position += dVecXY;
+        else
+            mon.position += dVecXZ;
+
+        var c = Mathf.Abs(dVec.x) + Mathf.Abs(dVec.y);
         if (c > 0.01f)
         {
             if (rMon.HasVis("animator"))
@@ -69,13 +89,13 @@ public class XDmove : ComponentBehavior
                 rMon.visuals["animator"].GetComponent<XDanimator>().SetState("walk");
             }
 
-            if (h > 0)
+            if (dVec.x > 0)
             {
-                rMon.SetScale(h > 0);
+                rMon.SetScale(dVec.x > 0);
             }
-            else if (h < 0)
+            else if (dVec.x < 0)
             {
-                rMon.SetScale(h > 0);
+                rMon.SetScale(dVec.x > 0);
             }
         }
         else

@@ -17,6 +17,11 @@ using Random = UnityEngine.Random;
 public class MainStates : MonoBehaviour
 {
     public float visDistCheck = 10;
+    public float vampDistCheck = 5;
+
+    public MobileJoystick joystick;
+    
+    
     public static bool isCameraFace = false;
     public static bool is3D = false;
     
@@ -3574,7 +3579,7 @@ public class MainStates : MonoBehaviour
 
             var tt = tm - v.Value._cachedMain.position;
             if (v.Value.META_TAGS.Contains(metaCreateLevel)) continue;
-            if (tt.magnitude < visDistCheck)
+            if (tt.magnitude < vampDistCheck)
             {
                 v.Value.AddMeta("sword");
                 v.Value.RemoveViz("rand_move");

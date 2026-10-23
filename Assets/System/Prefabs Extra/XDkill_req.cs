@@ -32,6 +32,10 @@ public class XDkill_req : ComponentBehavior
             kills.text = c + "/3";
         }
 
+        if (MainStates.isCameraFace)
+        {
+            transform.forward = Camera.main.transform.forward;
+        }
         
     }
 }

@@ -56,6 +56,10 @@ public class MainSwitcher : MonoBehaviour
                 v.SetPar("action_req", -1);
                 v.SetPar("cd", 0);
             }
+            
+            //
+            MainStates.instance.joystick.transform.parent.parent.gameObject.SetActive(true);
+            XDmove.useMobileJoystick = true;
         }
     }
     
