@@ -220,7 +220,7 @@ public class MainCycleSword : MonoBehaviour
                 };
             }
             
-            x.META_TAGS.Add("sword");
+            x.AddMeta(MainStates.metaCreateLevel);
         };
         //
     }

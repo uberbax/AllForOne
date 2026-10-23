@@ -441,11 +441,6 @@ public class RObj
         return skl;
     }
     
-    public void AddMeta(string what)
-    {
-        META_TAGS.Add(what);
-    }
-    
     public void RecreateMain(Vector3 pos)
     {
         
@@ -1195,6 +1190,22 @@ public class RObj
         }
     }
 
+    public void AddMeta(string newMeta)
+    {
+        if (newMeta == MainStates.metaCreateLevel)
+        {
+            if (!META_TAGS.Contains(newMeta))
+            {
+                META_TAGS.Add(newMeta);
+                MainStates.instance.allMetas.Add(RID, this);
+            }
+        }
+        else
+        {
+            META_TAGS.Add(newMeta);
+        }
+    }
+    
     public void Destroy()
     {
         MainStates.instance.all.Remove(RID);

@@ -446,7 +446,7 @@ public class MainCycleExp : MonoBehaviour
                 g.onEnd = () => { x.AddViz("select"); };
             }
 
-            x.META_TAGS.Add("sword");
+            x.AddMeta(MainStates.metaCreateLevel);
         };
         //
         

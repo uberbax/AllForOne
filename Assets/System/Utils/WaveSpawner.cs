@@ -388,7 +388,11 @@ public class WaveSpawner : MonoBehaviour
                 if (isSummon)
                 {
                     enm1.SetPar("is_summon", 1);
-                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                    if (MainStates.metaCreateLevel != "")
+                    {
+                        enm1.AddMeta(MainStates.metaCreateLevel);
+                    }
+                    
                 }
                 
             }
@@ -449,7 +453,7 @@ public class WaveSpawner : MonoBehaviour
                 if (isSummon)
                 {
                     enm1.SetPar("is_summon", 1);
-                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                    if (MainStates.metaCreateLevel != "") enm1.AddMeta(MainStates.metaCreateLevel);
                     var fz = MainStates.instance.mainPlayer.GetPar("summon_stats");
                     if (fz > 0)
                     {
@@ -459,7 +463,7 @@ public class WaveSpawner : MonoBehaviour
 
                 if (applyExtra)
                 {
-                    if (MainStates.metaCreateLevel != "") enm1.META_TAGS.Add(MainStates.metaCreateLevel);
+                    if (MainStates.metaCreateLevel != "") enm1.AddMeta(MainStates.metaCreateLevel);
                 }
 
                 if (MainStates.inBattleScale != 1)

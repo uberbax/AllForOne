@@ -104,7 +104,7 @@ public class AddedObject : MonoBehaviour
 
         foreach (var v in addedMeta)
         {
-            r.META_TAGS.Add(v);
+            r.AddMeta(v);
         }
         
         if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)

@@ -28,10 +28,12 @@ public class ObjHolder : MonoBehaviour, IReceive
     public CanvasGroup equipBtn;
     public CanvasGroup slotBtn;
     public CanvasGroup level;
-    
+
+    private bool isRectTransform;
     public void OnEnable()
     {
         if (UISystem.instance == null) return;
+        isRectTransform = GetComponent<RectTransform>() != null;
         UISystem.instance.FillItem(this);
         foreach (var a in alsoEnables)
         {
@@ -170,9 +172,12 @@ public class ObjHolder : MonoBehaviour, IReceive
             
         }
         
-        var ee = GetComponentsInChildren<UnoAll>();
-        for (int i = 0; i < ee.Length; i++) ee[i].Update();
-
+        //it is possible only in rect transform right ?
+        if (isRectTransform)
+        {
+            var ee = GetComponentsInChildren<UnoAll>();
+            for (int i = 0; i < ee.Length; i++) ee[i].Update();
+        }
     }
 
     public Action<RObj> onDestroy;

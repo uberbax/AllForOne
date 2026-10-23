@@ -243,8 +243,7 @@ public class MainSwitcher : MonoBehaviour
        if (Input.GetKeyDown("1"))
        {
            doRuntime = true;
-           var d = ConfigLoader.Instance.metaConf.Find(x => x.parName == "mode_manhattan");
-           d.val = 0;
+           ConfigLoader.SetMetaParamValue("mode_manhattan", 0);
            MainStates.instance.mainPlayer.AddViz("move");
 
            foreach (var v in MainStates.instance.combats)

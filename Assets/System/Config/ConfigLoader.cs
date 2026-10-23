@@ -63,7 +63,7 @@ public class ConfigLoader : MonoBehaviour
     public List<FormatSkill> skills = new List<FormatSkill>();
     public static Action<List<FormatSkill>> onSkillsParsed = null;
     
-    public List<FormatMeta> metaConf = new List<FormatMeta>();
+    public Dictionary<string, FormatMeta> metaConf = new Dictionary<string, FormatMeta>();
     public static Action<List<FormatMeta>> onMetaParsed = null;
     
     public List<FormatLevel1> levelsOld = new List<FormatLevel1>();
@@ -137,27 +137,24 @@ public class ConfigLoader : MonoBehaviour
     public static void SetMetaParamValue(string nm, float val)
     {
         //if (nm == "move_end") return 5;
-        var cc = Instance.metaConf.Find(x => x.parName == nm);
-        if (cc != null)
-        {
-            cc.val = val;
-        } 
+        if (Instance.metaConf.ContainsKey(nm))
+            Instance.metaConf[nm].val = val;
 
     }
     
     public static float GetMetaParamValue(string nm)
     {
         //if (nm == "move_end") return 5;
-        var cc = Instance.metaConf.Find(x => x.parName == nm);
-        if (cc != null) return cc.val;
+        var cc = Instance.metaConf.TryGetValue(nm, out FormatMeta meta);
+        if (cc) return meta.val;
         else return 0;
     }
 
     public static string GetMetaParamValueString(string nm)
     {
         //if (nm == "move_end") return 5;
-        var cc = Instance.metaConf.Find(x => x.parName == nm);
-        if (cc != null) return cc.stringVal;
+        var cc = Instance.metaConf.TryGetValue(nm, out FormatMeta meta);
+        if (cc) return meta.stringVal;
         else return "";
     }
     public void Clear()
@@ -1351,7 +1348,7 @@ public class ConfigLoader : MonoBehaviour
                 else if (columns[j].ToUpper() == "STRINGVAL") mm.stringVal = tt[j];
             }
             //
-            metaConf.Add(mm);
+            metaConf.Add(mm.parName, mm);
         }
 
     }

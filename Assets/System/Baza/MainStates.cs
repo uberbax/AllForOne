@@ -186,6 +186,8 @@ public class MainStates : MonoBehaviour
 
     public Dictionary<string, RObj> all = new Dictionary<string, RObj>();
     public Dictionary<string, RObj> allMons = new Dictionary<string, RObj>();
+    //here we place meta
+    public Dictionary<string, RObj> allMetas = new Dictionary<string, RObj>();
     
     
     public Dictionary<string, RObj> empties = new Dictionary<string, RObj>();
@@ -663,8 +665,10 @@ public class MainStates : MonoBehaviour
 
                     if (metaCreateLevel != "")
                     {
-                        for (int h = 0 ; h < ll.Count; h++)
-                            ll[h].META_TAGS.Add(metaCreateLevel);
+                        for (int h = 0; h < ll.Count; h++)
+                        {
+                            ll[h].AddMeta(metaCreateLevel);
+                        }
                     }
                 }
                 
@@ -3569,7 +3573,7 @@ public class MainStates : MonoBehaviour
 
 
             var tt = tm - v.Value._cachedMain.position;
-            if (v.Value.META_TAGS.Contains("sword")) continue;
+            if (v.Value.META_TAGS.Contains(metaCreateLevel)) continue;
             if (tt.magnitude < visDistCheck)
             {
                 v.Value.AddMeta("sword");
@@ -3599,7 +3603,7 @@ public class MainStates : MonoBehaviour
         }
         
         //decrease cds !    
-        foreach (var v in allMons)
+        foreach (var v in allMetas)
         {
             if (who != null && v.Value != who) continue;
             
@@ -3733,6 +3737,8 @@ public class MainStates : MonoBehaviour
             if (v.Value.META_TAGS.Contains("my_side") || v.Value.META_TAGS.Contains("wave")) acts.Add(v.Value);
         }
         */
+        var combats = allMetas.Values.ToList();
+        
         combats.RemoveAll(x => !x.HasVis("combat") || x.main.GetComponentInChildren<XDcombat>() == null);
         
         List<RObj> curComateers = new List<RObj>();
