@@ -457,8 +457,8 @@ public class MainCycleExp : MonoBehaviour
             ModelStatistics.instance.SetStatValueStr("current_class", "hero_warrior");
         
         //pet time
-        var main_pet = new RObj("empty", 1, 1, true, main.Position + new Vector3(0.5f, 0.5f, 0), true, ItemType.monster, "main_pet");
-        main_pet.AddViz("pet");
+        //var main_pet = new RObj("empty", 1, 1, true, main.Position + new Vector3(0.5f, 0.5f, 0), true, ItemType.monster, "main_pet");
+        //main_pet.AddViz("pet");
         
         EventManager.INV("after_load", new ArgPass());
     }

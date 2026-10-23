@@ -242,6 +242,8 @@ public class SkillExecutor : MonoBehaviour
             if (size.x > 1)
                 kk.transform.localScale /= size.x;
 
+            if (MainStates.isCameraFace) kk.transform.forward = Camera.main.transform.forward;
+            
             spellType = 1;
             Destroy(kk, 2);
         }

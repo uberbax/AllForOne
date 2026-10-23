@@ -62,6 +62,9 @@ public class XDbuff : ComponentBehavior
             ii.Find("icon").GetComponent<Image>().sprite = ResourceHolder.instance.skills[bb.dbObj.ID];
             ii.Find("txt").GetComponent<TextMeshProUGUI>().text = bb.dbObj.ID + "(" + (int)bb.GetPar("timeLeft") + ")";
             if (!mon.HasVis(bb.dbObj.ID)) mon.AddViz(bb.dbObj.ID);
+
+            //if (MainStates.isCameraFace) ii.transform.forward = Camera.main.transform.forward;
+            
         }
 
     }

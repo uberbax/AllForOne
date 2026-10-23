@@ -152,5 +152,10 @@ public class XDhp : ComponentBehavior
         
         fill.gameObject.SetActive(ratio < 1 || !nofull);
         hp.gameObject.SetActive(!notext);
+
+        if (!isBoss)
+        {
+            if (MainStates.isCameraFace) transform.forward = Camera.main.transform.forward;
+        }
     }
 }

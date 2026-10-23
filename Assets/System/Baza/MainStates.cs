@@ -3760,7 +3760,7 @@ public class MainStates : MonoBehaviour
         */
         var combats = allMetas.Values.ToList();
         
-        combats.RemoveAll(x => !x.HasVis("combat") || x.main.GetComponentInChildren<XDcombat>() == null);
+        combats.RemoveAll(x => x.main == null || !x.HasVis("combat") || x.main.GetComponentInChildren<XDcombat>() == null);
         
         List<RObj> curComateers = new List<RObj>();
 

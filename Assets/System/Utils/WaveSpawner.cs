@@ -395,6 +395,8 @@ public class WaveSpawner : MonoBehaviour
                     
                 }
                 
+                if (MainStates.isCameraFace) enm1.visMain.transform.forward = Camera.main.transform.forward;
+                
             }
             
         }
