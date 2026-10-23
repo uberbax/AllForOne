@@ -43,7 +43,12 @@ public class XDpet : MonoBehaviour
                 mon.SetScale(h.x > 0);
             }
 
-            mon.main.transform.position += h.normalized * Time.deltaTime;
+            mon.main.transform.position += h.normalized * Time.deltaTime * 5;
+        }
+
+        if (MainStates.isCameraFace)
+        {
+            mon.visMain.transform.forward = Camera.main.transform.forward;
         }
     }
 }

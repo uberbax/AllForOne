@@ -29,12 +29,15 @@ public class SoundManager : MonoBehaviour
 
     public void PlayAny(string sound, int spellType = 0)
     {
+        if (mon == null) return;
+        
         if (ResourceHolder.instance.sounds.ContainsKey(sound))
         {
             AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds[sound], Camera.main.transform.position, mon.GetPar("volume_sound"));
         }
         else if (spellType == 1)
         {
+            Debug.Log(mon);
             AudioSource.PlayClipAtPoint(ResourceHolder.instance.sounds["buff"], Camera.main.transform.position, mon.GetPar("volume_sound"));
         }
         else if (spellType == 2)

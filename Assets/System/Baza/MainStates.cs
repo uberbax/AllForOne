@@ -41,6 +41,9 @@ public class MainStates : MonoBehaviour
     public int pasSkillsLoIndex = 70;
     public int pasSkillsHiIndex = 86;
     
+    public int petsLoIndex = 100;
+    public int petsHiIndex = 116;
+    
     public int curSp = 0;
     public GameObject wall;
     public string tgBattle = "battle";
@@ -1822,7 +1825,20 @@ public class MainStates : MonoBehaviour
 
     public void EquipSkills(RObj a1, RObj o)
     {
-            if (o.dbObj.ID.IndexOf("pass") < 0)
+            if (o.it == ItemType.monster)
+            {
+                for (int i = petsLoIndex; i < petsHiIndex; i++)
+                {
+                    var b1 = a1.inventory.Find(x => x.upgradePars["used_slot"] == i);
+                    if (b1 == null)
+                    {
+                        o.SetPar("used_slot", i);
+                        break;
+                    }
+
+                }
+            }
+            else if (o.dbObj.ID.IndexOf("pass") < 0)
             {
                 for (int i = actSkillsLoIndex; i < actSkillsHiIndex; i++)
                 {
