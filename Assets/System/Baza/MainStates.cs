@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -350,6 +350,7 @@ public class MainStates : MonoBehaviour
     
     public void PickDrop(RObj item)
     {
+        LootRarityBeam.Remove(item);
         UtilsControl.Instance.MoveTo(item.main.transform, 20, dropContainer.position, () =>
         {
             AddItem(mainPlayer, item);
@@ -2214,6 +2215,7 @@ public class MainStates : MonoBehaviour
     
     public void AddItem(RObj who, RObj what, bool overIndex = false)
     {
+        LootRarityBeam.Remove(what);
         if (what.dbObj.ID == "exp")
         {
             who.ChangePar("exp", what.GetPar("amount"), true);

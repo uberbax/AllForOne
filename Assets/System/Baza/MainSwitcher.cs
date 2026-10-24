@@ -63,7 +63,7 @@ public class MainSwitcher : MonoBehaviour
             MainStates.whenMoveMinionsMove = true;
             MainStates.castAndMove = false;
             MainStates.instance.mainPlayer.SetPar("no_move",1);
-            XDdmgTrack.scaleMult = 0.2f;
+            XDdmgTrack.scaleMult = 0.3f;
         }
     }
     

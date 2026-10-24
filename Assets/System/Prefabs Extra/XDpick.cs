@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,6 +23,7 @@ public class XDpick : ComponentBehavior
     public void Pick(RObj mon, RObj a)
     {
          picked = true;
+         LootRarityBeam.Remove(mon);
 
          var t0 = GetComponent<Collider2D>();
          var t1 = GetComponent<Collider>();

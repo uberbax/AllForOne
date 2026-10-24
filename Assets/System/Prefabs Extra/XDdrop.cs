@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,8 +82,13 @@ public class XDdrop : ComponentBehavior
                 else
                     UtilsControl.Instance.StartRandomDrop(a.main.transform, a, () =>
                     {
+                        var beam = LootRarityBeam.Attach(a);
                         a.AddViz("take");
                         a.AddViz("shiny");
+                        if (MainStates.isCameraFace)
+                        {
+                            beam.transform.forward = Camera.main.transform.forward;
+                        }
                     }, mm.main.transform);
             }
             else
