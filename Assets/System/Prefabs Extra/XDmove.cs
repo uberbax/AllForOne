@@ -86,8 +86,9 @@ public class XDmove : ComponentBehavior
         }
 
         var c = Mathf.Abs(dVec.x) + Mathf.Abs(dVec.y);
-        if (c > 0.01f)
+        if (c > 0.002f)
         {
+            //Debug.Log("da");
             MainStates.isMovingByControl = true;
             if (rMon.HasVis("animator"))
             {
@@ -116,10 +117,11 @@ public class XDmove : ComponentBehavior
         }
         else
         {
+            //Debug.Log("no");
             MainStates.isMovingByControl = false;
             if (rMon.HasVis("animator"))
             {
-                rMon.visuals["animator"].GetComponent<XDanimator>().SetState("idle");
+                rMon.visuals["animator"].GetComponent<XDanimator>().SetState("idle", "walk");
             }
         }
     }

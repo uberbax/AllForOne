@@ -39,9 +39,10 @@ public class XDanimator : ComponentBehavior
     }
 
     public string prevState = "";
-    public void SetState(string state)
+    public void SetState(string state, string onlyFrom = "")
     {
         if (state == prevState) return;
+        if (onlyFrom != "" && prevState != onlyFrom) return;
         prevState = state;
 
         if (state == "attack")

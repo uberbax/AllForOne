@@ -180,6 +180,7 @@ public class MainSwitcher : MonoBehaviour
                 var b = v.GetChild(u);
                 if (!b.gameObject.activeInHierarchy) continue;
                 if (toExclude.Contains(b)) continue;
+                if (toRotate.Contains(b)) continue;
                 
                 b.transform.forward = Camera.main.transform.forward;
             }
