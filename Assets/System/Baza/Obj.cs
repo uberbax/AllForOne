@@ -92,6 +92,8 @@ public class RObj
     [NonSerialized]
     public Obj dbObj;
 
+    public string lastAction = "";
+
     public List<Bon> onBattleStart = new List<Bon>();
     public List<Bon> onRoundStart = new List<Bon>();
     
@@ -157,6 +159,7 @@ public class RObj
     public float ref_pos_x = -1;
     public float ref_pos_y = -1;
     
+    public Vector3 localPos = Vector3.zero;
     //
     [JsonIgnore]
     public Vector3 Position

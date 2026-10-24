@@ -20,10 +20,12 @@ public class MainStates : MonoBehaviour
     public float vampDistCheck = 5;
 
     public MobileJoystick joystick;
-    
-    
+
+    public static bool whenMoveMinionsMove = false;
+    public static bool isMovingByControl = false;
     public static bool isCameraFace = false;
     public static bool is3D = false;
+    public static bool castAndMove = true;
     
     [Header("Use Save")] 
     public bool useSave;
@@ -2779,11 +2781,11 @@ public class MainStates : MonoBehaviour
             var m2 = a.GetPar("max_mana");
             if (m2 - m1 < mana)
             {
-                a.ChangePar("mana", m2-m1);
+                a.ChangePar("mana", m2-m1, false);
             }
             else
             {
-                a.ChangePar("mana", mana);
+                a.ChangePar("mana", mana, false);
             }
         }
     }
@@ -3472,6 +3474,11 @@ public class MainStates : MonoBehaviour
         ModelStatistics.instance.SetStatValueForce("battle", 0);
         
         mainPlayer.RecalcPars();
+
+        if (mainPlayer.META_TAGS.Contains(metaCreateLevel))
+        {
+            allMetas.TryAdd("main_player", mainPlayer);
+        }
         //ok we recreate player
         return true;
     }
@@ -3787,32 +3794,6 @@ public class MainStates : MonoBehaviour
             }
         }
         //
-        
-        //cast on round start
-        /*
-        for (int i = 0; i < curComateers.Count; i++)
-        {
-            for (int j = 0; j < curComateers[i].inventory.Count; j++)
-            {
-                var tt =  curComateers[i].inventory[j];
-                
-                if (tt.dbObj.onRoundStart.Count == 0) continue;
-              
-                var hy = tt.GetPar("used_slot");
-                if (hy < 0) continue;
-
-                for (int k = 0; k < tt.dbObj.onRoundStart.Count; k++)
-                {
-                    var roll = Random.Range(0, 100);
-                    if (roll < tt.dbObj.onRoundStart[k].Value)
-                    {
-                        SkillExecutor.instance.ExecuteSkill(curComateers[i], tt.dbObj.onRoundStart[k].Key, null);
-                    }
-                }
-
-            }
-        }
-        */
 
         int kk = 0;
         for (int i = 0; i < curComateers.Count; i++)
@@ -3942,20 +3923,30 @@ public class MainStates : MonoBehaviour
             }
             
             //moving ? probably shoulf take from monster
-            for (int j = 0; j < maxMove; j++)
+            if (combats[i].tags[0] == "player" && isMovingByControl && !castAndMove)
             {
-                var h = gg.Iteration(true, reqTag: metaContain);
-                if (h != "move") break;
-
-                if (waitMove)
+                
+            }
+            else
+            {
+                
+                for (int j = 0; j < maxMove; j++)
                 {
-                    while (combats[i].main.name.IndexOf("_move") >= 0)
+                    var h = gg.Iteration(true, reqTag: metaContain);
+                    combats[i].lastAction = h;
+                    if (h != "move") break;
+
+                    if (waitMove)
                     {
-                        yield return null;
+                        while (combats[i].main.name.IndexOf("_move") >= 0)
+                        {
+                            yield return null;
+                        }
                     }
                 }
+
             }
-            
+
 
             if (tm > 0)
                 yield return new WaitForSeconds(tm);
@@ -3973,10 +3964,7 @@ public class MainStates : MonoBehaviour
             }
         }
 
-        //if (!manualDt)
-        //{
-        //    HandleCds(Time.deltaTime);
-        //}
+        //for all player that have "no" will move
 
         
         InIteration = false;

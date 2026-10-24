@@ -24,6 +24,10 @@ public class XDmove : ComponentBehavior
         rMon = GetComponentInParent<ObjHolder>().obj;
     }
 
+    public void TryMove(Vector3 dVec)
+    {
+        
+    }
     // Update is called once per frame
     void Update()
     {
@@ -31,20 +35,14 @@ public class XDmove : ComponentBehavior
         var v = Input.GetAxis("Vertical");
         
         Vector3 dVec = new Vector3(h * Time.deltaTime * spd, v * Time.deltaTime * spd);
+        if (useMobileJoystick)
+        {
+            dVec = MainStates.instance.joystick.Value * Time.deltaTime * spd;
+        }        
+        
         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
         {
-            
-            if (useMobileJoystick)
-            {
-                //Debug.Log(MainStates.instance.joystick.Horizontal);
-                //Debug.Log(MainStates.instance.joystick.Vertical);
-                //Debug.Log(MainStates.instance.joystick.Value);
-                
-                dVec = MainStates.instance.joystick.Value * Time.deltaTime * spd;
-                
-                //Debug.Log(dVec);
-            }
-            
+
             var rh = Physics2D.Raycast(transform.position,
                 dVec, 0.3f, LayerMask.GetMask("Nopass"));
             if (rh.collider != null)
@@ -74,16 +72,23 @@ public class XDmove : ComponentBehavior
 
         Vector3 dVecXY = new Vector3(dVec.x, dVec.y, 0);
         Vector3 dVecXZ = new Vector3(dVec.x, 0, dVec.z);
-        
-        
+        Vector3 dVecRes = Vector3.zero;
+
         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        {
+            dVecRes = dVecXY;
             mon.position += dVecXY;
+        }
         else
+        {
+            dVecRes = dVecXZ;
             mon.position += dVecXZ;
+        }
 
         var c = Mathf.Abs(dVec.x) + Mathf.Abs(dVec.y);
         if (c > 0.01f)
         {
+            MainStates.isMovingByControl = true;
             if (rMon.HasVis("animator"))
             {
                 rMon.visuals["animator"].GetComponent<XDanimator>().SetState("walk");
@@ -97,9 +102,21 @@ public class XDmove : ComponentBehavior
             {
                 rMon.SetScale(dVec.x > 0);
             }
+
+            /*
+            if (MainStates.whenMoveMinionsMove)
+            {
+                foreach (var v1 in PartyController.instance.party)
+                {
+                    //try move by dvec
+                    v1.main.transform.position += dVecRes;
+                }
+            }
+            */
         }
         else
         {
+            MainStates.isMovingByControl = false;
             if (rMon.HasVis("animator"))
             {
                 rMon.visuals["animator"].GetComponent<XDanimator>().SetState("idle");

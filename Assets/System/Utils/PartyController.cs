@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PartyController : MonoBehaviour
 {
@@ -86,6 +88,9 @@ public class PartyController : MonoBehaviour
             companions.Add(item, new Companion { unit = companion, positionIndex = index });
             occupiedPositions.Add(index);
             party.Add(companion);
+            //
+            companion.localPos = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+            companion.AddViz("follow2");
         }
     }
 
@@ -115,4 +120,10 @@ public class PartyController : MonoBehaviour
     }
 
     private void OnDisable() => ClearCompanions();
+
+    public static PartyController instance;
+    private void Awake()
+    {
+        instance = this;
+    }
 }

@@ -309,6 +309,7 @@ public class MainCycleExp : MonoBehaviour
 
     private void B(ArgPass obj)
     {
+        MainStates.metaCreateLevel = "sword";
         Debug.Log("haha");
         bool succLoad = false;
         if (MainStates.instance.useSave)
@@ -382,7 +383,6 @@ public class MainCycleExp : MonoBehaviour
         MainStates.lootTakeShowReward = true;
         MainStates.disappearLootOnTake = true;
         MainStates.allowAutoIterate = false;
-        MainStates.metaCreateLevel = "sword";
         BattleController.reqTag = "sword";
         MainStates.anyPickAdd = new Bon { Key = "exp", Value = 10 };
         MainStates.pickOverHead = true;

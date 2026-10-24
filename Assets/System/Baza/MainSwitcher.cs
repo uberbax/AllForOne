@@ -44,7 +44,7 @@ public class MainSwitcher : MonoBehaviour
         {
             Make3D();
             MainStates.instance.mainPlayer.RemoveViz("click_move");
-            MainStates.instance.mainPlayer.AddViz("move");
+            MainStates.instance.mainPlayer.AddViz("move#val:3");
             MakeVampire();
             MainStates.handleVampire = true;
             XDmove.useNavmesh = true;
@@ -60,6 +60,8 @@ public class MainSwitcher : MonoBehaviour
             //
             MainStates.instance.joystick.transform.parent.parent.gameObject.SetActive(true);
             XDmove.useMobileJoystick = true;
+            MainStates.whenMoveMinionsMove = true;
+            MainStates.castAndMove = false;
         }
     }
     
