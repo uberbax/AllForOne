@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,21 +29,15 @@ public class XDtake : ComponentBehavior
         var a = MainStates.instance.lastAllySelected == null ? MainStates.instance.all["main_player"] :  MainStates.instance.lastAllySelected;
         
         var rr = MainStates.instance.GetDistance(mon, a, out float tt);
-        if (rr <= dstTake)
+        if (!done && rr <= dstTake)
         {
+            done = true;
             
             SoundManager.instance.PlayAny("pickup");
 
-            var tr = mon.main.transform;
-            if (MainStates.pickOverHead)
-            {
-                tr = a.visMain.transform;
-                var bb = tr.Find("head");
-                if (bb != null) tr = bb;
-            }
-
-            UtilsControl.Instance.FlyTextUI(tr, ConfigLoader.Instance.GetMeLocale(mon.dbObj.ID) + " x" + mon.GetPar("amount"), Color.white,
-                null, doCam: true);          
+            PickupNotificationStack.Show(mon.dbObj.ID,
+                ConfigLoader.Instance.GetMeLocale(mon.dbObj.ID), mon.GetPar("amount"),
+                ResourceHolder.instance.GetIcon(mon.dbObj.ID));
             //we change pars runtime
             MainStates.instance.AddItem(a, mon);
 
