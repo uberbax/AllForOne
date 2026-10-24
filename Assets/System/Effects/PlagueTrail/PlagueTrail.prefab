@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8200655900609281861}
   - component: {fileID: 1353958012710471633}
+  - component: {fileID: 1821295496797046637}
   m_Layer: 0
   m_Name: PlagueTrail
   m_TagString: Untagged
@@ -56,3 +57,21 @@ MonoBehaviour:
   teleportDistance: 8
   surfaceOffset: -0.025
   sortingOrder: -5
+--- !u!114 &1821295496797046637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337368469277060717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee9c20bdd119774fa5272e3b8f2bc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlagueTreeInfection
+  catalog: {fileID: 11400000, guid: 59b816bad3cea3c4daed3b7613071ec0, type: 2}
+  witheredMaterial: {fileID: 2100000, guid: e528ef80e34340f4c88f49765dfde576, type: 2}
+  transitionDuration: 1.2
+  cellSize: 2
+  trunkRadius: 0.1
+  playerContactRadius: 1.5

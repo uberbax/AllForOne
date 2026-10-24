@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -43,6 +43,7 @@ public static class PlagueTrailBuilder
             var fields=new SerializedObject(trail);
             fields.FindProperty("surfaceMaterial").objectReferenceValue=material;
             fields.ApplyModifiedPropertiesWithoutUndo();
+            PlagueTreeBuilder.Configure(root);
             PrefabUtility.SaveAsPrefabAsset(root,Folder+"/PlagueTrail.prefab");
             Validate(trail);
             Render(trail,previewScene);

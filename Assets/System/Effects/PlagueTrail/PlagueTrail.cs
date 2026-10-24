@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -37,6 +37,11 @@ public sealed class PlagueTrail : MonoBehaviour
     private Transform trackedTarget;
     private static readonly int TrailTime = Shader.PropertyToID("_TrailTime");
     public int PatchCount => patches;
+    public float GrowthDuration => Mathf.Max(.1f, growDuration);
+    public event System.Action<Vector3, float> PatchCreated;
+    public event System.Action TrailCleared;
+    public Vector2 GroundCoordinates(Vector3 world) => plane == GroundPlane.XY
+        ? new Vector2(world.x, world.y) : new Vector2(world.x, world.z);
 
     private void LateUpdate()
     {
@@ -151,6 +156,7 @@ public sealed class PlagueTrail : MonoBehaviour
             stampData[first + corner] = new Vector4(x, y, clock, seed);
             groundUV[first + corner] = plane == GroundPlane.XY ? new Vector2(world.x, world.y) : new Vector2(world.x, world.z);
         }
+        PatchCreated?.Invoke(centre, size);
         nextPatch = (nextPatch + 1) % capacity;
         patches = Mathf.Min(patches + 1, capacity);
     }
@@ -166,6 +172,7 @@ public sealed class PlagueTrail : MonoBehaviour
 
     public void ClearTrail()
     {
+        TrailCleared?.Invoke();
         hasPosition = false;
         nextPatch = patches = 0;
         if (mesh == null) return;
