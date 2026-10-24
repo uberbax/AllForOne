@@ -13,7 +13,7 @@ public class XDfollow2 : ComponentBehavior
     {
         var h = MainStates.instance.all["main_player"].Position + mon.localPos - mon.Position;
 
-        if (mon.lastAction == "no")
+        if (mon.lastAction == "no_target" || MainStates.isMovingByControl)
         {
             h.z = 0;
             if (h.magnitude > 1)

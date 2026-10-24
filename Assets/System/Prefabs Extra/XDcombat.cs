@@ -68,11 +68,6 @@ public class XDcombat : ComponentBehavior
             mon.visuals["stater"].GetComponent<XDstater>().Iteration(this);
             return reso;
         }
-
-        if (mon.RID == "main_player")
-        {
-            int jj = 1;
-        }
         
         var c = MainStates.instance.GetClosestEnemy(mon, out float d, reqTag: reqTag);
         var d1 = MainStates.instance.GetLowestDistanceSkills(mon);
@@ -81,6 +76,7 @@ public class XDcombat : ComponentBehavior
         
         if (c == null)
         {
+            reso = "no_target";
             return reso;
         }
         

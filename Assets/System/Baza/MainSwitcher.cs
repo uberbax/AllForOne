@@ -62,6 +62,7 @@ public class MainSwitcher : MonoBehaviour
             XDmove.useMobileJoystick = true;
             MainStates.whenMoveMinionsMove = true;
             MainStates.castAndMove = false;
+            MainStates.instance.mainPlayer.SetPar("no_move",1);
         }
     }
     

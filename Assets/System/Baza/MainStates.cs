@@ -3843,6 +3843,8 @@ public class MainStates : MonoBehaviour
         for (int i = 0; i < combats.Count; i++)
         {
             if (exceptMain && combats[i].RID == "main_player") continue;
+            //if (combats[i].RID == "main_player") continue;
+            
             if (metaContain != "" && !combats[i].META_TAGS.Contains(metaContain))
             {
                 continue;
