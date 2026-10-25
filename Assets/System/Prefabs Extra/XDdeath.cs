@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using SpriteFracture;
@@ -84,8 +84,15 @@ public class XDdeath : ComponentBehavior
         if (autoAddExp)
             MainStates.instance.AddItem(MainStates.instance.all["main_player"], "exp", 50);
 
+        bool treeFell = TreeDeathEffect.TryPlay(mon);
         bool frac = false;
-        if (mon.visMain.GetComponent<SpriteFracturer2D>() != null)
+        if (treeFell)
+        {
+            MainStates.instance.all.Remove(mon.RID);
+            MainStates.instance.allMons.Remove(mon.RID);
+            Destroy(mon.main);
+        }
+        else if (mon.visMain.GetComponent<SpriteFracturer2D>() != null)
         {
             frac = true;
             StartCoroutine(mon.visMain.GetComponent<SpriteFracturer2D>().Fracture());
@@ -119,7 +126,7 @@ public class XDdeath : ComponentBehavior
             );
         }
 
-        if (ConfigLoader.GetMetaParamValue("blood_death") > 0 && !frac)
+        if (ConfigLoader.GetMetaParamValue("blood_death") > 0 && !frac && !treeFell)
         {
             string ss = "blood";
             Vector3 dlt = Vector3.zero;
