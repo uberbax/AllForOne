@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class Buyable : ComponentBehavior
 {
+    [Header("Ini Stuff")] 
+    public bool calcLayer = false;
+    public bool noMax = false;
+    public Canvas canvasLayer;
+    
     public bool disableOnNoCond = false;
     [Header("RuntimeGen")] 
     public bool addToDB = false;
@@ -59,6 +65,13 @@ public class Buyable : ComponentBehavior
             Invoke("Start", 0.1f);
             return;
         }
+
+        if (calcLayer)
+        {
+            UtilsControl.CalculateLayer(gameObject);
+            canvasLayer.sortingOrder = GetComponent<SortingGroup>().sortingOrder+1;
+        }
+        
         Do();
         if (btn == null) btn = GetComponentInChildren<Button>();
         if (btn) btn.onClick.AddListener(() =>
@@ -179,7 +192,7 @@ public class Buyable : ComponentBehavior
     {
         calculated = MainStates.instance.CalculateValue(dynamicID);
 
-        if (!ConfigLoader.Instance.allDynamic.ContainsKey(calculated))
+        if (!ConfigLoader.Instance.allDynamic.ContainsKey(calculated) && !noMax)
         {
             isMax = true;
             var ho = UtilsControl.GetPrev(calculated);
@@ -299,6 +312,11 @@ public class Buyable : ComponentBehavior
     private void Update()
     {
         if (!MainStates.instance.HasMain()) return;
+        
+        if (MainStates.isCameraFace)
+            transform.forward = Camera.main.transform.forward;
+        
+        
         if (dynamicID.IndexOf("{") >= 0)
             Recalculate();
         
