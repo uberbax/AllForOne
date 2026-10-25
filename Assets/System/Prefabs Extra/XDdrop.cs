@@ -88,6 +88,7 @@ public class XDdrop : ComponentBehavior
                         if (MainStates.isCameraFace && beam)
                         {
                             beam.transform.forward = Camera.main.transform.forward;
+                            UtilsControl.CalculateLayer(beam.gameObject);
                         }
                     }, mm.main.transform);
             }
