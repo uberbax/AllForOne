@@ -88,6 +88,7 @@ public class XDmove : ComponentBehavior
         var c = Mathf.Abs(dVec.x) + Mathf.Abs(dVec.y);
         if (c > 0.002f)
         {
+            UtilsControl.CalculateLayer(rMon.main.gameObject);
             //Debug.Log("da");
             MainStates.isMovingByControl = true;
             if (rMon.HasVis("animator"))

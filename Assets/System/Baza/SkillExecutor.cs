@@ -383,6 +383,9 @@ public class SkillExecutor : MonoBehaviour
                     {
                         var tt_1 = targ[i].visMain.transform.Find("legs");
                         var tt_2 = targ[i].visMain.transform.Find("head");
+                        if (tt_1 == null) tt_1 = targ[i].visMain.transform;
+                        if (tt_2 == null) tt_2 = targ[i].visMain.transform;
+                        
                         
                         UtilsControl.Instance.MoveTo(ro.main.transform, skl.GetPar("speed"),
                             (tt_1.position + tt_2.position) / 2,

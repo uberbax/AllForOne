@@ -22,6 +22,8 @@ public class MainSwitcher : MonoBehaviour
 
     [Header("Rumble CASE")] 
     public bool isRumble;
+    public Transform addTreesRoot;
+    
     public void AfterLoad()
     {
         if (is3D)
@@ -64,6 +66,40 @@ public class MainSwitcher : MonoBehaviour
             MainStates.castAndMove = false;
             MainStates.instance.mainPlayer.SetPar("no_move",1);
             XDdmgTrack.scaleMult = 0.3f;
+            
+            MakeTreeEnemies();
+        }
+    }
+
+    public void MakeTreeEnemies()
+    {
+        
+        if (addTreesRoot == null) return;
+        
+        List<string> conf1 = new List<string>
+        {
+            "coll#val:0.5",
+            "dmg_track",
+            "flash",
+            "death",
+            "drop",
+            "combat",
+            "animator"
+        };
+        
+        
+        for (int i = 0; i < addTreesRoot.childCount; i++)
+        {
+            var f = addTreesRoot.GetChild(i).gameObject;
+            var aa = f.AddComponent<AddedObject>();
+            aa.isEnemy = true;
+            aa.addedVis = conf1;
+            aa.id = "tree";
+            aa.recreateViz = true;
+            aa.addedMeta.Add("wave");
+            aa.addedMeta.Add(MainStates.metaCreateLevel);
+            aa.visMain = f;
+
         }
     }
     
