@@ -7,6 +7,8 @@ Shader "AllForOne/Effects/AreaCloudFog"
         _Shadow ("Cloud shadow",Color)=(.22,.29,.36,1)
         _Light ("Cloud light",Color)=(.72,.81,.87,1)
         _Opacity ("Density",Range(0,1))=.9
+        _EdgeRoughness ("Edge irregularity",Range(0,3))=1.35
+        _EdgeSoftness ("Edge softness",Range(.05,1.5))=.5
         _ClearProgress ("Dispersal",Range(0,1))=0
         _RevealOrigin ("Dispersal origin",Vector)=(.5,.5,0,0)
         _PreviewTime ("Preview time (-1 = game time)",Float)=-1
@@ -29,7 +31,20 @@ Shader "AllForOne/Effects/AreaCloudFog"
             struct v2f {float4 pos:SV_POSITION;float2 uv:TEXCOORD0;float2 local:TEXCOORD1;};
             sampler2D _MainTex;
             float4 _Area,_Shadow,_Light,_RevealOrigin;
-            float _Opacity,_ClearProgress,_PreviewTime;
+            float _Opacity,_ClearProgress,_PreviewTime,_EdgeRoughness,_EdgeSoftness;
+            float cloudHash(float2 p)
+            {
+                p=frac(p*float2(123.34,456.21));
+                p+=dot(p,p+45.32);
+                return frac(p.x*p.y);
+            }
+            float cloudNoise(float2 p)
+            {
+                float2 cell=floor(p),f=frac(p);
+                f=f*f*(3-2*f);
+                return lerp(lerp(cloudHash(cell),cloudHash(cell+float2(1,0)),f.x),
+                    lerp(cloudHash(cell+float2(0,1)),cloudHash(cell+1),f.x),f.y);
+            }
             v2f vert(appdata v)
             {
                 float time=_PreviewTime>=0?_PreviewTime:_Time.y;
@@ -46,9 +61,16 @@ Shader "AllForOne/Effects/AreaCloudFog"
             fixed4 frag(v2f i):SV_Target
             {
                 float2 offset=i.local-_Area.xy;
-                float edge=min(min(offset.x,offset.y),min(_Area.z-offset.x,_Area.w-offset.y));
-                clip(edge);
-                float border=smoothstep(0,.22,edge);
+                // Rounded area distance with slowly drifting, multiscale edge erosion.
+                float corner=min(1.1,min(_Area.z,_Area.w)*.18);
+                float2 q=abs(offset-_Area.zw*.5)-(_Area.zw*.5-corner);
+                float edge=corner-length(max(q,0))-min(max(q.x,q.y),0);
+                float time=_PreviewTime>=0?_PreviewTime:_Time.y;
+                float2 noiseUV=i.local*.72+float2(time*.035,-time*.024);
+                float noise=cloudNoise(noiseUV)*.65+cloudNoise(noiseUV*2.3+17.7)*.25
+                    +cloudNoise(noiseUV*5.1-8.4)*.1;
+                float erosion=_EdgeRoughness*(.12+noise);
+                float border=smoothstep(erosion,erosion+max(.05,_EdgeSoftness),edge);
                 fixed4 texel=tex2D(_MainTex,i.uv);
                 float light=dot(texel.rgb,float3(.3,.59,.11));
                 float3 rgb=lerp(_Shadow.rgb,_Light.rgb,saturate(light*1.7));

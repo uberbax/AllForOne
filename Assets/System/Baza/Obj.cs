@@ -1301,6 +1301,7 @@ public class ArgPass
     public Vector3 pos;
     public RObj who2;
     public List<RObj> whats = new List<RObj>();
+    public List<Bon> price = new List<Bon>();
 }
 
 [System.Serializable]

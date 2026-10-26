@@ -935,6 +935,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -972,6 +973,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -4991,6 +4993,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -8771,6 +8774,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -19850,6 +19854,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -19887,6 +19892,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -20310,6 +20316,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -20347,6 +20354,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1783220752}
@@ -36507,6 +36515,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -36544,6 +36553,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -37910,7 +37920,8 @@ GameObject:
   - component: {fileID: 168014198}
   - component: {fileID: 168014200}
   - component: {fileID: 168014199}
-  m_Layer: 0
+  - component: {fileID: 168014201}
+  m_Layer: 9
   m_Name: AnimatedClouds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37989,6 +38000,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168014197}
   m_Mesh: {fileID: 4300000, guid: 53523f10769cd6b46bfebacc3ebfa1f3, type: 2}
+--- !u!61 &168014201
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168014197}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.3, y: -1.6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 10, y: 15.6}
+  m_EdgeRadius: 0
 --- !u!1 &168226834
 GameObject:
   m_ObjectHideFlags: 0
@@ -41428,6 +41485,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -51773,6 +51831,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -56318,6 +56377,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -57502,6 +57562,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -57539,6 +57600,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 184433352}
@@ -63008,6 +63070,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -63782,6 +63845,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -63819,6 +63883,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 596813706}
   toActivate: []
@@ -72017,6 +72082,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -72054,6 +72120,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -75635,6 +75702,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -75672,6 +75740,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1922303008}
@@ -75756,6 +75825,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -78085,6 +78155,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -78122,6 +78193,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1950654895}
@@ -91858,6 +91930,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -91895,6 +91968,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1144502869}
@@ -97510,6 +97584,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -97547,6 +97622,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1910127287}
@@ -98505,6 +98581,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -98542,6 +98619,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -101142,6 +101220,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -101179,6 +101258,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -153086,6 +153166,7 @@ MonoBehaviour:
       header: 
       description: 
     tutorStat: tutor_class
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -156857,6 +156938,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -156894,6 +156976,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 2014862553}
   - {fileID: 496431520}
@@ -159851,6 +159934,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -159888,6 +159972,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -166153,6 +166238,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -166190,6 +166276,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -170169,6 +170256,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -188057,6 +188145,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 837392935}
   fillLeft: {fileID: 996728072}
@@ -196241,6 +196330,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -197317,6 +197407,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -197354,6 +197445,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -200243,6 +200335,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -200280,6 +200373,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -205151,6 +205245,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -210196,6 +210291,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -213026,6 +213122,11 @@ MonoBehaviour:
   freeTargeting: 0
   lastAutoRewardTime: 0
   trashRoot: {fileID: 1069262841}
+  fogPaymentFlightDuration: 0.75
+  fogPaymentArcHeight: 1.5
+  fogPaymentIconSize: 0.6
+  fogPaymentLaunchInterval: 0.045
+  fogPaymentMaxIconsPerPrice: 24
   u1: {fileID: 111393664}
   u2: {fileID: 1965913014}
   UI_exchange: {fileID: 1580009029}
@@ -221377,6 +221478,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -229367,6 +229469,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 437794135}
   fillLeft: {fileID: 1537937069}
@@ -235812,6 +235915,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -235849,6 +235953,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -236008,6 +236113,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -236045,6 +236151,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -245427,6 +245534,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -245464,6 +245572,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -245777,6 +245886,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -245814,6 +245924,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -247294,6 +247405,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -247331,6 +247443,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -248510,6 +248623,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -250139,6 +250253,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -250360,6 +250475,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -250397,6 +250513,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -250671,6 +250788,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -250708,6 +250826,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -260349,6 +260468,7 @@ MonoBehaviour:
       header: 
       description: 
     tutorStat: tutor_0
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -268432,6 +268552,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -268469,6 +268590,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 1664571449}
   toActivate: []
@@ -268652,6 +268774,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -268689,6 +268812,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -272781,6 +272905,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -272818,6 +272943,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -278323,6 +278449,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -278360,6 +278487,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -280899,6 +281027,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -281157,6 +281286,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -281194,6 +281324,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -284021,6 +284152,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -284058,6 +284190,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1144502869}
@@ -289240,6 +289373,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -289277,6 +289411,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -290183,6 +290318,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -290220,6 +290356,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -292948,6 +293085,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -292985,6 +293123,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -293056,6 +293195,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -293093,6 +293233,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -294193,6 +294334,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -294230,6 +294372,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -306507,6 +306650,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -306532,6 +306676,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -306569,6 +306714,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1922303008}
@@ -311358,6 +311504,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -325832,6 +325979,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -325869,6 +326017,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -330708,6 +330857,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -330745,6 +330895,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -331733,6 +331884,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -331770,6 +331922,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -332332,6 +332485,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -332369,6 +332523,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 640783753}
   - {fileID: 1287112923}
@@ -335661,6 +335816,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -335698,6 +335854,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -340732,6 +340889,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -340769,6 +340927,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -341278,6 +341437,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -349233,6 +349393,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -349270,6 +349431,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -360387,6 +360549,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -360424,6 +360587,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -361069,6 +361233,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 1515756368}
   fillLeft: {fileID: 1249550422}
@@ -362895,6 +363060,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -362932,6 +363098,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1922303008}
@@ -363016,6 +363183,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -364788,6 +364956,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -364825,6 +364994,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 174138783}
@@ -370025,6 +370195,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -370062,6 +370233,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 1162401731}
   toActivate: []
@@ -371083,6 +371255,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -371120,6 +371293,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -371447,6 +371621,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -371484,6 +371659,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -377436,6 +377612,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -377473,6 +377650,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -380712,6 +380890,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -380749,6 +380928,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 690998711}
   toActivate: []
@@ -387534,6 +387714,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -387571,6 +387752,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -388114,6 +388296,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -388151,6 +388334,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1922303008}
@@ -388235,6 +388419,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -389117,6 +389302,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -389154,6 +389340,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -435813,6 +436000,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -435850,6 +436038,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -436270,6 +436459,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -436307,6 +436497,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -436546,6 +436737,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -445908,6 +446100,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -445945,6 +446138,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -447407,6 +447601,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -449053,6 +449248,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -449090,6 +449286,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate:
@@ -451060,6 +451257,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -461060,6 +461258,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 1
@@ -461097,6 +461296,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -464902,6 +465102,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -464939,6 +465140,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -467304,6 +467506,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -467341,6 +467544,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -479482,6 +479686,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -479519,6 +479724,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 320509459}
   toActivate: []
@@ -479593,6 +479799,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -479630,6 +479837,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -486286,6 +486494,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -502257,6 +502466,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 1464346309}
   fillLeft: {fileID: 993588206}
@@ -503434,6 +503644,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -503471,6 +503682,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -504545,6 +504757,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -504582,6 +504795,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1950654895}
@@ -506841,6 +507055,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -506878,6 +507093,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 174138783}
@@ -507654,6 +507870,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -507691,6 +507908,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -509087,6 +509305,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -509124,6 +509343,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1144502869}
@@ -520416,6 +520636,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -520453,6 +520674,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -522418,6 +522640,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -522455,6 +522678,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -523521,6 +523745,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 1
   num: 0
@@ -523558,6 +523783,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1922303008}
@@ -523642,6 +523868,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -526365,7 +526592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1966143094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536368,6 +536595,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -536405,6 +536633,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts:
   - {fileID: 2014862553}
   - {fileID: 496431520}
@@ -538469,6 +538698,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -538506,6 +538736,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate:
   - {fileID: 1913519580}
@@ -542550,6 +542781,7 @@ MonoBehaviour:
     what1: 
     go: {fileID: 0}
     pos: {x: 0, y: 0, z: 0}
+    price: []
   is3D: 0
   isMouseDown: 0
   num: 0
@@ -542587,6 +542819,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   reverts: []
   toActivate: []
   toDeactivate: []
@@ -546485,6 +546718,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -572320,6 +572554,7 @@ MonoBehaviour:
     multi: 1
     tutors: []
     tutorStat: 
+    eventBought: 
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}
@@ -582145,7 +582380,7 @@ MonoBehaviour:
     call: 
     param: 
     filterNum: -1
-    time: -1
+    time: 1
     dynList: []
     condList: []
     toActivate:
@@ -582156,6 +582391,7 @@ MonoBehaviour:
     multi: 0
     tutors: []
     tutorStat: 
+    eventBought: buy_fog
   take: {fileID: 0}
   timeLeft: {fileID: 0}
   fillLeft: {fileID: 0}

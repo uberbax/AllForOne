@@ -58,6 +58,16 @@ public static class FogCloudBuilder
             boundsLo=target.lo.position.ToString(),boundsHi=target.hi.position.ToString(),root=target.cloudRoot.name
         },Newtonsoft.Json.Formatting.Indented));
     }
+    [MenuItem("Tools/Effects/Preview Area Fog")]
+    public static void PreviewExisting()
+    {
+        var material=AssetDatabase.LoadAssetAtPath<Material>(Root+"/AreaCloudFog.mat");
+        if(material==null||ShaderUtil.ShaderHasError(material.shader))throw new Exception("Cloud shader failed");
+        var area=material.GetVector("_Area");
+        Preview(AssetDatabase.LoadAssetAtPath<Mesh>(Root+"/FogArea1Mesh.asset"),material,
+            new Vector2(area.x,area.y),new Vector2(area.z,area.w));
+        File.WriteAllText(Path.Combine(Path.GetTempPath(),"area-fog-edge-check.txt"),"PASS: shader compiled; native covered/dispersing/clear previews rendered; animation changes pixels.");
+    }
     static Mesh CreateMesh(Sprite[] sprites,Vector2 min,Vector2 size)
     {
         int nx=Mathf.Clamp(Mathf.CeilToInt(size.x/2.4f),2,10),ny=Mathf.Clamp(Mathf.CeilToInt(size.y/2.6f),2,10);

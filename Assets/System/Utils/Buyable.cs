@@ -82,6 +82,15 @@ public class Buyable : ComponentBehavior
                     MainStates.instance.TryExchange(curDynamic.price);
                 },() =>
                 {
+                    //take event ?
+                    if (curDynamic.eventBought != "")
+                    {
+                        var pp = new ArgPass();
+                        pp.go = gameObject;
+                        pp.price = curDynamic.price;
+                        EventManager.INV(curDynamic.eventBought, pp);
+                    }
+
                     //can be time
                     if (curDynamic.time > 0)
                     {

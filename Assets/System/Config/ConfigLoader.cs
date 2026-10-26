@@ -3528,6 +3528,7 @@ public class FormatDynamic
     public List<UnoTutor> tutors = new List<UnoTutor>();
     public string tutorStat = "";
 
+    public string eventBought = "";
 }
 
 [System.Serializable]

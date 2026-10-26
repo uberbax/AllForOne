@@ -400,6 +400,8 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("evt_unlock_class", UnlockClass);
         EventManager.SUB("manual_cast", SkillCasted);
         EventManager.SUB("chose_class", ChoseClass);
+        EventManager.SUB("buy_fog", BuyFog);
+        
         
         if (rndNamesTxt != null)
             rndNames = rndNamesTxt.text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -436,6 +438,99 @@ public class MainStates : MonoBehaviour
             expCurve.Add(i*1000);
         }
         
+    }
+
+    [Header("Fog payment visuals")]
+    [SerializeField, Min(.1f)] private float fogPaymentFlightDuration = .75f;
+    [SerializeField, Min(0)] private float fogPaymentArcHeight = 1.5f;
+    [SerializeField, Min(.01f)] private float fogPaymentIconSize = .6f;
+    [SerializeField, Min(0)] private float fogPaymentLaunchInterval = .045f;
+    [SerializeField, UnityEngine.Range(1, 100)] private int fogPaymentMaxIconsPerPrice = 24;
+
+    private struct FogPaymentFlight
+    {
+        public SpriteRenderer visual;
+        public Vector3 start;
+        public float launchTime;
+        public bool launched;
+    }
+
+    private void BuyFog(ArgPass obj)
+    {
+        if (!isActiveAndEnabled || obj == null || obj.go == null || obj.price == null ||
+            mainPlayer == null || mainPlayer.main == null || ResourceHolder.instance == null) return;
+
+        // These are payment visuals, not inventory objects or collectible drops.
+        var icons = new List<Sprite>();
+        foreach (var price in obj.price)
+        {
+            if (price == null || price.Value <= 0 || string.IsNullOrEmpty(price.Key)) continue;
+            var icon = ResourceHolder.instance.GetIcon(price.Key);
+            if (icon == null) continue;
+            // Large costs are represented by a bounded stream, rather than thousands of objects.
+            int count = Mathf.Min(price.Value, Mathf.Clamp(fogPaymentMaxIconsPerPrice, 1, 100));
+            for (int i = 0; i < count; i++) icons.Add(icon);
+        }
+        if (icons.Count > 0)
+            StartCoroutine(AnimateFogPayment(mainPlayer.main.transform, obj.go.transform, icons));
+    }
+
+    private IEnumerator AnimateFogPayment(Transform source, Transform target, List<Sprite> icons)
+    {
+        float duration = Mathf.Max(.1f, fogPaymentFlightDuration);
+        float interval = Mathf.Max(0, fogPaymentLaunchInterval);
+        float height = Mathf.Max(0, fogPaymentArcHeight);
+        float size = Mathf.Max(.01f, fogPaymentIconSize);
+        var root = new GameObject("Fog payment visuals");
+        var flights = new FogPaymentFlight[icons.Count];
+        var camera = Camera.main;
+        // Also clean up if this host is disabled and Unity stops its coroutine.
+        Destroy(root, duration + interval * (icons.Count - 1) + 1f);
+        try
+        {
+            for (int i = 0; i < flights.Length; i++)
+            {
+                var visual = new GameObject("Fog payment " + i).AddComponent<SpriteRenderer>();
+                visual.transform.SetParent(root.transform, false);
+                visual.sprite = icons[i];
+                visual.sortingOrder = 3100;
+                float extent = Mathf.Max(icons[i].bounds.size.x, icons[i].bounds.size.y);
+                visual.transform.localScale = Vector3.one * (size / Mathf.Max(.001f, extent));
+                visual.enabled = false;
+                flights[i] = new FogPaymentFlight { visual = visual, launchTime = interval * i };
+            }
+
+            float elapsed = 0;
+            while (elapsed < duration + interval * (flights.Length - 1))
+            {
+                if (!isActiveAndEnabled || source == null || target == null || root == null) yield break;
+                if (camera == null) camera = Camera.main;
+                Vector3 up = camera != null ? camera.transform.up : Vector3.up;
+                for (int i = 0; i < flights.Length; i++)
+                {
+                    var flight = flights[i];
+                    if (flight.visual == null || elapsed < flight.launchTime) continue;
+                    if (!flight.launched)
+                    {
+                        flight.start = source.position;
+                        flight.launched = true;
+                        flights[i] = flight;
+                    }
+                    float t = Mathf.Clamp01((elapsed - flight.launchTime) / duration);
+                    flight.visual.enabled = t < 1;
+                    var visualTransform = flight.visual.transform;
+                    visualTransform.position = Vector3.Lerp(flight.start, target.position, t) +
+                        up * (4f * height * t * (1f - t));
+                    if (camera != null) visualTransform.rotation = camera.transform.rotation;
+                }
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
+        }
+        finally
+        {
+            if (root != null) Destroy(root);
+        }
     }
 
     private void ChoseClass(ArgPass e)
