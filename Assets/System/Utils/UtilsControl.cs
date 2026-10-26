@@ -2846,7 +2846,7 @@ public class UtilsControl : MonoBehaviour
 
     public Color GetColor(GameObject who)
     {
-        Debug.Log(who);
+        //Debug.Log(who);
         var rend = who.GetComponentInChildren<Renderer>();
         var rend1 = who.GetComponent<Image>();
         var rend2 = who.GetComponentInChildren<SkinnedMeshRenderer>();

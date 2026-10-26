@@ -2931,7 +2931,7 @@ public class MainStates : MonoBehaviour
         //when two chests collide ?
         if (skl.owner == null) return;
         
-        Debug.Log("DAMAGE: " +skl.owner.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
+        //Debug.Log("DAMAGE: " +skl.owner.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
         //precalc dmg formula
         if (skl.dbObj.dmgFormula != "" && skl.dbObj.dmgFormula != null)
         {

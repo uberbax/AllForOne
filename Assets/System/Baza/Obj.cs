@@ -716,35 +716,20 @@ public class RObj
     
     public float GetPar(string val)
     {
-        //battle_power
+        var current = curPars;
         if (val == "battle_power")
         {
-            curPars["battle_power"] = curPars["attack"] + curPars["health"] + curPars["def"];
+            float power = current["attack"] + current["health"] + current["def"];
+            current["battle_power"] = power;
+            return power;
         }
-        
-        
-        if (curPars.ContainsKey(val))
-        {
-            if (val == "health")
-                return curPars[val] - curPars["registered_damage"];
-            else return curPars[val];
-        }
-        else
-        {
-            if (upgradePars.ContainsKey(val))
-            {
-                return upgradePars[val];
-            }
-            else if (dbObj == null)
-            {
-                return 0;
-            }
-            else if (dbObj.pars.ContainsKey(val))
-            {
-                return dbObj.pars[val];
-            }
-            return 0;
-        }
+
+        if (current.TryGetValue(val, out float value))
+            return val == "health" ? value - current["registered_damage"] : value;
+
+        if (upgradePars.TryGetValue(val, out value)) return value;
+        var definition = dbObj;
+        return definition != null && definition.pars.TryGetValue(val, out value) ? value : 0;
     }
 
     public void SetPar(string key, float val)
