@@ -44,7 +44,7 @@ public class MainSwitcher : MonoBehaviour
 
         if (isRumble)
         {
-            Make3D();
+            //Make3D();
             MainStates.instance.mainPlayer.RemoveViz("click_move");
             MainStates.instance.mainPlayer.AddViz("move#val:3");
             MakeVampire();
@@ -95,9 +95,10 @@ public class MainSwitcher : MonoBehaviour
             aa.isEnemy = true;
             aa.addedVis = conf1;
             aa.id = "tree";
-            aa.recreateViz = true;
+            //aa.recreateViz = true;
             aa.addedMeta.Add("wave");
             aa.addedMeta.Add(MainStates.metaCreateLevel);
+            aa.asMainViz = true;
             aa.visMain = f;
 
         }

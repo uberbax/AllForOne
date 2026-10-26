@@ -4,6 +4,8 @@ using UnityEngine;
 public class XDfollow2 : ComponentBehavior
 {
     private RObj mon;
+    
+    Vector3 prev = Vector3.zero;
     private void Start()
     {
         mon = GetComponentInParent<ObjHolder>().obj;
@@ -12,7 +14,19 @@ public class XDfollow2 : ComponentBehavior
     private void Update()
     {
         var h = MainStates.instance.all["main_player"].Position + mon.localPos - mon.Position;
-
+        
+        /*
+        if (prev != Vector3.zero)
+        {
+            if (prev.magnitude > h.magnitude)
+            {
+                return;
+            }
+        }
+        */
+        
+        prev = h;
+        
         if (mon.lastAction == "no_target" || MainStates.isMovingByControl)
         {
             h.z = 0;
@@ -29,6 +43,7 @@ public class XDfollow2 : ComponentBehavior
                 }
 
                 mon.main.transform.position += h.normalized * Time.deltaTime * 2;
+                UtilsControl.CalculateLayer(mon.visMain);
             }
             else
             {

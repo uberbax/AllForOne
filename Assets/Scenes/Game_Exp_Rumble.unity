@@ -163816,6 +163816,7 @@ GameObject:
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
   - component: {fileID: 519420035}
+  - component: {fileID: 519420036}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -163866,7 +163867,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.05
+  orthographic size: 10.57
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -164088,6 +164089,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &519420036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811f2f6e1a790e74d9dc90e4602b78df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Colorful::Colorful.ContrastGain
+  Shader: {fileID: 4800000, guid: 3973b60005a6730458dd6590aa15584e, type: 3}
+  Gain: 2
 --- !u!1839735485 &519552984 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 6609350160067667153, guid: 00ea9dde9d56e0a4eb6b13f2f09bb8f9, type: 3}
@@ -259717,13 +259732,13 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 64, y: 55, z: 0}
   ComponentScale: {x: 1, y: 1, z: 1}
-  FillSize: {x: 1080, y: 2400, z: 0}
+  FillSize: {x: 1200, y: 2400, z: 0}
   ShrinkSize: {x: 999999, y: 999999, z: 999999}
-  TargetPosition: {x: -505, y: -1108, z: 0}
+  TargetPosition: {x: -445, y: -988, z: 0}
   TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   TargetScale: {x: 1, y: 1, z: 1}
   TargetRectSize: {x: 128, y: 110, z: 0}
-  TransformPosition: {x: -445, y: -1108, z: 0}
+  TransformPosition: {x: -505, y: -1108, z: 0}
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1, y: 1, z: 1}
   TransformRectSize: {x: 128, y: 110}
@@ -526350,7 +526365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1966143094
 MonoBehaviour:
   m_ObjectHideFlags: 0

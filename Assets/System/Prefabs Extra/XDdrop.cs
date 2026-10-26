@@ -85,10 +85,13 @@ public class XDdrop : ComponentBehavior
                         var beam = LootRarityBeam.Attach(a);
                         a.AddViz("take");
                         a.AddViz("shiny");
+                        if (beam)
+                        { 
+                            UtilsControl.CalculateLayer(beam.gameObject);
+                        }
                         if (MainStates.isCameraFace && beam)
                         {
                             beam.transform.forward = Camera.main.transform.forward;
-                            UtilsControl.CalculateLayer(beam.gameObject);
                         }
                     }, mm.main.transform);
             }
