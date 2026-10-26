@@ -34,7 +34,7 @@ public class XDrand_move : ComponentBehavior
             var g = Random.Range(0, PositionSetter.tupleDltFull.Count);
 
 
-            if (ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
             {
                  var jj = PositionSetter.instance.floors[(int)mon.ref_pos_x, (int)mon.ref_pos_y];
                  var ee = MainStates.RandomPermutation(jj.Dirs.Count);
@@ -57,7 +57,7 @@ public class XDrand_move : ComponentBehavior
             else
             {
                 Vector3 pnt = Vector3.zero;
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
                     pnt = transform.position + new Vector3(PositionSetter.tupleDltFull[g].Item1 * distMult, PositionSetter.tupleDltFull[g].Item2 * distMult, 0);
                 else
                 {
@@ -68,7 +68,7 @@ public class XDrand_move : ComponentBehavior
                 if (hh)
                 {
                     
-                    if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
+                    if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_navmesh) > 0)
                     {
                         if (!mAgent) return;
                         mAgent.SetDestination(pnt);

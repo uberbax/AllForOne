@@ -40,7 +40,7 @@ public class XDmove : ComponentBehavior
             dVec = MainStates.instance.joystick.Value * Time.deltaTime * spd;
         }        
         
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
 
             var rh = Physics2D.Raycast(transform.position,
@@ -74,7 +74,7 @@ public class XDmove : ComponentBehavior
         Vector3 dVecXZ = new Vector3(dVec.x, 0, dVec.z);
         Vector3 dVecRes = Vector3.zero;
 
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             dVecRes = dVecXY;
             mon.position += dVecXY;

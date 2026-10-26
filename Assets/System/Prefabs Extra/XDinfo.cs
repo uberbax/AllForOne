@@ -32,7 +32,7 @@ public class XDinfo : ComponentBehavior
         if (Input.GetMouseButtonDown(0))
         {
             if (UtilsControl.IsPointerOverUIElement()) return;
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
             {
                 var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 var hit = Physics2D.Raycast(pos, new Vector2(0, 1), 0.1f, 1 << LayerMask.NameToLayer("Click"));

@@ -110,7 +110,7 @@ public class MainCycleCyclone : MonoBehaviour
         }        
         //random building
         var gg = new List<string>(statsTrack);
-        ModelStatistics.instance.SetStatValue("ini_buildings", (int)ConfigLoader.GetMetaParamValue("ini_buildings"));
+        ModelStatistics.instance.SetStatValue("ini_buildings", (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.ini_buildings));
         int hh = ModelStatistics.instance.GetStatValue("ini_buildings");
 
         for (int i = 0; i < hh; i++)
@@ -185,7 +185,7 @@ public class MainCycleCyclone : MonoBehaviour
     void RecalcDragZone()
     {
         var d = ModelStatistics.instance.GetStatValue("field");
-        var d0 = ConfigLoader.GetMetaParamValue("field_scale") * d;
+        var d0 = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.field_scale) * d;
 
         MainStates.instance.dragHi.position = MainStates.instance.dragLo.position + dragFieldSize + new Vector3(d0, 0, 0);
         MainStates.instance.dragZone.position =

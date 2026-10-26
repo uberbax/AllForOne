@@ -126,11 +126,11 @@ public class XDdeath : ComponentBehavior
             );
         }
 
-        if (ConfigLoader.GetMetaParamValue("blood_death") > 0 && !frac && !treeFell)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.blood_death) > 0 && !frac && !treeFell)
         {
             string ss = "blood";
             Vector3 dlt = Vector3.zero;
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") < 1)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) < 1)
             {
                 ss = "blood3D";
                 dlt = new Vector3(0, 0.1f, 0);

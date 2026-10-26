@@ -669,7 +669,7 @@ public class PositionSetter : MonoBehaviour
     public void OpenFog(Vector3 pos)
     {
         if (!fogRoot.gameObject.activeInHierarchy) return;
-        var sz = ConfigLoader.GetMetaParamValue("fog_open");
+        var sz = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.fog_open);
         var ll = GetAllCellsInRange(pos, (int)sz);
         foreach (var v in lastOpen)
         {
@@ -723,7 +723,7 @@ public class PositionSetter : MonoBehaviour
         var r1 = Random.Range(0, range);
         
         Vector3 point = Vector3.zero;
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
            point = center + new Vector3(r1 * MathF.Cos(al), r1 * MathF.Sin(al), 0);
         }
@@ -987,7 +987,7 @@ public class PositionSetter : MonoBehaviour
         ratX /= (floors[n,m].transform.position.x - floors[0, 0].transform.position.x);
 
         float ratY = 0;
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             ratY = pos.y - floors[0, 0].transform.position.y;
             ratY /= (floors[n, m].transform.position.y - floors[0, 0].transform.position.y);
@@ -1015,7 +1015,7 @@ public class PositionSetter : MonoBehaviour
                 if (j < 0 || j > m) continue;
 
                 var vec = floors[i, j].transform.position - pos;
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) vec.z = 0;
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) vec.z = 0;
                 else vec.y = 0;
 
                 if (vec.magnitude < dst)

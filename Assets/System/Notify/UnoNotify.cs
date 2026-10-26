@@ -115,7 +115,7 @@ public class UnoNotify : MonoBehaviour
         {
             var gf = TimeManager.instance.GetCurrentTimeLong() - MainStates.instance.lastAutoRewardTime;
             
-            gf /= (int)ConfigLoader.GetMetaParamValue("autoreward_refresh");
+            gf /= (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.autoreward_refresh);
             if (gf > 0) return 1;
             else return 0;
         }

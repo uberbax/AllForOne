@@ -35,14 +35,14 @@ public class XDdrop : ComponentBehavior
             if (ResourceHolder.instance.items.ContainsKey(v.Key))
             {
                 var a = DatabaseAll.instance.CreateItem(v.Key, v.Value, true, true);
-                if (a.it == ItemType.item && ConfigLoader.GetMetaParamValue("randomize_drop_stats") > 0)
+                if (a.it == ItemType.item && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.randomize_drop_stats) > 0)
                 {
                     MainStates.instance.RandomizeItemStats(a);
                 }
 
                 a.AddMeta("drop");
                 a.main.transform.position = transform.position;
-                a.main.transform.localScale *= ConfigLoader.GetMetaParamValue("drop_scale");
+                a.main.transform.localScale *= ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.drop_scale);
                 a.main.name += "LOOT";
                 //ok scale ?
                 var gb = a.visMain.GetComponent<SpriteRenderer>();

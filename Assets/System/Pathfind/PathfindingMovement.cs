@@ -71,7 +71,7 @@ public class PathfindingMovement : MonoBehaviour
     {
         if (target == null || targetSavedPos == Vector3.zero) return;
 
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             currentPath = pathfinding.FindPath2(new Vector2(transform.position.x, transform.position.y), target == null ? targetSavedPos : new Vector2(target.position.x, target.position.y), transform.position.z);
         }

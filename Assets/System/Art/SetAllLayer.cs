@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class SetAllLayer : MonoBehaviour
@@ -8,6 +10,8 @@ public class SetAllLayer : MonoBehaviour
     public Transform high;
 
     public bool doBreathing = false;
+
+    public List<Transform> except;
     
     [ContextMenu("Do set")]
     public void SetAll()
@@ -15,6 +19,7 @@ public class SetAllLayer : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             if (!transform.GetChild(i).gameObject.activeInHierarchy) continue;
+            if (except.Contains(transform.GetChild(i).transform)) continue;
             UtilsControl.CalculateLayer(transform.GetChild(i).gameObject, lo, high);
         }
     }

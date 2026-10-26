@@ -37,7 +37,7 @@ public class XDcombat : ComponentBehavior
         MainStates.instance.combats.Add(mon);
         EventManager.INV("added_combat_unit", new ArgPass());
 
-        if (ConfigLoader.GetMetaParamValue("use_stater") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_stater) > 0)
         {
             if (mon.RID != "main_player")
                 mon.AddViz("stater");
@@ -109,7 +109,7 @@ public class XDcombat : ComponentBehavior
         if ( (d > d1 || noSight) && !sucCast && mon.GetPar("no_move") < 1)
         {
             var vec = (c.Position - mon.Position).normalized;
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) vec.z = 0;
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) vec.z = 0;
             
             //get path ?
             MainStates.instance.MovePath(mon, c);

@@ -287,15 +287,15 @@ public class RObj
     {
         int szx = -1;
         int szy = -1;
-        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
-            szx = (int)ConfigLoader.GetMetaParamValue("main_size_x");
-            szy = (int)ConfigLoader.GetMetaParamValue("main_size_y");
+            szx = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.main_size_x);
+            szy = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.main_size_y);
         }
-        else if (ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
-            szx = (int)ConfigLoader.GetMetaParamValue("loot_size_x");
-            szy = (int)ConfigLoader.GetMetaParamValue("loot_size_y");
+            szx = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.loot_size_x);
+            szy = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.loot_size_y);
         }
 
         if (szx < 0) return false;
@@ -338,15 +338,15 @@ public class RObj
         //RecalcInvSpace(takenInvSpace);
         int szx = -1;
         int szy = -1;
-        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
-            szx = (int)ConfigLoader.GetMetaParamValue("main_size_x");
-            szy = (int)ConfigLoader.GetMetaParamValue("main_size_y");
+            szx = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.main_size_x);
+            szy = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.main_size_y);
         }
-        else if (ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
-            szx = (int)ConfigLoader.GetMetaParamValue("loot_size_x");
-            szy = (int)ConfigLoader.GetMetaParamValue("loot_size_y");
+            szx = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.loot_size_x);
+            szy = (int)ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.loot_size_y);
         }
 
         int mx = 10000;
@@ -410,11 +410,11 @@ public class RObj
     {
         int szx = 10;
         int szy = 10;
-        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        if (this.RID == "main_player" && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
             
         }
-        else if (ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
         {
             
         }
@@ -451,9 +451,9 @@ public class RObj
     
     public void AdjustPosition()
     {
-        if (ConfigLoader.GetMetaParamValue("mode_isometric") > 0 ||
-            ConfigLoader.GetMetaParamValue("mode_manhattan") > 0 ||
-            ConfigLoader.GetMetaParamValue("mode_hex") > 0
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0 ||
+            ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0 ||
+            ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0
            )
         {
             var v = PositionSetter.instance.GetClosestPos(Position);
@@ -818,7 +818,7 @@ public class RObj
         
         if (visuals.ContainsKey(what)) return;
 
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
         {
             if (what == "coll") change = "coll3D";
             if (what == "select") change = "select3D";

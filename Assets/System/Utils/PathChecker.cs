@@ -50,7 +50,7 @@ public class PathChecker : MonoBehaviour
             for (int i = 0;  i < lastPath.Count; i++)
             {
                 pnts[i].SetActive(true);
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
                 {
                     pnts[i].transform.position = new Vector3(
                         PositionSetter.instance.floors[lastPath[i].Item1, lastPath[i].Item2].transform.position.x,

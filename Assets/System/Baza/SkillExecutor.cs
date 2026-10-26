@@ -192,7 +192,7 @@ public class SkillExecutor : MonoBehaviour
         else
         {
             var vec = target.Position - (overPos == default ? who.Position : overPos);
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) vec.z = 0;
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) vec.z = 0;
             if (overPos == default)
                 d = MainStates.instance.GetDistance(who, target, out float dd);
             else
@@ -204,7 +204,7 @@ public class SkillExecutor : MonoBehaviour
         float mr1 = (1 + who.GetPar("mana_reduction") / 100.0f);
         if (who.GetPar("mana") < skl.GetPar("manacost") * mr1 && !overCd) return ExecReso.NO_MANA;
 
-        if (ConfigLoader.GetMetaParamValue("req_line_sight") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.req_line_sight) > 0)
         {
             RaycastHit2D h;
             if (overPos == default)
@@ -350,7 +350,7 @@ public class SkillExecutor : MonoBehaviour
                     if (change != null)
                         ro.ChangePar(change.Key, change.Value);
 
-                    if (ConfigLoader.GetMetaParamValue("use_exact_target") == 1 && ft == 0)
+                    if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_exact_target) == 1 && ft == 0)
                         ro.exact = target;
                     
                     if (ro.dbObj.ID == "put")
@@ -416,7 +416,7 @@ public class SkillExecutor : MonoBehaviour
             }
         }
 
-        if (ConfigLoader.GetMetaParamValue("use_naprig") == 1 && skl.dbObj.ID == "basic_melee")
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 && skl.dbObj.ID == "basic_melee")
         {
             MainStates.instance.DoNaprig(who, target);
         }
@@ -605,7 +605,7 @@ public class SkillExecutor : MonoBehaviour
                 var h = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
                 pos = hit.point;
             }            
-            else if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
             {
                 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 pos.z = -0.1f;
@@ -637,7 +637,7 @@ public class SkillExecutor : MonoBehaviour
                 if (MainStates.instance.freeTargeting)
                 {
                     //pos stays from mouse cast
-                    if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+                    if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
                         pos.z = 0;
                     else
                         pos.y = 0.3f;
@@ -749,9 +749,9 @@ public class SkillExecutor : MonoBehaviour
                                     //
                                     if (ro.dbObj.ID == "move")
                                     {
-                                        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0 
-                                            || ConfigLoader.GetMetaParamValue("mode_isometric") > 0
-                                            ||  ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+                                        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0 
+                                            || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0
+                                            ||  ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
                                         {
                                             var savedOwner = ro.owner;
                                             var savedPos = ro.main.transform.position;
@@ -779,7 +779,7 @@ public class SkillExecutor : MonoBehaviour
                                             savedOwner.ref_pos_y = bn.Item2;
 
                                             UtilsControl.Instance.MoveTo(ro.owner.main.transform,
-                                                ConfigLoader.GetMetaParamValue("global_move"), ro.main.transform.position,
+                                                ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_move), ro.main.transform.position,
                                                 () =>
                                                 {
                                                     savedOwner.Position = savedPos;
@@ -841,7 +841,7 @@ public class SkillExecutor : MonoBehaviour
                     }
                 }
 
-                if (ConfigLoader.GetMetaParamValue("use_naprig") == 1 && lastSkl.dbObj.ID == "basic_melee")
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 && lastSkl.dbObj.ID == "basic_melee")
                 {
                     MainStates.instance.DoNaprig(lastWho, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0));
                 }

@@ -107,7 +107,7 @@ public class AddedObject : MonoBehaviour
             r.AddMeta(v);
         }
         
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
             r.Position = r.main.transform.position;
             r.AdjustPosition();
@@ -154,7 +154,7 @@ public class AddedObject : MonoBehaviour
         if (onAdd != null)
             onAdd(r);
 
-        if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0 && ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_navmesh) > 0 && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
         {
             var m = r.main.AddComponent<NavMeshAgent>();
             //m.acceleration = 0;

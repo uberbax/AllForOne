@@ -85,7 +85,7 @@ public class XDdrag : ComponentBehavior
              //we just use world
              var hh = UtilsControl.GetMousePoint();
              Vector3 nn = Vector3.zero;
-             if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+             if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
              {
                  var mm = PositionSetter.instance.GetClosestPos(hh);
                  nn = mm.Item3;

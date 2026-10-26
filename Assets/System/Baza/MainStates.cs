@@ -272,7 +272,7 @@ public class MainStates : MonoBehaviour
     
     public Vector3 GetRndFree(Vector3 pos, float range)
     {
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
             var free = PositionSetter.instance.GetAllFreeSquares(pos, (int)range);
             var g = free[Random.Range(0, free.Count)];
@@ -286,12 +286,12 @@ public class MainStates : MonoBehaviour
 
             for (int i = 0; i < 10; i++)
             {
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
                 {
                     ans = pos + new Vector3(r * MathF.Sin(al), r * Mathf.Cos(al), 0);
                 }
 
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
                 {
                     ans = pos + new Vector3(r * MathF.Sin(al), 0, r * Mathf.Cos(al));
                 }
@@ -1302,10 +1302,10 @@ public class MainStates : MonoBehaviour
          var vec = v.Position - who.Position;
          st = vec.magnitude;
          
-         if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) vec.z = 0;
-         if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0) vec.y = 0;
+         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) vec.z = 0;
+         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0) vec.y = 0;
 
-         if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
          {
              if (who.ref_pos_x < 0) who.AdjustPosition();
              if (v.ref_pos_x < 0) v.AdjustPosition();
@@ -1327,11 +1327,11 @@ public class MainStates : MonoBehaviour
 
     public float GetDistance(int x0, int y0, int x1, int y1)
     {
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
             return Mathf.Max(Mathf.Abs(x0 - x1), Mathf.Abs(y0 - y1));
         }
-        else if (ConfigLoader.GetMetaParamValue("mode_isometric") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0)
         {
             //Debug.Log(x0 +" " +y0+" "+x1+" "+y1);
             int x2 = Mathf.Abs(x0 - x1);
@@ -1367,7 +1367,7 @@ public class MainStates : MonoBehaviour
             //Debug.Log(ans);
             return ans;
         }
-        else if (ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
         {
             //Debug.Log(x0 +" " +y0+" "+x1+" "+y1);
             int x2 = Mathf.Abs(x0 - x1);
@@ -1413,16 +1413,16 @@ public class MainStates : MonoBehaviour
     {
         var vec = v.Position - who;
          
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) vec.z = 0;
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0) vec.y = 0;
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) vec.z = 0;
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0) vec.y = 0;
          dst = vec.magnitude;
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
             var jj = PositionSetter.instance.GetClosestPos(who);
             if (v.ref_pos_x < 0) v.AdjustPosition();
             return Mathf.Max(Mathf.Abs(v.ref_pos_x - jj.Item1), Mathf.Abs(v.ref_pos_y - jj.Item2));
         }
-        else if (ConfigLoader.GetMetaParamValue("mode_isometric") > 0 || ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0 || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
         {
             var jj = PositionSetter.instance.GetClosestPos(who);
             if (v.ref_pos_x < 0) v.AdjustPosition();
@@ -1668,7 +1668,7 @@ public class MainStates : MonoBehaviour
             }
             //ok but now (!) if the inventory is SPARSE, we need to do something
             var flr = t.GetComponent<UIfiller>();
-            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
             {
                 var sparsed = new List<RObj>();
                 res.Sort((x,y) => x.index.CompareTo(y.index));
@@ -1769,7 +1769,7 @@ public class MainStates : MonoBehaviour
             
             //ok but now (!) if the inventory is SPARSE, we need to do something
             var flr = t.GetComponent<UIfiller>();
-            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
             {
                 var sparsed = new List<RObj>();
                 res.Sort((x,y) => x.index.CompareTo(y.index));
@@ -1814,7 +1814,7 @@ public class MainStates : MonoBehaviour
             
             //ok but now (!) if the inventory is SPARSE, we need to do something
             var flr = t.GetComponent<UIfiller>();
-            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue("use_inv_any") > 0)
+            if (!flr.ignoreInvAny && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_inv_any) > 0)
             {
                 var sparsed = new List<RObj>();
                 res.Sort((x,y) => x.index.CompareTo(y.index));
@@ -2144,7 +2144,7 @@ public class MainStates : MonoBehaviour
                 var gg = UpgradeSystem.instance.GetPrice(o, u.param);
                 AddItems(gg);
                 //?
-                if (ConfigLoader.GetMetaParamValue("buyback") > 0)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.buyback) > 0)
                     AddItems(new List<Bon> { new Bon { Key = o.dbObj.ID, Value = (int)o.upgradePars["amount"] } },
                         curLoot);
 
@@ -2475,7 +2475,7 @@ public class MainStates : MonoBehaviour
     
     public GameObject GetBinome(float x1, float y1)
     {
-        if (ConfigLoader.GetMetaParamValue("runtime_mapping") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.runtime_mapping) > 0)
         {
             var ps = GetClosestPos(new Vector3(x1, y1, 0));
             return map[(int)ps.x, (int)ps.y];
@@ -2493,7 +2493,7 @@ public class MainStates : MonoBehaviour
     
     public Vector2 GetClosestPos(Vector3 vec, bool zetZero = true, List<Transform> overs = null)
     {
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
             zetZero = false;
         
         
@@ -2518,16 +2518,16 @@ public class MainStates : MonoBehaviour
             return GetClosestPos(overs[u].position, zetZero);
         }
 
-        if (ConfigLoader.GetMetaParamValue("use_dist_heur") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_dist_heur) > 0)
         {
 
             var xx = new Vector2(vec.x - minT.position.x, vec.y - minT.position.y);
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
                 xx = new Vector2(vec.x - minT.position.x, vec.z - minT.position.z);
 
             xx.x /= (maxT.position.x - minT.position.x);
 
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
                 xx.y /= (maxT.position.z - minT.position.z);
             else xx.y /= (maxT.position.y - minT.position.y);
 
@@ -2707,10 +2707,10 @@ public class MainStates : MonoBehaviour
         var gg = PositionSetter.instance.GetClosestPos(pos);
         string calcStr = gg.Item1 + "x" + gg.Item2 + "x" + skl;
         
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
 
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
             {
                 Vector3 l1 = new Vector3(gg.Item3.x - size * (skl + 0.5f), gg.Item3.y - size * (skl + 0.5f),
                     gg.Item3.z);
@@ -2735,7 +2735,7 @@ public class MainStates : MonoBehaviour
                 range.SetPositions(poses);
             }
         }
-        else if (ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+        else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
         {
             if (calcStr == lastR)
             {
@@ -3042,7 +3042,7 @@ public class MainStates : MonoBehaviour
         //push ?
         if (skl.dbObj.ID.IndexOf("push") >= 0)
         {
-            if (ConfigLoader.GetMetaParamValue("mode_manhattan") >= 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) >= 0)
             {
                 var t = PositionSetter.instance.GetAllFreeSquares(a.Position, 1);
                 var g = PositionSetter.instance.GetFarthestPosDot(a.Position - skl.Position,  a.Position, t, out float de);
@@ -3060,8 +3060,8 @@ public class MainStates : MonoBehaviour
             else
             {
                 var dir = a.Position - skl.Position;
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0) dir.z = 0;
-                if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0) dir.y = 0;
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0) dir.z = 0;
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0) dir.y = 0;
 
                 var ep = a.Position + dir * 5;
                 UtilsControl.Instance.MoveTo(a.main.transform, 20, ep, null, null, useRight:false);
@@ -3385,9 +3385,9 @@ public class MainStates : MonoBehaviour
     {
         Vector3 saved1 = who.Position;
         Vector3 saved2 = who.Position +
-                         (target.Position - who.Position) * ConfigLoader.GetMetaParamValue("naprig_prc");
+                         (target.Position - who.Position) * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
         
-        var t = ConfigLoader.GetMetaParamValue("wait_naprig");
+        var t = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig);
             
         UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
         {
@@ -3469,13 +3469,17 @@ public class MainStates : MonoBehaviour
         //gold
         //exp
         //orns
-        int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
-        var e0 = g0 * 100;
-        aa.Add(new Bon{Key = "exp", Value = e0});
-        aa.Add(new Bon{Key = "gold", Value = (int)(g0 * 101)});
-        aa.Add(new Bon{Key = "res1", Value = (int)(g0 * 12)});
-        aa.Add(new Bon{Key = "battlepass_point", Value = 50});
-        
+        int e0 = 0;
+        if (d1.dbObj.ID != "tree")
+        {
+            int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
+            e0 = g0 * 100;
+            aa.Add(new Bon { Key = "exp", Value = e0 });
+            aa.Add(new Bon { Key = "gold", Value = (int)(g0 * 101) });
+            aa.Add(new Bon { Key = "res1", Value = (int)(g0 * 12) });
+            aa.Add(new Bon { Key = "battlepass_point", Value = 50 });
+        }
+
         //if there was a levelup
         var l1 = mainPlayer.GetPar("level");
         GetMeExpPars(mainPlayer, out float rat, out float cr, out float cm, out float lvl);
@@ -3585,9 +3589,9 @@ public class MainStates : MonoBehaviour
     {
         Vector3 saved1 = who.Position;
         Vector3 saved2 = who.Position +
-                         (target - who.Position) * ConfigLoader.GetMetaParamValue("naprig_prc");
+                         (target - who.Position) * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
         
-        var t = ConfigLoader.GetMetaParamValue("wait_naprig");
+        var t = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig);
             
         UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
         {
@@ -4073,13 +4077,13 @@ public class MainStates : MonoBehaviour
     {
         mon.SetScale(c.Position.x > mon.Position.x);
         
-        var c0 = ConfigLoader.GetMetaParamValue("mode_isometric");
-        var c1 = ConfigLoader.GetMetaParamValue("mode_manhattan");
-        var c2 = ConfigLoader.GetMetaParamValue("mode_hex");
+        var c0 = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric);
+        var c1 = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan);
+        var c2 = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex);
 
         if (c0 < 1 && c2 < 1 && c1 < 1)
         {
-            if (ConfigLoader.GetMetaParamValue("use_2d_navmesh") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_2d_navmesh) > 0)
             {
                 //thwbbb? мы вроде отказались от этого на навмеш+
                 var g = mon.main.GetOrAddComponent<PathfindingMovement>();
@@ -4095,7 +4099,7 @@ public class MainStates : MonoBehaviour
                 
                 
                 int where = 0;
-                float dp = mon.GetPar("speed") * ConfigLoader.GetMetaParamValue("global_speed");
+                float dp = mon.GetPar("speed") * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_speed);
                 
                 //no path for some reason ?
                 if (g.currentPath.Count <= g.currentWaypointIndex) return Vector3.zero;
@@ -4115,7 +4119,7 @@ public class MainStates : MonoBehaviour
                 }
 
             }
-            else if (ConfigLoader.GetMetaParamValue("use_navmesh") > 0)
+            else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_navmesh) > 0)
             {
                 var mm1 = mon.GetBasicSkill();
                 float range = 1;
@@ -4127,7 +4131,7 @@ public class MainStates : MonoBehaviour
             else
             {
                 var vec = (c.Position - mon.Position).normalized;
-                float dp = mon.GetPar("speed") * ConfigLoader.GetMetaParamValue("global_speed");
+                float dp = mon.GetPar("speed") * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_speed);
                 mon.main.transform.position += vec * Time.deltaTime * dp;
             }
 
@@ -4143,7 +4147,7 @@ public class MainStates : MonoBehaviour
                 mon.ref_pos_x = v[0].Item1;
                 mon.ref_pos_y = v[0].Item2;
                 
-                UtilsControl.Instance.MoveTo(mon.main.transform, ConfigLoader.GetMetaParamValue("global_move"), ep.transform.position, () =>
+                UtilsControl.Instance.MoveTo(mon.main.transform, ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_move), ep.transform.position, () =>
                 {
                     mon.ref_pos_x = v[0].Item1;
                     mon.ref_pos_y = v[0].Item2;

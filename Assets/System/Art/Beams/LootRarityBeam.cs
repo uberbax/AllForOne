@@ -41,7 +41,7 @@ public sealed class LootRarityBeam : MonoBehaviour
         var holder = ResourceHolder.instance;
         if (holder != null && holder.rareColors.ContainsKey(rarity)) instance.tint = holder.rareColors[rarity];
         instance.phase = (item.RID == null ? rarity : item.RID.GetHashCode() & 1023) * .013f;
-        bool xy = ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0;
+        bool xy = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0;
         if (!xy)
         {
             instance.ground.transform.localRotation = Quaternion.Euler(90, 0, 0);

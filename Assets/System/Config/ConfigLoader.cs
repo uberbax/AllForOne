@@ -134,11 +134,112 @@ public class ConfigLoader : MonoBehaviour
         onBuildingsParsed = null;
     }
     
+    // Known keys use numeric slots. String keys remain supported for dynamic configuration.
+    public enum MetaParam
+    {
+        ally_angle,
+        auto_track_pos,
+        autoreward_refresh,
+        autotake_drop,
+        autotake_tasks,
+        blood_death,
+        buyback,
+        coord_mode_xy,
+        coord_mode_xz,
+        drop_scale,
+        field_scale,
+        fog_open,
+        global_move,
+        global_speed,
+        ini_buildings,
+        is_2d,
+        is_3d,
+        k_parab,
+        k_stay_type,
+        loot_size_x,
+        loot_size_y,
+        main_size_x,
+        main_size_y,
+        mode_hex,
+        mode_isometric,
+        mode_manhattan,
+        naprig_prc,
+        offset_2d_x,
+        offset_2d_y,
+        over_proj_spd,
+        randomize_drop_stats,
+        recalc_layer_every_frame,
+        req_line_sight,
+        runtime_fp,
+        runtime_mapping,
+        sim_time_cont,
+        size_2d_x,
+        size_2d_y,
+        skill_range,
+        trigger_state,
+        use_2d_navmesh,
+        use_delta_time,
+        use_dist_heur,
+        use_distance,
+        use_exact_target,
+        use_flash,
+        use_inv_any,
+        use_naprig,
+        use_navmesh,
+        use_right,
+        use_stater,
+        wait_naprig
+    }
+
+    private static readonly string[] MetaParamNames = Enum.GetNames(typeof(MetaParam));
+    private readonly FormatMeta[] metaParamCache = new FormatMeta[MetaParamNames.Length];
+    private readonly bool[] metaParamResolved = new bool[MetaParamNames.Length];
+    private Dictionary<string, FormatMeta> metaParamCacheSource;
+    private int metaParamCacheCount = -1;
+
+    /// <summary>
+    /// Call after directly replacing existing entries in metaConf. SetMetaParamValue changes
+    /// are visible immediately; parsing, dictionary replacement and count changes invalidate automatically.
+    /// </summary>
+    public void InvalidateMetaParamCache()
+    {
+        Array.Clear(metaParamCache, 0, metaParamCache.Length);
+        Array.Clear(metaParamResolved, 0, metaParamResolved.Length);
+        metaParamCacheSource = metaConf;
+        metaParamCacheCount = metaConf != null ? metaConf.Count : -1;
+    }
+
+    private FormatMeta GetKnownMetaParam(MetaParam param)
+    {
+        int index = (int)param;
+        if ((uint)index >= (uint)MetaParamNames.Length)
+            throw new ArgumentOutOfRangeException(nameof(param));
+        var source = metaConf;
+        if (source == null) return null;
+        if (!ReferenceEquals(source, metaParamCacheSource) || source.Count != metaParamCacheCount)
+            InvalidateMetaParamCache();
+        if (!metaParamResolved[index])
+        {
+            source.TryGetValue(MetaParamNames[index], out metaParamCache[index]);
+            metaParamResolved[index] = true;
+        }
+        return metaParamCache[index];
+    }
+
+    /// <summary>After first resolution, reads a numeric slot without hashing or comparing strings.</summary>
+    public static float GetMetaParamValue(MetaParam param)
+    {
+        var loader = Instance;
+        if (ReferenceEquals(loader, null)) return 0;
+        var meta = loader.GetKnownMetaParam(param);
+        return meta != null ? meta.val : 0;
+    }
+
     public static void SetMetaParamValue(string nm, float val)
     {
         //if (nm == "move_end") return 5;
-        if (Instance.metaConf.ContainsKey(nm))
-            Instance.metaConf[nm].val = val;
+        if (Instance.metaConf.TryGetValue(nm, out FormatMeta meta))
+            meta.val = val;
 
     }
     
@@ -1332,6 +1433,7 @@ public class ConfigLoader : MonoBehaviour
     
     public void ParseMeta(string val)
     {
+        InvalidateMetaParamCache();
         var str = val.Split(new string[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
         var columns = str[0].Split("\t", StringSplitOptions.RemoveEmptyEntries);
         //NAME	SKILL	DESCRIPTION

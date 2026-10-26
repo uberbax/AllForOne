@@ -23,7 +23,7 @@ public class XDrealcol : ComponentBehavior
     {
         mon = GetComponentInParent<ObjHolder>();
 
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             col = mon.gameObject.AddComponent<CircleCollider2D>();
             rigidbody = mon.gameObject.AddComponent<Rigidbody2D>();

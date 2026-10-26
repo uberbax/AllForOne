@@ -940,7 +940,7 @@ public partial class ModelStatistics : MonoBehaviour
                 if (q)
                 {
                     tt.completed = true;
-                    if (ConfigLoader.GetMetaParamValue("autotake_tasks") > 0)
+                    if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.autotake_tasks) > 0)
                     {
                         tt.taken = true;
                         if (v.autoTake)

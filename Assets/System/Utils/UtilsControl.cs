@@ -524,7 +524,7 @@ public class UtilsControl : MonoBehaviour
     {
         go.layer = LayerMask.NameToLayer("Projectile");
         
-        if (ConfigLoader.GetMetaParamValue("is_2d") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.is_2d) > 0)
         {
             if (go.GetComponent<BoxCollider>() != null)
                 Destroy(go.GetComponent<BoxCollider>());
@@ -537,11 +537,11 @@ public class UtilsControl : MonoBehaviour
                     go.GetComponent<BoxCollider2D>().size = new Vector2(2, 3);
                 }
 
-                tt.offset = new Vector2(ConfigLoader.GetMetaParamValue("offset_2d_x"), ConfigLoader.GetMetaParamValue("offset_2d_y"));
-                tt.size = new Vector2(ConfigLoader.GetMetaParamValue("size_2d_x"), ConfigLoader.GetMetaParamValue("size_2d_y"));
+                tt.offset = new Vector2(ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.offset_2d_x), ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.offset_2d_y));
+                tt.size = new Vector2(ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.size_2d_x), ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.size_2d_y));
             }
             
-            if (ConfigLoader.GetMetaParamValue("trigger_state") != 2)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.trigger_state) != 2)
                 go.GetComponent<Collider2D>().isTrigger = true;
             
             if (isProj)
@@ -552,7 +552,7 @@ public class UtilsControl : MonoBehaviour
                 gg.gravityScale = 0;
                 gg.isKinematic = true;
 
-                if (ConfigLoader.GetMetaParamValue("trigger_state") == 2)
+                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.trigger_state) == 2)
                 {
                     gg.isKinematic = false;
                     gg.interpolation = RigidbodyInterpolation2D.None;
@@ -565,7 +565,7 @@ public class UtilsControl : MonoBehaviour
             }
         }
 
-        if (ConfigLoader.GetMetaParamValue("is_3d") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.is_3d) > 0)
         {
             if (go.GetComponent<Collider>() == null)
             {
@@ -1406,10 +1406,10 @@ public class UtilsControl : MonoBehaviour
     {
         var gg = GameObject.FindGameObjectWithTag("Player");
 
-        if (ConfigLoader.GetMetaParamValue("runtime_fp") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.runtime_fp) > 0)
         {
             var vec = t.position - gg.transform.position;
-            if (vec.magnitude < ConfigLoader.GetMetaParamValue("use_distance"))
+            if (vec.magnitude < ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_distance))
                 return true;
             else return false;
         }
@@ -1445,7 +1445,7 @@ public class UtilsControl : MonoBehaviour
             var h = Physics.Raycast(ray, out RaycastHit hit, 100, 1<< LayerMask.NameToLayer("Earth"));
             return hit.point;
         }        
-        else /* if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0 ) */
+        else /* if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0 ) */
         {
             return Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -1463,11 +1463,11 @@ public class UtilsControl : MonoBehaviour
             Vector3 pp = Vector3.zero;
             
             
-            //if (ConfigLoader.GetMetaParamValue("runtime_mapping") == 0)
+            //if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.runtime_mapping) == 0)
             //    pp = MainStates.instance.mappingPositions[(int)path[cur].Item1, (int)path[cur].Item2].position;
-            if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0 
-                || ConfigLoader.GetMetaParamValue("mode_isometric") > 0
-                || ConfigLoader.GetMetaParamValue("mode_hex") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0 
+                || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0
+                || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
             {
                 pp = PositionSetter.instance.floors[(int)path[cur].Item1, (int)path[cur].Item2].transform.position;
             }
@@ -1500,7 +1500,7 @@ public class UtilsControl : MonoBehaviour
             }
 
 
-            if (mon != null && ConfigLoader.GetMetaParamValue("mode_manhattan") < 1)
+            if (mon != null && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) < 1)
             {
                 mon.obj.Position = pp;
                 mon.obj.ref_pos_x = path[cur].Item1;
@@ -1604,11 +1604,11 @@ public class UtilsControl : MonoBehaviour
         }
         
         bool overCurv = true;
-        if (ConfigLoader.GetMetaParamValue("over_proj_spd") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.over_proj_spd) > 0)
         {
             overCurv = false;
             useMoveCurve = false;
-            speed = ConfigLoader.GetMetaParamValue("over_proj_spd");
+            speed = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.over_proj_spd);
         }
         
         if (dopTravel)
@@ -1641,7 +1641,7 @@ public class UtilsControl : MonoBehaviour
         */
 
         //?????
-        if (/*ConfigLoader.GetMetaParamValue("over_proj_spd") < 0 &&*/ dltTime > 0)
+        if (/*ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.over_proj_spd) < 0 &&*/ dltTime > 0)
         yield return new WaitForSeconds(dltTime);
         //max lifetime ? 10
         float maxLifeTime = 10;
@@ -1687,7 +1687,7 @@ public class UtilsControl : MonoBehaviour
 
         if (ww != null) ww.prevPos = ww.transform.position;
         
-        if (ww != null && ConfigLoader.GetMetaParamValue("ally_angle") > 0)
+        if (ww != null && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.ally_angle) > 0)
         {
             if (ww.projectile.who != null && ww.projectile.who.tags.Contains("player"))
             {
@@ -1731,7 +1731,7 @@ public class UtilsControl : MonoBehaviour
             
             if (dopTravel) dopTravel.transform.position = who.transform.position;
 
-            if (ConfigLoader.GetMetaParamValue("recalc_layer_every_frame") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.recalc_layer_every_frame) > 0)
             {
                 if (who == null) yield break;
                 CalculateLayer(who.gameObject);
@@ -1800,7 +1800,7 @@ public class UtilsControl : MonoBehaviour
                     if (travelType == TravelType.parabolik)
                     {
                         float dy = 0;
-                        dy = ConfigLoader.GetMetaParamValue("k_parab") * 3 * t0 * (tCalc - t0);
+                        dy = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.k_parab) * 3 * t0 * (tCalc - t0);
 
                         //Debug.Log(t0 + " " + tCalc + " " + dy + " " + startPos + " " + endPos + " " + who.transform.position);
                         //need to be reworked
@@ -1819,7 +1819,7 @@ public class UtilsControl : MonoBehaviour
 
                     var nn = useRight.HasValue && useRight.Value == false;
                     if (
-                        (useRight is true || ConfigLoader.GetMetaParamValue("use_right") > 0) &&
+                        (useRight is true || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_right) > 0) &&
                         (!nn)
                         )
                     {
@@ -2036,7 +2036,7 @@ public class UtilsControl : MonoBehaviour
 
     public void BlinkRed(GameObject who, float spd = 2, bool forceRed = false)
     {
-        if (ConfigLoader.GetMetaParamValue("use_flash") > 0 && !forceRed)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_flash) > 0 && !forceRed)
             StartCoroutine(DoFlash(who));
         else 
             StartCoroutine(BlinkRedA(who, spd));
@@ -2474,7 +2474,7 @@ public class UtilsControl : MonoBehaviour
 
     public static GameObject CheckClick()
     {
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var hit = Physics2D.Raycast(pos, new Vector2(0, 1), 0.1f, 1 << LayerMask.NameToLayer("Click"));
@@ -2696,7 +2696,7 @@ public class UtilsControl : MonoBehaviour
 
         //up and fade
 
-        if (after == null && ConfigLoader.GetMetaParamValue("k_stay_type") == 1)
+        if (after == null && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.k_stay_type) == 1)
         {
             var tg = MainStates.instance.GetClosestPos(b.position);
             MainStates.instance.AddAsResource(b.gameObject);
@@ -3337,9 +3337,9 @@ public class UtilsControl : MonoBehaviour
         for (int i = 0; i < objs.Length; i++)
         {
             var dr = objs[i].transform.position - ver;
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xz") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xz) > 0)
                 dr.y = 0;
-            else if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            else if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
                 dr.z = 0;
                 
             if (dr.magnitude < min)
@@ -3468,7 +3468,7 @@ public class UtilsControl : MonoBehaviour
     {
         GameObject ans = null;
         float min = 1e+10f;
-        bool zeroZ = ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0;
+        bool zeroZ = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0;
 
         //for (int i = 0; i < root.Count; i++)
         //    Debug.Log(root[i].name);
@@ -3611,7 +3611,7 @@ public class UtilsControl : MonoBehaviour
         var r1 = UnityEngine.Random.Range(r2, range);
         
         Vector3 point = Vector3.zero;
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
         {
             point = center + new Vector3(r1 * MathF.Cos(al), r1 * MathF.Sin(al), 0);
         }
@@ -3647,7 +3647,7 @@ public class UtilsControl : MonoBehaviour
         float elapsedTime = 0;
         //stay z ? bads thwbbb
         float STAY_Z = MainStates.instance.SCENE_Z;
-        if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
             targetPos.z = STAY_Z;
         else STAY_Z = startPos.z;
 
@@ -3684,7 +3684,7 @@ public class UtilsControl : MonoBehaviour
          //who.position = endPos;
          who.position = targetPos;
         
-        if (ConfigLoader.GetMetaParamValue("autotake_drop") == 1)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.autotake_drop) == 1)
         {
             MainStates.instance.PickDrop(a);
         }

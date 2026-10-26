@@ -29,7 +29,7 @@ public class TimeManager : MonoBehaviour
 
     public void IncreaseTime(int amount = 1)
     {
-        if (ConfigLoader.GetMetaParamValue("use_delta_time") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_delta_time) > 0)
         {
             tm += Time.deltaTime * spd;
         }
@@ -48,7 +48,7 @@ public class TimeManager : MonoBehaviour
     private int prevEnd = -1;
     private void Update()
     {
-        if (ConfigLoader.GetMetaParamValue("sim_time_cont") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.sim_time_cont) > 0)
         {
             LAST_DT = Time.deltaTime * spd;
             tm += LAST_DT;

@@ -34,7 +34,7 @@ public class ManhattanTargeter : Targeter
         
         var hh0 = PositionSetter.instance.GetClosestPos(SkillExecutor.instance.lastWho.Position);
 
-        if (ConfigLoader.GetMetaParamValue("mode_manhattan") > 0)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0)
         {
             var g = MainStates.instance.GetDistance(hh.Item1, hh.Item2, hh0.Item1, hh0.Item2);
             if (g > SkillExecutor.instance.lastSkl.GetPar("range"))

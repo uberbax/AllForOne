@@ -65,7 +65,7 @@ public class MainSwitcher : MonoBehaviour
             MainStates.whenMoveMinionsMove = true;
             MainStates.castAndMove = false;
             MainStates.instance.mainPlayer.SetPar("no_move",1);
-            XDdmgTrack.scaleMult = 0.3f;
+            XDdmgTrack.scaleMult = 0.4f;
             
             MakeTreeEnemies();
         }
@@ -101,6 +101,15 @@ public class MainSwitcher : MonoBehaviour
             aa.addedMeta.Add(MainStates.metaCreateLevel);
             aa.asMainViz = true;
             aa.visMain = f;
+
+            var head = new GameObject();
+            head.name = "head";
+            head.transform.parent = f.transform;
+            head.transform.localPosition = new Vector3(0, 1.5f, 0);
+            var legs = new GameObject();
+            legs.name = "legs";
+            legs.transform.parent = f.transform;
+            legs.transform.localPosition = new Vector3(0, 1.5f, 0);
 
         }
     }

@@ -64,7 +64,7 @@ public class XDfight : ComponentBehavior
             //attack
             var dlt = pos - holder.transform.position - vv;
 
-            if (ConfigLoader.GetMetaParamValue("coord_mode_xy") > 0)
+            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)
             {
                 dlt.z = 0;
             }

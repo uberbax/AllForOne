@@ -152,7 +152,7 @@ public class ObjHolder : MonoBehaviour, IReceive
             else level.alpha = 0;
         }
 
-        if (ConfigLoader.GetMetaParamValue("auto_track_pos") > 0 && !noTrack)
+        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.auto_track_pos) > 0 && !noTrack)
         {
             obj.Position = transform.position;    
         }
