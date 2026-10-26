@@ -480,8 +480,76 @@ public class RObj
     };
         
     
+    [NonSerialized] private int dmgTrackChangeDepth;
+    [NonSerialized] private XDdmgTrack dmgTrackReceiver;
+    [NonSerialized] private DmgTrackValues dmgTrackBefore;
+
+    private struct DmgTrackValues
+    {
+        public float hp, mana, shield, message;
+    }
+
+    private DmgTrackValues ReadDmgTrackValues()
+    {
+        // Initial/rebuilt objects may not have a registered_damage entry yet.
+        float hp;
+        if (curPars.TryGetValue("health", out hp))
+        {
+            curPars.TryGetValue("registered_damage", out float damage);
+            hp -= damage;
+        }
+        else hp = GetPar("health");
+        return new DmgTrackValues { hp = hp, mana = GetPar("mana"), shield = GetPar("shield"), message = GetPar("show_message") };
+    }
+
+    /// <summary>Groups nested mutations into one notification with actual before/after deltas.</summary>
+    public DmgTrackChange BeginDmgTrackChange(bool observe = true)
+    {
+        if (!observe) return default;
+        if (dmgTrackChangeDepth++ == 0)
+        {
+            dmgTrackReceiver = null;
+            if (visuals.TryGetValue("dmg_track", out var visual) && visual != null &&
+                visual.TryGetComponent(out XDdmgTrack receiver) && receiver.isActiveAndEnabled)
+            {
+                receiver.Bind(this);
+                dmgTrackReceiver = receiver;
+                dmgTrackBefore = ReadDmgTrackValues();
+            }
+        }
+        return new DmgTrackChange(this);
+    }
+
+    private void EndDmgTrackChange()
+    {
+        if (--dmgTrackChangeDepth != 0) return;
+        var receiver = dmgTrackReceiver;
+        dmgTrackReceiver = null; // Changed can reset message/critical flags via SetPar.
+        if (receiver == null || !receiver.isActiveAndEnabled) return;
+        var before = dmgTrackBefore;
+        var after = ReadDmgTrackValues();
+        float hp = after.hp - before.hp, mana = after.mana - before.mana;
+        float shield = after.shield - before.shield, message = after.message - before.message;
+        if (hp != 0 || mana != 0 || shield != 0 || message > 0)
+            receiver.Changed(hp, mana, shield, message);
+    }
+
+    public readonly struct DmgTrackChange : IDisposable
+    {
+        private readonly RObj owner;
+        internal DmgTrackChange(RObj owner) { this.owner = owner; }
+        public void Dispose() { if (owner != null) owner.EndDmgTrackChange(); }
+    }
+
+    private static bool IsDmgTrackParameter(string key)
+    {
+        return key == "health" || key == "mana" || key == "shield" ||
+            key == "registered_damage" || key == "show_message";
+    }
+
     public void RecalcPars()
     {
+        using var dmgTrackChange = BeginDmgTrackChange();
 
         curPars.Clear();
         
@@ -734,6 +802,7 @@ public class RObj
 
     public void SetPar(string key, float val)
     {
+        using var dmgTrackChange = BeginDmgTrackChange();
         if (upgradePars.ContainsKey(key))
         {
             upgradePars[key] = val;
@@ -758,6 +827,7 @@ public class RObj
     }
     public void ChangePar(string key, float val, bool doRecalc = true)
     {
+        using var dmgTrackChange = BeginDmgTrackChange(doRecalc || IsDmgTrackParameter(key));
         if (upgradePars.ContainsKey(key))
         {
             upgradePars[key] += val;

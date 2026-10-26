@@ -20,12 +20,22 @@ public class XDdmgTrack : ComponentBehavior
     private float prevMp = -1;
     private float prevShld = -1;
     
-    void Start()
+    internal void Bind(RObj owner)
     {
-        mon = GetComponentInParent<ObjHolder>().obj;
-        head = mon.visMain.transform.Find("head");
+        if (mon == owner && mon != null) return;
+        mon = owner;
+        head = null;
+        if (mon != null && mon.visuals.TryGetValue("vis_main", out var visual) && visual != null)
+            head = visual.transform.Find("head");
     }
-    
+
+    private void Start()
+    {
+        if (mon != null) return; // An event may arrive before Start.
+        var holder = GetComponentInParent<ObjHolder>();
+        if (holder != null) Bind(holder.obj);
+    }
+
     public void AfterSet(string par)
     {
 
@@ -34,29 +44,30 @@ public class XDdmgTrack : ComponentBehavior
 
     }
 
-    // Update is called once per frame
-    void Update()
+    // Called by parameter mutations; no per-frame polling.
+    public void Changed(float hpDlt, float manaDlt, float shldDlt, float msgDlt)
     {
-        var c = mon.GetPar("health");
-        var cm = mon.GetPar("mana");
-        var cs = mon.GetPar("shield");
-        
-        
-        var c0 = mon.GetPar("show_message");
+        if (mon == null)
+        {
+            var holder = GetComponentInParent<ObjHolder>();
+            if (holder != null) Bind(holder.obj);
+            if (mon == null) return;
+        }
+
 
         Vector3 where = transform.position;
         if (head != null)
             where = head.position;
         
-        if (c0 > 0)
+        if (msgDlt > 0)
         {
             mon.SetPar("show_message", 0);
             DamageNumber newDamageNumber = UtilsControl.Instance.prefabPhrase.Spawn(where);
         }
 
-        if (c != prevHp && prevHp != -1)
+        if (hpDlt != 0)
         {
-            var dlt = c - prevHp;
+            var dlt = hpDlt;
             if (dlt < 0)
             {
                 DamageNumber newDamageNumber = UtilsControl.Instance.prefab.Spawn(where, dlt);
@@ -88,31 +99,29 @@ public class XDdmgTrack : ComponentBehavior
 
             }
         }
-
-        prevHp = c;
+        
         //
 
         if (trackMana)
         {
-            if (cm != prevMp && prevMp != -1)
+            if (manaDlt != 0)
             {
-                var dlt = cm - prevMp;
+                var dlt = manaDlt;
                 DamageNumber newDamageNumber = UtilsControl.Instance.prefabMana.Spawn(where, dlt);
 
             }
         }
-
-        prevMp = cm;
+        
         //
         
-        if (cs != prevShld && prevShld != -1)
+        if (shldDlt != 0)
         {
-            var dlt = cs - prevShld;
+            var dlt = shldDlt;
             DamageNumber newDamageNumber = UtilsControl.Instance.prefabWard.Spawn(where, dlt);
 
         }
         
-        prevShld = cs;
+        //prevShld = cs;
         
         
     }

@@ -2647,6 +2647,7 @@ public class MainStates : MonoBehaviour
 
     public RObj SumRobj(RObj a, RObj b)
     {
+        using var dmgTrackChange = a.BeginDmgTrackChange();
         foreach (var v in b.curPars)
         {
             //if (v.Key == "level") continue;
@@ -2873,18 +2874,10 @@ public class MainStates : MonoBehaviour
 
     public void AddMana(RObj a, float mana)
     {
-        {
-            var m1 = a.GetPar("mana");
-            var m2 = a.GetPar("max_mana");
-            if (m2 - m1 < mana)
-            {
-                a.ChangePar("mana", m2-m1, false);
-            }
-            else
-            {
-                a.ChangePar("mana", mana, false);
-            }
-        }
+        float delta = Mathf.Min(mana, a.GetPar("max_mana") - a.GetPar("mana"));
+        if (delta == 0) return;
+        // Refresh curPars so both gameplay and Changed observe the new mana immediately.
+        a.ChangePar("mana", delta);
     }
 
     public void PrecalcDmg(RObj skl, string dmgFromula, RObj other)
@@ -2928,6 +2921,7 @@ public class MainStates : MonoBehaviour
     
     public void DealDamage(RObj a, RObj skl)
     {
+        using var dmgTrackChange = a.BeginDmgTrackChange();
         //when two chests collide ?
         if (skl.owner == null) return;
         
