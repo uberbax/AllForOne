@@ -33,6 +33,8 @@ public class FogActivator : MonoBehaviour
         elapsed = 0;
         dispersing = true;
         Apply();
+        
+        Destroy(cloudSurface.GetComponent<BoxCollider2D>());
     }
     private void Update()
     {

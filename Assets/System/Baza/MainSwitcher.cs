@@ -84,7 +84,8 @@ public class MainSwitcher : MonoBehaviour
             "death",
             "drop",
             "combat",
-            "animator"
+            "animator",
+            "nopass"
         };
         
         
