@@ -9,6 +9,10 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public sealed class PubController : MonoBehaviour
 {
+    [Header("Recruitment Pool")]
+    [Tooltip("Allowed hero IDs from Heroes (including the level suffix, if any). Empty list = all eligible heroes. hero_ and tree prefixes are always excluded.")]
+    [SerializeField] private List<string> allowedHeroIds = new List<string>();
+
     [Header("Balance")]
     [SerializeField] private string currencyId = "gold";
     [SerializeField, Min(1)] private int recruitPrice = 100;
@@ -17,7 +21,6 @@ public sealed class PubController : MonoBehaviour
     [SerializeField, Min(1)] private int bonusEvery = 20;
     [Header("View")]
     [SerializeField] private PubHeroCard[] cards;
-    [SerializeField] private PubPortraitLibrary portraits;
     [SerializeField] private Button recruitButton, refreshButton, closeButton, resultCloseButton;
     [SerializeField] private Button[] multiplierButtons;
     [SerializeField] private Image[] multiplierBackgrounds;
@@ -82,7 +85,7 @@ public sealed class PubController : MonoBehaviour
         if (model == null || !ReferenceEquals(loadedData, state.playerData))
         {
             model = new PubRecruitment(Guid.NewGuid().GetHashCode()); loadedData = state.playerData;
-            model.BuildPool(ConfigLoader.Instance.heroes, DatabaseAll.instance.heroes);
+            model.BuildPool(ConfigLoader.Instance.heroes, DatabaseAll.instance.heroes, allowedHeroIds);
             if (model.RestoreOrRefresh(loadedData, DateTime.UtcNow, refreshMinutes)) PubRecruitment.Persist(state);
         }
         return model.Offers.Count > 0;
@@ -142,12 +145,16 @@ public sealed class PubController : MonoBehaviour
             resultIcons[i].transform.parent.gameObject.SetActive(i < groups.Length);
             if (i >= groups.Length) continue;
             var hero = groups[i].First();
-            resultIcons[i].sprite = PubHeroCard.FindPortrait(hero, portraits);
-            resultNames[i].text = hero.Name; resultCounts[i].text = "×" + groups[i].Count();
+            resultIcons[i].sprite = PubHeroCard.FindPortrait(hero);
+            resultNames[i].text = hero.Name + (groups[i].Any(h => h.GrantedHero) ? " • NEW" : "");
+            resultCounts[i].enableAutoSizing = true; resultCounts[i].fontSizeMin = 18;
+            resultCounts[i].text = "Shards ×" + groups[i].Sum(h => h.Quantity) + "\nMileage ×" + groups[i].Sum(h => h.MileageTokens);
         }
         resultTitle.text = "RECRUITED";
-        resultSubtitle.text = bonus > 0 ? "+" + bonus + " BONUS HERO" : rewards.Count + (rewards.Count == 1 ? " new companion" : " new companions");
-        resultPanel.SetActive(true);statusLabel.text = "Heroes added to your inventory";busy = false;reveal = null;
+        int newHeroes = rewards.Count(h => h.GrantedHero);
+        resultSubtitle.text = "Shards + " + rewards.Sum(h => h.MileageTokens) + " mileage tokens" +
+            (newHeroes > 0 ? " • New heroes: " + newHeroes : "") + (bonus > 0 ? " • Bonus rolls: " + bonus : "");
+        resultPanel.SetActive(true);statusLabel.text = "Rewards added to your inventory";busy = false;reveal = null;
         Refresh();UIfiller.GlobalRefresh();
     }
     public void InstantRefresh()

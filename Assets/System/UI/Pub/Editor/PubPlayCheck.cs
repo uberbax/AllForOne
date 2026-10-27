@@ -63,7 +63,7 @@ public static class PubPlayCheck
             Require(model.Offers.Select(h=>h.Id).Distinct().Count()==3,"Duplicate offers");
             Require(model.TryRecruit(state,3,"gold",100,20,out var rewards,out int bonus,out string error),"Native hero creation: "+error);
             Require(PubRecruitment.Currency(player,"gold")==700&&rewards.Count==3,"Wrong 3x price/rewards");
-            Require(player.inventory.Count(i=>i.it==ItemType.monster&&i.owner==player)==3,"Heroes not owned by player");
+            Require(player.inventory.Count(i=>i.it==ItemType.monster&&i.owner==player)==rewards.Select(h=>h.Id).Distinct().Count(),"Heroes not owned by player");
             Require(player.inventory.Where(i=>i.it==ItemType.monster).All(i=>i.main==null&&i.GetPar("used_slot")==-1&&i.index>=0),"Hero unexpectedly equipped/spawned");
             var oldOffers=model.Offers.Select(h=>h.Id).ToArray();
             Require(model.TryPaidRefresh(state,"gold",25,30,DateTime.UtcNow,out error),"Paid refresh: "+error);

@@ -101,7 +101,7 @@ public static class PubBuilder
         card.chance=Text("Chance",bg.transform,"33.3%",29,Gold);Place(card.chance.rectTransform,new Vector2(235,44),new Vector2(0,-218));
         card.owned=Text("Owned",bg.transform,"Owned: 0",24,new Color(.64f,.60f,.57f));Place(card.owned.rectTransform,new Vector2(240,44),new Vector2(0,-274));
         var badge=Image("NewBadge",bg.transform,Sprite(Shared+"Sprite_Common/Label/Label_Tail_04_White_Bg.png"),Gold);Place(badge.rectTransform,new Vector2(144,43),new Vector2(0,-274));
-        Text("Label",badge.transform,"NEW",28,new Color(.16f,.13f,.10f));card.newBadge=badge.gameObject;return card;
+        Text("Label",badge.transform,"NEW",28,new Color(.16f,.13f,.10f));card.newBadge=badge.gameObject;card.EnsureMileageView();return card;
     }
     [MenuItem("Tools/UI/Pub/Build and Place in Canvas")]
     public static void Build()
@@ -167,7 +167,6 @@ public static class PubBuilder
             Set(controller,"timerLabel",timer);Set(controller,"progressLabel",progressLabel);Set(controller,"progressFill",fill);Set(controller,"statusLabel",status);
             Set(controller,"resultPanel",result.gameObject);Set(controller,"resultTitle",resultTitle);Set(controller,"resultSubtitle",resultSubtitle);Array(controller,"resultIcons",icons);Array(controller,"resultNames",names);Array(controller,"resultCounts",counts);
             var holder=UnityEngine.Object.FindObjectsByType<ResourceHolder>(FindObjectsInactive.Include,FindObjectsSortMode.None).First();ResourceHolder.instance=holder;
-            var portraits=PubPortraitBuilder.Build(holder);Set(controller,"portraits",portraits);foreach(var card in cards)card.portraits=portraits;
             var previewHeroes=holder.avas.Where(v=>PubRecruitment.IsEligibleId(v.Key)&&v.Value!=null).Where(v=>new[]{"goat_mushroom","orc","bird_red","cat_knight","bandit","priest"}.Contains(v.Key)).Take(3).Select(v=>new PubHero{Id=v.Key,Name=System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(v.Key.Replace('_',' ')),Definition=new Obj{ID=v.Key}}).ToArray();
             if(previewHeroes.Length<3)previewHeroes=holder.avas.Where(v=>PubRecruitment.IsEligibleId(v.Key)&&v.Value!=null).Take(3).Select(v=>new PubHero{Id=v.Key,Name=v.Key.Replace('_',' '),Definition=new Obj{ID=v.Key}}).ToArray();
             Sprite gold=null;holder.items.TryGetValue("gold",out gold);if(gold==null)gold=Sprite(Dark+"Sprites/HUD/ResourceBar_Icon_Gold.png");
