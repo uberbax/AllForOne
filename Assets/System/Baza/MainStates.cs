@@ -447,6 +447,8 @@ public class MainStates : MonoBehaviour
         Debug.Log(obj.who);
         obj.who.SetPar("no_move", 0);
         PartyController.instance.party.Add(obj.who);
+        EquipSkills(mainPlayer, obj.who);
+        obj.who.AddViz("follow2");
     }
 
     [Header("Fog payment visuals")]
