@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class Buyable : ComponentBehavior
 {
+    public RObj rReward;
+    
     [Header("Ini Stuff")] 
     public bool calcLayer = false;
     public bool noMax = false;
@@ -88,6 +90,7 @@ public class Buyable : ComponentBehavior
                         var pp = new ArgPass();
                         pp.go = gameObject;
                         pp.price = curDynamic.price;
+                        pp.who = rReward;
                         EventManager.INV(curDynamic.eventBought, pp);
                     }
 

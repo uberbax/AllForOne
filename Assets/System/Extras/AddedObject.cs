@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class AddedObject : MonoBehaviour
 {
+    public Buyable toInjectBuyable;
+    
     public string overID = "";
     public string id = "";
     public bool isEnemy;
@@ -167,6 +169,11 @@ public class AddedObject : MonoBehaviour
             //thwbbb
             if (r.HasVisMain())
                 r.visMain.transform.forward = Camera.main.transform.forward;
+        }
+
+        if (toInjectBuyable != null)
+        {
+            toInjectBuyable.rReward = r;
         }
     }
 

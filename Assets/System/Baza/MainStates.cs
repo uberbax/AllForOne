@@ -401,6 +401,8 @@ public class MainStates : MonoBehaviour
         EventManager.SUB("manual_cast", SkillCasted);
         EventManager.SUB("chose_class", ChoseClass);
         EventManager.SUB("buy_fog", BuyFog);
+        EventManager.SUB("join_unit", JoinUnit);
+        
         
         
         if (rndNamesTxt != null)
@@ -438,6 +440,13 @@ public class MainStates : MonoBehaviour
             expCurve.Add(i*1000);
         }
         
+    }
+
+    private void JoinUnit(ArgPass obj)
+    {
+        Debug.Log(obj.who);
+        obj.who.SetPar("no_move", 0);
+        PartyController.instance.party.Add(obj.who);
     }
 
     [Header("Fog payment visuals")]
