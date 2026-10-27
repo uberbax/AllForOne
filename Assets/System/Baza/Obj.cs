@@ -482,6 +482,8 @@ public class RObj
     
     [NonSerialized] private int dmgTrackChangeDepth;
     [NonSerialized] private XDdmgTrack dmgTrackReceiver;
+    [NonSerialized] private XDflash hpFlashReceiver;
+    [NonSerialized] private XDdeath hpDeathReceiver;
     [NonSerialized] private DmgTrackValues dmgTrackBefore;
 
     private struct DmgTrackValues
@@ -489,7 +491,7 @@ public class RObj
         public float hp, mana, shield, message;
     }
 
-    private DmgTrackValues ReadDmgTrackValues()
+    private DmgTrackValues ReadDmgTrackValues(bool includeResources)
     {
         // Initial/rebuilt objects may not have a registered_damage entry yet.
         float hp;
@@ -499,7 +501,16 @@ public class RObj
             hp -= damage;
         }
         else hp = GetPar("health");
+        if (!includeResources) return new DmgTrackValues { hp = hp };
         return new DmgTrackValues { hp = hp, mana = GetPar("mana"), shield = GetPar("shield"), message = GetPar("show_message") };
+    }
+
+    private T GetActiveHpReceiver<T>(string key) where T : ComponentBehavior
+    {
+        if (visuals.TryGetValue(key, out var visual) && visual != null &&
+            visual.TryGetComponent(out T receiver) && receiver.isActiveAndEnabled)
+            return receiver;
+        return null;
     }
 
     /// <summary>Groups nested mutations into one notification with actual before/after deltas.</summary>
@@ -508,14 +519,13 @@ public class RObj
         if (!observe) return default;
         if (dmgTrackChangeDepth++ == 0)
         {
-            dmgTrackReceiver = null;
-            if (visuals.TryGetValue("dmg_track", out var visual) && visual != null &&
-                visual.TryGetComponent(out XDdmgTrack receiver) && receiver.isActiveAndEnabled)
-            {
-                receiver.Bind(this);
-                dmgTrackReceiver = receiver;
-                dmgTrackBefore = ReadDmgTrackValues();
-            }
+            dmgTrackReceiver = GetActiveHpReceiver<XDdmgTrack>("dmg_track");
+            hpFlashReceiver = GetActiveHpReceiver<XDflash>("flash");
+            hpDeathReceiver = GetActiveHpReceiver<XDdeath>("death");
+            if (dmgTrackReceiver != null) dmgTrackReceiver.Bind(this);
+            if (hpDeathReceiver != null) hpDeathReceiver.Bind(this);
+            if (dmgTrackReceiver != null || hpFlashReceiver != null || hpDeathReceiver != null)
+                dmgTrackBefore = ReadDmgTrackValues(dmgTrackReceiver != null);
         }
         return new DmgTrackChange(this);
     }
@@ -524,14 +534,27 @@ public class RObj
     {
         if (--dmgTrackChangeDepth != 0) return;
         var receiver = dmgTrackReceiver;
-        dmgTrackReceiver = null; // Changed can reset message/critical flags via SetPar.
-        if (receiver == null || !receiver.isActiveAndEnabled) return;
+        var flash = hpFlashReceiver;
+        var death = hpDeathReceiver;
+        dmgTrackReceiver = null; hpFlashReceiver = null; hpDeathReceiver = null;
+        if (receiver == null && flash == null && death == null) return;
         var before = dmgTrackBefore;
-        var after = ReadDmgTrackValues();
+        var after = ReadDmgTrackValues(receiver != null);
         float hp = after.hp - before.hp, mana = after.mana - before.mana;
         float shield = after.shield - before.shield, message = after.message - before.message;
-        if (hp != 0 || mana != 0 || shield != 0 || message > 0)
-            receiver.Changed(hp, mana, shield, message);
+        try
+        {
+            if (receiver != null && receiver.isActiveAndEnabled && (hp != 0 || mana != 0 || shield != 0 || message > 0))
+                receiver.Changed(hp, mana, shield, message);
+            if (hp != 0 && flash != null && flash.isActiveAndEnabled)
+                flash.Changed(hp);
+        }
+        finally
+        {
+            // Destructive death callbacks run last, after the entire damage/healing transaction.
+            if (hp != 0 && death != null && death.isActiveAndEnabled)
+                death.Changed(hp);
+        }
     }
 
     public readonly struct DmgTrackChange : IDisposable

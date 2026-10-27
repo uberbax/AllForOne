@@ -14,13 +14,11 @@ public class XDflash : ComponentBehavior
     }
 
     // Update is called once per frame
-    void Update()
+    public void Changed(float hpDlt)
     {
-        var c = mon.GetPar("health");
-
-        if (c != prevHp && prevHp != -1 && prevHp > 0)
+        if (hpDlt != 0)
         {
-            var dlt = c - prevHp;
+            var dlt = hpDlt;
             if (dlt < 0)
             {
                 UtilsControl.Instance.BlinkRed(transform.parent.gameObject);
@@ -30,7 +28,6 @@ public class XDflash : ComponentBehavior
 
             }
         }
-
-        prevHp = c;
+        
     }
 }

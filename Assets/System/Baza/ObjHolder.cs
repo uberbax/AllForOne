@@ -30,8 +30,10 @@ public class ObjHolder : MonoBehaviour, IReceive
     public CanvasGroup level;
 
     private bool isRectTransform;
+    Transform _cachedTransform;
     public void OnEnable()
     {
+        _cachedTransform = transform;
         if (UISystem.instance == null) return;
         isRectTransform = GetComponent<RectTransform>() != null;
         UISystem.instance.FillItem(this);
@@ -154,7 +156,7 @@ public class ObjHolder : MonoBehaviour, IReceive
 
         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.auto_track_pos) > 0 && !noTrack)
         {
-            obj.Position = transform.position;    
+            obj.Position = _cachedTransform.position;    
         }
         else
         {

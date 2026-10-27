@@ -20,9 +20,13 @@ public class XDdeath : ComponentBehavior
     
     public static bool contributeEach = false;
     
+    internal void Bind(RObj owner) => mon = owner;
+
     private void Start()
     {
-        mon = GetComponentInParent<ObjHolder>().obj;
+        if (mon != null) return;
+        var holder = GetComponentInParent<ObjHolder>();
+        if (holder != null) Bind(holder.obj);
     }
 
     public void DoDeath()
@@ -157,14 +161,23 @@ public class XDdeath : ComponentBehavior
 
     }
 
-    void Update()
+    public void Changed(float dltHp)
     {
-        var h = mon.GetPar("health");
-        if (!done && h <= 0)
+        if (done) return;
+        if (mon == null)
         {
-            done = true;
-            mon.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("death");
-            DoDeath();
+            var holder = GetComponentInParent<ObjHolder>();
+            if (holder != null) Bind(holder.obj);
+            if (mon == null) return;
         }
+        if (!(mon.GetPar("health") <= 0)) return;
+        done = true;
+        if (mon.visuals.TryGetValue("animator", out var visual) && visual != null)
+        {
+            var animator = visual.GetComponentInChildren<XDanimator>();
+            if (animator != null) animator.SetState("death");
+        }
+        DoDeath();
     }
+
 }

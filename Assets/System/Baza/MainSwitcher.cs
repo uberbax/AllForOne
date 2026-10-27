@@ -98,7 +98,7 @@ public class MainSwitcher : MonoBehaviour
             aa.id = "tree";
             //aa.recreateViz = true;
             aa.addedMeta.Add("wave");
-            aa.addedMeta.Add(MainStates.metaCreateLevel);
+            //aa.addedMeta.Add(MainStates.metaCreateLevel);
             aa.asMainViz = true;
             aa.visMain = f;
 
