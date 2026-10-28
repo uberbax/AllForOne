@@ -117,7 +117,7 @@ public sealed class PubController : MonoBehaviour
             timerLabel.text = "--:--";return;
         }
         var player = MainStates.instance.mainPlayer;
-        for (int i = 0; i < cards.Length; i++) cards[i].Bind(i < model.Offers.Count ? model.Offers[i] : null, player, model.Offers.Count);
+        for (int i = 0; i < cards.Length; i++) cards[i].Bind(i < model.Offers.Count ? model.Offers[i] : null, player, model.Offers.Count, multiplier);
         int progress = model.TotalRecruits % Mathf.Max(1, bonusEvery);
         progressLabel.text = progress + " / " + bonusEvery;
         progressFill.fillAmount = (float)progress / Mathf.Max(1, bonusEvery);

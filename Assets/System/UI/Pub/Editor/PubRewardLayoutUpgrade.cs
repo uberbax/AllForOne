@@ -26,6 +26,7 @@ public static class PubRewardLayoutUpgrade
             foreach (var card in cards)
             {
                 card.EnsureMileageView();
+                card.EnsureOwnedView();
                 var row = card.transform.Find("MileageReward");
                 row.Find("Icon").GetComponent<Image>().sprite = icon;
                 row.Find("Amount").GetComponent<TMP_Text>().text = "5";
@@ -33,11 +34,36 @@ public static class PubRewardLayoutUpgrade
             }
             PrefabUtility.SaveAsPrefabAsset(root, PubBuilder.PrefabPath, out bool success);
             if (!success) throw new InvalidOperationException("Cannot save Pub reward layout");
-            File.WriteAllText(Work + "/layout.txt", "PASS: mileage icon/amount below " + cards.Length + " cards; prefab saved through Unity API.");
+            ValidateOwnedView(cards[0]);
+            File.WriteAllText(Work + "/layout.txt", "PASS: mileage icon/amount below " + cards.Length + " cards; owned level/shards panel added; prefab saved through Unity API.");
             File.Delete(Work + "/layout.request");
         }
         catch (Exception e) { File.WriteAllText(Work + "/layout.txt", "FAIL: " + e); Debug.LogException(e); }
         finally { if (root != null) PrefabUtility.UnloadPrefabContents(root); }
     }
+    private static void ValidateOwnedView(PubHeroCard card)
+    {
+        var definition = new Obj { ID = "pub_ui_probe" };
+        var hero = new PubHero { Id = definition.ID, Name = "Probe", Definition = definition };
+        var player = new RObj();
+        var shardDefinition = new Obj { ID = "shard" };
+        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = hero.Id,
+            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 12 } } });
+        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = hero.Id,
+            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 8 } } });
+        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = "other_hero",
+            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 999 } } });
+        card.Bind(hero, player, 3);
+        var row = card.transform.Find("OwnedProgress");
+        if (!card.newBadge.activeSelf || row.gameObject.activeSelf)
+            throw new InvalidOperationException("Unowned hero must show NEW, even when shards exist");
+        player.inventory.Add(new RObj { dbObj = definition, it = ItemType.monster,
+            curPars = new System.Collections.Generic.Dictionary<string, float> { { "level", 3 } } });
+        card.Bind(hero, player, 3, 3);
+        if (card.newBadge.activeSelf || !row.gameObject.activeSelf || card.owned.text != "20" ||
+            row.Find("LevelBadge/Level").GetComponent<TMP_Text>().text != "3")
+            throw new InvalidOperationException("Owned hero level/shard display is incorrect");
+    }
+
 }
 #endif
