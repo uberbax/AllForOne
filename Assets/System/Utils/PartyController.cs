@@ -91,6 +91,7 @@ public class PartyController : MonoBehaviour
             //
             companion.localPos = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
             companion.AddViz("follow2");
+            companion.AddMeta(MainStates.metaCreateLevel);
         }
     }
 

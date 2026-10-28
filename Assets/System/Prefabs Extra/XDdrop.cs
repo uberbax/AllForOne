@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,26 +6,31 @@ using UnityEngine;
 public class XDdrop : ComponentBehavior
 {
     RObj mon;
-    float prevHp = -1;
 
     private bool withHit = false;
 
     public RObj deathFrom;
-    void Start()
+    internal void Bind(RObj owner) => mon = owner;
+
+    private bool EnsureBound()
     {
-        mon = GetComponentInParent<ObjHolder>().obj;
+        if (mon != null) return true;
+        var holder = GetComponentInParent<ObjHolder>();
+        if (holder != null) Bind(holder.obj);
+        return mon != null;
     }
+
+    void Start() => EnsureBound();
     public void Activate()
     {
-        var mm = GetComponentInParent<ObjHolder>().obj;
-
-        if (mm.dbObj.drop == "") return;
+        if (!EnsureBound()) return;
+        var mm = mon;
+        string dropTable = withHit ? mm.dbObj.dropPerHit : mm.dbObj.drop;
+        if (string.IsNullOrEmpty(dropTable)) return;
         //cant drop from own uniyts
         if (mm.tags.Contains("player")) return;
         
-        List<Bon> aa = new List<Bon>();
-        if (withHit) aa = ModelSet.GetMeItemsBon(mm.dbObj.dropPerHit);
-        else aa = ModelSet.GetMeItemsBon(mm.dbObj.drop);
+        List<Bon> aa = ModelSet.GetMeItemsBon(dropTable);
         
         //var a = DatabaseAll.instance.CreateItem("apple", 1, true, true);
         //drop here
@@ -104,19 +109,19 @@ public class XDdrop : ComponentBehavior
         }
     }
 
-    private void Update()
+    public void Changed(float dltHp)
     {
-        var hh = mon.GetPar("health");
-        if (prevHp == -1) prevHp = hh;
-
-        if (hh < prevHp && mon.dbObj.dropPerHit != "")
+        if (!(dltHp < 0) || !EnsureBound() || string.IsNullOrEmpty(mon.dbObj.dropPerHit)) return;
+        bool previousWithHit = withHit;
+        withHit = true;
+        deathFrom = mon.lastDmgFrom;
+        try
         {
-            withHit = true;
-            deathFrom = mon.lastDmgFrom;
             Activate();
-            withHit = false;
         }
-        
-        prevHp = hh;
+        finally
+        {
+            withHit = previousWithHit;
+        }
     }
 }

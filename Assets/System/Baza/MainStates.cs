@@ -449,6 +449,7 @@ public class MainStates : MonoBehaviour
         PartyController.instance.party.Add(obj.who);
         EquipSkills(mainPlayer, obj.who);
         obj.who.AddViz("follow2");
+        obj.who.AddMeta(metaCreateLevel);
     }
 
     [Header("Fog payment visuals")]
@@ -1285,8 +1286,9 @@ public class MainStates : MonoBehaviour
         
         dst = 1e+10f;
         RObj ans = null;
-        foreach (var v in combats)
+        foreach (var v1 in allMetas)
         {
+            var v = v1.Value;
             if (v == null || v.tags.Count == 0) continue;
             if (v.tags[0] == who.tags[0]) continue;
             if (v.GetPar("health") <= 0) continue;
@@ -3654,8 +3656,8 @@ public class MainStates : MonoBehaviour
         if (battleState < 2)
             HandleVisibility();
         
-        if (handleVampire)
-            HandleVampireEnable();
+        //if (handleVampire)
+        //    HandleVampireEnable();
     }
 
 

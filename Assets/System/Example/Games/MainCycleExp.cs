@@ -334,6 +334,7 @@ public class MainCycleExp : MonoBehaviour
         main.AddViz("coll#scale:0.5");
         //main.AddViz("select");
         main.AddViz("animator#pr:1");
+        main.AddViz("range");
 
         main.AdjustPosition();
         main.AddMeta("my_side");

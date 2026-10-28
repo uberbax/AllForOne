@@ -485,6 +485,7 @@ public class RObj
     [NonSerialized] private XDdmgTrack dmgTrackReceiver;
     [NonSerialized] private XDflash hpFlashReceiver;
     [NonSerialized] private XDdeath hpDeathReceiver;
+    [NonSerialized] private XDdrop hpDropReceiver;
     [NonSerialized] private DmgTrackValues dmgTrackBefore;
 
     private struct DmgTrackValues
@@ -523,9 +524,11 @@ public class RObj
             dmgTrackReceiver = GetActiveHpReceiver<XDdmgTrack>("dmg_track");
             hpFlashReceiver = GetActiveHpReceiver<XDflash>("flash");
             hpDeathReceiver = GetActiveHpReceiver<XDdeath>("death");
+            hpDropReceiver = GetActiveHpReceiver<XDdrop>("drop");
             if (dmgTrackReceiver != null) dmgTrackReceiver.Bind(this);
             if (hpDeathReceiver != null) hpDeathReceiver.Bind(this);
-            if (dmgTrackReceiver != null || hpFlashReceiver != null || hpDeathReceiver != null)
+            if (hpDropReceiver != null) hpDropReceiver.Bind(this);
+            if (dmgTrackReceiver != null || hpFlashReceiver != null || hpDeathReceiver != null || hpDropReceiver != null)
                 dmgTrackBefore = ReadDmgTrackValues(dmgTrackReceiver != null);
         }
         return new DmgTrackChange(this);
@@ -537,8 +540,9 @@ public class RObj
         var receiver = dmgTrackReceiver;
         var flash = hpFlashReceiver;
         var death = hpDeathReceiver;
-        dmgTrackReceiver = null; hpFlashReceiver = null; hpDeathReceiver = null;
-        if (receiver == null && flash == null && death == null) return;
+        var drop = hpDropReceiver;
+        dmgTrackReceiver = null; hpFlashReceiver = null; hpDeathReceiver = null; hpDropReceiver = null;
+        if (receiver == null && flash == null && death == null && drop == null) return;
         var before = dmgTrackBefore;
         var after = ReadDmgTrackValues(receiver != null);
         float hp = after.hp - before.hp, mana = after.mana - before.mana;
@@ -552,9 +556,17 @@ public class RObj
         }
         finally
         {
-            // Destructive death callbacks run last, after the entire damage/healing transaction.
-            if (hp != 0 && death != null && death.isActiveAndEnabled)
-                death.Changed(hp);
+            try
+            {
+                if (hp != 0 && drop != null && drop.isActiveAndEnabled)
+                    drop.Changed(hp);
+            }
+            finally
+            {
+                // Per-hit loot runs before death can destroy the source object.
+                if (hp != 0 && death != null && death.isActiveAndEnabled)
+                    death.Changed(hp);
+            }
         }
     }
 
