@@ -39,8 +39,9 @@ public class SkillExecutor : MonoBehaviour
         Vector3 overPos = default, List<RObj> except = null)
     {
         List<RObj> targets = new List<RObj>();
-        foreach (var v in MainStates.instance.combats)
+        foreach (var v1 in MainStates.instance.allMetas)
         {
+            var v = v1.Value;
             if (meta1 != "" && !v.META_TAGS.Contains(meta1)) continue;
             if (meta2 != "" && !v.META_TAGS.Contains(meta2)) continue;
             if (except != null && except.Contains(v)) continue;
@@ -381,8 +382,20 @@ public class SkillExecutor : MonoBehaviour
                     
                     FunctionTimer.Create(() =>
                     {
-                        var tt_1 = targ[i].visMain.transform.Find("legs");
-                        var tt_2 = targ[i].visMain.transform.Find("head");
+                        Transform tt_1 = null;
+                        Transform tt_2 = null;
+                        
+                        if (targ[i].visMain == null)
+                        {
+                            tt_1 = ro.main.transform;
+                            tt_2 = ro.main.transform;
+                        }
+                        else
+                        {
+                            tt_1 = targ[i].visMain.transform.Find("legs");
+                            tt_2 = targ[i].visMain.transform.Find("head");                            
+                        }
+
                         if (tt_1 == null) tt_1 = targ[i].visMain.transform;
                         if (tt_2 == null) tt_2 = targ[i].visMain.transform;
                         

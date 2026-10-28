@@ -90,10 +90,13 @@ public class XDdeath : ComponentBehavior
 
         bool treeFell = TreeDeathEffect.TryPlay(mon);
         bool frac = false;
-        if (treeFell)
-        {
+        
             MainStates.instance.all.Remove(mon.RID);
             MainStates.instance.allMons.Remove(mon.RID);
+            MainStates.instance.allMetas.Remove(mon.RID);   
+            
+        if (treeFell)
+        {
             Destroy(mon.main);
         }
         else if (mon.visMain.GetComponent<SpriteFracturer2D>() != null)

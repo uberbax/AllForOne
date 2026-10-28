@@ -31,18 +31,23 @@ public class ObjHolder : MonoBehaviour, IReceive
 
     private bool isRectTransform;
     Transform _cachedTransform;
+    private RectTransform _cachedRectTransform;
+
+
+    public bool miscShit = false;
     public void OnEnable()
     {
         _cachedTransform = transform;
+        _cachedRectTransform = _cachedTransform as RectTransform;
+        isRectTransform = _cachedRectTransform != null;
         if (UISystem.instance == null) return;
-        isRectTransform = GetComponent<RectTransform>() != null;
         UISystem.instance.FillItem(this);
         foreach (var a in alsoEnables)
         {
             a.SendMessage("OnEnable", SendMessageOptions.DontRequireReceiver);
         }
         //?
-        Update();
+        UpdateState(true);
 
         var hh = GetComponentsInChildren<Vizualo>(true);
         for (int i = 0; i < hh.Length; i++)
@@ -51,6 +56,12 @@ public class ObjHolder : MonoBehaviour, IReceive
             hh[i].Updateo();
         }
         
+        //miscshit
+        if (redirect || copyTo != null || asCurObj != "" || asObj != "" || asDBObj != "" || asMain ||
+            deactIfNotNull != null)
+        {
+            miscShit = true;
+        }
     }
 
     [ContextMenu("ShowViz")]
@@ -80,106 +91,100 @@ public class ObjHolder : MonoBehaviour, IReceive
         Debug.Log("used slot: " + obj.GetPar("used_slot"));
     }
 
-    private void Update()
+    private void Update() => UpdateState(false);
+
+    private void UpdateState(bool refreshBindings)
     {
-        if (obj == null && redirect)
+        if (miscShit || isRectTransform)
         {
-            obj = redirect.obj;
-            return;
-        }
-
-        if (copyTo != null)
-        {
-            copyTo.obj = obj;
-        }
-
-        if (asCurObj != "")
-        {
-            if (!MainStates.instance.curObjs.ContainsKey(asCurObj)) return;
-            obj = MainStates.instance.curObjs[asCurObj];
-        }
-        
-        if (asObj != "")
-        {
-            if (!MainStates.instance.all.ContainsKey(asObj)) return;
-            obj = MainStates.instance.all[asObj];
-        }
-        
-        if (asDBObj != "" && obj == null)
-        {
-            if (!DatabaseAll.instance.heroes.ContainsKey(asDBObj)) return;
-            obj = DatabaseAll.instance.CreateAny(asDBObj, false, 1, new GameObject());
-        }
-        
-        if (asMain)
-        {
-            if (MainStates.instance.HasMain() && obj == null)
+            if (obj == null && redirect)
             {
-                obj = MainStates.instance.mainPlayer;
+                obj = redirect.obj;
+                return;
+            }
+
+            if (copyTo != null)
+            {
+                copyTo.obj = obj;
+            }
+
+            if (asCurObj != "")
+            {
+                if (!MainStates.instance.curObjs.TryGetValue(asCurObj, out var selected)) return;
+                obj = selected;
+            }
+
+            if (asObj != "")
+            {
+                if (!MainStates.instance.all.TryGetValue(asObj, out var selected)) return;
+                obj = selected;
+            }
+
+            if (asDBObj != "" && obj == null)
+            {
+                if (!DatabaseAll.instance.heroes.ContainsKey(asDBObj)) return;
+                obj = DatabaseAll.instance.CreateAny(asDBObj, false, 1, new GameObject());
+            }
+
+            if (asMain)
+            {
+                if (MainStates.instance.HasMain() && obj == null)
+                {
+                    obj = MainStates.instance.mainPlayer;
+                }
+            }
+
+            if (deactIfNotNull != null)
+            {
+                bool active = obj == null || obj.RID == "";
+                if (deactIfNotNull.activeSelf != active) deactIfNotNull.SetActive(active);
             }
         }
 
-        if (deactIfNotNull != null)
-        {
-            deactIfNotNull.SetActive(obj == null || obj.RID == "");
-        }
-        
         if (obj == null || obj.RID == "") return;
 
-        if (equipBtn != null)
+        if (isRectTransform &&  (equipBtn != null || slotBtn != null || level != null))
         {
-            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
-                equipBtn.alpha = 1;
-            else equipBtn.alpha = 0;
-        }
-        if (slotBtn != null)
-        {
-            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
-                slotBtn.alpha = 1;
-            else slotBtn.alpha = 0;
-        }
-        if (level != null)
-        {
-            if (obj.dbObj.pars["subtype"] != MainStates.subtypes["adorn"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["skill"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["potion"] && 
-                obj.dbObj.pars["subtype"] != MainStates.subtypes["none"]) 
-                level.alpha = 1;
-            else level.alpha = 0;
+            float subtype = obj.dbObj.pars["subtype"];
+            float alpha = subtype != MainStates.subtypes["adorn"] &&
+                subtype != MainStates.subtypes["skill"] &&
+                subtype != MainStates.subtypes["potion"] &&
+                subtype != MainStates.subtypes["none"] ? 1f : 0f;
+            SetAlpha(equipBtn, alpha);
+            SetAlpha(slotBtn, alpha);
+            SetAlpha(level, alpha);
         }
 
-        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.auto_track_pos) > 0 && !noTrack)
+        if (!noTrack && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.auto_track_pos) > 0)
         {
             obj.Position = _cachedTransform.position;    
         }
-        else
-        {
-            
-        }
-        
+
         //basically ui ?
-        if (noTrack && !inDrag && filler && !filler.noScale)
+        if (noTrack && !inDrag && filler && !filler.noScale && _cachedRectTransform != null)
         {
             var sx = obj.dbObj.sizeX;
             var sy = obj.dbObj.sizeY;
 
-            GetComponent<RectTransform>().offsetMax = new Vector2(0, 100 * (sx - 1));
-            GetComponent<RectTransform>().offsetMin = new Vector2(100 * (sy - 1), 0);
+            var offsetMax = new Vector2(0, 100 * (sx - 1));
+            var offsetMin = new Vector2(100 * (sy - 1), 0);
+            if (_cachedRectTransform.offsetMax != offsetMax) _cachedRectTransform.offsetMax = offsetMax;
+            if (_cachedRectTransform.offsetMin != offsetMin) _cachedRectTransform.offsetMin = offsetMin;
             
         }
         
-        //it is possible only in rect transform right ?
-        if (isRectTransform)
+        // UnoAll has its own Unity Update. Refresh synchronously only after OnEnable binds the object.
+        if (isRectTransform && refreshBindings && _cachedRectTransform != null)
         {
-            var ee = GetComponentsInChildren<UnoAll>();
-            for (int i = 0; i < ee.Length; i++) ee[i].Update();
+            var bindings = GetComponentsInChildren<UnoAll>();
+            for (int i = 0; i < bindings.Length; i++)
+                if (bindings[i].isActiveAndEnabled) bindings[i].Update();
         }
+    }
+
+    private static void SetAlpha(CanvasGroup group, float alpha)
+    {
+        if (group != null && group.alpha != alpha) group.alpha = alpha;
     }
 
     public Action<RObj> onDestroy;
