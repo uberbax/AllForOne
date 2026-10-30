@@ -204,7 +204,8 @@ public class Buyable : ComponentBehavior
     {
         calculated = MainStates.instance.CalculateValue(dynamicID);
 
-        if (!ConfigLoader.Instance.allDynamic.ContainsKey(calculated) && !noMax)
+        var has = ConfigLoader.Instance.allDynamic.ContainsKey(calculated);
+        if (!has && !noMax)
         {
             isMax = true;
             var ho = UtilsControl.GetPrev(calculated);
@@ -224,6 +225,7 @@ public class Buyable : ComponentBehavior
             return;
         }
         
+        if (!has) return;
         curDynamic = ConfigLoader.Instance.allDynamic[calculated];
         //?
         var tt = GetComponentInParent<ObjHolder>();

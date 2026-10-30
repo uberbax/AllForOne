@@ -1235,6 +1235,7 @@ public class MainStates : MonoBehaviour
     
     public int GetItemsCount(string param)
     {
+        if (!HasMain()) return 0;
         var a = all["main_player"].inventory.Find(x => x.dbObj.ID == param);
         if (a == null) return 0;
         else return (int)a.upgradePars["amount"];

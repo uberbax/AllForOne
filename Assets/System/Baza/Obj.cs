@@ -634,7 +634,7 @@ public class RObj
             }
             
             //thwbbb
-            if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile) continue;
+            if (v.upgradePars["used_slot"] < 0 || v.it == ItemType.projectile || v.it == ItemType.monster) continue;
             
             onBattleStart.AddRange(v.dbObj.onBattleStart);
             onRoundStart.AddRange(v.dbObj.onRoundStart);     
