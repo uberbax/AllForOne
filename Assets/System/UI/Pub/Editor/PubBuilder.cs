@@ -101,7 +101,7 @@ public static class PubBuilder
         card.chance=Text("Chance",bg.transform,"33.3%",29,Gold);Place(card.chance.rectTransform,new Vector2(235,44),new Vector2(0,-218));
         card.owned=Text("Owned",bg.transform,"Owned: 0",24,new Color(.64f,.60f,.57f));Place(card.owned.rectTransform,new Vector2(240,44),new Vector2(0,-274));
         var badge=Image("NewBadge",bg.transform,Sprite(Shared+"Sprite_Common/Label/Label_Tail_04_White_Bg.png"),Gold);Place(badge.rectTransform,new Vector2(144,43),new Vector2(0,-274));
-        Text("Label",badge.transform,"NEW",28,new Color(.16f,.13f,.10f));card.newBadge=badge.gameObject;card.EnsureMileageView();card.EnsureOwnedView();return card;
+        Text("Label",badge.transform,"NEW",28,new Color(.16f,.13f,.10f));card.newBadge=badge.gameObject;card.EnsureMileageView();card.EnsureOwnedView();card.EnsureObjHolder();return card;
     }
     [MenuItem("Tools/UI/Pub/Build and Place in Canvas")]
     public static void Build()

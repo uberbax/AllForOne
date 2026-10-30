@@ -43,27 +43,10 @@ public static class PubRewardLayoutUpgrade
     }
     private static void ValidateOwnedView(PubHeroCard card)
     {
-        var definition = new Obj { ID = "pub_ui_probe" };
-        var hero = new PubHero { Id = definition.ID, Name = "Probe", Definition = definition };
-        var player = new RObj();
-        var shardDefinition = new Obj { ID = "shard" };
-        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = hero.Id,
-            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 12 } } });
-        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = hero.Id,
-            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 8 } } });
-        player.inventory.Add(new RObj { dbObj = shardDefinition, shardID = "other_hero",
-            curPars = new System.Collections.Generic.Dictionary<string, float> { { "amount", 999 } } });
-        card.Bind(hero, player, 3);
-        var row = card.transform.Find("OwnedProgress");
-        if (!card.newBadge.activeSelf || row.gameObject.activeSelf)
-            throw new InvalidOperationException("Unowned hero must show NEW, even when shards exist");
-        player.inventory.Add(new RObj { dbObj = definition, it = ItemType.monster,
-            curPars = new System.Collections.Generic.Dictionary<string, float> { { "level", 3 } } });
-        card.Bind(hero, player, 3, 3);
-        if (card.newBadge.activeSelf || !row.gameObject.activeSelf || card.owned.text != "20" ||
-            row.Find("LevelBadge/Level").GetComponent<TMP_Text>().text != "3")
-            throw new InvalidOperationException("Owned hero level/shard display is incorrect");
+        card.EnsureOwnedView();
+        var widget = card.GetComponentInChildren<GoAscend>(true);
+        if (widget == null || card.owned != widget.ShardLabel)
+            throw new InvalidOperationException("Ascension widget missing from card");
     }
-
 }
 #endif

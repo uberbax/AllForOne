@@ -2,27 +2,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-100)]
+[RequireComponent(typeof(ObjHolder))]
 public sealed class PubHeroCard : MonoBehaviour
 {
     public Image portrait, rarityLine, highlight;
     public TMP_Text heroName, chance, owned, quantity, rarityLabel;
     public GameObject newBadge;
+    private ObjHolder objectHolder;
     private GameObject ownedProgress;
-    private TMP_Text levelLabel;
-    private Image shardIcon;
+    private GoAscend ascensionView;
     private TMP_Text mileageLabel;
     private Image mileageIcon;
     private Vector3 originalScale;
     private float pulse;
+    private void Awake()
+    {
+        var holder = EnsureObjHolder();
+        // Reserve an empty UI value before ObjHolder.OnEnable can resolve its serialized asDBObj.
+        if (holder.obj == null) holder.obj = new RObj { RID = "" };
+    }
+
     public void Bind(PubHero hero, RObj player, int offerCount, int multiplier = 1)
     {
+        var cardHolder = EnsureObjHolder();
         EnsureMileageView();
         EnsureOwnedView();
         if (originalScale == Vector3.zero) originalScale = transform.localScale;
         if (hero == null)
         {
+            cardHolder.asDBObj = ""; cardHolder.obj = null;
             heroName.text = "No hero";chance.text = "";owned.text = "";portrait.enabled = false;
-            newBadge.SetActive(false);ownedProgress.SetActive(false);mileageLabel.transform.parent.gameObject.SetActive(false);return;
+            newBadge.SetActive(false);if (ascensionView != null) ascensionView.Refresh();mileageLabel.transform.parent.gameObject.SetActive(false);return;
+        }
+        if (cardHolder.asDBObj != hero.Id || cardHolder.obj == null || cardHolder.obj.dbObj != hero.Definition)
+        {
+            cardHolder.asDBObj = hero.Id;
+            // A UI-only definition view prevents ObjHolder's asDBObj fallback from spawning a world monster.
+            cardHolder.obj = new RObj
+            {
+                RID = hero.Id, dbID = hero.Id, dbObj = hero.Definition, it = ItemType.monster,
+                curPars = hero.Definition != null
+                    ? new System.Collections.Generic.Dictionary<string, float>(hero.Definition.pars)
+                    : new System.Collections.Generic.Dictionary<string, float>()
+            };
         }
         heroName.text = hero.Name;
         portrait.sprite = FindPortrait(hero); portrait.enabled = portrait.sprite != null;
@@ -33,25 +56,9 @@ public sealed class PubHeroCard : MonoBehaviour
         mileageLabel.text = (hero.MileageTokens * displayedMultiplier).ToString();
         mileageIcon.sprite = ResourceHolder.instance != null ? ResourceHolder.instance.GetIcon("mileage_token") : null;
         mileageIcon.enabled = mileageIcon.sprite != null;
-        int level = 0;
-        long shards = 0;
-        string shardItemId = "shard_" + hero.Id;
-        if (player?.inventory != null)
-            foreach (var item in player.inventory)
-            {
-                if (item?.dbObj == null) continue;
-                if (item.dbObj.ID == hero.Id && item.it == ItemType.monster && string.IsNullOrEmpty(item.shardID))
-                    level = Mathf.Max(level, Mathf.Max(1, (int)item.GetPar("level")));
-                if ((item.dbObj.ID == "shard" && item.shardID == hero.Id) || item.dbObj.ID == shardItemId)
-                    shards += Mathf.Max(0, (int)item.GetPar("amount"));
-            }
-        owned.text = shards.ToString("N0");
-        levelLabel.text = level.ToString();
-        var resources = ResourceHolder.instance;
-        shardIcon.sprite = resources != null && resources.items.TryGetValue("shard", out var shardSprite) ? shardSprite : null;
-        shardIcon.enabled = shardIcon.sprite != null;
-        ownedProgress.SetActive(level > 0); owned.gameObject.SetActive(level > 0);
-        newBadge.SetActive(level == 0);
+        var ownedHero = HeroAscension.FindOwned(player, hero.Id);
+        if (ownedHero != null) cardHolder.obj = ownedHero;
+        if (ascensionView != null) ascensionView.Refresh();
         var holder = ResourceHolder.instance;
         Color color = new Color(.83f,.66f,.42f);
         if (holder != null && holder.rareColors.TryGetValue(hero.Rarity, out var configured)) color = configured;
@@ -59,6 +66,14 @@ public sealed class PubHeroCard : MonoBehaviour
         if (rarityLine != null) rarityLine.color = color;
         if (rarityLabel != null) rarityLabel.text = holder != null && holder.rareString.TryGetValue(hero.Rarity,out var label) ? label : "COMPANION";
     }
+    public ObjHolder EnsureObjHolder()
+    {
+        if (objectHolder == null && !TryGetComponent(out objectHolder))
+            objectHolder = gameObject.AddComponent<ObjHolder>();
+        objectHolder.noTrack = true;
+        return objectHolder;
+    }
+
     public static Sprite FindPortrait(PubHero hero)
     {
         var holder = ResourceHolder.instance;
@@ -99,53 +114,23 @@ public sealed class PubHeroCard : MonoBehaviour
     }
     public void EnsureOwnedView()
     {
-        if (ownedProgress != null) return;
-        var existing = transform.Find("OwnedProgress");
-        if (existing == null)
+        if (ascensionView != null) return;
+        ascensionView = GetComponentInChildren<GoAscend>(true);
+        if (ascensionView == null)
         {
-            var source = newBadge.GetComponent<Image>();
-            var row = new GameObject("OwnedProgress", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            row.transform.SetParent(transform, false);
-            var rect = row.GetComponent<RectTransform>();
+            var prefab = Resources.Load<GameObject>(GoAscend.ResourcePath);
+            if (prefab == null) return;
+            ascensionView = Instantiate(prefab, transform, false).GetComponent<GoAscend>();
+            ascensionView.name = "HeroAscension";
+            var rect = (RectTransform)ascensionView.transform;
             rect.anchorMin = rect.anchorMax = new Vector2(.5f, .5f);
-            rect.anchoredPosition = owned.rectTransform.anchoredPosition;
-            rect.sizeDelta = new Vector2(240, 44);
-            var background = row.GetComponent<Image>();
-            background.sprite = source.sprite; background.type = source.type;
-            background.color = new Color(.18f, .22f, .22f); background.raycastTarget = false;
-            var badge = new GameObject("LevelBadge", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            badge.transform.SetParent(rect, false);
-            var badgeImage = badge.GetComponent<Image>();
-            badgeImage.sprite = source.sprite; badgeImage.type = source.type;
-            badgeImage.color = quantity.color; badgeImage.raycastTarget = false;
-            badgeImage.rectTransform.sizeDelta = new Vector2(58, 44);
-            badgeImage.rectTransform.anchoredPosition = new Vector2(-91, 0);
-            var level = new GameObject("Level", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
-            level.transform.SetParent(badge.transform, false);
-            var label = level.GetComponent<TextMeshProUGUI>();
-            label.font = owned.font; label.fontSize = 27; label.fontStyle = FontStyles.Bold;
-            label.color = new Color(.16f, .13f, .10f); label.alignment = TextAlignmentOptions.Center;
-            label.raycastTarget = false; label.text = "1";
-            label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one;
-            label.rectTransform.offsetMin = label.rectTransform.offsetMax = Vector2.zero;
-            var icon = new GameObject("ShardIcon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            icon.transform.SetParent(rect, false);
-            var image = icon.GetComponent<Image>(); image.preserveAspect = true; image.raycastTarget = false;
-            image.rectTransform.sizeDelta = new Vector2(30, 30);
-            image.rectTransform.anchoredPosition = new Vector2(-37, 0);
-            owned.rectTransform.SetParent(rect, false);
-            owned.rectTransform.anchorMin = owned.rectTransform.anchorMax = new Vector2(.5f, .5f);
-            owned.rectTransform.anchoredPosition = new Vector2(43, 0);
-            owned.rectTransform.sizeDelta = new Vector2(118, 42);
-            owned.alignment = TextAlignmentOptions.Center; owned.color = quantity.color;
-            owned.enableAutoSizing = true; owned.fontSizeMax = 26; owned.fontSizeMin = 16;
-            owned.raycastTarget = false; owned.text = "0";
-            row.SetActive(false);
-            existing = rect;
+            rect.anchoredPosition = new Vector2(0, -274);
+            var legacy = transform.Find("OwnedProgress");
+            if (legacy != null) legacy.gameObject.SetActive(false);
         }
-        ownedProgress = existing.gameObject;
-        levelLabel = existing.Find("LevelBadge/Level").GetComponent<TMP_Text>();
-        shardIcon = existing.Find("ShardIcon").GetComponent<Image>();
+        ownedProgress = ascensionView.gameObject;
+        owned = ascensionView.ShardLabel;
+        ascensionView.SetNotOwnedVisual(newBadge);
     }
     public void Pulse() { pulse = 1; if (originalScale == Vector3.zero) originalScale = transform.localScale; }
     private void Update()
