@@ -961,7 +961,7 @@ public class RObj
 
     public bool HasVis(string what)
     {
-        return visuals.ContainsKey(what);
+        return visuals.ContainsKey(what) && visuals[what] != null;
     }
 
 

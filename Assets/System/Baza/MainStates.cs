@@ -447,9 +447,15 @@ public class MainStates : MonoBehaviour
         Debug.Log(obj.who);
         obj.who.SetPar("no_move", 0);
         PartyController.instance.party.Add(obj.who);
+
+        AddItem(mainPlayer, obj.who);
         EquipSkills(mainPlayer, obj.who);
+        
         obj.who.AddViz("follow2");
+        obj.who.AddViz("hp");
         obj.who.AddMeta(metaCreateLevel);
+        
+        Destroy(obj.who.main);
     }
 
     [Header("Fog payment visuals")]

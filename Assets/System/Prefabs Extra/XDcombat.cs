@@ -58,6 +58,7 @@ public class XDcombat : ComponentBehavior
     public string Iteration(bool ignoreTag = false, bool ignoreState = false, RObj overTarget = null, string reqTag = "")
     {
         string reso = "no";
+        if (mon == null) return reso;
         if (curTg != MainStates.instance.tgBattle && !ignoreTag) return reso;
         if (mon.GetPar("health") <= 0) return reso;
         if (pars.ContainsKey("main")) return reso;
