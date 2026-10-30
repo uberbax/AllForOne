@@ -55,10 +55,11 @@ public static class HeroAscensionBuilder
             var badge = Image("AscensionBadge", body.transform, new Vector2(58, 44), new Vector2(-91, 0), source.sprite, gold);
             var level = Text("AscensionLevel", badge.transform, new Vector2(52, 42), Vector2.zero, font, "0", new Color(.16f, .13f, .10f));
             level.fontStyle = FontStyles.Bold;
-            var icon = Image("ShardIcon", body.transform, new Vector2(28, 28), new Vector2(-37, 0), null, Color.white); icon.preserveAspect = true;
+            var icon = Image("ShardIcon", body.transform, new Vector2(28, 28), new Vector2(-37, 0), null, Color.white); icon.preserveAspect = true; icon.enabled = icon.sprite != null;
             var fraction = Text("Shards", body.transform, new Vector2(124, 42), new Vector2(43, 0), font, "0/5", gold);
             Set(view, "content", body.gameObject); Set(view, "button", button); Set(view, "levelLabel", level);
             Set(view, "shardLabel", fraction); Set(view, "shardIcon", icon); Set(view, "progress", fill);
+            PubProfileTheme.ApplyAscension(widget);
             widget.SetActive(true);
             if (!AssetDatabase.IsValidFolder("Assets/System/UI/Ascension/Resources")) AssetDatabase.CreateFolder("Assets/System/UI/Ascension", "Resources");
             var asset = PrefabUtility.SaveAsPrefabAsset(widget, PrefabPath);

@@ -107,7 +107,7 @@ public sealed class PubController : MonoBehaviour
         for (int i = 0; i < multiplierButtons.Length; i++)
         {
             multiplierButtons[i].interactable = !busy && !resultPanel.activeSelf;
-            multiplierBackgrounds[i].color = multiplier == i + 1 ? new Color(.55f,.40f,.22f) : new Color(.18f,.17f,.17f);
+            multiplierBackgrounds[i].color = multiplier == i + 1 ? PubUiTheme.Blue : PubUiTheme.White;
         }
         if (ResourceHolder.instance != null && ResourceHolder.instance.items.TryGetValue(currencyId,out var icon))
         { balanceIcon.sprite = recruitIcon.sprite = refreshIcon.sprite = icon; }
@@ -186,7 +186,7 @@ public sealed class PubController : MonoBehaviour
         timerLabel.text = "New heroes in 29:41";statusLabel.text = "One of these heroes is guaranteed";
         balanceIcon.sprite = recruitIcon.sprite = refreshIcon.sprite = gold;
         resultPanel.SetActive(false);
-        for (int i = 0; i < multiplierBackgrounds.Length; i++)multiplierBackgrounds[i].color = i == 0 ? new Color(.55f,.40f,.22f) : new Color(.18f,.17f,.17f);
+        for (int i = 0; i < multiplierBackgrounds.Length; i++)multiplierBackgrounds[i].color = i == 0 ? PubUiTheme.Blue : PubUiTheme.White;
     }
 #endif
 }

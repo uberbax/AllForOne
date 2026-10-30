@@ -5,7 +5,7 @@ Scene: Assets/Scenes/Game_Exp_Rumble.unity
 Panel: Canvas/UI_Pub (closed by default)
 Entry button: Canvas/Button_Pub
 
-The panel reuses Theme_Dark fonts, frames, buttons and icons already used by the project. Hero portraits are taken directly from ResourceHolder.avas; the separate cropped portrait library is no longer used.
+The panel follows UI_InsideProfile: Knights Quest typography, white rounded frames, dark surfaces, and blue accents for primary actions, selected multipliers and progress. PubUiTheme supplies runtime colors so interaction keeps the same palette. Hero portraits are taken directly from ResourceHolder.avas; the separate cropped portrait library is no longer used.
 
 Balance is exposed on PubController: recruitPrice=100 gold per attempt, refreshPrice=25 gold, refreshMinutes=30, bonusEvery=20. 1x/2x/3x perform independent equal-chance rolls from the current three distinct offers. Each attempt grants shard_{heroID} and mileage_token: token quantity is 5/10/15/20 per offer and shard quantity is 30 minus tokens. The hero is granted only if not already owned; duplicate rolls in one batch never create duplicate heroes. Every 20 attempts grants an extra roll with the same rules. Offer quantities persist alongside the lineup. Rewards go into the main player's existing inventory; nothing is spawned in the world.
 

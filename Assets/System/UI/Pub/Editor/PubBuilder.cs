@@ -171,6 +171,7 @@ public static class PubBuilder
             if(previewHeroes.Length<3)previewHeroes=holder.avas.Where(v=>PubRecruitment.IsEligibleId(v.Key)&&v.Value!=null).Take(3).Select(v=>new PubHero{Id=v.Key,Name=v.Key.Replace('_',' '),Definition=new Obj{ID=v.Key}}).ToArray();
             Sprite gold=null;holder.items.TryGetValue("gold",out gold);if(gold==null)gold=Sprite(Dark+"Sprites/HUD/ResourceBar_Icon_Gold.png");
             controller.EditorPreview(previewHeroes,gold);result.gameObject.SetActive(false);
+            PubProfileTheme.Apply(root);
             PrefabUtility.SaveAsPrefabAsset(root,PrefabPath);
             PubInspector.Render(root,"pub-preview.png");
             var existing=canvas.transform.Find("UI_Pub");GameObject instance;

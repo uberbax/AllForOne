@@ -60,7 +60,7 @@ public sealed class PubHeroCard : MonoBehaviour
         if (ownedHero != null) cardHolder.obj = ownedHero;
         if (ascensionView != null) ascensionView.Refresh();
         var holder = ResourceHolder.instance;
-        Color color = new Color(.83f,.66f,.42f);
+        Color color = PubUiTheme.Blue;
         if (holder != null && holder.rareColors.TryGetValue(hero.Rarity, out var configured)) color = configured;
         color.a = 1;
         if (rarityLine != null) rarityLine.color = color;
