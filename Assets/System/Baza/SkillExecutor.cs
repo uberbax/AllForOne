@@ -173,6 +173,9 @@ public class SkillExecutor : MonoBehaviour
         //cur weapon skill ?
         skl = who.GetSKillReplace(skl);
 
+        if (RumbleSkills.Handles(skl.dbObj.ID))
+            return RumbleSkills.Execute(this, who, skl, target, overPos, overCd, except, reqTag, addPars);
+
         var targ = GetAllTargets(who, skl, reqTag, "", null, overPos, except);
         if (targ.Count == 0) return ExecReso.NO_TARGETS;
         else
