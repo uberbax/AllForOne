@@ -22,7 +22,7 @@ public class TierSpawner : MonoBehaviour
         "combat",
         "animator#pr:1",
         "realcol#val:0.2",
-        "info",
+        //"info",
         "status",
         "rand_move"
     };

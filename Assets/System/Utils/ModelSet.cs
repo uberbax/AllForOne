@@ -20,6 +20,12 @@ public class ModelSet : MonoBehaviour
 
     public static List<Bon> GetMeItemsBon(string setName, int num = 1)
     {
+        if (setName == "")
+        {
+            Debug.LogError("setName is empty");
+            return new List<Bon>();
+        }
+        
         var tt = ConfigLoader.Instance.dictSets[setName];
         //var t0 = tt.Find(x => x.name == setName);
         if (num <= 0) num = 1;

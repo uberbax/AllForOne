@@ -74,7 +74,7 @@ public class Buyable : ComponentBehavior
             canvasLayer.sortingOrder = GetComponent<SortingGroup>().sortingOrder+1;
         }
         
-        Do();
+        
         if (btn == null) btn = GetComponentInChildren<Button>();
         if (btn) btn.onClick.AddListener(() =>
             {
@@ -122,6 +122,9 @@ public class Buyable : ComponentBehavior
                 endItem.GetChild(0).GetComponent<TextMeshProUGUI>().text = curDynamic.itemsGet[0].Value.ToString();
             }
         }
+        
+        Do();
+        
     }
 
     public IEnumerator FillDt()
