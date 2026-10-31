@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class XDhp : ComponentBehavior
@@ -29,6 +30,9 @@ public class XDhp : ComponentBehavior
     public bool isBoss = false;
     
     private float dlt3 = 0;
+    
+    Canvas canvas;
+    private SortingGroup sg;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
@@ -46,13 +50,21 @@ public class XDhp : ComponentBehavior
     
     private void Start()
     {
+
+        
         cg = GetComponent<CanvasGroup>();
         if (cg == null) cg = gameObject.AddComponent<CanvasGroup>();
         
         mon = GetComponentInParent<ObjHolder>().obj;
         
         if (mon == null || mon.visMain == null) return;
-            
+        
+        canvas = GetComponent<Canvas>();
+        sg = mon.visMain.GetComponent<SortingGroup>();
+        if (sg == null)
+        {
+            sg = mon.visMain.AddComponent<SortingGroup>();
+        }            
             
         head = mon.visMain.transform.Find(trackWhere);
 
@@ -156,6 +168,11 @@ public class XDhp : ComponentBehavior
         if (!isBoss)
         {
             if (MainStates.isCameraFace) transform.forward = Camera.main.transform.forward;
+        }
+
+        if (canvas)
+        {
+            canvas.sortingOrder = sg.sortingOrder;
         }
     }
 }
