@@ -1303,6 +1303,13 @@ public class MainStates : MonoBehaviour
             if (reqTag != "" && !v.META_TAGS.Contains(reqTag)) continue;
             if (v.GetPar("immortal") > 0) continue;
             
+            float dMain = 100;
+            if (v.dbID == "tree")
+            {
+                dMain = GetDistance(mainPlayer, v, out float dd);
+                if (dd > 4) continue;
+            }
+            
             float d = 0;
             if (fromPos == default) d = GetDistance(who, v, out float dd);
             else d = GetDistance(fromPos, v, out float dd);
