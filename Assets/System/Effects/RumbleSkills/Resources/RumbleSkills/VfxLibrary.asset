@@ -1,0 +1,199 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b38ecab0f816ec9428d18b3e722a49b9, type: 3}
+  m_Name: VfxLibrary
+  m_EditorClassIdentifier: Minimus::RumbleVfxLibrary
+  styles:
+  - id: water_strike
+    projectile: {fileID: 6363092308256371342, guid: fc366126b8479b347a05d2d065023e3c, type: 3}
+    impact: {fileID: 1590179183549124497, guid: e956c952f78dd864da0bd6062440b23b, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: waterspout
+    projectile: {fileID: 0}
+    impact: {fileID: 1590179183549124497, guid: e956c952f78dd864da0bd6062440b23b, type: 3}
+    area: {fileID: 6958310269549390719, guid: 08024fa27991d5245ba19ba0259d8087, type: 3}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: venom_flask
+    projectile: {fileID: 4055267496803951967, guid: 17b1e4a13c8848e43a85a65f5efacf2f, type: 3}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: venom_zone
+    projectile: {fileID: 0}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 5518360803866400994, guid: 69cf6a09871df574e80db45d36ca6fb3, type: 3}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: crush
+    projectile: {fileID: 0}
+    impact: {fileID: 1043001599787342443, guid: 78d6d18a956874e429b48305cc6ffc2e, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: iron_whirlwind
+    projectile: {fileID: 0}
+    impact: {fileID: 0}
+    area: {fileID: 988609958387418737, guid: ad96f5cbc2abe784f89b4e5dc2816548, type: 3}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: frost_nova
+    projectile: {fileID: 8177285466042260217, guid: 019a98576dd490f4eacfaa61f77684f6, type: 3}
+    impact: {fileID: 6191126451409344602, guid: 6834c9a6ef61c624fa84ecd19f0583ce, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: blizzard
+    projectile: {fileID: 0}
+    impact: {fileID: 6191126451409344602, guid: 6834c9a6ef61c624fa84ecd19f0583ce, type: 3}
+    area: {fileID: 8143661832611796998, guid: b14ff72994f105b43a04345e0d348e93, type: 3}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: bombard
+    projectile: {fileID: 594844802579589879, guid: 390e16083497c4a469287482af2d713f, type: 3}
+    impact: {fileID: 925747973695651406, guid: ced6aa1eaf278ab4cbe9ce14f923d935, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 5901356507112913721, guid: 298fc000585f0024f889316cccf35e88, type: 3}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: blazing_cannonball
+    projectile: {fileID: 1749326711504070186, guid: 29d89a65785371d4e886a5486f236e38, type: 3}
+    impact: {fileID: 1396918360940372413, guid: 94564b6996ad9fc4b9bb629e45401576, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 5901356507112913721, guid: 298fc000585f0024f889316cccf35e88, type: 3}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: feather_barrage
+    projectile: {fileID: 4301541726694626043, guid: 934a53675eab4924e9ff448afaaa9d7e, type: 3}
+    impact: {fileID: 6011011895661507581, guid: 2d494190f22c5344c8e7a1b96b1136ce, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: poisonous_fan
+    projectile: {fileID: 2322105831996144235, guid: 93b617a610aaf0d4d896c7705c496753, type: 3}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: mysterious_potion
+    projectile: {fileID: 4055267496803951967, guid: 17b1e4a13c8848e43a85a65f5efacf2f, type: 3}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: energy_torrent
+    projectile: {fileID: 4055267496803951967, guid: 17b1e4a13c8848e43a85a65f5efacf2f, type: 3}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: dual_pistols
+    projectile: {fileID: 3906439625306901537, guid: 909f62740c7d08646ab38783a413d3d3, type: 3}
+    impact: {fileID: 3817030147606541823, guid: dd098ebad94c1944c8a4e7186e5848b1, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 5901356507112913721, guid: 298fc000585f0024f889316cccf35e88, type: 3}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: sniper_rifle
+    projectile: {fileID: 3958615032751399077, guid: c738013a85c1e63449281c1bbc8949f3, type: 3}
+    impact: {fileID: 9055540653947344611, guid: ac759d6bf6230cc4883b22a60970a111, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 722431958043055397, guid: c18ea9a44d0d81f4dab8e67fcbd63199, type: 3}
+    beam: {fileID: 4009236275843657070, guid: 802bde8fef399cd40b45cab714291f22, type: 3}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: healing_strike
+    projectile: {fileID: 0}
+    impact: {fileID: 4070800960030129660, guid: 8b59d7972d2588c46a725d50d17f2939, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 6565381243399770951, guid: 040a313585e568b47b979617c58d883b, type: 3}
+    beam: {fileID: 0}
+    heal: {fileID: 1147487111585916129, guid: a181ed2782557044690c2a0777b06d12, type: 3}
+    shield: {fileID: 0}
+  - id: tranquility
+    projectile: {fileID: 0}
+    impact: {fileID: 0}
+    area: {fileID: 0}
+    cast: {fileID: 2588537955133076028, guid: f706a42114311e242abbac21e1cd9c64, type: 3}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 7083796352772264933, guid: adcf650e92f2797498b1adbe963695ee, type: 3}
+  - id: heal
+    projectile: {fileID: 0}
+    impact: {fileID: 0}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 1147487111585916129, guid: a181ed2782557044690c2a0777b06d12, type: 3}
+    shield: {fileID: 0}
+  - id: light_of_life
+    projectile: {fileID: 0}
+    impact: {fileID: 0}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 1352077064654189453, guid: 80dbea475e1704a498b6acfca86c3471, type: 3}
+    heal: {fileID: 6886186086526539980, guid: ef5e90f0b81878840b0c000e4e3d9abc, type: 3}
+    shield: {fileID: 0}
+  - id: rumble_burn
+    projectile: {fileID: 1749326711504070186, guid: 29d89a65785371d4e886a5486f236e38, type: 3}
+    impact: {fileID: 1396918360940372413, guid: 94564b6996ad9fc4b9bb629e45401576, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: rumble_frostbite
+    projectile: {fileID: 8177285466042260217, guid: 019a98576dd490f4eacfaa61f77684f6, type: 3}
+    impact: {fileID: 6191126451409344602, guid: 6834c9a6ef61c624fa84ecd19f0583ce, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}
+  - id: rumble_poison
+    projectile: {fileID: 4055267496803951967, guid: 17b1e4a13c8848e43a85a65f5efacf2f, type: 3}
+    impact: {fileID: 386310408655866524, guid: da26ced5d6940f747af49933cea09dc2, type: 3}
+    area: {fileID: 0}
+    cast: {fileID: 0}
+    beam: {fileID: 0}
+    heal: {fileID: 0}
+    shield: {fileID: 0}

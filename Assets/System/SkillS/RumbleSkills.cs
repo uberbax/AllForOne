@@ -94,7 +94,7 @@ public static class RumbleSkills
 public sealed class RumbleSkillRunner : MonoBehaviour
 {
     private readonly List<RumbleMovementLock> movementLocks = new List<RumbleMovementLock>();
-    private readonly HashSet<GameObject> effects = new HashSet<GameObject>();
+    private readonly List<RumbleVfx.Lease> packEffects = new List<RumbleVfx.Lease>();
     private readonly Dictionary<Transform,Quaternion> spinningVisuals = new Dictionary<Transform,Quaternion>();
     public void Begin(RObj who, RObj skill, RObj target, Vector3 origin) => StartCoroutine(Cast(who, skill, target, origin));
     private static float Value(RObj skill, string name, float fallback) { float value=skill.GetPar(name); return value>0?value:fallback; }
@@ -126,7 +126,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                     Hit(who,skill,victim);
                     if(RumbleSkills.Alive(victim))StartCoroutine(Launch(victim,.65f));
                 }
-                StartCoroutine(Pulse(who.Position,skill.GetPar("aoe"),ColorFor(skill.dbObj.ID),.45f));
+                Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Impact,who.Position,skill.GetPar("aoe"),.8f);
                 break;
             case "venom_flask":
                 var visited=new List<RObj>();var next=target;var start=origin;
@@ -151,14 +151,14 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                 break;
             case "tranquility":
                 foreach(var ally in RumbleSkills.Targets(who,who.Position,skill.GetPar("aoe"),true))
-                { ApplyStatus(who,ally,"rumble_invincible");StartCoroutine(Pulse(ally.Position,.6f,new Color(.7f,.95f,1),.5f)); }
-                StartCoroutine(Pulse(who.Position,skill.GetPar("aoe"),new Color(.7f,.95f,1),.8f));
+                { ApplyStatus(who,ally,"rumble_invincible");Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Shield,ally.Position,.7f,Value(skill,"time",4),follow:ally.main.transform); }
+                Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Cast,who.Position,skill.GetPar("aoe"),.8f);
                 break;
             case "heal":
                 if(RumbleSkills.Alive(target))Heal(who,skill,target);
                 break;
             case "light_of_life":
-                StartCoroutine(Beam(origin,target.Position,new Color(1,.95f,.55f),.18f,.5f));
+                BeamEffect(skill.dbObj.ID,origin,target.Position,.16f,.5f);
                 foreach(var ally in RumbleSkills.Targets(who,target.Position,skill.GetPar("aoe"),true))Heal(who,skill,ally);
                 break;
             case "healing_strike":
@@ -166,7 +166,8 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                 {
                     if(!RumbleSkills.Alive(who)||!RumbleSkills.Alive(target))break;
                     Hit(who,skill,target);
-                    StartCoroutine(Beam(who.Position,target.Position,new Color(1,.9f,.55f),.14f,.15f));
+                    Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Cast,who.Position,1,.35f,target.Position-who.Position);
+                    Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Impact,target.Position,.45f,.5f);
                     foreach(var ally in RumbleSkills.Targets(who,who.Position,skill.GetPar("aoe"),true))Heal(who,skill,ally);
                     if(i+1<skill.GetPar("proj_amount"))yield return new WaitForSeconds(Value(skill,"dt",.2f));
                 }
@@ -190,8 +191,12 @@ public sealed class RumbleSkillRunner : MonoBehaviour
     }
     private IEnumerator Projectile(RObj who,RObj skill,RObj target,Vector3 origin,string status)
     {
-        var end=target.Position;var position=origin;var color=status!=null?ColorFor(status):ColorFor(skill.dbObj.ID);
-        var dot=Ring("Projectile "+skill.dbObj.ID,.12f,color);float elapsed=0;
+        var end=target.Position;var position=origin;
+        string visualId=(skill.dbObj.ID=="mysterious_potion"||skill.dbObj.ID=="energy_torrent")&&status!=null?status:skill.dbObj.ID;
+        float size=skill.dbObj.ID=="dual_pistols"?.10f:skill.dbObj.ID=="sniper_rifle"?.15f:skill.dbObj.ID=="frost_nova"?.35f:.24f;
+        var visual=Effect(visualId,RumbleVfxLibrary.Stage.Projectile,origin,size,-1,end-origin);float elapsed=0;
+        Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Cast,origin,.35f,.2f,end-origin);
+        if(skill.dbObj.ID=="sniper_rifle")BeamEffect(skill.dbObj.ID,origin,end,.08f,.15f);
         bool arc=skill.GetPar("travel")==1;
         float duration=Mathf.Clamp(RumbleSkills.Distance(origin,end)/Value(skill,"speed",12),.06f,2);
         try
@@ -200,8 +205,12 @@ public sealed class RumbleSkillRunner : MonoBehaviour
             {
                 if(RumbleSkills.Alive(target))end=target.Position;
                 elapsed+=Time.deltaTime;float t=Mathf.Clamp01(elapsed/duration);
-                position=Vector3.Lerp(origin,end,t);if(arc)position+=Up*Mathf.Sin(t*Mathf.PI)*1.2f;
-                dot.transform.position=position;
+                var previous=position;position=Vector3.Lerp(origin,end,t);if(arc)position+=Up*Mathf.Sin(t*Mathf.PI)*1.2f;
+                if(visual.Transform!=null)
+                {
+                    visual.Transform.position=position;var tangent=position-previous;
+                    if(tangent.sqrMagnitude>.00001f)visual.Transform.rotation=Quaternion.LookRotation(tangent.normalized,MainStates.is3D?Vector3.up:Vector3.forward);
+                }
                 yield return null;
             }
             if(!RumbleSkills.Alive(who))yield break;
@@ -209,34 +218,34 @@ public sealed class RumbleSkillRunner : MonoBehaviour
             if(radius>0)
             {
                 foreach(var victim in RumbleSkills.Targets(who,end,radius,false))Hit(who,skill,victim,status);
-                StartCoroutine(Pulse(end,radius,color,.4f));
+                Effect(visualId,RumbleVfxLibrary.Stage.Impact,end,radius,.8f);
             }
-            else if(RumbleSkills.Alive(target))Hit(who,skill,target,status);
-            if(skill.dbObj.ID=="sniper_rifle"||skill.dbObj.ID=="dual_pistols")StartCoroutine(Beam(origin,end,color,.07f,.15f));
+            else if(RumbleSkills.Alive(target))
+            {Hit(who,skill,target,status);Effect(visualId,RumbleVfxLibrary.Stage.Impact,end,.4f,.6f);}
         }
-        finally{if(dot!=null)Destroy(dot.gameObject);}
+        finally{visual.Stop();}
     }
     private IEnumerator Pierce(RObj who,RObj skill,Vector3 origin,Vector3 direction)
     {
         float distance=0,range=skill.GetPar("range"),radius=Value(skill,"aoe",.35f);
-        var visited=new List<RObj>();var line=Ring("Piercing "+skill.dbObj.ID,radius,ColorFor(skill.dbObj.ID));
+        var visited=new List<RObj>();var visual=Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Projectile,origin,radius,-1,direction);
         try
         {
             while(distance<range&&RumbleSkills.Alive(who))
             {
                 float next=Mathf.Min(range,distance+Value(skill,"speed",12)*Time.deltaTime);
-                var a=origin+direction*distance;var b=origin+direction*next;line.transform.position=b;
+                var a=origin+direction*distance;var b=origin+direction*next;if(visual.Transform!=null)visual.Transform.position=b;
                 foreach(var victim in RumbleSkills.Targets(who,origin,range+radius,false,visited))
-                    if(RumbleSkills.SegmentDistance(victim.Position,a,b)<=radius){visited.Add(victim);Hit(who,skill,victim);}
+                    if(RumbleSkills.SegmentDistance(victim.Position,a,b)<=radius){visited.Add(victim);Hit(who,skill,victim);Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Impact,victim.Position,.4f,.6f);}
                 distance=next;yield return null;
             }
         }
-        finally{if(line!=null)Destroy(line.gameObject);}
+        finally{visual.Stop();}
     }
     private IEnumerator Field(RObj who,RObj skill,Vector3 center,bool followCaster)
     {
         float age=0,nextTick=0,duration=Value(skill,"time",3),interval=Value(skill,"dmg_every",.5f),radius=skill.GetPar("aoe");
-        var line=Ring("Area "+skill.dbObj.ID,radius,ColorFor(skill.dbObj.ID));
+        var visual=Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Area,center,radius,-1);
         var targets=new List<RObj>();float nextScan=0;
         var spinning=followCaster&&who.HasVisMain()?who.visMain.transform:null;
         var rotation=spinning!=null?spinning.localRotation:Quaternion.identity;
@@ -245,7 +254,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
         {
             while(age<duration&&RumbleSkills.Alive(who))
             {
-                if(followCaster)center=who.Position;line.transform.position=center;
+                if(followCaster)center=who.Position;if(visual.Transform!=null)visual.Transform.position=center;
                 if(spinning!=null)spinning.localRotation=rotation*Quaternion.AngleAxis(-age*720,MainStates.is3D?Vector3.up:Vector3.forward);
                 if(age>=nextScan)
                 {RumbleSkills.Targets(who,center,radius,false,buffer:targets);nextScan=age+.1f;}
@@ -259,7 +268,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                 age+=Time.deltaTime;yield return null;
             }
         }
-        finally{if(spinning!=null){spinning.localRotation=rotation;spinningVisuals.Remove(spinning);}if(line!=null)Destroy(line.gameObject);}
+        finally{if(spinning!=null){spinning.localRotation=rotation;spinningVisuals.Remove(spinning);}visual.Stop();}
     }
     private static void Hit(RObj who,RObj skill,RObj victim,string status=null)
     {
@@ -284,7 +293,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
         float amount=skill.GetPar("health")+skill.GetPar("heal_flat")+who.GetMainPar("magic")*skill.GetPar("heal_prc")/100f;
         amount*=Mathf.Max(0,1+who.GetPar("heal_amplify")/100f);
         MainStates.instance.DealHeal(target,amount);
-        StartCoroutine(Pulse(target.Position,.5f,new Color(.4f,1,.65f),.4f));
+        Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Heal,target.Position,.7f,.7f,follow:target.main.transform);
     }
     private static string RandomPotion(){int roll=UnityEngine.Random.Range(0,3);return roll==0?"rumble_burn":roll==1?"rumble_frostbite":"rumble_poison";}
     private static Vector3 Up=>Vector3.up;
@@ -337,47 +346,24 @@ public sealed class RumbleSkillRunner : MonoBehaviour
         }
         finally{if(visual!=null)visual.localPosition=start;if(motion!=null)motion.Release();movementLocks.Remove(motion);}
     }
-    private static Material effectMaterial;
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetMaterial(){effectMaterial=null;}
-    private LineRenderer Ring(string name,float radius,Color color)
+    private RumbleVfx.Lease Effect(string id,RumbleVfxLibrary.Stage stage,Vector3 position,float radius,float duration,Vector3 direction=default,Transform follow=null)
     {
-        var line=NewLine(name,color,.055f);line.loop=true;line.positionCount=40;
-        for(int i=0;i<40;i++)
-        {float angle=i*Mathf.PI*2/40;line.SetPosition(i,MainStates.is3D?new Vector3(Mathf.Cos(angle)*radius,.1f,Mathf.Sin(angle)*radius):new Vector3(Mathf.Cos(angle)*radius,Mathf.Sin(angle)*radius,0));}
-        return line;
+        packEffects.RemoveAll(effect=>!effect.IsAlive);
+        var effect=RumbleVfx.Play(id,stage,position,radius,duration,direction,follow);
+        if(effect.IsAlive)packEffects.Add(effect);
+        return effect;
     }
-    private LineRenderer NewLine(string name,Color color,float width)
+    private void BeamEffect(string id,Vector3 origin,Vector3 destination,float width,float duration)
     {
-        if(effectMaterial==null)effectMaterial=new Material(Shader.Find("Sprites/Default")){hideFlags=HideFlags.HideAndDontSave};
-        var go=new GameObject(name);go.transform.SetParent(transform,false);var line=go.AddComponent<LineRenderer>();
-        effects.RemoveWhere(item=>item==null);effects.Add(go);
-        line.sharedMaterial=effectMaterial;line.useWorldSpace=false;line.startColor=line.endColor=color;
-        line.startWidth=line.endWidth=width;line.sortingOrder=1000;return line;
-    }
-    private IEnumerator Pulse(Vector3 position,float radius,Color color,float duration)
-    {
-        var line=Ring("Impact",Mathf.Max(.1f,radius),color);float age=0;
-        try{while(age<duration){age+=Time.deltaTime;line.transform.position=position;line.transform.localScale=Vector3.one*Mathf.Lerp(.3f,1,age/duration);var tint=color;tint.a=1-age/duration;line.startColor=line.endColor=tint;yield return null;}}
-        finally{if(line!=null)Destroy(line.gameObject);}
-    }
-    private IEnumerator Beam(Vector3 from,Vector3 to,Color color,float width,float duration)
-    {
-        var line=NewLine("Ray",color,width);line.positionCount=2;line.useWorldSpace=true;line.SetPosition(0,from);line.SetPosition(1,to);
-        try{yield return new WaitForSeconds(duration);}finally{if(line!=null)Destroy(line.gameObject);}
-    }
-    private static Color ColorFor(string id)
-    {
-        if(id.Contains("poison")||id.Contains("venom"))return new Color(.5f,1,.18f);
-        if(id.Contains("fire")||id.Contains("burn")||id.Contains("blazing"))return new Color(1,.4f,.08f);
-        if(id.Contains("frost")||id.Contains("blizzard")||id.Contains("water"))return new Color(.25f,.8f,1);
-        return new Color(1,.9f,.6f);
+        var direction=destination-origin;
+        var effect=Effect(id,RumbleVfxLibrary.Stage.Beam,origin,1,duration,direction);
+        effect.SetBeam(width,direction.magnitude);
     }
     private void OnDisable()
     {
         StopAllCoroutines();
         foreach(var motion in movementLocks)if(motion!=null)motion.Release();movementLocks.Clear();
-        foreach(var effect in effects)if(effect!=null)Destroy(effect);effects.Clear();
+        foreach(var effect in packEffects)effect.Stop();packEffects.Clear();
         foreach(var pair in spinningVisuals)if(pair.Key!=null)pair.Key.localRotation=pair.Value;spinningVisuals.Clear();
     }
 }
