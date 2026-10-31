@@ -65,6 +65,8 @@ public sealed class PubController : MonoBehaviour
         ConfigLoader.onParseEnded -= ReloadConfig;
         if (reveal != null) StopCoroutine(reveal);
         reveal = null; busy = false;
+        ClearRoulette();
+        if (cards != null) foreach (var card in cards) if (card != null) card.SetRecruitmentBusy(false);
         if (resultPanel != null) resultPanel.SetActive(false);
         if (opener != null) opener.SetActive(true);
     }
@@ -74,7 +76,7 @@ public sealed class PubController : MonoBehaviour
         nextTick = Time.unscaledTime + .25f; ApplySafeArea();Refresh();
     }
     public void Show() { gameObject.SetActive(true); transform.SetAsLastSibling(); Refresh(); }
-    public void Hide() { gameObject.SetActive(false); }
+    public void Hide() { if (!busy) gameObject.SetActive(false); }
     public void CloseResult() { resultPanel.SetActive(false); Refresh(); }
     public void SelectMultiplier(int value) { if (busy) return; multiplier = Mathf.Clamp(value, 1, 3); Refresh(); }
 
@@ -104,6 +106,7 @@ public sealed class PubController : MonoBehaviour
         refreshCostLabel.text = refreshPrice.ToString("N0");
         recruitButton.interactable = ready && !busy && !resultPanel.activeSelf && balance >= (long)recruitPrice * multiplier;
         refreshButton.interactable = ready && !busy && !resultPanel.activeSelf && balance >= refreshPrice;
+        closeButton.interactable = !busy;
         for (int i = 0; i < multiplierButtons.Length; i++)
         {
             multiplierButtons[i].interactable = !busy && !resultPanel.activeSelf;
@@ -117,7 +120,9 @@ public sealed class PubController : MonoBehaviour
             timerLabel.text = "--:--";return;
         }
         var player = MainStates.instance.mainPlayer;
-        for (int i = 0; i < cards.Length; i++) cards[i].Bind(i < model.Offers.Count ? model.Offers[i] : null, player, model.Offers.Count, multiplier);
+        foreach (var card in cards) if (card != null) card.SetRecruitmentBusy(busy);
+        if (!busy)
+            for (int i = 0; i < cards.Length; i++) cards[i].Bind(i < model.Offers.Count ? model.Offers[i] : null, player, model.Offers.Count, multiplier);
         int progress = model.TotalRecruits % Mathf.Max(1, bonusEvery);
         progressLabel.text = progress + " / " + bonusEvery;
         progressFill.fillAmount = (float)progress / Mathf.Max(1, bonusEvery);
@@ -126,7 +131,7 @@ public sealed class PubController : MonoBehaviour
     }
     public void Recruit()
     {
-        if (busy || !EnsureModel()) return;
+        if (busy || resultPanel.activeSelf || !EnsureModel()) return;
         busy = true;
         if (!model.TryRecruit(MainStates.instance, multiplier, currencyId, recruitPrice, bonusEvery,
             out var rewards, out int bonus, out string error))
@@ -136,9 +141,19 @@ public sealed class PubController : MonoBehaviour
     }
     private IEnumerator Reveal(List<PubHero> rewards, int bonus)
     {
-        foreach (var card in cards)
-            if (rewards.Any(hero => card.heroName.text == hero.Name)) card.Pulse();
-        yield return new WaitForSecondsRealtime(.6f);
+        int visible = Mathf.Min(cards.Length, model.Offers.Count);
+        int winner = Array.FindIndex(cards, card => card != null && card.HeroId == rewards[0].Id);
+        var path = PubRoulette.Path(visible, winner, UnityEngine.Random.Range(0, Mathf.Max(1, visible)));
+        for (int step = 0; step < path.Length; step++)
+        {
+            for (int i = 0; i < cards.Length; i++)
+                if (cards[i] != null) cards[i].SetRouletteHighlight(i == path[step]);
+            float t = (float)step / Mathf.Max(1, path.Length - 1);
+            yield return new WaitForSecondsRealtime(Mathf.Lerp(.04f, .19f, t * t));
+        }
+        yield return new WaitForSecondsRealtime(.3f);
+        ClearRoulette();
+        if (winner >= 0 && winner < cards.Length) cards[winner].Pulse();
         var groups = rewards.GroupBy(h => h.Id).ToArray();
         for (int i = 0; i < resultIcons.Length; i++)
         {
@@ -148,21 +163,26 @@ public sealed class PubController : MonoBehaviour
             resultIcons[i].sprite = PubHeroCard.FindPortrait(hero);
             resultNames[i].text = hero.Name + (groups[i].Any(h => h.GrantedHero) ? " • NEW" : "");
             resultCounts[i].enableAutoSizing = true; resultCounts[i].fontSizeMin = 18;
-            resultCounts[i].text = "Shards ×" + groups[i].Sum(h => h.Quantity) + "\nMileage ×" + groups[i].Sum(h => h.MileageTokens);
+            resultCounts[i].text = "Shards ×" + groups[i].Sum(h => h.Quantity) + "\nMileage ×" + groups[i].Sum(h => h.TotalMileageTokens);
         }
         resultTitle.text = "RECRUITED";
         int newHeroes = rewards.Count(h => h.GrantedHero);
-        resultSubtitle.text = "Shards + " + rewards.Sum(h => h.MileageTokens) + " mileage tokens" +
-            (newHeroes > 0 ? " • New heroes: " + newHeroes : "") + (bonus > 0 ? " • Bonus rolls: " + bonus : "");
+        resultSubtitle.text = "Shards + " + rewards.Sum(h => h.TotalMileageTokens) + " mileage tokens" +
+            (newHeroes > 0 ? " • New heroes: " + newHeroes : "") + (bonus > 0 ? " • Bonus rewards ×" + (bonus + 1) : "");
         resultPanel.SetActive(true);statusLabel.text = "Rewards added to your inventory";busy = false;reveal = null;
         Refresh();UIfiller.GlobalRefresh();
     }
     public void InstantRefresh()
     {
-        if (busy || !EnsureModel()) return;
+        if (busy || resultPanel.activeSelf || !EnsureModel()) return;
         busy = true;
         bool refreshed = model.TryPaidRefresh(MainStates.instance, currencyId, refreshPrice, refreshMinutes, DateTime.UtcNow, out string error);
         busy = false; statusLabel.text = refreshed ? "New heroes are ready" : error; Refresh();
+    }
+    private void ClearRoulette()
+    {
+        if (cards == null) return;
+        foreach (var card in cards) if (card != null) card.SetRouletteHighlight(false);
     }
     private void ApplySafeArea()
     {

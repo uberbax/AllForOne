@@ -62,7 +62,7 @@ public static class PubPlayCheck
             Require(model.RestoreOrRefresh(state.playerData,DateTime.UtcNow,30),"Offers unavailable");
             Require(model.Offers.Select(h=>h.Id).Distinct().Count()==3,"Duplicate offers");
             Require(model.TryRecruit(state,3,"gold",100,20,out var rewards,out int bonus,out string error),"Native hero creation: "+error);
-            Require(PubRecruitment.Currency(player,"gold")==700&&rewards.Count==3,"Wrong 3x price/rewards");
+            Require(PubRecruitment.Currency(player,"gold")==700&&rewards.Count==1&&rewards[0].RewardMultiplier==3,"Wrong 3x price/rewards");
             Require(player.inventory.Count(i=>i.it==ItemType.monster&&i.owner==player)==rewards.Select(h=>h.Id).Distinct().Count(),"Heroes not owned by player");
             Require(player.inventory.Where(i=>i.it==ItemType.monster).All(i=>i.main==null&&i.GetPar("used_slot")==-1&&i.index>=0),"Hero unexpectedly equipped/spawned");
             var oldOffers=model.Offers.Select(h=>h.Id).ToArray();
@@ -72,7 +72,7 @@ public static class PubPlayCheck
             restored.RestoreOrRefresh(state.playerData,DateTime.UtcNow,30);
             Require(restored.Offers.Select(h=>h.Id).SequenceEqual(model.Offers.Select(h=>h.Id)),"Lineup changed on reopen");
             state.playerData.playerStats[PubRecruitment.TotalKey].Value=19;
-            Require(model.TryRecruit(state,1,"gold",100,20,out rewards,out bonus,out error)&&bonus==1&&rewards.Count==2,"Bonus hero at 20: "+error);
+            Require(model.TryRecruit(state,1,"gold",100,20,out rewards,out bonus,out error)&&bonus==1&&rewards.Count==1&&rewards[0].RewardMultiplier==2,"Bonus rewards at 20: "+error);
             testCanvas=new GameObject("Temporary Pub verification",typeof(RectTransform),typeof(Canvas),typeof(CanvasScaler),typeof(GraphicRaycaster),typeof(CanvasGroup));
             testCanvas.GetComponent<Canvas>().renderMode=RenderMode.ScreenSpaceOverlay;testCanvas.GetComponent<CanvasGroup>().alpha=0;
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(PubBuilder.PrefabPath);var panel=UnityEngine.Object.Instantiate(prefab,testCanvas.transform);var controller=panel.GetComponent<PubController>();controller.Show();Canvas.ForceUpdateCanvases();
@@ -80,7 +80,8 @@ public static class PubPlayCheck
             var fields=new SerializedObject(controller);var button=(Button)fields.FindProperty("recruitButton").objectReferenceValue;
             int before=PubRecruitment.Currency(player,"gold");button.onClick.Invoke();button.onClick.Invoke();
             Require(controller.IsBusy&&PubRecruitment.Currency(player,"gold")==before-100,"Double click charged twice or recruit did not start");
-            controller.Hide();Require(!controller.IsBusy,"Closing mid-animation kept controller locked");
+            controller.Hide();Require(controller.IsBusy,"Close button interrupted roulette");
+            panel.SetActive(false);Require(!controller.IsBusy,"Disabling mid-animation kept controller locked");
             File.WriteAllText(PubInspector.Work+"/play.txt",JsonConvert.SerializeObject(new{result="PASS",eligibleHeroes=model.Pool.Count,excludedRows=excluded,lineup=model.Offers.Select(h=>h.Id).ToArray(),native3x=true,bonus20=true,refresh25=true,persistedLineup=true,prefabBindings=true,portraits=true,doubleClickGuard=true,originalPlayerUntouched=true},Formatting.Indented));
         }
         catch(Exception e){File.WriteAllText(PubInspector.Work+"/play.txt","FAIL "+e);Debug.LogException(e);}

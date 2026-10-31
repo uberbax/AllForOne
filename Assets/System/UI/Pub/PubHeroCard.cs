@@ -16,6 +16,10 @@ public sealed class PubHeroCard : MonoBehaviour
     private Image mileageIcon;
     private Vector3 originalScale;
     private float pulse;
+    private bool rouletteSelected;
+    private bool recruitmentBusy, ascensionWasEnabled, wasInteractable, wasBlocking;
+    private CanvasGroup interactionGroup;
+    public string HeroId { get; private set; }
     private void Awake()
     {
         var holder = EnsureObjHolder();
@@ -25,6 +29,7 @@ public sealed class PubHeroCard : MonoBehaviour
 
     public void Bind(PubHero hero, RObj player, int offerCount, int multiplier = 1)
     {
+        HeroId = hero?.Id;
         var cardHolder = EnsureObjHolder();
         EnsureMileageView();
         EnsureOwnedView();
@@ -53,7 +58,7 @@ public sealed class PubHeroCard : MonoBehaviour
         int displayedMultiplier = Mathf.Clamp(multiplier, 1, 3);
         quantity.text = "×" + (hero.Quantity * displayedMultiplier);
         mileageLabel.transform.parent.gameObject.SetActive(true);
-        mileageLabel.text = (hero.MileageTokens * displayedMultiplier).ToString();
+        mileageLabel.text = (hero.TotalMileageTokens * displayedMultiplier).ToString();
         mileageIcon.sprite = ResourceHolder.instance != null ? ResourceHolder.instance.GetIcon("mileage_token") : null;
         mileageIcon.enabled = mileageIcon.sprite != null;
         var ownedHero = HeroAscension.FindOwned(player, hero.Id);
@@ -133,8 +138,39 @@ public sealed class PubHeroCard : MonoBehaviour
         ascensionView.SetNotOwnedVisual(newBadge);
     }
     public void Pulse() { pulse = 1; if (originalScale == Vector3.zero) originalScale = transform.localScale; }
+    public void SetRouletteHighlight(bool selected)
+    {
+        rouletteSelected = selected; pulse = 0;
+        if (originalScale == Vector3.zero) originalScale = transform.localScale;
+        transform.localScale = originalScale * (selected ? 1.045f : 1f);
+        if (highlight != null)
+        {
+            var color = PubUiTheme.Blue; color.a = selected ? .9f : 0;
+            highlight.color = color; highlight.raycastTarget = false;
+        }
+    }
+    public void SetRecruitmentBusy(bool value)
+    {
+        if (recruitmentBusy == value) return;
+        recruitmentBusy = value;
+        if (value)
+        {
+            if (interactionGroup == null && !TryGetComponent(out interactionGroup)) interactionGroup = gameObject.AddComponent<CanvasGroup>();
+            wasInteractable = interactionGroup.interactable; wasBlocking = interactionGroup.blocksRaycasts;
+            interactionGroup.interactable = interactionGroup.blocksRaycasts = false;
+            ascensionWasEnabled = ascensionView != null && ascensionView.enabled;
+            // Preserve the displayed shard count until the roulette reveals the committed reward.
+            if (ascensionWasEnabled) ascensionView.enabled = false;
+        }
+        else
+        {
+            if (interactionGroup != null) { interactionGroup.interactable = wasInteractable; interactionGroup.blocksRaycasts = wasBlocking; }
+            if (ascensionView != null && ascensionWasEnabled) ascensionView.enabled = true;
+        }
+    }
     private void Update()
     {
+        if (rouletteSelected) return;
         if (pulse <= 0) return;
         pulse = Mathf.Max(0, pulse - Time.unscaledDeltaTime * 2);
         transform.localScale = originalScale * (1 + .07f * Mathf.Sin(pulse * Mathf.PI));
@@ -142,6 +178,8 @@ public sealed class PubHeroCard : MonoBehaviour
     }
     private void OnDisable()
     {
+        SetRecruitmentBusy(false);
+        rouletteSelected = false;
         pulse=0;if(originalScale!=Vector3.zero)transform.localScale=originalScale;
         if(highlight!=null){var color=highlight.color;color.a=0;highlight.color=color;}
     }

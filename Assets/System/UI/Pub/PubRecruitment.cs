@@ -11,7 +11,9 @@ public sealed class PubHero
     public int Rarity;
     public Obj Definition;
     public int MileageTokens = 5;
-    public int Quantity => 30 - MileageTokens;
+    public int RewardMultiplier = 1;
+    public int Quantity => (30 - MileageTokens) * RewardMultiplier;
+    public int TotalMileageTokens => MileageTokens * RewardMultiplier;
     public bool GrantedHero;
 }
 
@@ -171,14 +173,14 @@ public sealed class PubRecruitment
         long cost = (long)costPerDraw * count;
         if (cost > int.MaxValue || Currency(state.mainPlayer, currency) < cost) { error = "Not enough " + currency; return false; }
         int previous = Math.Max(0, Stat(state.playerData, TotalKey));
-        long total = Math.Min(int.MaxValue, (long)previous + count);
+        long total = Math.Min(int.MaxValue, (long)previous + 1);
         int interval = Math.Max(1, bonusEvery);
         bonusCount = (int)(total / interval) - previous / interval;
-        for (int i = 0; i < count + bonusCount; i++)
-        {
-            var offer = Offers[random.Next(Offers.Count)];
-            rewards.Add(Offer(offer, offer.MileageTokens));
-        }
+        // One hero selection per purchase. Multiplier and milestone bonus scale only its resources.
+        var offer = Offers[random.Next(Offers.Count)];
+        var selected = Offer(offer, offer.MileageTokens);
+        selected.RewardMultiplier = count * (1 + bonusCount);
+        rewards.Add(selected);
         if (rewards.Any(h => !IsEligibleId(h.Id) || !DatabaseAll.instance.heroes.ContainsKey(h.Id)))
         { error = "Hero data changed. Refresh the offers"; rewards.Clear(); return false; }
 
@@ -195,7 +197,7 @@ public sealed class PubRecruitment
             {
                 if (!ValidMileage(reward.MileageTokens)) throw new InvalidOperationException("Invalid Pub reward quantity");
                 StageItem("shard_" + reward.Id, reward.Quantity, planning, created, amounts);
-                StageItem("mileage_token", reward.MileageTokens, planning, created, amounts);
+                StageItem("mileage_token", reward.TotalMileageTokens, planning, created, amounts);
                 if (!owned.Add(reward.Id)) continue;
                 int index = planning.GetFreeIndex(reward.Definition.sizeX, reward.Definition.sizeY);
                 if (index < 0) throw new InvalidOperationException("Inventory is full");
