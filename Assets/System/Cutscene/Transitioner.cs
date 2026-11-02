@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Colorful;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Transitioner : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Transitioner : MonoBehaviour
     public TextMeshProUGUI phraseTxt;
     public GameObject pic;
     public Transform steps;
+    [SerializeField] private Slider loadingProgress;
     private void Awake()
     {
         instance = this;
@@ -171,6 +173,43 @@ public class Transitioner : MonoBehaviour
     //
     public static float GLobalSpd = -1;
     public static float GLobalWait = -1;
+
+    private void ResetLoadingProgress()
+    {
+        if (loadingProgress == null)
+        {
+            var bar = bg.transform.Find("LoadingProgress");
+            if (bar != null) loadingProgress = bar.GetComponent<Slider>();
+        }
+        if (loadingProgress == null) return;
+        loadingProgress.gameObject.SetActive(true);
+        loadingProgress.interactable = false;
+        loadingProgress.wholeNumbers = false;
+        // The Slider changes the fill rect width. Do not also clip its Image to the old 65%.
+        if (loadingProgress.fillRect != null)
+        {
+            var image = loadingProgress.fillRect.GetComponent<Image>();
+            if (image != null) image.fillAmount = 1;
+        }
+        loadingProgress.SetValueWithoutNotify(loadingProgress.minValue);
+    }
+
+    private IEnumerator FillLoadingProgress(float duration, Action complete)
+    {
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            yield return null;
+            elapsed += Time.deltaTime;
+            if (loadingProgress != null)
+                loadingProgress.SetValueWithoutNotify(Mathf.Lerp(loadingProgress.minValue, loadingProgress.maxValue, Mathf.Clamp01(elapsed / duration)));
+        }
+        if (loadingProgress != null) loadingProgress.SetValueWithoutNotify(loadingProgress.maxValue);
+        // Render the full bar before the fade-out starts, including a zero-duration transition.
+        yield return null;
+        if (loadingProgress != null) loadingProgress.gameObject.SetActive(false);
+        complete?.Invoke();
+    }
     
     public void DoFade(float spd, float wait, Action midAct, Action endAct = null)
     {
@@ -183,18 +222,28 @@ public class Transitioner : MonoBehaviour
         ClearSteps();
         steps.gameObject.SetActive(false);
         pic.gameObject.SetActive(false);
-        UtilsControl.Instance.FadeCanvasG(bg.GetComponent<CanvasGroup>(), spd, 1, () =>
+        // LOADING starts inactive in Game_Dark1; changing alpha alone cannot show it.
+        var canvasGroup = bg.GetComponent<CanvasGroup>();
+        bg.SetActive(true);
+        canvasGroup.blocksRaycasts = true;
+        ResetLoadingProgress();
+        UtilsControl.Instance.FadeCanvasG(canvasGroup, spd, 1, () =>
         {
             if (midAct != null) midAct();
             steps.gameObject.SetActive(true);
             pic.gameObject.SetActive(true);
             StartCoroutine(EnableSteps());
-            FunctionTimer.Create(() =>
+            StartCoroutine(FillLoadingProgress(wait, () =>
             {
                 pic.gameObject.SetActive(false);
                 steps.gameObject.SetActive(false);
-                UtilsControl.Instance.FadeCanvasG(bg.GetComponent<CanvasGroup>(), spd, 0, endAct);
-            }, wait);
+                UtilsControl.Instance.FadeCanvasG(canvasGroup, spd, 0, () =>
+                {
+                    canvasGroup.blocksRaycasts = false;
+                    bg.SetActive(false);
+                    endAct?.Invoke();
+                });
+            }));
         });
     }
     
