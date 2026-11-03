@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1282252188007884}
+  m_IsPrefabParent: 1
+--- !u!1 &1282252188007884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4259003028453442}
+  - component: {fileID: 114739103527878096}
+  m_Layer: 0
+  m_Name: CodelessProGifRecorder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4259003028453442
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1282252188007884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114739103527878096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1282252188007884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae30d775e470942b19be1079b66c3588, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SaveDirectory: 0
+  m_FolderName: 
+  m_OptionalFileName: 
+  m_SaveExternal: 0
+  m_DeleteOriginGifAfterSaveExternal: 1
+  m_AutoSave: 0
+  m_AspectRatio: {x: 0, y: 0}
+  m_AutoAspect: 1
+  m_Width: 360
+  m_Height: 360
+  m_Duration: 3
+  m_Fps: 15
+  m_Loop: 0
+  m_Quality: 20
+  m_TransparentColor:
+    serializedVersion: 2
+    rgba: 0
+  m_TransparentColorRange: 0
+  m_EnableHotkeys: 1
+  m_Hotkey_StartRec: 114
+  m_Hotkey_Save: 115
+  m_Hotkey_Pause: 112
+  m_Hotkey_Resume: 111
+  m_Hotkey_Cancel: 27
+  m_ShowGUI: 1
+  m_GUIRect:
+    serializedVersion: 2
+    x: 0.01
+    y: 0.01
+    width: 0.5
+    height: 0.015
+  m_GUITextColor: {r: 0, g: 1, b: 0, a: 1}
+  m_RecorderCamera: {fileID: 0}
+  m_AllCameras: []
+  m_RecordingProgress: 0%
+  m_SaveProgress: 0%
+  m_State: Idle
+  m_SavePath: GIF Path
+  m_RecorderStarted: 0
