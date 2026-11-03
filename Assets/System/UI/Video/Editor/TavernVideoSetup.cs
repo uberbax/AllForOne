@@ -43,7 +43,9 @@ public static class TavernVideoSetup
         try
         {
             Tavern();
-            clip=AssetDatabase.LoadAssetAtPath<VideoClip>("Assets/System/Art/Videos/"+(assassin?"assasin.mp4":"barmen.mp4"));
+            string videoPath="Assets/System/Art/Videos/"+(assassin?"assasin.mp4":"barmen.mp4");
+            if(assassin&&File.Exists("Assets/System/Art/Videos/assasin_pingpong.mp4"))videoPath="Assets/System/Art/Videos/assasin_pingpong.mp4";
+            clip=AssetDatabase.LoadAssetAtPath<VideoClip>(videoPath);
             if(clip==null||clip.width==0||clip.height==0)throw new Exception("Tavern video is not imported as a VideoClip");
             var shader=AssetDatabase.LoadAssetAtPath<Shader>(Root+"/UIGreenKey.shader");
             if(shader==null||!shader.isSupported||ShaderUtil.GetShaderMessages(shader).Any(m=>m.severity.ToString()=="Error"))throw new Exception("Green-key shader is unsupported or has compiler errors");
@@ -110,7 +112,7 @@ public static class TavernVideoSetup
             Undo.RecordObject(oldGirl.gameObject,"Disable original Tavern character");oldGirl.gameObject.SetActive(false);
             EditorUtility.SetDirty(image);EditorUtility.SetDirty(video);EditorUtility.SetDirty(controller);AssetDatabase.SaveAssets();
             if(!EditorSceneManager.SaveScene(tavern.gameObject.scene))throw new Exception("Scene save failed");
-            File.WriteAllText(Work+(assassin?"/assassin-result.json":"/result.json"),Newtonsoft.Json.JsonConvert.SerializeObject(new{result="PASS",path=AnimationUtility.CalculateTransformPath(go.transform,null),oldCharacterDisabled=!oldGirl.gameObject.activeSelf,width=clip.width,height=clip.height,fps=clip.frameRate,duration=clip.length,decodedFrame=frame,shaderSupported=shader.isSupported,greenKeyGpuCheck=true,blackPreserved=true,loop=video.isLooping},Newtonsoft.Json.Formatting.Indented));
+            File.WriteAllText(Work+(assassin?"/assassin-result.json":"/result.json"),Newtonsoft.Json.JsonConvert.SerializeObject(new{result="PASS",path=AnimationUtility.CalculateTransformPath(go.transform,null),video=AssetDatabase.GetAssetPath(clip),forwardReverse=assassin&&clip.name=="assasin_pingpong",oldCharacterDisabled=!oldGirl.gameObject.activeSelf,width=clip.width,height=clip.height,fps=clip.frameRate,duration=clip.length,decodedFrame=frame,shaderSupported=shader.isSupported,greenKeyGpuCheck=true,blackPreserved=true,loop=video.isLooping},Newtonsoft.Json.Formatting.Indented));
             File.Delete(RequestPath);
         }
         catch(Exception e){Fail(e);}
