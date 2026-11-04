@@ -71,7 +71,7 @@ public class XDmove : ComponentBehavior
         }
 
         Vector3 dVecXY = new Vector3(dVec.x, dVec.y, 0);
-        Vector3 dVecXZ = new Vector3(dVec.x, 0, dVec.z);
+        Vector3 dVecXZ = new Vector3(dVec.x, 0, dVec.y);
         Vector3 dVecRes = Vector3.zero;
 
         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.coord_mode_xy) > 0)

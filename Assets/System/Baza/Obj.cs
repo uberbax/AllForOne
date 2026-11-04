@@ -916,7 +916,7 @@ public class RObj
             if (what == "pick") change = "pick3D";
             if (what == "receive") change = "receive3D";
             if (what == "blood") change = "blood3D";
-            
+            if (what == "range") change = "range3D";
         }
         
         if (!ResourceHolder.instance.XD.ContainsKey(what))

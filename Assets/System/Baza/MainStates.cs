@@ -208,6 +208,7 @@ public class MainStates : MonoBehaviour
 
     public static MainStates instance;
     public Transform root;
+    public Transform respawnPoint;
     
     public PlayerData playerData;
 

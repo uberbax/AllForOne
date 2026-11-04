@@ -23,7 +23,8 @@ public class MainSwitcher : MonoBehaviour
     [Header("Rumble CASE")] 
     public bool isRumble;
     public Transform addTreesRoot;
-    
+    [Header("Butcher CASE")] 
+    public bool isButcher;
     public void AfterLoad()
     {
         if (is3D)
@@ -68,6 +69,37 @@ public class MainSwitcher : MonoBehaviour
             XDdmgTrack.scaleMult = 0.4f;
             
             MakeTreeEnemies();
+        }
+
+        if (isButcher)
+        {
+            Make3D(false);
+            MainStates.isCameraFace = false;
+            MainStates.instance.mainPlayer.RemoveViz("click_move");
+            MainStates.instance.mainPlayer.AddViz("move#val:3");
+            MakeVampire();
+            MainStates.handleVampire = true;
+            XDmove.useNavmesh = true;
+            MainCycleExp.exceptMain = false;
+            MainStates.instance.mainPlayer.RemoveViz("shoot");
+            
+            foreach (var v in MainStates.instance.mainPlayer.actSkills)
+            {
+                v.SetPar("action_req", -1);
+                v.SetPar("cd", 0);
+            }
+            
+            //
+            MainStates.instance.joystick.transform.parent.parent.gameObject.SetActive(true);
+            XDmove.useMobileJoystick = true;
+            MainStates.whenMoveMinionsMove = true;
+            MainStates.castAndMove = false;
+            MainStates.instance.mainPlayer.SetPar("no_move",1);
+            XDdmgTrack.scaleMult = 0.4f;
+            
+            //camera work
+            Camera.main.transform.localEulerAngles = new Vector3(30, 0, 0);
+            Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, 5.22f, -8);
         }
     }
 
@@ -204,36 +236,38 @@ public class MainSwitcher : MonoBehaviour
     
     
     [EditorAttributes.Button("Make 3D")]
-    public void Make3D()
+    public void Make3D(bool doRotate3D = true)
     {
         Camera.main.orthographic = false;
         Camera.main.GetComponent<CameraFollow>().useOffscreen = false;
         Camera.main.transform.localEulerAngles = new Vector3(-30, 0, 0);
         Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, -5.22f, 0);
         //
-        MainStates.isCameraFace = true;
         MainStates.is3D = true;
-        
-        
-        foreach (var v in MainStates.instance.all)
-        {
-            if (v.Value.HasVisMain())
-                v.Value.visMain.transform.forward = Camera.main.transform.forward;
-        }
 
-        foreach (var v in toRotate)
+        if (doRotate3D)
         {
-            for (int u = 0; u < v.childCount; u++)
+            MainStates.isCameraFace = true;
+            foreach (var v in MainStates.instance.all)
             {
-                var b = v.GetChild(u);
-                if (!b.gameObject.activeInHierarchy) continue;
-                if (toExclude.Contains(b)) continue;
-                if (toRotate.Contains(b)) continue;
-                
-                b.transform.forward = Camera.main.transform.forward;
+                if (v.Value.HasVisMain())
+                    v.Value.visMain.transform.forward = Camera.main.transform.forward;
             }
-        }
 
+            foreach (var v in toRotate)
+            {
+                for (int u = 0; u < v.childCount; u++)
+                {
+                    var b = v.GetChild(u);
+                    if (!b.gameObject.activeInHierarchy) continue;
+                    if (toExclude.Contains(b)) continue;
+                    if (toRotate.Contains(b)) continue;
+
+                    b.transform.forward = Camera.main.transform.forward;
+                }
+            }
+
+        }
     }
     
     //nado еще make manhatta, isometric, hex
