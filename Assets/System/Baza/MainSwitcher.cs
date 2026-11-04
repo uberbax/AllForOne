@@ -100,7 +100,7 @@ public class MainSwitcher : MonoBehaviour
             
             //camera work
             Camera.main.transform.localEulerAngles = new Vector3(50, 0, 0);
-            Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, 5.22f, -4.3f);
+            Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, 6.15f, -4.64f);
         }
     }
 
