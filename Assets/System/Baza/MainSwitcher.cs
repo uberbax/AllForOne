@@ -92,14 +92,15 @@ public class MainSwitcher : MonoBehaviour
             //
             MainStates.instance.joystick.transform.parent.parent.gameObject.SetActive(true);
             XDmove.useMobileJoystick = true;
+            XDmove.useDir = true;
             MainStates.whenMoveMinionsMove = true;
             MainStates.castAndMove = false;
             MainStates.instance.mainPlayer.SetPar("no_move",1);
             XDdmgTrack.scaleMult = 0.4f;
             
             //camera work
-            Camera.main.transform.localEulerAngles = new Vector3(30, 0, 0);
-            Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, 5.22f, -8);
+            Camera.main.transform.localEulerAngles = new Vector3(50, 0, 0);
+            Camera.main.GetComponent<CameraFollow>().delta = new Vector3(0, 5.22f, -4.3f);
         }
     }
 

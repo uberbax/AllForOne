@@ -12,6 +12,7 @@ public class XDmove : ComponentBehavior
     
     public static bool useNavmesh = false; 
     public static bool useMobileJoystick = false; 
+    public static bool useDir = false; 
     
     public void AfterSet(string val)
     {
@@ -115,6 +116,11 @@ public class XDmove : ComponentBehavior
                 }
             }
             */
+
+            if (useDir)
+            {
+                mon.forward = new Vector3(dVec.x, 0, dVec.y);
+            }
         }
         else
         {
