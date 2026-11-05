@@ -5,6 +5,7 @@ using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class MainSwitcher : MonoBehaviour
 {
@@ -151,7 +152,27 @@ public class MainSwitcher : MonoBehaviour
 
         }
     }
-    
+
+    public void OnAdd(RObj r)
+    {
+        if (isButcher)
+        {
+            //regen
+            //max_hp
+            //attack_type ?
+            //speed
+            //skill
+
+            if (r.RID.IndexOf("chest") < 0 && r.RID.IndexOf("settings") < 0 && r.RID.IndexOf("npc") < 0)
+            {
+                r.AddViz("hp#face:1,where:head");
+                List<string> posStats = new List<string> { "regen", "max_health", "attack", "speed" };
+                var ii = posStats[UnityEngine.Random.Range(0, posStats.Count)];
+                r.deathStat = new Bon { Key = ii, Value = UnityEngine.Random.Range(1, 5) };
+                r.AddViz("death_stat");
+            }
+        }
+    }
     
     private void Awake()
     {

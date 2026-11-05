@@ -180,6 +180,8 @@ public class AddedObject : MonoBehaviour
         {
             toInjectBuyable.rReward = r;
         }
+        
+        MainSwitcher.instance.OnAdd(r);
     }
 
     

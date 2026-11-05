@@ -384787,6 +384787,8 @@ MonoBehaviour:
     - magic
     - res
     - crit_chance
+    - regen
+    - speed
     m_values:
     - {fileID: 21300000, guid: 6dd98809192e24bb185001de5a7f7b38, type: 3}
     - {fileID: 21300000, guid: 413710b631bd5493ebbf1a29b2d82eb3, type: 3}
@@ -384803,6 +384805,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 59e107efc41cc40c4870512d84a712bb, type: 3}
     - {fileID: 21300000, guid: 4fa022f68ab454db491cecb86166356a, type: 3}
     - {fileID: 21300000, guid: 3c6f5b7a54bd84489ba7d655c5b7b812, type: 3}
+    - {fileID: 7461505280755890080, guid: d2d638b09b5044f45985db1a1e57fb5f, type: 3}
+    - {fileID: -5380412449325006180, guid: 722bb23fbbafd634681ee5ad41cf0327, type: 3}
   diaAvas:
     m_keys:
     - hero
@@ -385327,6 +385331,7 @@ MonoBehaviour:
     - range
     - range3D
     - blood3D
+    - death_stat
     m_values:
     - {fileID: 1651707953261391744, guid: f86804f86ef6d2d4cba08c01f59d4352, type: 3}
     - {fileID: 4461510688263357733, guid: 573ed837b1ecb23428d1c477d161cfa7, type: 3}
@@ -385378,6 +385383,7 @@ MonoBehaviour:
     - {fileID: 280778047328337229, guid: 065318a1c86f6e44a8a2e094e0c73d36, type: 3}
     - {fileID: 280778047328337229, guid: ab1a4945ef4ed8c47a25d1e6378134db, type: 3}
     - {fileID: 8151565470958176459, guid: 1025aa81f6ab62c4a9047b1e6c21a251, type: 3}
+    - {fileID: 4461510688263357733, guid: 14b75832e9b9ed942b0354655bbe7a8d, type: 3}
   miscGO:
     m_keys:
     - obj_berserk
@@ -600541,8 +600547,7 @@ MonoBehaviour:
   isRumble: 0
   addTreesRoot: {fileID: 1531750284}
   isButcher: 1
-  extraAddOverrides:
-  - hp#face:1,where:head
+  extraAddOverrides: []
   withDist: 0
   toRotate:
   - {fileID: 1531750284}

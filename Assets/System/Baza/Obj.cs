@@ -161,6 +161,8 @@ public class RObj
     
     [JsonConverter(typeof(SaveVector3Converter))]
     public Vector3 localPos = Vector3.zero;
+
+    public Bon deathStat = new Bon();
     //
     [JsonIgnore]
     public Vector3 Position
