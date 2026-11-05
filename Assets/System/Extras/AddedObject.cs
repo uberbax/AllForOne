@@ -72,7 +72,8 @@ public class AddedObject : MonoBehaviour
         var r = DatabaseAll.instance.CreateAny(id, isEnemy, amount, nn, overID, asMainViz ? gameObject : null, level:level);
         
         var hl = addedVis;
-        hl.AddRange(MainSwitcher.instance.extraAddOverrides);
+        if (MainSwitcher.instance != null)
+            hl.AddRange(MainSwitcher.instance.extraAddOverrides);
         
         foreach (var v in hl)
         {
@@ -181,7 +182,8 @@ public class AddedObject : MonoBehaviour
             toInjectBuyable.rReward = r;
         }
         
-        MainSwitcher.instance.OnAdd(r);
+        if (MainSwitcher.instance != null)
+            MainSwitcher.instance.OnAdd(r);
     }
 
     
