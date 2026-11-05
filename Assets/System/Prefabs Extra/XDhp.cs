@@ -33,6 +33,7 @@ public class XDhp : ComponentBehavior
     
     Canvas canvas;
     private SortingGroup sg;
+    bool isFace = false;
     public void AfterSet(string par)
     {
         if (pars.ContainsKey("notext"))
@@ -45,7 +46,13 @@ public class XDhp : ComponentBehavior
         
         if (pars.ContainsKey("d3"))
             dlt3 = float.Parse(pars["d3"]);
+
+        if (pars.ContainsKey("face"))
+            isFace = true;
         
+        if (pars.ContainsKey("where"))
+            trackWhere = pars["where"];
+
     }
     
     private void Start()
@@ -167,7 +174,7 @@ public class XDhp : ComponentBehavior
 
         if (!isBoss)
         {
-            if (MainStates.isCameraFace) transform.forward = Camera.main.transform.forward;
+            if (MainStates.isCameraFace || isFace) transform.forward = Camera.main.transform.forward;
         }
 
         if (canvas)

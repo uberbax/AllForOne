@@ -25,6 +25,11 @@ public class MainSwitcher : MonoBehaviour
     public Transform addTreesRoot;
     [Header("Butcher CASE")] 
     public bool isButcher;
+    
+    //
+    [Header("Extra OVERRIDE")] 
+    public List<string> extraAddOverrides = new List<string>();
+    
     public void AfterLoad()
     {
         if (is3D)

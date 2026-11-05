@@ -10,6 +10,7 @@ public class AddedObject : MonoBehaviour
     
     public string overID = "";
     public string id = "";
+    
     public bool isEnemy;
     public bool isNeutral;
     public int amount = 1;
@@ -69,7 +70,11 @@ public class AddedObject : MonoBehaviour
         if (visMain != null) nn =  visMain;
         
         var r = DatabaseAll.instance.CreateAny(id, isEnemy, amount, nn, overID, asMainViz ? gameObject : null, level:level);
-        foreach (var v in addedVis)
+        
+        var hl = addedVis;
+        hl.AddRange(MainSwitcher.instance.extraAddOverrides);
+        
+        foreach (var v in hl)
         {
             r.AddViz(v);
         }
