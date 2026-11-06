@@ -395,7 +395,7 @@ public class MainCycleDark : MonoBehaviour
         //
         if (!succLoad)
         {
-            main = new RObj("hero_warrior", 1, 1, true, spawnPoint.position, true, ItemType.monster, "main_player");
+            main = new RObj("hero_mage", 1, 1, true, spawnPoint.position, true, ItemType.monster, "main_player");
             MainStates.instance.ApplyPlayerConfigParams(main);
         }
         else
@@ -470,7 +470,7 @@ public class MainCycleDark : MonoBehaviour
 
         XDcombat.oneCast = true;
 
-        Tooltip.noTooltip = true;
+        //Tooltip.noTooltip = true;
         
         UtilsControl.overDrop = 0;
 

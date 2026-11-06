@@ -293,7 +293,7 @@ RectTransform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -398,7 +398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000038146973, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: -0.0001, y: -0.000061035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4015584156652306948
@@ -646,7 +646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.36523438, y: -17.900002}
+  m_AnchoredPosition: {x: -0.36523438, y: -17.900024}
   m_SizeDelta: {x: 80.78439, y: 31.218102}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3217550723336559679
@@ -919,7 +919,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.77101135, y: -3.2684937}
+  m_AnchoredPosition: {x: -0.7709961, y: -3.2684937}
   m_SizeDelta: {x: 108.4039, y: 159.7762}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6390457299990518174
@@ -1036,6 +1036,7 @@ GameObject:
   - component: {fileID: 1558042694508686590}
   - component: {fileID: 885876618977835628}
   - component: {fileID: 9190042041800965937}
+  - component: {fileID: 7944037219736772870}
   m_Layer: 5
   m_Name: ico
   m_TagString: Untagged
@@ -1084,7 +1085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.7372549}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1145,6 +1146,20 @@ MonoBehaviour:
   addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
+--- !u!114 &7944037219736772870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691452308718318283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c5e362ccca00074899e519f96aa0828, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Tooltip
+  activate: {fileID: 0}
+  outlined: 0
 --- !u!1 &6957247355342189895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,7 +1271,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0000038146973, y: -0.021484375}
+  m_AnchoredPosition: {x: 0, y: -0.021484375}
   m_SizeDelta: {x: -0.00010681, y: -0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8751173614046696957
