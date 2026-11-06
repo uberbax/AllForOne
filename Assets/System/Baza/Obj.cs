@@ -180,6 +180,23 @@ public class RObj
         }
     }
 
+    public List<string> GetNonZeroPars(List<string> pars)
+    {
+        List<string> res = new List<string>();
+        foreach (var v in pars)
+        {
+            if (v == "amount" || v == "level" || v == "used_slot") continue;
+            //if (!pars.Contains(v.Key)) continue;
+
+            var j = GetPar(v);
+            if (j != 0)
+            {
+                res.Add(v);
+            }
+        }
+        return res;
+    }
+
     [JsonIgnore]
     public GameObject main
     {
