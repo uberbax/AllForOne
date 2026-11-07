@@ -37,6 +37,23 @@ public class XDdeath : ComponentBehavior
         mon.RemoveViz("shadow");
         mon.RemoveViz("combat");
         Destroy(mon.main.GetComponent<NavMeshAgent>());
+
+        mon.RemoveViz("death_stat");
+        var reward = mon.deathStat;
+        var state = MainStates.instance;
+        if (reward != null && !string.IsNullOrWhiteSpace(reward.Key) && reward.Value > 0 &&
+            !mon.tags.Contains("player") && state != null &&
+            state.all.TryGetValue("main_player", out var player) && player != null && player != mon)
+        {
+            player.ChangePar(reward.Key, reward.Value);
+
+            Sprite icon = null;
+            ResourceHolder.instance?.pars?.TryGetValue(reward.Key, out icon);
+            string label = ConfigLoader.Instance?.GetMeLocale(reward.Key);
+            if (string.IsNullOrEmpty(label) || label.StartsWith("no_descr", StringComparison.Ordinal))
+                label = reward.Key.Replace('_', ' ');
+            PickupNotificationStack.ShowStat(reward.Key, label, reward.Value, icon);
+        }
         
         var g = mon.visMain.transform.Find("shadow");
         if (g != null) Destroy(g.gameObject);

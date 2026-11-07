@@ -88,6 +88,8 @@ public class MainSwitcher : MonoBehaviour
             XDmove.useNavmesh = true;
             MainCycleExp.exceptMain = false;
             MainStates.instance.mainPlayer.RemoveViz("shoot");
+            XDdrop.isCameraFace = true;
+            SkillExecutor.rotateTowards = true;
             
             foreach (var v in MainStates.instance.mainPlayer.actSkills)
             {

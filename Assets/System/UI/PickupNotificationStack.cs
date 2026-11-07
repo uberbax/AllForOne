@@ -14,6 +14,7 @@ public sealed class PickupNotificationStack : MonoBehaviour
     [SerializeField, Min(.1f)] private float holdDuration = 2.8f;
     [SerializeField, Min(.01f)] private float fadeDuration = .22f;
     private static PickupNotificationStack instance;
+    private static PickupNotificationStack statInstance;
     private static GameObject prefab;
     private readonly List<Entry> active = new List<Entry>();
     private readonly List<Pending> pending = new List<Pending>();
@@ -37,26 +38,58 @@ public sealed class PickupNotificationStack : MonoBehaviour
     public int PendingCount => pending.Count;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() { instance = null; prefab = null; }
+    private static void ResetStatics()
+    {
+        instance = null;
+        statInstance = null;
+        prefab = null;
+    }
 
     public static void Show(string itemId, string label, float amount, Sprite icon)
     {
         if (instance == null)
         {
-            instance = FindFirstObjectByType<PickupNotificationStack>();
-            if (instance == null)
+            foreach (var stack in FindObjectsByType<PickupNotificationStack>(FindObjectsSortMode.None))
             {
-                if (prefab == null) prefab = Resources.Load<GameObject>("PickupNotifications");
-                if (prefab == null) { Debug.LogError("PickupNotifications prefab is missing from Resources."); return; }
-                instance = Instantiate(prefab).GetComponent<PickupNotificationStack>();
-                instance.name = "PickupNotifications";
+                if (stack == statInstance) continue;
+                instance = stack;
+                break;
             }
+            if (instance == null) instance = CreateStack("PickupNotifications");
         }
-        instance.Enqueue(itemId, label, amount, icon);
+        if (instance != null) instance.Enqueue(itemId, label, amount, icon);
+    }
+
+    public static void ShowStat(string statId, string label, float amount, Sprite icon)
+    {
+        if (statInstance == null)
+        {
+            statInstance = CreateStack("DeathStatNotifications");
+            if (statInstance == null) return;
+
+            var statRows = statInstance.rows;
+            statRows.anchorMin = statRows.anchorMax = new Vector2(0, .875f);
+            statRows.pivot = new Vector2(0, 1);
+            statRows.anchoredPosition = new Vector2(36, 0);
+            statInstance.maxVisible = 4;
+        }
+        statInstance.Enqueue(statId, label, amount, icon);
+    }
+
+    private static PickupNotificationStack CreateStack(string stackName)
+    {
+        if (prefab == null) prefab = Resources.Load<GameObject>("PickupNotifications");
+        if (prefab == null)
+        {
+            Debug.LogError("PickupNotifications prefab is missing from Resources.");
+            return null;
+        }
+        var stack = Instantiate(prefab).GetComponent<PickupNotificationStack>();
+        stack.name = stackName;
+        return stack;
     }
     private void Awake()
     {
-        if (instance == null) instance = this;
         rowTemplate.gameObject.SetActive(false);
         ApplySafeArea();
     }
@@ -149,5 +182,9 @@ public sealed class PickupNotificationStack : MonoBehaviour
         foreach (var entry in active) { entry.rect.gameObject.SetActive(false); pool.Push(entry); }
         active.Clear(); pending.Clear();
     }
-    private void OnDestroy() { if (instance == this) instance = null; }
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
+        if (statInstance == this) statInstance = null;
+    }
 }

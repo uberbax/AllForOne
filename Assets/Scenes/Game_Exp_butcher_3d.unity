@@ -9306,6 +9306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: militia
   isEnemy: 1
@@ -10271,6 +10272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: bird_snow
   isEnemy: 1
@@ -19315,6 +19317,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4281896713549637405, guid: 536969ef448d9cd4fac327d19ca49c2f, type: 3}
   m_PrefabInstance: {fileID: 56931029}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &57160676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 57160677}
+  - component: {fileID: 57160678}
+  m_Layer: 0
+  m_Name: 'BossSpawn 06 [kawaii_slime_sprout]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &57160677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57160676}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.5196187, y: 6.163896, z: 24.287363}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &57160678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57160676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_sprout
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &57362293
 GameObject:
   m_ObjectHideFlags: 0
@@ -29975,6 +30042,71 @@ MonoBehaviour:
   breathsPerMinute: 14
   horizontalScale: 0.008
   verticalScale: 0.018
+--- !u!1 &105652695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105652696}
+  - component: {fileID: 105652697}
+  m_Layer: 0
+  m_Name: 'BossSpawn 05 [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &105652696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105652695}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.798881, y: 6.2687244, z: 23.971737}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &105652697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105652695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &105667878
 GameObject:
   m_ObjectHideFlags: 0
@@ -30113,11 +30245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
@@ -34440,6 +34568,136 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2353808486955898380, guid: b08797a15403b224095dbca0f47c8dca, type: 3}
   m_PrefabInstance: {fileID: 120648323}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &121394050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 121394051}
+  - component: {fileID: 121394052}
+  m_Layer: 0
+  m_Name: 'Encounter_05 07 [kawaii_slime_leaf]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &121394051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121394050}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20.678703, y: 4.979612, z: -19.331757}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &121394052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121394050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_leaf
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
+--- !u!1 &122233667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 122233668}
+  - component: {fileID: 122233669}
+  m_Layer: 0
+  m_Name: 'Encounter_04 05 [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &122233668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122233667}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.383918, y: 5.038252, z: 11.840166}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &122233669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122233667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &122450997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 883078530101386749, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -36621,6 +36879,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: insect
   isEnemy: 1
@@ -50696,6 +50955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: armor
   isEnemy: 0
@@ -55765,6 +56025,71 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.25, y: 2.25}
   m_EdgeRadius: 0
+--- !u!1 &198374822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198374823}
+  - component: {fileID: 198374824}
+  m_Layer: 0
+  m_Name: 'Encounter_03 03 [kawaii_slime_leaf]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &198374823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198374822}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.03041, y: 4.9350367, z: 16.866936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &198374824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198374822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_leaf
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &198538780
 GameObject:
   m_ObjectHideFlags: 0
@@ -65978,6 +66303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -71365,11 +71691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
@@ -75375,11 +75697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
@@ -83871,6 +84189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: tree
   isEnemy: 0
@@ -98229,6 +98548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -111996,6 +112316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: sword
   isEnemy: 0
@@ -121010,6 +121331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: barracks
   isEnemy: 0
@@ -122000,6 +122322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: main_shop
   id: chest
   isEnemy: 1
@@ -127519,6 +127842,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2402094232876732143, guid: e05a98d6735a8c94da0c5fb39191de7d, type: 3}
   m_PrefabInstance: {fileID: 458859930}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &460541058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 460541059}
+  - component: {fileID: 460541060}
+  m_Layer: 0
+  m_Name: 'Encounter_04 02 [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &460541059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460541058}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.281268, y: 5.113068, z: 16.728724}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &460541060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460541058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &460955178
 GameObject:
   m_ObjectHideFlags: 0
@@ -176260,6 +176648,71 @@ MonoBehaviour:
   breathsPerMinute: 14
   horizontalScale: 0.008
   verticalScale: 0.018
+--- !u!1 &472827969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 472827970}
+  - component: {fileID: 472827971}
+  m_Layer: 0
+  m_Name: 'Encounter_01 02 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &472827970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472827969}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.307762, y: 4.880007, z: -20.671597}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &472827971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472827969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &472884300
 GameObject:
   m_ObjectHideFlags: 0
@@ -184339,6 +184792,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6737638780115793242, guid: 76502fe9f23eee74f961ec0bb3f50b0f, type: 3}
   m_PrefabInstance: {fileID: 495934735}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &496010749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 496010750}
+  - component: {fileID: 496010751}
+  m_Layer: 0
+  m_Name: 'Encounter_05 04 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &496010750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496010749}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 22.547565, y: 4.9229097, z: -13.662947}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &496010751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496010749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &496431520
 GameObject:
   m_ObjectHideFlags: 0
@@ -186173,6 +186691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: raid_beetle
   id: beetle_blood
   isEnemy: 1
@@ -188267,11 +188786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
@@ -195676,6 +196191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -222403,6 +222919,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581071975}
   m_CullTransparentMesh: 1
+--- !u!1 &581723245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 581723246}
+  - component: {fileID: 581723247}
+  m_Layer: 0
+  m_Name: 'BossSpawn 03 [kawaii_slime_viking]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &581723246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581723245}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -11.803667, y: 6.0926847, z: 21.724535}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &581723247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581723245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_viking
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &582284114
 GameObject:
   m_ObjectHideFlags: 0
@@ -224597,11 +225178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
@@ -232726,6 +233303,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621145713}
   m_CullTransparentMesh: 1
+--- !u!1 &621182697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 621182698}
+  - component: {fileID: 621182699}
+  m_Layer: 0
+  m_Name: 'BossSpawn - forgotten sanctuary [kawaii_slime_king]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &621182698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621182697}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.16821, y: 6.3202934, z: 27}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &621182699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621182697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_king
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &621532656
 GameObject:
   m_ObjectHideFlags: 0
@@ -233223,6 +233865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -242686,6 +243329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 0
@@ -247236,6 +247880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 69543802}
+  useDefault: 0
   overID: 
   id: skeleton
   isEnemy: 0
@@ -249994,6 +250639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: npc_a
   isEnemy: 0
@@ -252668,11 +253314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
   radius: 0.5
-  color:
-    r: 0.2
-    g: 0.8
-    b: 1
-    a: 0.3
+  color: {r: 0.2, g: 0.8, b: 1, a: 0.3}
   text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
@@ -264339,6 +264981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: npc_a
   isEnemy: 0
@@ -272761,6 +273404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: dining
   isEnemy: 0
@@ -275805,6 +276449,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783281125}
   m_CullTransparentMesh: 1
+--- !u!1 &783481689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783481690}
+  - component: {fileID: 783481691}
+  m_Layer: 0
+  m_Name: 'Encounter_03 05 [kawaii_slime_sprout]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &783481690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783481689}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -25.176441, y: 4.9882226, z: 10.086411}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &783481691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783481689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_sprout
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &784017539
 GameObject:
   m_ObjectHideFlags: 0
@@ -277507,6 +278216,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1644428554289769669, guid: a28adcf7bd0814746b85a300aab8c0d0, type: 3}
   m_PrefabInstance: {fileID: 793342862}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &793345372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 793345373}
+  - component: {fileID: 793345374}
+  m_Layer: 0
+  m_Name: 'Encounter_01 05 [kawaii_slime_metal_helmet]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &793345373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793345372}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -16.808727, y: 5.0141397, z: -24.930578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &793345374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793345372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_metal_helmet
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &793813189
 GameObject:
   m_ObjectHideFlags: 0
@@ -279323,6 +280097,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798875197}
   m_CullTransparentMesh: 1
+--- !u!1 &799319377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 799319378}
+  - component: {fileID: 799319379}
+  m_Layer: 0
+  m_Name: 'Encounter_03 04 [kawaii_slime_bunny]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &799319378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799319377}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -26.982025, y: 5.0230384, z: 15.0766535}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &799319379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799319377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_bunny
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &799723544
 GameObject:
   m_ObjectHideFlags: 0
@@ -284969,6 +285808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: wood
   isEnemy: 1
@@ -285917,6 +286757,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822294102}
   m_CullTransparentMesh: 1
+--- !u!1 &822300910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 822300911}
+  - component: {fileID: 822300912}
+  m_Layer: 0
+  m_Name: 'Encounter_05 05 [kawaii_slime_tall]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &822300911
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822300910}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.827941, y: 4.8698883, z: -22.10851}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &822300912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822300910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_tall
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &822666432 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9037732835457705714, guid: 093ef035eec8e9744bb7f6e8fb4f4228, type: 3}
@@ -290095,6 +291000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: ship
   isEnemy: 0
@@ -293935,6 +294841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: recycler
   isEnemy: 0
@@ -296930,6 +297837,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000276133657517922, guid: 50d5c9ab6168213499b325945c0b42c2, type: 3}
   m_PrefabInstance: {fileID: 851311030}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &851457213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 851457214}
+  - component: {fileID: 851457215}
+  m_Layer: 0
+  m_Name: 'Encounter_04 - ruined courtyard [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &851457214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851457213}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 15.83179, y: 5.085686, z: 17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &851457215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851457213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &852228905
 GameObject:
   m_ObjectHideFlags: 0
@@ -299839,6 +300811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: raid_octopus
   id: octopus_pirate
   isEnemy: 1
@@ -304315,6 +305288,71 @@ SortingGroup:
   m_SortingOrder: 113
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!1 &883139723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 883139724}
+  - component: {fileID: 883139725}
+  m_Layer: 0
+  m_Name: 'Encounter_04 04 [kawaii_slime_metal_helmet]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &883139724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883139723}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.004124, y: 5.1157103, z: 19.296057}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &883139725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883139723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_metal_helmet
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &883162119 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6532447755833970653, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -313204,13 +314242,13 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 64, y: 55, z: 0}
   ComponentScale: {x: 1, y: 1, z: 1}
-  FillSize: {x: 1080, y: 2400, z: 0}
+  FillSize: {x: 4266.667, y: 2400, z: 0}
   ShrinkSize: {x: 999999, y: 999999, z: 999999}
-  TargetPosition: {x: -445, y: -1108, z: 0}
+  TargetPosition: {x: -865, y: -448, z: 0}
   TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   TargetScale: {x: 1, y: 1, z: 1}
   TargetRectSize: {x: 128, y: 110, z: 0}
-  TransformPosition: {x: -445, y: -1108, z: 0}
+  TransformPosition: {x: -2038.3335, y: -1108, z: 0}
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1, y: 1, z: 1}
   TransformRectSize: {x: 128, y: 110}
@@ -313878,6 +314916,71 @@ SortingGroup:
   m_SortingOrder: 584
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!1 &915674235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 915674236}
+  - component: {fileID: 915674237}
+  m_Layer: 0
+  m_Name: 'Encounter_05 - eastern grove [kawaii_slime_leaf]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &915674236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915674235}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.83179, y: 4.900654, z: -16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &915674237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915674235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_leaf
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &915839614
 GameObject:
   m_ObjectHideFlags: 0
@@ -319112,6 +320215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: raid_turtle
   id: turtle_tower
   isEnemy: 1
@@ -324695,6 +325799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -327965,6 +329070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: skeleton
   isEnemy: 1
@@ -351979,6 +353085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -354180,6 +355287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: skeleton_archer
   isEnemy: 1
@@ -354424,6 +355532,10 @@ PrefabInstance:
     - target: {fileID: 451971855278817457, guid: f1573bdc9c77ee14991109d7eff3794f, type: 3}
       propertyPath: m_Name
       value: PartyCamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4462817429658240636, guid: f1573bdc9c77ee14991109d7eff3794f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -357406,6 +358518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -357973,6 +359086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: insect
   isEnemy: 1
@@ -361373,6 +362487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: beetle_iron
   isEnemy: 1
@@ -378280,6 +379395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: npc_a
   isEnemy: 0
@@ -382364,6 +383480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: tree
   isEnemy: 1
@@ -384344,6 +385461,15 @@ MonoBehaviour:
     - raptor_mechanic
     - horse_unicorn
     - flower_daisy
+    - kawaii_slime_common
+    - kawaii_slime_tall
+    - kawaii_slime_bunny
+    - kawaii_slime_sprout
+    - kawaii_slime_leaf
+    - kawaii_slime_crown_king
+    - kawaii_slime_viking
+    - kawaii_slime_metal_helmet
+    - kawaii_slime_king
     m_values:
     - {fileID: 7616118467131557780, guid: bd146a00237a25d45820d14f7dcbe999, type: 3}
     - {fileID: 1954406165797268113, guid: 88a775150ba8a3b4eb015ae1cf519d66, type: 3}
@@ -384431,6 +385557,15 @@ MonoBehaviour:
     - {fileID: 4934484411420826077, guid: 472f32e61f4b8a147a23b7dd55bd5de1, type: 3}
     - {fileID: 6738013059622602878, guid: ae9ea8a6954690843a2d3316521d7fd6, type: 3}
     - {fileID: 8081365153067461479, guid: 92bc5b8eca56a2a4e8ad2bc46adfdf43, type: 3}
+    - {fileID: 6705402075998324148, guid: d941199d4a58fcb45adc75ea8e37c42c, type: 3}
+    - {fileID: 6173172085731050060, guid: fa12db7f8a3f0714799c08ee4da865d6, type: 3}
+    - {fileID: 2795397902362475942, guid: 72c47fdc43d84b243bdc109c284341d6, type: 3}
+    - {fileID: 7099655024501674456, guid: 8760cc9eb30a2b340b14499b6e150dc4, type: 3}
+    - {fileID: 6891580169314388076, guid: 66ae442726d1cf4428dacb34edd61ac4, type: 3}
+    - {fileID: 4281683080859636826, guid: 93df5c48d5e021040916b0e984d9b01a, type: 3}
+    - {fileID: 6688149642241925542, guid: 11eed2dfd1329ab4db9e7f27b8e628b7, type: 3}
+    - {fileID: 3198502390492704377, guid: 0ba0f6eee23032e4e83d421e739dc905, type: 3}
+    - {fileID: 873531700701352353, guid: 28d0a30d6aed6fc4c8ca473413f70c24, type: 3}
   misc:
     m_keys: []
     m_values: []
@@ -390723,6 +391858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: skeleton_archer
   isEnemy: 1
@@ -391988,6 +393124,71 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GUISpriteRotate
   rotateSpeed: 1
+--- !u!1 &1175150472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175150473}
+  - component: {fileID: 1175150474}
+  m_Layer: 0
+  m_Name: 'Encounter_02 06 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1175150473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175150472}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -36.259518, y: 4.8752933, z: -11.806831}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1175150474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175150472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1175241295
 GameObject:
   m_ObjectHideFlags: 0
@@ -401403,6 +402604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: farm
   isEnemy: 0
@@ -414566,6 +415768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: barracks
   isEnemy: 0
@@ -416049,6 +417252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: npc_a
   isEnemy: 0
@@ -418493,6 +419697,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1276035399}
   m_CullTransparentMesh: 1
+--- !u!1 &1276110197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1276110198}
+  - component: {fileID: 1276110199}
+  m_Layer: 0
+  m_Name: 'Encounter_02 07 [kawaii_slime_viking]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1276110198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276110197}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -29.392754, y: 4.923652, z: -8.863606}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1276110199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276110197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_viking
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1276121082
 GameObject:
   m_ObjectHideFlags: 0
@@ -424253,6 +425522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: goblin
   isEnemy: 1
@@ -425767,6 +427037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: militia
   isEnemy: 0
@@ -425792,6 +427063,71 @@ MonoBehaviour:
   asMainViz: 0
   recreateViz: 1
   markSkillsAsReq: 1
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
+--- !u!1 &1304759916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1304759917}
+  - component: {fileID: 1304759918}
+  m_Layer: 0
+  m_Name: 'Encounter_04 07 [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1304759917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304759916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.206238, y: 5.007844, z: 13.829145}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1304759918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304759916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
   randomizeItemsParams: 0
   toActivate: []
   visMain: {fileID: 0}
@@ -444151,6 +445487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -448008,6 +449345,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374636836}
   m_CullTransparentMesh: 1
+--- !u!1 &1374714397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1374714398}
+  - component: {fileID: 1374714399}
+  m_Layer: 0
+  m_Name: 'Encounter_04 03 [skeleton]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1374714398
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374714397}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 19.355034, y: 4.975652, z: 14.049669}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1374714399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374714397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: skeleton
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1374802712
 GameObject:
   m_ObjectHideFlags: 0
@@ -450057,6 +451459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -452280,7 +453683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1391693926
 RectTransform:
   m_ObjectHideFlags: 0
@@ -456737,6 +458140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: sand
   isEnemy: 0
@@ -460612,6 +462016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: skeleton
   isEnemy: 1
@@ -460627,7 +462032,6 @@ MonoBehaviour:
   - combat
   - animator#pr:1
   - realcol#val:0.2
-  - info
   - rand_move
   addedInvLoot: 
   addedInv: []
@@ -462851,6 +464255,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1424105039}
   m_CullTransparentMesh: 1
+--- !u!1 &1424213316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1424213317}
+  - component: {fileID: 1424213318}
+  m_Layer: 0
+  m_Name: 'Encounter_04 06 [kawaii_slime_viking]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1424213317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424213316}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.563194, y: 4.8877096, z: 10.213654}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1424213318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424213316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_viking
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1424249209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -463908,6 +465377,71 @@ SortingGroup:
   m_SortingOrder: 900
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!1 &1433286548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1433286549}
+  - component: {fileID: 1433286550}
+  m_Layer: 0
+  m_Name: 'Encounter_03 07 [kawaii_slime_tall]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1433286549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433286548}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -35.109417, y: 4.86277, z: 10.940846}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1433286550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433286548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_tall
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1433418976
 GameObject:
   m_ObjectHideFlags: 0
@@ -476482,6 +478016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: defence
   isEnemy: 0
@@ -478352,6 +479887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: barracks
   isEnemy: 1
@@ -479160,6 +480696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: militia
   isEnemy: 1
@@ -480625,6 +482162,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1493549163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1493549164}
+  - component: {fileID: 1493549165}
+  m_Layer: 0
+  m_Name: 'BossSpawn 04 [kawaii_slime_metal_helmet]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1493549164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493549163}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -12.355167, y: 6.2653036, z: 26.863766}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1493549165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493549163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_metal_helmet
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1493890150
 GameObject:
   m_ObjectHideFlags: 0
@@ -486855,6 +488457,71 @@ SortingGroup:
   m_SortingOrder: 449
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!1 &1521724867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521724868}
+  - component: {fileID: 1521724869}
+  m_Layer: 0
+  m_Name: 'Encounter_02 04 [kawaii_slime_tall]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1521724868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521724867}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.71843, y: 4.799576, z: -18.308584}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1521724869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521724867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_tall
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1522115760 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7114445824264308892, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -487277,6 +488944,71 @@ MonoBehaviour:
   breathsPerMinute: 14
   horizontalScale: 0.008
   verticalScale: 0.018
+--- !u!1 &1525214506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1525214507}
+  - component: {fileID: 1525214508}
+  m_Layer: 0
+  m_Name: 'Encounter_02 05 [kawaii_slime_bunny]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1525214507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525214506}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.326843, y: 4.814285, z: -15.794754}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1525214508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525214506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_bunny
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1525550907
 GameObject:
   m_ObjectHideFlags: 0
@@ -541488,6 +543220,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612152182}
   m_CullTransparentMesh: 1
+--- !u!1 &1612285135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1612285136}
+  - component: {fileID: 1612285137}
+  m_Layer: 0
+  m_Name: 'BossSpawn 02 [kawaii_slime_crown_king]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1612285136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612285135}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.5013378, y: 6.1992188, z: 29.71714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1612285137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612285135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_crown_king
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1612660954
 GameObject:
   m_ObjectHideFlags: 0
@@ -543214,6 +545011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: apple
   isEnemy: 0
@@ -544381,6 +546179,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625185225}
   m_CullTransparentMesh: 1
+--- !u!1 &1625228975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1625228976}
+  - component: {fileID: 1625228977}
+  m_Layer: 0
+  m_Name: 'Encounter_01 04 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1625228976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625228975}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15.560184, y: 4.995209, z: -27.574656}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1625228977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625228975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1625485876
 GameObject:
   m_ObjectHideFlags: 0
@@ -547490,6 +549353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: npc_a
   isEnemy: 0
@@ -552233,6 +554097,71 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GUISpriteRotate
   rotateSpeed: 1
+--- !u!1 &1652260764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1652260765}
+  - component: {fileID: 1652260766}
+  m_Layer: 0
+  m_Name: 'Encounter_02 - wolves clearing [kawaii_slime_bunny]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1652260765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652260764}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.16821, y: 4.811393, z: -13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1652260766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652260764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_bunny
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1652496134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -558091,6 +560020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: shtab
   isEnemy: 0
@@ -560294,6 +562224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: hospital
   isEnemy: 0
@@ -560872,6 +562803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: skeleton_archer
   isEnemy: 1
@@ -562447,6 +564379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: apple
   isEnemy: 0
@@ -563952,6 +565885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: raid_bear
   id: bear_grizzly
   isEnemy: 1
@@ -567359,6 +569293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: insect
   isEnemy: 1
@@ -572202,6 +574137,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726462705}
   m_CullTransparentMesh: 1
+--- !u!1 &1726654079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1726654080}
+  - component: {fileID: 1726654081}
+  m_Layer: 0
+  m_Name: 'Encounter_05 02 [kawaii_slime_leaf]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1726654080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726654079}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.396008, y: 4.8917103, z: -11.822081}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1726654081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726654079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_leaf
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1727218520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -575118,6 +577118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: raid_snail
   id: snail_conch
   isEnemy: 1
@@ -579706,6 +581707,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6737638780115793242, guid: 76502fe9f23eee74f961ec0bb3f50b0f, type: 3}
   m_PrefabInstance: {fileID: 1758277036}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1758660656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1758660657}
+  - component: {fileID: 1758660658}
+  m_Layer: 0
+  m_Name: 'Encounter_01 06 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1758660657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758660656}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.905302, y: 5.072242, z: -23.38786}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1758660658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758660656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1758734698
 GameObject:
   m_ObjectHideFlags: 0
@@ -581064,6 +583130,71 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3488997259818878306, guid: c1368479421b7be48a8088d9a68ef313, type: 3}
   m_PrefabInstance: {fileID: 1763770470}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1764024237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1764024238}
+  - component: {fileID: 1764024239}
+  m_Layer: 0
+  m_Name: 'Encounter_02 03 [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1764024238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764024237}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -32.33833, y: 4.8986354, z: -10.722659}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1764024239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764024237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1764777159
 GameObject:
   m_ObjectHideFlags: 0
@@ -597718,6 +599849,71 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1705512705438301523, guid: 33616002b66e0224499fefa36f153163, type: 3}
   m_PrefabInstance: {fileID: 1825059447}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1825361760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1825361761}
+  - component: {fileID: 1825361762}
+  m_Layer: 0
+  m_Name: 'Encounter_01 03 [kawaii_slime_tall]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1825361761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825361760}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.595115, y: 4.9090834, z: -28.060555}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1825361762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825361760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_tall
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1825834853
 GameObject:
   m_ObjectHideFlags: 0
@@ -602159,6 +604355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: goldmine
   isEnemy: 0
@@ -612000,6 +614197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -613005,6 +615203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -615966,6 +618165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -616863,6 +619063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: chest
   isEnemy: 1
@@ -620932,6 +623133,71 @@ SortingGroup:
   m_SortingOrder: 990
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!1 &1892535702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1892535703}
+  - component: {fileID: 1892535704}
+  m_Layer: 0
+  m_Name: 'Encounter_05 06 [kawaii_slime_bunny]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1892535703
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892535702}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.74828, y: 4.9186516, z: -19.209312}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1892535704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892535702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_bunny
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1892543654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -625213,6 +627479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: house
   isEnemy: 0
@@ -627408,6 +629675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: expl_barrel
   isEnemy: 1
@@ -629335,6 +631603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: bird_snow
   isEnemy: 1
@@ -632656,6 +634925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: insect
   isEnemy: 1
@@ -635737,6 +638007,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1948034752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1948034753}
+  - component: {fileID: 1948034754}
+  m_Layer: 0
+  m_Name: 'Encounter_03 - mushroom grove [kawaii_slime_sprout]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1948034753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948034752}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -29.16821, y: 4.892726, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948034754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948034752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_sprout
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1948587609
 GameObject:
   m_ObjectHideFlags: 0
@@ -639104,6 +641439,71 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.865551, y: 0.61185324, z: 0.8627424}
   m_Center: {x: 0.026731491, y: 0.30592662, z: -0.009420872}
+--- !u!1 &1960478820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960478821}
+  - component: {fileID: 1960478822}
+  m_Layer: 0
+  m_Name: 'Encounter_01 - camp [kawaii_slime_common]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1960478821
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960478820}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.16821, y: 5.036307, z: -25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1960478822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960478820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_common
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1001 &1961465247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -641219,6 +643619,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4317599589680044138, guid: c096ead607ad7ae4db56fc70fad7548f, type: 3}
   m_PrefabInstance: {fileID: 1968824848}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1969135796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969135797}
+  - component: {fileID: 1969135798}
+  m_Layer: 0
+  m_Name: 'Encounter_03 02 [kawaii_slime_sprout]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1969135797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969135796}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -27.308918, y: 4.93197, z: 8.350826}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1969135798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969135796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_sprout
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1969231235
 GameObject:
   m_ObjectHideFlags: 0
@@ -643107,6 +645572,71 @@ MonoBehaviour:
   addVal: 0
   isButton: 0
   closeObj: {fileID: 0}
+--- !u!1 &1976515102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1976515103}
+  - component: {fileID: 1976515104}
+  m_Layer: 0
+  m_Name: 'Encounter_02 02 [kawaii_slime_bunny]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1976515103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976515102}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -23.173908, y: 4.853107, z: -10.651556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1976515104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976515102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_bunny
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &1977188665
 GameObject:
   m_ObjectHideFlags: 0
@@ -646012,6 +648542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: tree
   isEnemy: 0
@@ -647014,6 +649545,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6281328544624876707, guid: 2dc850ff2e0dab24ebcbcf3473cb9d0b, type: 3}
   m_PrefabInstance: {fileID: 1990728562}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1990785564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1990785565}
+  m_Layer: 0
+  m_Name: EnemyRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1990785565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990785564}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.16821, y: -4.18197, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1960478821}
+  - {fileID: 1652260765}
+  - {fileID: 1948034753}
+  - {fileID: 851457214}
+  - {fileID: 915674236}
+  - {fileID: 621182698}
+  - {fileID: 472827970}
+  - {fileID: 1825361761}
+  - {fileID: 1625228976}
+  - {fileID: 793345373}
+  - {fileID: 1758660657}
+  - {fileID: 1976515103}
+  - {fileID: 1764024238}
+  - {fileID: 1521724868}
+  - {fileID: 1525214507}
+  - {fileID: 1175150473}
+  - {fileID: 1276110198}
+  - {fileID: 1969135797}
+  - {fileID: 198374823}
+  - {fileID: 799319378}
+  - {fileID: 783481690}
+  - {fileID: 2092979791}
+  - {fileID: 1433286549}
+  - {fileID: 460541059}
+  - {fileID: 1374714398}
+  - {fileID: 883139724}
+  - {fileID: 122233668}
+  - {fileID: 1424213317}
+  - {fileID: 1304759917}
+  - {fileID: 1726654080}
+  - {fileID: 2027251087}
+  - {fileID: 496010750}
+  - {fileID: 822300911}
+  - {fileID: 1892535703}
+  - {fileID: 121394051}
+  - {fileID: 1612285136}
+  - {fileID: 581723246}
+  - {fileID: 1493549164}
+  - {fileID: 105652696}
+  - {fileID: 57160677}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1992095246
 GameObject:
   m_ObjectHideFlags: 0
@@ -657786,6 +660388,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1277917039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2027251086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2027251087}
+  - component: {fileID: 2027251088}
+  m_Layer: 0
+  m_Name: 'Encounter_05 03 [kawaii_slime_sprout]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2027251087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027251086}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 14.698855, y: 4.8505015, z: -19.652807}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2027251088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027251086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_sprout
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &2027277325 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7697588235418406762, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -668674,6 +671341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: trap
   isEnemy: 1
@@ -673434,6 +676102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: gold
   isEnemy: 0
@@ -674813,6 +677482,71 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.9197176, y: 2.5697923, z: 3.583451}
   m_Center: {x: 0.12365532, y: 1.4739523, z: 0.42530262}
+--- !u!1 &2092979790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2092979791}
+  - component: {fileID: 2092979792}
+  m_Layer: 0
+  m_Name: 'Encounter_03 06 [kawaii_slime_leaf]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2092979791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092979790}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -22.560158, y: 5.069223, z: 11.779406}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990785565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2092979792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092979790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd637418ea900f6479a1449215426427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::AddedObject
+  toInjectBuyable: {fileID: 0}
+  useDefault: 1
+  overID: 
+  id: kawaii_slime_leaf
+  isEnemy: 1
+  isNeutral: 0
+  amount: 1
+  level: 1
+  addedVis: []
+  addedInvLoot: 
+  addedInv: []
+  addedPars: []
+  addedMeta: []
+  reqPars: []
+  asMainViz: 0
+  recreateViz: 1
+  markSkillsAsReq: 0
+  randomizeItemsParams: 0
+  toActivate: []
+  visMain: {fileID: 0}
+  extraMonsters: []
 --- !u!1 &2093017314
 GameObject:
   m_ObjectHideFlags: 0
@@ -678756,6 +681490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: barrel
   isEnemy: 1
@@ -681427,6 +684162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Minimus::AddedObject
   toInjectBuyable: {fileID: 0}
+  useDefault: 0
   overID: 
   id: tree
   isEnemy: 0
@@ -710831,3 +713567,4 @@ SceneRoots:
   - {fileID: 225178613}
   - {fileID: 576361582}
   - {fileID: 2050913815}
+  - {fileID: 1990785565}

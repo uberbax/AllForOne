@@ -8,6 +8,7 @@ public class XDdrop : ComponentBehavior
     RObj mon;
 
     private bool withHit = false;
+    public static bool isCameraFace = false;
 
     public RObj deathFrom;
     internal void Bind(RObj owner) => mon = owner;
@@ -66,7 +67,7 @@ public class XDdrop : ComponentBehavior
                         */
                 }
 
-                if (MainStates.isCameraFace)
+                if (MainStates.isCameraFace || isCameraFace)
                 {
                     a.visMain.transform.forward = -Camera.main.transform.forward;
                 }
@@ -92,6 +93,8 @@ public class XDdrop : ComponentBehavior
                         a.AddViz("shiny");
                         if (beam)
                         { 
+                            //vismain?
+                            beam.transform.position = a.main.transform.GetChild(0).position;
                             UtilsControl.CalculateLayer(beam.gameObject);
                         }
                         if (MainStates.isCameraFace && beam)

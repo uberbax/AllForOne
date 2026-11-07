@@ -7,7 +7,8 @@ using UnityEngine.AI;
 public class AddedObject : MonoBehaviour
 {
     public Buyable toInjectBuyable;
-    
+
+    public bool useDefault = false;
     public string overID = "";
     public string id = "";
     
@@ -74,6 +75,14 @@ public class AddedObject : MonoBehaviour
         var hl = addedVis;
         if (MainSwitcher.instance != null)
             hl.AddRange(MainSwitcher.instance.extraAddOverrides);
+
+        if (useDefault)
+        {
+            List<string> defo = new List<string> { "coll#val:0.5", "dmg_track","flash","death","drop","combat",
+                "animator#pr:1","realcol#val:0.2","rand_move"};
+            hl.AddRange(defo);
+        }
+        
         
         foreach (var v in hl)
         {

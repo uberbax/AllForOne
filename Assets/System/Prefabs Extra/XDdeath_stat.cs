@@ -21,7 +21,9 @@ public class XDdeath_stat : ComponentBehavior
         mon = t0.obj;
         head = mon.visMain.transform.Find("head");
 
-        //Debug.Log(mon.deathStat.Key);
+        if (head == null) 
+            Debug.Log(transform.parent.name + " " + mon.deathStat.Key);
+        
         stat.sprite = ResourceHolder.instance.pars[mon.deathStat.Key];
         statText.text = mon.deathStat.Value.ToString();
         stat.transform.position = head.position;

@@ -20,7 +20,8 @@ public class SkillExecutor : MonoBehaviour
     public PathChecker movePath;
 
     public static float timeWait = 0.5f;
-
+    public static bool rotateTowards = false;
+    
     private void Awake()
     {
         instance = this;
@@ -315,6 +316,13 @@ public class SkillExecutor : MonoBehaviour
             }
         }
 
+        if (rotateTowards && targ[0].tags[0] != "player")
+        {
+            var vv = targ[0].Position - who.Position;
+            vv.y = 0;
+            who.main.transform.forward = vv;
+        }
+        
         if (skl.dbObj.spawn != "")
         {
             var gg = Instantiate(ResourceHolder.instance.skillsWorld[skl.dbObj.spawn], who.main.transform);
