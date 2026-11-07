@@ -61,6 +61,8 @@ public class ResourceHolder : MonoBehaviour
     [Header("Default slashes")]
     public IntObjectDictionary defaultSlashes;
     
+    [Header("Extra skills")]
+    public StringObjectDictionary extraSkills;
     public Sprite GetDiaAva(string what)
     {
         if (what == "") return null;

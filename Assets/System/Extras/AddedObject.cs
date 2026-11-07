@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,8 @@ public class AddedObject : MonoBehaviour
     public bool isNeutral;
     public int amount = 1;
     public int level = 1;
+    [Min(0), Tooltip("Respawn delay in game seconds for a point that recreates its visual. Zero disables respawn.")]
+    public float respawnDelaySeconds;
     
     public List<string> addedVis = new List<string>();
     //to do it as lootset
@@ -44,22 +47,30 @@ public class AddedObject : MonoBehaviour
     public List<Bon> extraMonsters = new List<Bon>();
 
     private bool inst = false;
-    public void Inst()
-    {
-        if (!inst)
-        {
-            Start();
-            inst = true;
-        }
-    }
+    private RObj spawnedUnit;
+    private float respawnAt = -1f;
+    private Vector3 deathPosition;
+    private GameObject corpse;
+    private Coroutine respawnRoutine;
+    private TextMeshPro respawnTimer;
     
-    void Start()
+    public void Inst() => Spawn();
+
+    private void Start() => Spawn();
+
+    private bool CanSpawn() =>
+        ConfigLoader.parseEnded && MainStates.instance != null &&
+        MainStates.instance.all.ContainsKey("main_player") && DatabaseAll.instance != null &&
+        (!recreateViz || ResourceHolder.instance != null);
+
+    private void Spawn()
     {
-        if (inst) return;
+        if (inst || respawnAt >= 0f) return;
         
-        if (!ConfigLoader.parseEnded || !MainStates.instance.all.ContainsKey("main_player"))
+        if (!CanSpawn())
         {
-            Invoke("Start", 0.1f);
+            if (!IsInvoking(nameof(Spawn)))
+                Invoke(nameof(Spawn), 0.1f);
             return;
         }
 
@@ -74,7 +85,7 @@ public class AddedObject : MonoBehaviour
         
         var r = DatabaseAll.instance.CreateAny(id, isEnemy, amount, nn, overID, asMainViz ? gameObject : null, level:level);
         
-        var hl = addedVis;
+        var hl = new List<string>(addedVis);
         if (MainSwitcher.instance != null)
             hl.AddRange(MainSwitcher.instance.extraAddOverrides);
 
@@ -168,6 +179,8 @@ public class AddedObject : MonoBehaviour
         }
 
         r.extraMonsters = extraMonsters;
+        spawnedUnit = r;
+        r.fromRef = this;
         inst = true;
         
         if (onAdd != null)
@@ -193,8 +206,6 @@ public class AddedObject : MonoBehaviour
             toInjectBuyable.rReward = r;
         }
 
-        r.fromRef = this;
-        
         if (MainSwitcher.instance != null)
             MainSwitcher.instance.OnAdd(r);
     }
@@ -202,7 +213,79 @@ public class AddedObject : MonoBehaviour
 
     public void UnitDead()
     {
-        
+        if (spawnedUnit == null || respawnAt >= 0f)
+            return;
+
+        var dead = spawnedUnit;
+        spawnedUnit = null;
+        if (respawnDelaySeconds <= 0f || !recreateViz || asMainViz || visMain != null)
+            return;
+
+        corpse = dead.main;
+        deathPosition = corpse != null ? corpse.transform.position : dead.Position;
+        respawnAt = Time.time + respawnDelaySeconds;
+        if (isActiveAndEnabled)
+            respawnRoutine = StartCoroutine(Respawn());
+    }
+
+    private IEnumerator Respawn()
+    {
+        var timer = new GameObject("Respawn timer", typeof(RectTransform));
+        timer.layer = gameObject.layer;
+        timer.transform.SetParent(transform, false);
+        respawnTimer = timer.AddComponent<TextMeshPro>();
+        respawnTimer.alignment = TextAlignmentOptions.Center;
+        respawnTimer.fontSize = 3.5f;
+        respawnTimer.rectTransform.sizeDelta = new Vector2(3f, 1f);
+        int displayedSeconds = -1;
+
+        // Wait at least one frame so the death handler can unregister the old unit.
+        do
+        {
+            var camera = Camera.main;
+            var up = camera != null ? camera.transform.up : Vector3.up;
+            timer.transform.position = deathPosition + up * .65f;
+            if (camera != null)
+                timer.transform.rotation = camera.transform.rotation;
+
+            int seconds = Mathf.Max(0, Mathf.CeilToInt(respawnAt - Time.time));
+            if (seconds != displayedSeconds)
+            {
+                respawnTimer.text = $"{seconds / 60:00}:{seconds % 60:00}";
+                displayedSeconds = seconds;
+            }
+            yield return null;
+        } while (Time.time < respawnAt || corpse != null || !CanSpawn());
+
+        RemoveRespawnTimer();
+        respawnRoutine = null;
+        corpse = null;
+        respawnAt = -1f;
+        inst = false;
+        Spawn();
+    }
+
+    private void OnEnable()
+    {
+        if (respawnAt >= 0f && respawnRoutine == null)
+            respawnRoutine = StartCoroutine(Respawn());
+    }
+
+    private void OnDisable()
+    {
+        if (respawnRoutine != null)
+        {
+            StopCoroutine(respawnRoutine);
+            respawnRoutine = null;
+        }
+        RemoveRespawnTimer();
+    }
+
+    private void RemoveRespawnTimer()
+    {
+        if (respawnTimer != null)
+            Destroy(respawnTimer.gameObject);
+        respawnTimer = null;
     }
     
 }

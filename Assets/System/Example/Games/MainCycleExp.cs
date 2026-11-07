@@ -154,6 +154,7 @@ public class MainCycleExp : MonoBehaviour
     public Transform playerPos;
     public Transform basePos;
 
+    public List<string> iniSKills = new List<string>();
 
     public void SkipTurn()
     {
@@ -353,16 +354,19 @@ public class MainCycleExp : MonoBehaviour
         //equipping basic melee
         if (!succLoad)
         {
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_melee", Value = 1 } });
-            var skl = main.inventory.Find(x => x.dbObj.ID == "basic_melee");
+            List<string> bSkills = new List<string>{"basic_melee", "basic_harm", "crit_strike"};
+            if (iniSKills.Count > 0) bSkills = iniSKills;
+            
+            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[0], Value = 1 } });
+            var skl = main.inventory.Find(x => x.dbObj.ID == bSkills[0]);
             MainStates.instance.Equip(main, skl, 50);
 
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "basic_harm", Value = 1 } });
-            skl = main.inventory.Find(x => x.dbObj.ID == "basic_harm");
+            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[1], Value = 1 } });
+            skl = main.inventory.Find(x => x.dbObj.ID == bSkills[1]);
             MainStates.instance.Equip(main, skl, 51);
 
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "crit_strike", Value = 1 } });
-            skl = main.inventory.Find(x => x.dbObj.ID == "crit_strike");
+            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[2], Value = 1 } });
+            skl = main.inventory.Find(x => x.dbObj.ID == bSkills[2]);
             MainStates.instance.Equip(main, skl, 52);
         }
 

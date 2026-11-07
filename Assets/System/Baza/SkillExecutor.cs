@@ -281,7 +281,11 @@ public class SkillExecutor : MonoBehaviour
         
         //animation attack
         if (who.visuals.ContainsKey("animator") && overPos == default)
-            who.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
+        {
+            if (skl.dbObj.pars["anim_type"] > 0)
+                DoCustom(who, skl, targ[0]);
+            else who.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
+        }
 
         if (ll != null && ll.angle == 45) spellType = 2;
         if (overPos == default)
@@ -879,6 +883,11 @@ public class SkillExecutor : MonoBehaviour
                 
             }
         }
+    }
+
+    public void DoCustom(RObj who, RObj skl, RObj targ)
+    {
+        
     }
 }
 

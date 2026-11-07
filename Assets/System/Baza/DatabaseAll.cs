@@ -79,6 +79,8 @@ public class DatabaseAll : MonoBehaviour
             }
             
             o.pars.Add("instant", v.INSTANT);
+            o.pars.Add("anim_type", v.animType);
+            
             o.pars.Add("subtype", MainStates.subtypes["skill"]);
             o.dmgFormula = v.dmgFormula;
             
