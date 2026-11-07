@@ -88,7 +88,7 @@ public class MainStates : MonoBehaviour
     public GameObject highlight;
     public Transform availableMeRoot;
     public Transform availableEnemyRoot;
-    
+    public Transform enemySyncRoot;
     
     public Transform dropContainer;
 

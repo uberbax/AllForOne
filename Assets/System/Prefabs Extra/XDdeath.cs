@@ -38,6 +38,11 @@ public class XDdeath : ComponentBehavior
         mon.RemoveViz("combat");
         Destroy(mon.main.GetComponent<NavMeshAgent>());
 
+        if (mon.fromRef != null)
+        {
+            mon.fromRef.UnitDead();
+        }
+        
         mon.RemoveViz("death_stat");
         var reward = mon.deathStat;
         var state = MainStates.instance;

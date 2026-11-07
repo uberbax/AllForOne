@@ -78,6 +78,9 @@ public class Obj
 //[System.Serializable]
 public class RObj
 {
+    [NonSerialized] 
+    public AddedObject fromRef;
+    
     //?
     public string nm = "";
     

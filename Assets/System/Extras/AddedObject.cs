@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class AddedObject : MonoBehaviour
 {
+    public string uniqueID = "";
+    
     public Buyable toInjectBuyable;
 
     public bool useDefault = false;
@@ -190,10 +192,17 @@ public class AddedObject : MonoBehaviour
         {
             toInjectBuyable.rReward = r;
         }
+
+        r.fromRef = this;
         
         if (MainSwitcher.instance != null)
             MainSwitcher.instance.OnAdd(r);
     }
 
+
+    public void UnitDead()
+    {
+        
+    }
     
 }
