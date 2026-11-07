@@ -34,6 +34,7 @@ public class XDdeath_stat : ComponentBehavior
 
     private void Update()
     {
+        if (head == null) return;
         stat.transform.position = head.position;
         transform.forward = Camera.main.transform.forward;
         stat.transform.localPosition += new Vector3(dx, dy, 0);
