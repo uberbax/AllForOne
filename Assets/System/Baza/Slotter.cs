@@ -6,7 +6,8 @@ public class Slotter : MonoBehaviour
     public List<Transform> slots = new List<Transform>();
 
     private const float RefreshInterval = 0.2f;
-    private readonly List<(GameObject prefab, GameObject instance)> spawned = new();
+    private const float FollowTime = 0.1f;
+    private readonly List<(Transform slot, GameObject prefab, GameObject instance)> spawned = new();
     private ObjHolder holder;
     private float nextRefresh;
 
@@ -17,12 +18,28 @@ public class Slotter : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Time.unscaledTime < nextRefresh) return;
-        RefreshSlots();
+        if (Time.unscaledTime >= nextRefresh)
+            RefreshSlots();
+
+        float blend = 1f - Mathf.Exp(-Time.deltaTime / FollowTime);
+        foreach (var entry in spawned)
+        {
+            if (entry.instance == null || entry.slot == null) continue;
+
+            var visual = entry.instance.transform;
+            var prefab = entry.prefab.transform;
+            var position = entry.slot.TransformPoint(prefab.localPosition);
+            var rotation = entry.slot.rotation * prefab.localRotation;
+            visual.SetPositionAndRotation(
+                Vector3.Lerp(visual.position, position, blend),
+                Quaternion.Slerp(visual.rotation, rotation, blend));
+            visual.localScale = Vector3.Scale(entry.slot.lossyScale, prefab.localScale);
+        }
     }
 
     public void RefreshSlots()
     {
+        if (!isActiveAndEnabled) return;
         nextRefresh = Time.unscaledTime + RefreshInterval;
 
         if (holder == null) holder = GetComponentInParent<ObjHolder>();
@@ -63,16 +80,30 @@ public class Slotter : MonoBehaviour
         var current = spawned[index];
         if (current.instance != null)
         {
-            if (current.prefab == prefab && current.instance.transform.parent == slot) return;
+            if (current.prefab == prefab && current.slot == slot) return;
             Destroy(current.instance);
         }
 
-        spawned[index] = prefab != null ? (prefab, Instantiate(prefab, slot, false)) : default;
+        spawned[index] = default;
+        if (prefab == null) return;
+
+        var position = slot.TransformPoint(prefab.transform.localPosition);
+        var rotation = slot.rotation * prefab.transform.localRotation;
+        var instance = Instantiate(prefab, position, rotation);
+        if (instance.scene != gameObject.scene)
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(instance, gameObject.scene);
+        instance.transform.localScale = Vector3.Scale(slot.lossyScale, prefab.transform.localScale);
+        spawned[index] = (slot, prefab, instance);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         foreach (var entry in spawned)
-            if (entry.instance != null) Destroy(entry.instance);
+        {
+            if (entry.instance == null) continue;
+            entry.instance.SetActive(false);
+            Destroy(entry.instance);
+        }
+        spawned.Clear();
     }
 }
