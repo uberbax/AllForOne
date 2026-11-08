@@ -12,6 +12,11 @@ public class Slotter : MonoBehaviour
     [SerializeField, Range(1.02f, 1.35f)] private float chainSlack = 1.13f;
     [SerializeField, Min(0.01f)] private float chainLinkPitch = 0.06f;
 
+    [Header("Idle sway")]
+    [SerializeField, Min(0f)] private float idleBobHeight = 0.035f;
+    [SerializeField, Min(0f)] private float idleSwayWidth = 0.012f;
+    [SerializeField, Min(0f)] private float idleSwayFrequency = 0.75f;
+
     private const float RefreshInterval = 0.2f;
     private const float FollowTime = 0.1f;
     private const float StrikeTime = 0.18f;
@@ -35,8 +40,10 @@ public class Slotter : MonoBehaviour
             RefreshSlots();
 
         float blend = 1f - Mathf.Exp(-Time.deltaTime / FollowTime);
-        foreach (var entry in spawned)
+        float idlePhase = Time.time * idleSwayFrequency * (2f * Mathf.PI);
+        for (int i = 0; i < spawned.Count; i++)
         {
+            var entry = spawned[i];
             if (entry == null || entry.instance == null || entry.slot == null) continue;
 
             var visual = entry.instance.transform;
@@ -48,7 +55,10 @@ public class Slotter : MonoBehaviour
                 UpdateStrike(entry, ref position, ref rotation);
             else
             {
-                position = Vector3.Lerp(visual.position, position, blend);
+                float phase = idlePhase + i * (Mathf.PI * 0.75f);
+                var idleOffset = new Vector3(Mathf.Cos(phase) * idleSwayWidth,
+                    Mathf.Sin(phase) * idleBobHeight, 0f);
+                position = Vector3.Lerp(visual.position, position + transform.TransformVector(idleOffset), blend);
                 rotation = Quaternion.Slerp(visual.rotation, rotation, blend);
             }
 
