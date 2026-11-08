@@ -356,18 +356,15 @@ public class MainCycleExp : MonoBehaviour
         {
             List<string> bSkills = new List<string>{"basic_melee", "basic_harm", "crit_strike"};
             if (iniSKills.Count > 0) bSkills = iniSKills;
+
+            for (int i = 0; i < bSkills.Count; i++)
+            {
+                MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[i], Value = 1 } });
+                var skl = main.inventory.Find(x => x.dbObj.ID == bSkills[i]);
+                MainStates.instance.Equip(main, skl, 50 + i);
+                MainStates.instance.mainPlayer.actSkills.Add(skl);
+            }
             
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[0], Value = 1 } });
-            var skl = main.inventory.Find(x => x.dbObj.ID == bSkills[0]);
-            MainStates.instance.Equip(main, skl, 50);
-
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[1], Value = 1 } });
-            skl = main.inventory.Find(x => x.dbObj.ID == bSkills[1]);
-            MainStates.instance.Equip(main, skl, 51);
-
-            MainStates.instance.AddItems(new List<Bon> { new Bon { Key = bSkills[2], Value = 1 } });
-            skl = main.inventory.Find(x => x.dbObj.ID == bSkills[2]);
-            MainStates.instance.Equip(main, skl, 52);
         }
 
         //MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });

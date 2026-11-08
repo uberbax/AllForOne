@@ -280,11 +280,12 @@ public class SkillExecutor : MonoBehaviour
             who.SetScale(target.Position.x > who.Position.x);
         
         //animation attack
-        if (who.visuals.ContainsKey("animator") && overPos == default)
+        if (overPos == default)
         {
             if (skl.dbObj.pars["anim_type"] > 0)
                 DoCustom(who, skl, targ[0]);
-            else who.visuals["animator"].GetComponentInChildren<XDanimator>().SetState("attack");
+            else if (who.visuals.TryGetValue("animator", out var animator))
+                animator.GetComponentInChildren<XDanimator>().SetState("attack");
         }
 
         if (ll != null && ll.angle == 45) spellType = 2;
@@ -887,7 +888,29 @@ public class SkillExecutor : MonoBehaviour
 
     public void DoCustom(RObj who, RObj skl, RObj targ)
     {
-        
+        if (targ?.main == null ||
+            !who.visuals.TryGetValue("vis_main", out var casterVisual) || casterVisual == null) return;
+
+        var slotter = casterVisual.GetComponentInChildren<Slotter>();
+        if (slotter == null) return;
+
+        var target = targ.main.transform;
+        var point = target.position;
+        if (targ.visuals.TryGetValue("vis_main", out var targetVisual) && targetVisual != null)
+        {
+            var body = targetVisual.transform;
+            var head = body.Find("head");
+            var legs = body.Find("legs");
+            if (head != null && legs != null)
+                point = (head.position + legs.position) * 0.5f;
+            else
+            {
+                var renderer = body.GetComponentInChildren<Renderer>();
+                point = renderer != null ? renderer.bounds.center : body.position;
+            }
+        }
+
+        slotter.Strike(skl.dbObj.ID, target, point);
     }
 }
 
