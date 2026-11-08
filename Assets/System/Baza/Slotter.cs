@@ -5,6 +5,13 @@ public class Slotter : MonoBehaviour
 {
     public List<Transform> slots = new List<Transform>();
 
+    [Header("Skill chains")]
+    [SerializeField] private Mesh chainLinkMesh;
+    [SerializeField] private Material chainLinkMaterial;
+    [SerializeField] private List<Transform> chainBackAnchors = new();
+    [SerializeField, Range(1.02f, 1.35f)] private float chainSlack = 1.13f;
+    [SerializeField, Min(0.01f)] private float chainLinkPitch = 0.06f;
+
     private const float RefreshInterval = 0.2f;
     private const float FollowTime = 0.1f;
     private const float StrikeTime = 0.18f;
@@ -46,6 +53,13 @@ public class Slotter : MonoBehaviour
             }
 
             visual.SetPositionAndRotation(position, rotation);
+            if (entry.chain != null && entry.backAnchor != null)
+            {
+                float scale = Mathf.Max(0.01f, Mathf.Abs(transform.lossyScale.y));
+                entry.chain.Simulate(entry.backAnchor.position, visual.position,
+                    entry.chainRestLength * scale, Time.deltaTime);
+                entry.chain.Draw(chainLinkMesh, chainLinkMaterial, transform, chainLinkPitch * scale);
+            }
         }
     }
 
@@ -196,7 +210,7 @@ public class Slotter : MonoBehaviour
         if (instance.scene != gameObject.scene)
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(instance, gameObject.scene);
         instance.transform.localScale = Vector3.Scale(slot.lossyScale, prefab.transform.localScale);
-        spawned[index] = new SlotVisual
+        var entry = new SlotVisual
         {
             id = id,
             slot = slot,
@@ -204,6 +218,18 @@ public class Slotter : MonoBehaviour
             instance = instance,
             localTip = GetLocalTip(prefab)
         };
+        if (chainLinkMesh != null && chainLinkMaterial != null && index < chainBackAnchors.Count)
+        {
+            entry.backAnchor = chainBackAnchors[index];
+            if (entry.backAnchor != null)
+            {
+                float scale = Mathf.Max(0.01f, Mathf.Abs(transform.lossyScale.y));
+                float distance = Vector3.Distance(entry.backAnchor.position, position) / scale;
+                entry.chainRestLength = Mathf.Max(0.06f, distance * chainSlack);
+                entry.chain = new SlotSkillChain();
+            }
+        }
+        spawned[index] = entry;
     }
 
     private void OnDisable()
@@ -225,6 +251,9 @@ public class Slotter : MonoBehaviour
         public GameObject instance;
         public Vector3 localTip;
         public StrikeMotion strike;
+        public Transform backAnchor;
+        public float chainRestLength;
+        public SlotSkillChain chain;
     }
 
     private sealed class StrikeMotion
