@@ -13,7 +13,7 @@ public static class PubRouletteValidation
 {
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\pub-roulette";
     private const BindingFlags Fields=BindingFlags.NonPublic|BindingFlags.Instance;
-    [InitializeOnLoadMethod]private static void Init(){if(File.Exists(Work+"/validate.request"))EditorApplication.delayCall+=Run;}
+    private static void Init(){if(File.Exists(Work+"/validate.request"))EditorApplication.delayCall+=Run;}
     private static void Check(bool condition,string message){if(!condition)throw new InvalidOperationException(message);}
     private static object Get(object target,string name)=>target.GetType().GetField(name,Fields).GetValue(target);
     private static void Set(object target,string name,object value)=>target.GetType().GetField(name,Fields).SetValue(target,value);

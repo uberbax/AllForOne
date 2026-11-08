@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -16,7 +16,7 @@ public static class LootBeamBuilder
     static readonly string[] Colors={"White","Green","Blue","Violet","Orange","Red"};
     static readonly string[] Names={"Common","Uncommon","Rare","Epic","Legendary","Mythic"};
     static readonly Color[] Tints={Color.white,new Color(.051f,1,0),new Color(0,.087f,1),new Color(.543f,0,1),new Color(1,.949f,0),new Color(1,.083f,0)};
-    [InitializeOnLoadMethod] static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
+    static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
     static void Requested()
     {
         if(EditorApplication.isPlaying) return;

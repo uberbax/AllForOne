@@ -10,7 +10,7 @@ using UnityEngine;
 public static class RumbleSkillsValidation
 {
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\rumble-skills";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {
         if(File.Exists(Work+"/validate.request"))EditorApplication.delayCall+=Run;
     }

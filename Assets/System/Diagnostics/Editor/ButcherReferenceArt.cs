@@ -14,7 +14,8 @@ public static class ButcherReferenceArt
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\reference-art";
     const string Art="Assets/System/Art/ButcherReference/";
     const string Ground="Assets/Scenes/EvergreenRPG/";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/audit.request"))EditorApplication.delayCall+=Audit;if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;if(File.Exists(Work+"/plants.request"))EditorApplication.delayCall+=LightweightPlants;if(File.Exists(Work+"/refine.request"))EditorApplication.delayCall+=Refine;if(File.Exists(Work+"/final.request"))EditorApplication.delayCall+=FinalPalette;}
+    [MenuItem("Tools/Diagnostics/Manual Requests/Butcher art")]
+    static void Init(){if(File.Exists(Work+"/audit.request"))EditorApplication.delayCall+=Audit;if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;if(File.Exists(Work+"/plants.request"))EditorApplication.delayCall+=LightweightPlants;if(File.Exists(Work+"/refine.request"))EditorApplication.delayCall+=Refine;if(File.Exists(Work+"/final.request"))EditorApplication.delayCall+=FinalPalette;}
     static void Audit()
     {
         try

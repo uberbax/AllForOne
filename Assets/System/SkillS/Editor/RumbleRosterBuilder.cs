@@ -16,7 +16,7 @@ public static class RumbleRosterBuilder
     public const string MonsterFolder="Assets/System/SkillS/Monsters";
     [Serializable]public class Entry { public string id,prefab,basic,other,reason; }
     [Serializable]public class Selection { public Entry[] entries; }
-    [InitializeOnLoadMethod]private static void Init()
+    private static void Init()
     {
         if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Inspect;
         if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;

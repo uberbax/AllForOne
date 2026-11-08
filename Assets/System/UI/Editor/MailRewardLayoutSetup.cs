@@ -12,7 +12,6 @@ public static class MailRewardLayoutSetup
     private const string PrefabPath = "Assets/System/UI/Prefabs/MailItem.prefab";
     private const string Work = "C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/work";
 
-    [InitializeOnLoadMethod]
     private static void RunRequested()
     {
         if (!File.Exists(Work + "/mail-layout.request")) return;

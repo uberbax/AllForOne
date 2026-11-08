@@ -8,15 +8,21 @@ using UnityEngine;
 public static class PlagueTrailPlayCheck
 {
     const string Flag="Assets/System/Effects/Editor/.plague-play-check";
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         EditorApplication.playModeStateChanged += state=> {
             if(state==PlayModeStateChange.EnteredPlayMode && File.Exists(Flag)) { File.Delete(Flag); Run(); }
         };
     }
     static void Require(bool condition,string message) { if(!condition) throw new Exception(message); }
+    [MenuItem("Tools/Diagnostics/Play Mode Checks/PlagueTrailPlayCheck")]
     static async void Run()
     {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.LogWarning("Enter Play Mode before running this check.");
+            return;
+        }
         PlagueTrail trail=null; GameObject proxy=null; FieldInfo targetField=null;
         try {
             await Task.Delay(2000);

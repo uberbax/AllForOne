@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public static class MobileJoystickFloatingCheck
 {
     const string Flag = "Assets/System/MobileInput/Editor/.floating-test";
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         EditorApplication.playModeStateChanged += state => {
             if (state == PlayModeStateChange.EnteredPlayMode && File.Exists(Flag)) {
@@ -19,8 +19,14 @@ public static class MobileJoystickFloatingCheck
         };
     }
     static void Check(bool condition, string message) { if (!condition) throw new Exception(message); }
+    [MenuItem("Tools/Diagnostics/Play Mode Checks/MobileJoystickFloatingCheck")]
     static async void Run()
     {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.LogWarning("Enter Play Mode before running this check.");
+            return;
+        }
         string result;
         try {
             await Task.Delay(1500);

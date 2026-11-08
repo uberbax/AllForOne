@@ -18,7 +18,7 @@ public static class PartyCampBuilder
     const string Forest="Assets/Layer Lab/2D Minimal World/Pack/Forest/";
     const string FramePath="Assets/GUI Pro-CasualGame/ResourcesData/Sprites/Components/Frame/ItemFrame07_f_White2 1.png";
     static TMP_FontAsset font;static Sprite frame;static Material material;
-    [InitializeOnLoadMethod]static void Init(){if(File.Exists(PartyCampInspector.Work+"/build.request"))EditorApplication.delayCall+=Build;}
+    static void Init(){if(File.Exists(PartyCampInspector.Work+"/build.request"))EditorApplication.delayCall+=Build;}
     static Sprite Sprite(string path)=>AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().FirstOrDefault();
     static void Folder(string name){if(!AssetDatabase.IsValidFolder(Root+"/"+name))AssetDatabase.CreateFolder(Root,name);}
     static RectTransform Rect(string name,Transform parent,Vector2 size,Vector2 pos)

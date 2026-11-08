@@ -11,7 +11,7 @@ public static class FirePackMaterialFix
 {
     private const string Root="Assets/Suriyun/Monster Pack Fire";
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\fire-materials";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {if(File.Exists(Work+"/fix.request"))EditorApplication.delayCall+=Run;}
     [MenuItem("Tools/Diagnostics/Fix Monster Pack Fire Built-in Materials")]
     public static void Run()

@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +13,7 @@ public static class PlagueTrailBuilder
     const string Folder = "Assets/System/Effects/PlagueTrail";
     const string Flag = "Assets/System/Effects/Editor/.plague-build";
     const string ScenePath = "Assets/Scenes/Game_Exp_Rumble.unity";
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         if (File.Exists(Flag)) EditorApplication.delayCall += Requested;
     }

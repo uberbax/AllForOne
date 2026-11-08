@@ -14,7 +14,7 @@ using NavMeshPlus.Extensions;
 public static class ButcherNavMeshCheck
 {
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\butcher-navmesh";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Inspect;if(File.Exists(Work+"/fix.request"))EditorApplication.delayCall+=Fix;}
+    static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Inspect;if(File.Exists(Work+"/fix.request"))EditorApplication.delayCall+=Fix;}
     static string PathOf(Transform t){return t.parent==null?t.name:PathOf(t.parent)+"/"+t.name;}
     static List<NavMeshBuildSource> Sources(NavMeshSurface s){using(var state=new NavMeshBuilderState())return (List<NavMeshBuildSource>)typeof(NavMeshSurface).GetMethod("CollectSources",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(s,new object[]{state});}
     [MenuItem("Tools/Diagnostics/Fix Butcher NavMesh")]

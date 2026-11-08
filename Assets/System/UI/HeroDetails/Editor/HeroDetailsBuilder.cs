@@ -17,7 +17,7 @@ public static class HeroDetailsBuilder
     private static readonly Color Ink = new Color(.035f,.045f,.065f), Card = new Color(.065f,.085f,.12f), Blue = new Color(.16f,.56f,1), Muted = new Color(.61f,.68f,.77f);
     private static TMP_FontAsset font;
     private static Sprite frame;
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     { if (File.Exists(Work + "/build.request")) EditorApplication.delayCall += Build; }
     private static void Set(UnityEngine.Object obj, string name, UnityEngine.Object value)
     { var data = new SerializedObject(obj); data.FindProperty(name).objectReferenceValue = value; data.ApplyModifiedPropertiesWithoutUndo(); }

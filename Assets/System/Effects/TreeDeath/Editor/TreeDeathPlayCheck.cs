@@ -9,10 +9,16 @@ using UnityEngine;
 public static class TreeDeathPlayCheck
 {
     const string Flag="Assets/System/Effects/TreeDeath/Editor/.check-tree-death";
-    [InitializeOnLoadMethod] static void Init(){EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&File.Exists(Flag)){File.Delete(Flag);Run();}};}
+    static void Init(){EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&File.Exists(Flag)){File.Delete(Flag);Run();}};}
     static void Require(bool condition,string message){if(!condition)throw new Exception(message);}
+    [MenuItem("Tools/Diagnostics/Play Mode Checks/TreeDeathPlayCheck")]
     static async void Run()
     {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.LogWarning("Enter Play Mode before running this check.");
+            return;
+        }
         var cleanup=new List<GameObject>();var effects=new List<TreeDeathEffect>();
         try{
             await Task.Delay(1500);

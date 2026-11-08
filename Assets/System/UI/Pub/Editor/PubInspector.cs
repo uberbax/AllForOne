@@ -13,7 +13,7 @@ public static class PubInspector
 {
  public const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\pub";
  public const string Theme="Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Dark/Prefabs/Prefabs~DemoScenes/";
- [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Run;}
+ static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Run;}
  [MenuItem("Tools/UI/Pub/Inspect Theme")]
  public static void Run(){
   if(EditorApplication.isPlaying){File.WriteAllText(Work+"/inspect.txt","NEED_EDIT_MODE");return;}

@@ -13,7 +13,6 @@ public static class PrefabBuildSizeAudit
 {
     private const string Work = "C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/work";
     private const string Target = "Assets/GameDevMarket/FF Heroes/Animation Source/FF Heroes/CAT_KNIGHT.prefab";
-    [InitializeOnLoadMethod]
     private static void Requested()
     {
         if (!File.Exists(Work + "/cat-build-audit.request")) return;

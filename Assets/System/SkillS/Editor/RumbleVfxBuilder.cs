@@ -17,7 +17,7 @@ public static class RumbleVfxBuilder
     [Serializable]public class Recipe { public string id;public Part[] parts;public bool loop,beam; }
     [Serializable]public class Style { public string id,projectile,impact,area,cast,beam,heal,shield; }
     [Serializable]public class Selection { public Recipe[] recipes;public Style[] styles; }
-    [InitializeOnLoadMethod]private static void Init(){if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;}
+    private static void Init(){if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;}
     private static void Folder(string path)
     {
         if(AssetDatabase.IsValidFolder(path))return;

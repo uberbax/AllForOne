@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ public static class PlagueTreeBuilder
         "Assets/Layer Lab/2D Minimal World/Pack/Forest/Nature/ResourcesData/Sprites/Tree",
         "Assets/Layer Lab/2D Minimal-Environment/Environment 1/ResourcesData/Sprites/Tree"
     };
-    [InitializeOnLoadMethod] static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
+    static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
     static void Requested()
     {
         if(EditorApplication.isPlaying) return;

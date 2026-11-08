@@ -21,7 +21,7 @@ public static class PubBuilder
     static readonly Color Ink = new Color(.84f,.83f,.82f), Gold = new Color(.83f,.66f,.42f);
     static TMP_FontAsset body, title;
     static Sprite buttonBg, cardBg, cardBorder, cardInner;
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         if (File.Exists(PubInspector.Work + "/build.request")) EditorApplication.delayCall += Requested;
     }

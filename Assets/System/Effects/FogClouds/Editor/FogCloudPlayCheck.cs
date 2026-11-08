@@ -8,10 +8,16 @@ using UnityEngine;
 public static class FogCloudPlayCheck
 {
     const string Flag="Assets/System/Effects/FogClouds/Editor/.check-area-fog";
-    [InitializeOnLoadMethod] static void Init(){EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&File.Exists(Flag)){File.Delete(Flag);Run();}};}
+    static void Init(){EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&File.Exists(Flag)){File.Delete(Flag);Run();}};}
     static void Require(bool value,string message){if(!value)throw new Exception(message);}
+    [MenuItem("Tools/Diagnostics/Play Mode Checks/FogCloudPlayCheck")]
     static async void Run()
     {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.LogWarning("Enter Play Mode before running this check.");
+            return;
+        }
         GameObject clone=null;
         try{
             await Task.Delay(1500);

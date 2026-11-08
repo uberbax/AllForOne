@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -12,7 +12,7 @@ public static class TreeDeathBuilder
 {
     const string Root="Assets/System/Effects/TreeDeath";
     const string Flag=Root+"/Editor/.build-tree-death";
-    [InitializeOnLoadMethod] static void Init() {if(File.Exists(Flag))EditorApplication.delayCall+=Requested;}
+    static void Init() {if(File.Exists(Flag))EditorApplication.delayCall+=Requested;}
     static void Requested()
     {
         if(EditorApplication.isPlaying)return;File.Delete(Flag);

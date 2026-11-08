@@ -12,7 +12,7 @@ public static class FogCloudBuilder
 {
     const string Root="Assets/System/Effects/FogClouds";
     const string Flag=Root+"/Editor/.build-area-fog";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Flag))EditorApplication.delayCall+=Requested;}
+    static void Init(){if(File.Exists(Flag))EditorApplication.delayCall+=Requested;}
     static void Requested()
     {
         if(EditorApplication.isPlaying)return;File.Delete(Flag);

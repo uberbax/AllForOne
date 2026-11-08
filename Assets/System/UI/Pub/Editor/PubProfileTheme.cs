@@ -9,7 +9,7 @@ using TMPro;
 public static class PubProfileTheme
 {
     private const string Work = @"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\pub-profile-theme";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {
         if (File.Exists(Work + "/inspect.request")) EditorApplication.delayCall += Inspect;
         if (File.Exists(Work + "/apply.request")) EditorApplication.delayCall += ApplySaved;

@@ -470,7 +470,7 @@ public class MainCycleDark : MonoBehaviour
 
         XDcombat.oneCast = true;
 
-        //Tooltip.noTooltip = true;
+        Tooltip.noTooltip = false;
         
         UtilsControl.overDrop = 0;
 

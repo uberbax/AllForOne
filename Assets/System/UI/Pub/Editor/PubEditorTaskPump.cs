@@ -1,11 +1,16 @@
 #if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
-[InitializeOnLoad]
 public static class PubEditorTaskPump
 {
     static double nextRefresh;
-    static PubEditorTaskPump(){if(File.Exists(PubInspector.Work+"/keepalive.request"))EditorApplication.update+=Tick;}
+    [MenuItem("Tools/Diagnostics/Manual Requests/Start Pub Task Pump")]
+    private static void StartPump()
+    {
+        EditorApplication.update -= Tick;
+        if (File.Exists(PubInspector.Work + "/keepalive.request"))
+            EditorApplication.update += Tick;
+    }
     static void Tick()
     {
         if(!File.Exists(PubInspector.Work+"/keepalive.request")){EditorApplication.update-=Tick;return;}

@@ -13,7 +13,7 @@ public static class BuiltinPipelineVerification
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\remove-srp";
     private const string MaterialPath="Assets/Suriyun/RedKnight/Materials/Characters/M05.mat";
     private static ListRequest request;
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {if(File.Exists(Work+"/verify.request")){request=Client.List(true,false);EditorApplication.update+=Wait;}}
     private static void Wait()
     {

@@ -9,7 +9,7 @@ public static class ReaperAnimationEventFix
     const string Work="C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/work";
     const string Prefab="Assets/Layer Lab/2D Minimal-EnemyMonster/EnemyMonster 3/Prefabs/Reaper/Reaper_Death.prefab";
     const string Attack="Assets/Layer Lab/2D Minimal-EnemyMonster/EnemyMonster 3/Animations/Reaper/Attack.anim";
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         EditorApplication.delayCall+=Requested;
         EditorApplication.playModeStateChanged+=s=> { if(s==PlayModeStateChange.EnteredEditMode) Requested(); };

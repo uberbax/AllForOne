@@ -9,7 +9,7 @@ using UnityEngine;
 
 public static class RumbleVfxValidation
 {
-    [InitializeOnLoadMethod]private static void Init()
+    private static void Init()
     {if(File.Exists(RumbleVfxBuilder.Work+"/validate.request")&&!File.Exists(RumbleVfxBuilder.Work+"/build.request"))EditorApplication.delayCall+=Run;}
     private static void Check(bool condition,string message){if(!condition)throw new InvalidOperationException(message);}
     [MenuItem("Tools/Skills/Validate Pack VFX for Rumble")]

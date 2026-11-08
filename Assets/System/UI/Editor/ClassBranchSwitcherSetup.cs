@@ -14,7 +14,6 @@ public static class ClassBranchSwitcherSetup
 {
     private const string Work = "C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/work";
 
-    [InitializeOnLoadMethod]
     private static void Requested()
     {
         if (File.Exists(Work + "/class-branch-configure.request"))

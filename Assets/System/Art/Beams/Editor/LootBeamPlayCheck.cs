@@ -10,15 +10,21 @@ using UnityEngine.Rendering;
 public static class LootBeamPlayCheck
 {
     const string Flag="Assets/System/Art/Beams/Editor/.loot-beam-check";
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         EditorApplication.playModeStateChanged+=state=> {
             if(state==PlayModeStateChange.EnteredPlayMode && File.Exists(Flag)) { File.Delete(Flag); Run(); }
         };
     }
     static void Require(bool condition,string message) { if(!condition) throw new Exception(message); }
+    [MenuItem("Tools/Diagnostics/Play Mode Checks/LootBeamPlayCheck")]
     static async void Run()
     {
+        if (!EditorApplication.isPlaying)
+        {
+            Debug.LogWarning("Enter Play Mode before running this check.");
+            return;
+        }
         var parents=new List<GameObject>();
         try {
             await Task.Delay(1500);

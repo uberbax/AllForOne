@@ -12,7 +12,7 @@ using TMPro;
 // Preview exercises the actual built-in renderer as well as the controller.
 public static class PartyCampValidation
 {
-    [InitializeOnLoadMethod]static void Init(){if(File.Exists(PartyCampInspector.Work+"/validate.request")&&!File.Exists(PartyCampInspector.Work+"/build.request"))EditorApplication.delayCall+=Run;}
+    static void Init(){if(File.Exists(PartyCampInspector.Work+"/validate.request")&&!File.Exists(PartyCampInspector.Work+"/build.request"))EditorApplication.delayCall+=Run;}
     static void Check(bool value,string message){if(!value)throw new InvalidOperationException(message);}
     static RObj Hero(string id,int index)
     {

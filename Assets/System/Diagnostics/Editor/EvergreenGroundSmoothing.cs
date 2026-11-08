@@ -12,7 +12,8 @@ public static class EvergreenGroundSmoothing
 {
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\ground-smoothing";
     const string Root="Assets/Scenes/EvergreenRPG/";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/smooth.request"))EditorApplication.delayCall+=Run;}
+    [MenuItem("Tools/Diagnostics/Manual Requests/Evergreen ground")]
+    static void Init(){if(File.Exists(Work+"/smooth.request"))EditorApplication.delayCall+=Run;}
     static void Render(Camera c,string path)
     {
         var old=c.targetTexture;var active=RenderTexture.active;var rt=new RenderTexture(720,1600,24);Texture2D image=null;

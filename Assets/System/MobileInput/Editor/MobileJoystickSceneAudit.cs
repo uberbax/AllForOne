@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public static class MobileJoystickSceneAudit
 {
-    [InitializeOnLoadMethod] static void Init()
+    static void Init()
     {
         EditorApplication.delayCall += Requested;
         EditorApplication.playModeStateChanged += state => {

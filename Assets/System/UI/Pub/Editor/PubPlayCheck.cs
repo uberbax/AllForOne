@@ -9,13 +9,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-[InitializeOnLoad]
 public static class PubPlayCheck
 {
     static string Flag => PubInspector.Work + "/play.request";
     static bool running;
-    static PubPlayCheck()
+    [MenuItem("Tools/Diagnostics/Manual Requests/Arm Pub Play Check")]
+    private static void Arm()
     {
+        EditorApplication.playModeStateChanged -= Changed;
+        EditorApplication.update -= StartWhenReady;
+        EditorApplication.update -= Pulse;
         EditorApplication.playModeStateChanged += Changed;
         if (File.Exists(Flag)) EditorApplication.update += StartWhenReady;
         if (SessionState.GetBool("PubCheck.active",false)) EditorApplication.update += Pulse;

@@ -5,7 +5,8 @@ using UnityEditor;
 using UnityEngine;
 public static class PlagueSceneAudit
 {
-    [InitializeOnLoadMethod] static void Init() { EditorApplication.delayCall += Run; }
+    [MenuItem("Tools/Diagnostics/Manual Requests/Plague scene")]
+    static void Init() { EditorApplication.delayCall += Run; }
     static void Run()
     {
         const string flag = "Assets/System/Effects/Editor/.plague-audit";

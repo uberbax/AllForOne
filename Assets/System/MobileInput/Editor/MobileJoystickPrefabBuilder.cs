@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,6 @@ public static class MobileJoystickPrefabBuilder
     private const string Request = Folder + "/Editor/.build-request";
     private static string ReportPath => Path.Combine(Path.GetTempPath(), "AllForOne-MobileJoystick-validation.json");
 
-    [InitializeOnLoadMethod]
     private static void Requested()
     {
         if (File.Exists(Request)) EditorApplication.delayCall += Build;

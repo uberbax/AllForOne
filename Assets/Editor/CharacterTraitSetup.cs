@@ -8,14 +8,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[InitializeOnLoad]
 public static class CharacterTraitSetup
 {
     private const string Vendor = "Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Dark/Prefabs/Prefabs~DemoScenes/";
     private const string Output = "Assets/System/UI/Prefabs/";
     private const string Request = "work/trait-setup.request";
     private const string Report = "work/trait-setup-result.txt";
-    static CharacterTraitSetup() { EditorApplication.delayCall += RunRequested; }
     private static void RunRequested()
     {
         if (File.Exists("work/trait-balance-update.request"))

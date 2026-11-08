@@ -15,7 +15,6 @@ public static class StylizedHitSlashBuilder
     private static readonly string[] Names = { "Crimson", "Ice", "Emerald", "Scarlet", "Void", "Silver", "Rose", "Toxic", "Amber", "Aether", "Flame", "Holy" };
     private static readonly string[] Hex = { "FF1256", "2AAFFF", "46FFD2", "FF3924", "7436FF", "BED9FF", "FF74C8", "93FF19", "FFA459", "22E8FF", "FF650C", "FFE5A0" };
 
-    [InitializeOnLoadMethod]
     private static void RequestedBuild()
     {
         if (!File.Exists(Work + "/vfx-build.request")) return;

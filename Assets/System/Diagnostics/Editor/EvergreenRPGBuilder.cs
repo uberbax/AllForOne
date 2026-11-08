@@ -16,7 +16,7 @@ public static class EvergreenRPGBuilder
     const string Pack="Assets/Soldium Studio/Evergreen Forest";
     const string Out="Assets/Scenes/EvergreenRPG";
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\evergreen-rpg";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Inspect;if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;if(File.Exists(Work+"/resume.request"))EditorApplication.delayCall+=Resume;if(File.Exists(Work+"/finish.request"))EditorApplication.delayCall+=Finish;}
+    static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Inspect;if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;if(File.Exists(Work+"/resume.request"))EditorApplication.delayCall+=Resume;if(File.Exists(Work+"/finish.request"))EditorApplication.delayCall+=Finish;}
     static Bounds BoundsOf(GameObject go){var rs=go.GetComponentsInChildren<Renderer>(true).Where(r=>!(r is ParticleSystemRenderer)&&!r.name.Contains("LOD1")&&!r.name.Contains("LOD2")&&!r.name.Contains("LOD3")).ToArray();if(rs.Length==0)return new Bounds(go.transform.position,Vector3.zero);var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);return b;}
     static void Inspect()
     {

@@ -9,7 +9,7 @@ public static class HeroAscensionBuilder
 {
     public const string PrefabPath = "Assets/System/UI/Ascension/Resources/UI_HeroAscension.prefab";
     private const string Work = @"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\ascension";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {
         if (File.Exists(Work + "/build.request")) EditorApplication.delayCall += Build;
     }

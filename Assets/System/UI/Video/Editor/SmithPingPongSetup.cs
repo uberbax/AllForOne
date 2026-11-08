@@ -11,7 +11,7 @@ using UnityEngine.Video;
 public static class SmithPingPongSetup
 {
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\tavern-video";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {if(File.Exists(Work+"/smith.request"))EditorApplication.delayCall+=Apply;}
     [MenuItem("Tools/UI/Forge Video/Assign Ping Pong")]
     public static void Apply()

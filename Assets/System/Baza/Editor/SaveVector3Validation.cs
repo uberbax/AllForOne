@@ -10,7 +10,7 @@ public static class SaveVector3Validation
 {
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\vector3-json-fix";
     public sealed class Probe { [JsonConverter(typeof(SaveVector3Converter))] public Vector3 position; }
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/verify.request"))EditorApplication.delayCall+=Run;}
+    static void Init(){if(File.Exists(Work+"/verify.request"))EditorApplication.delayCall+=Run;}
     [MenuItem("Tools/Diagnostics/Validate Vector3 Save")]
     public static void Run()
     {

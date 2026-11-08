@@ -7,7 +7,7 @@ using UnityEngine;
 public static class PubCardHolderUpgrade
 {
     private const string Work = @"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\pub-card-holder";
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {
         if (File.Exists(Work + "/upgrade.request")) EditorApplication.delayCall += Run;
     }

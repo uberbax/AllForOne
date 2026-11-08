@@ -12,7 +12,7 @@ public static class RumbleAnimationEventFix
 {
     private const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\rumble-animation-events";
     private static readonly string[] Ids={"toad_horn","worm_poison","orc_smasher_berserker","winter_ice","carapace_castle","wing_demon_bee","flower_candy","raptor_mechanic","horse_unicorn","flower_daisy"};
-    [InitializeOnLoadMethod]private static void Init()
+    private static void Init()
     {
         EditorApplication.delayCall+=Requested;
         EditorApplication.playModeStateChanged-=ModeChanged;

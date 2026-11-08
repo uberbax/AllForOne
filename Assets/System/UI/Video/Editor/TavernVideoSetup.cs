@@ -20,7 +20,7 @@ public static class TavernVideoSetup
     private static VideoClip clip;
     private static bool assassin;
     private static string RequestPath=>Work+(assassin?"/assassin.request":"/build.request");
-    [InitializeOnLoadMethod] private static void Init()
+    private static void Init()
     {
         if(File.Exists(Work+"/build.request"))EditorApplication.delayCall+=Build;
         if(File.Exists(Work+"/assassin.request"))EditorApplication.delayCall+=BuildAssassin;

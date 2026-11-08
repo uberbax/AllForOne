@@ -15,7 +15,6 @@ public static class BattlePassPrefabSetup
     public const string PrefabPath = "Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Dark/Prefabs/Prefabs~DemoScenes/Progression_Pass1.prefab";
     private const string Work = "C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/battlepass_work";
 
-    [InitializeOnLoadMethod]
     private static void RunRequested()
     {
         if (File.Exists(Work + "/setup.request"))

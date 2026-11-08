@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +13,7 @@ public static class PickupNotificationBuilder
 {
     const string Folder="Assets/System/UI/Resources";
     const string Flag="Assets/System/UI/Editor/.pickup-ui-build";
-    [InitializeOnLoadMethod] static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
+    static void Init() { if(File.Exists(Flag)) EditorApplication.delayCall+=Requested; }
     static void Requested()
     {
         if(EditorApplication.isPlaying) return;

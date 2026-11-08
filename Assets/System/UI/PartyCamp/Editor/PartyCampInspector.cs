@@ -10,7 +10,7 @@ using TMPro;
 public static class PartyCampInspector
 {
     public const string Work = @"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\party-camp";
-    [InitializeOnLoadMethod] private static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Run;}
+    private static void Init(){if(File.Exists(Work+"/inspect.request"))EditorApplication.delayCall+=Run;}
     [MenuItem("Tools/UI/Party Camp/Inspect")]
     public static void Run()
     {

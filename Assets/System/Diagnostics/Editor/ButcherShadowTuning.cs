@@ -10,7 +10,8 @@ using UnityEditor.SceneManagement;
 public static class ButcherShadowTuning
 {
     const string Work=@"C:\Users\s4032\Documents\Codex\2026-09-30\d-unity-projects-allforone-allforone-assets\work\butcher-shadows";
-    [InitializeOnLoadMethod] static void Init(){if(File.Exists(Work+"/audit.request"))EditorApplication.delayCall+=Audit;if(File.Exists(Work+"/compare.request"))EditorApplication.delayCall+=Compare;if(File.Exists(Work+"/apply.request"))EditorApplication.delayCall+=Apply;}
+    [MenuItem("Tools/Diagnostics/Manual Requests/Butcher shadows")]
+    static void Init(){if(File.Exists(Work+"/audit.request"))EditorApplication.delayCall+=Audit;if(File.Exists(Work+"/compare.request"))EditorApplication.delayCall+=Compare;if(File.Exists(Work+"/apply.request"))EditorApplication.delayCall+=Apply;}
     static string PathOf(Transform t){return t.parent==null?t.name:PathOf(t.parent)+"/"+t.name;}
     static void Render(Camera camera,string filename)
     {

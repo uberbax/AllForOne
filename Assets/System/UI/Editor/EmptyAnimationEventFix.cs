@@ -16,7 +16,6 @@ public static class EmptyAnimationEventFix
             "Assets/Layer Lab/2D Minimal-CharacterMaker/Common/Animations/Jump Attack.anim",
             "Assets/Layer Lab/2D Minimal World/Pack/Forest/ForestVillage/ResourcesData/Animation/Tower_Catapult_Attack.anim"}).Distinct();
     }
-    [InitializeOnLoadMethod]
     private static void Requested()
     {
         if(File.Exists(Work+"/empty-animation-events.request")) EditorApplication.delayCall+=Fix;

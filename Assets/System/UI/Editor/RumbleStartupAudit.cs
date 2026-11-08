@@ -13,7 +13,6 @@ using UnityEngine.SceneManagement;
 public static class RumbleStartupAudit
 {
     private const string Work = "C:/Users/s4032/Documents/Codex/2026-09-30/d-unity-projects-allforone-allforone-assets/work";
-    [InitializeOnLoadMethod]
     private static void Requested()
     {
         if(File.Exists(Work+"/rumble-reader.request")) EditorApplication.delayCall += ReaderAudit;

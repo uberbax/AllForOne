@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[InitializeOnLoad]
 public static class MailboxSetup
 {
     private const string Vendor = "Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Dark/Prefabs/";
@@ -16,7 +15,6 @@ public static class MailboxSetup
     private const string Request = "work/mailbox-setup.request";
     private const string Report = "work/mailbox-setup-result.txt";
 
-    static MailboxSetup() { EditorApplication.delayCall += RunRequested; }
 
     private static void RunRequested()
     {
