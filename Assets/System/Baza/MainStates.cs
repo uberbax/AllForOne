@@ -123,10 +123,9 @@ public class MainStates : MonoBehaviour
         { "ring", 5},
         { "offhand", 6},
         { "trinket", 7},
-        {"pet", 8},
+        { "pet", 8},
         { "adorn", 9},
-        
-        
+        { "belt", 10},
         
     };
     
@@ -159,6 +158,8 @@ public class MainStates : MonoBehaviour
         
         { "skill", 14},
         { "hero", 15},
+        { "belt", 16},
+        
         
         { "none", 100},
         
@@ -715,7 +716,12 @@ public class MainStates : MonoBehaviour
             if (d.eqNum != ti.dbObj.pars["slot"]) return;
             GetCommandResult(tf.command, tf.param, tf.transform, "del", ti);
             GetCommandResult(gf.command, gf.param, tf.transform, "add", ti);
-            Equip(lastAllySelected == null ? mainPlayer : lastAllySelected, ti);
+            
+            var gu = curObjs["cur_hero"];
+            var ww = lastAllySelected == null ? mainPlayer : lastAllySelected;
+            if (gu != null) ww = gu;
+            
+            Equip(ww, ti);
             //event ?
             UI_skills.GetComponent<UIfiller>().OnEnable();
         }
@@ -1610,6 +1616,7 @@ public class MainStates : MonoBehaviour
             }
             
             RObj hh1 = lastAllySelected == null ? mainPlayer : lastAllySelected;
+            if (rr != null) hh1 = rr;
             
             var res = hh1.inventory.FindAll(x => x.GetPar("amount") > 0);
             var gk = param.Split(',');
@@ -1895,6 +1902,7 @@ public class MainStates : MonoBehaviour
             {
                 var h = float.Parse(cc[i]);
                 RObj wha = lastAllySelected;
+                if (rr != null) wha = rr;
                 if (wha == null) wha = mainPlayer;
                 var g = wha.inventory.Find(x => x.GetPar("used_slot") == h);
                 res.Add(g);
@@ -2037,6 +2045,7 @@ public class MainStates : MonoBehaviour
             {
                 var se = SV.Substring(7);
                 curObjs[se] = o;
+                FunctionTimer.Create(() => UIfiller.GlobalRefresh(), 0.1f);
             }
             else if (SV == "click")
             {

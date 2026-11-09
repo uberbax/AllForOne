@@ -22,6 +22,7 @@ public class ViewPar : MonoBehaviour
             mon = fromWhere == null ? GetComponentInParent<ObjHolder>().obj : fromWhere.GetComponentInParent<ObjHolder>().obj;
             
             var gg = mon.GetNonZeroPars(new List<string>{"attack","max_health","def","res","crit_chance", "crit_dmg"});
+            
             var d = gg.Count - transform.childCount;
             if (d > 0)
             {
@@ -50,7 +51,7 @@ public class ViewPar : MonoBehaviour
     {
         mon = fromWhere == null ? GetComponentInParent<ObjHolder>().obj : fromWhere.GetComponentInParent<ObjHolder>().obj;
         parNm.text = ConfigLoader.Instance.GetMeLocale(parName);
-        parImg.sprite = ResourceHolder.instance.pars[parName];
+        if (parImg) parImg.sprite = ResourceHolder.instance.pars[parName];
         parText.text = mon.GetPar(parName).ToString();
     }
 }
