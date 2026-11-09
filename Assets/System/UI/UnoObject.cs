@@ -6,6 +6,8 @@ public class UnoObject : MonoBehaviour
     private string prevId = "";
 
     public float scl = 1;
+
+    public bool isUied = false;
     // Update is called once per frame
     void Update()
     {
@@ -15,9 +17,22 @@ public class UnoObject : MonoBehaviour
         if (prevId != obj.dbObj.ID)
         {
             prevId = obj.dbObj.ID;
-            //var b = GetComponent<SpriteRigToUI>();
-            UtilsControl.Instance.PlaceItemInRender(prevId);
-            //b.sourceRoot = ResourceHolder.instance.monsters[prevId].transform;
+
+            if (isUied)
+            {
+                if (transform.childCount > 0)
+                {
+                    DestroyImmediate(transform.GetChild(0).gameObject);
+                }
+                Instantiate(ResourceHolder.instance.monsters[prevId].gameObject, transform);
+            }
+            else
+            {
+                   //var b = GetComponent<SpriteRigToUI>();
+                   UtilsControl.Instance.PlaceItemInRender(prevId);
+                   //b.sourceRoot = ResourceHolder.instance.monsters[prevId].transform;
+            }
+
         }
     }
 }

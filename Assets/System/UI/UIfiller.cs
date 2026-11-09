@@ -89,6 +89,8 @@ public class UIfiller : MonoBehaviour
     public List<RObj> selfRewardObj = new List<RObj>();
     
     public bool findRobj = false;
+    public bool doAdorns = false;
+    
     public string asMainCur = "";
     private void Start()
     {
@@ -150,10 +152,14 @@ public class UIfiller : MonoBehaviour
         {
             Debug.Log(gameObject.name);
             rr = GetComponentInParent<ObjHolder>().obj;
-            t0 = (int)rr.GetPar("adorn_count");
-            for (int i = 0; i < root.childCount; i++)
+
+            if (doAdorns)
             {
-                root.GetChild(i).gameObject.SetActive(i < t0);
+                t0 = (int)rr.GetPar("adorn_count");
+                for (int i = 0; i < root.childCount; i++)
+                {
+                    root.GetChild(i).gameObject.SetActive(i < t0);
+                }
             }
         }
 

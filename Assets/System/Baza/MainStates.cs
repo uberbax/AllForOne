@@ -2033,6 +2033,11 @@ public class MainStates : MonoBehaviour
                 }
                 EventManager.INV(g, new ArgPass{who = o});
             }
+            if (SV.IndexOf("set_as_") >= 0)
+            {
+                var se = SV.Substring(7);
+                curObjs[se] = o;
+            }
             else if (SV == "click")
             {
                 UI_descr.GetComponent<UIfiller>().otherContext = h.filler;
@@ -3677,6 +3682,18 @@ public class MainStates : MonoBehaviour
         
         //if (handleVampire)
         //    HandleVampireEnable();
+        
+        //handle cur_hero
+        HandleCurHero();
+    }
+
+    public void HandleCurHero()
+    {
+        if (!curObjs.ContainsKey("cur_hero"))
+        {
+            var g = mainPlayer.inventory.Find(x => x.it == ItemType.monster);
+            curObjs.Add("cur_hero", g);
+        }
     }
 
 
