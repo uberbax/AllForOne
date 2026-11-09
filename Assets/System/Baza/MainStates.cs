@@ -1616,10 +1616,12 @@ public class MainStates : MonoBehaviour
 
             for (int l = 0; l < gk.Length; l++)
             {
+                var nan = (gk[l][0] == '!');
+                if (nan) gk[l] = gk[l].Substring(1);
                 
                 if (gk[l] == "can_equip")
                 {
-                    res = res.FindAll(x => x.dbObj.pars["slot"] >= 0);
+                    res = res.FindAll(x => nan ? x.dbObj.pars["slot"] < 0 : x.dbObj.pars["slot"] >= 0);
                 }                
                 
                 if (gk[l] == "not_equiped")
@@ -1631,18 +1633,20 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "has_slot")
                 {
-                    res = res.FindAll(x => x.GetPar("slot") >= 0);
+                    res = res.FindAll(x => nan ? x.GetPar("slot") < 0 : x.GetPar("slot") >= 0);
                 }
                 
                 if (gk[l] == "weapon")
                 {
-                    //res = res.FindAll(x => x.it == ItemType.);
+                    //res = res.FindAll(x => x.it == ItemType.wea);
                 }
                 
                 if (gk[l] == "items")
                 {
-                    res = res.FindAll(x => x.it == ItemType.item);
+                    res = res.FindAll(x => nan ? x.it != ItemType.item : x.it == ItemType.item);
                 }
+                
+                
 
                 if (gk[l] == "weapon" || gk[l] == "offhand" || gk[l] == "boots" || gk[l] == "head" ||
                     gk[l] == "ring" || gk[l] == "amulet" || gk[l] == "body" || gk[l] == "trinket" ||
@@ -1665,12 +1669,12 @@ public class MainStates : MonoBehaviour
 
                 if (gk[l] == "monsters")
                 {
-                    res = res.FindAll(x => x.it == ItemType.monster);
+                    res = nan ? res.FindAll(x => x.it != ItemType.monster) : res.FindAll(x => x.it == ItemType.monster);
                 }
                 
                 if (gk[l] == "skills")
                 {
-                    res = res.FindAll(x => x.it == ItemType.projectile);
+                    res = nan ? res.FindAll(x => x.it != ItemType.projectile) : res.FindAll(x => x.it == ItemType.projectile);
                 }
                 
                 if (gk[l] == "act_skills")

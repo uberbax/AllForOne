@@ -438,6 +438,8 @@ public class MainCycleDark : MonoBehaviour
             MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "crit_strike", Value = 1 } });
             skl = main.inventory.Find(x => x.dbObj.ID == "crit_strike");
             MainStates.instance.Equip(main, skl, 52);
+            
+            MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_mage", Value = 1}});
         }
 
         //MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
