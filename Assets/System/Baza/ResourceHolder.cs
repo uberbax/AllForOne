@@ -280,6 +280,19 @@ public class ResourceHolder : MonoBehaviour
             return;
         }
 
+        if (a.param == "real_name")
+        {
+            a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["realName"];
+            return;
+        }
+        
+        if (a.param == "real_job")
+        {
+            a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["realJob"];
+            return;
+        }
+        
+        
         if (a.isPar)
         {
             //fillstat

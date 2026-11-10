@@ -90877,6 +90877,7 @@ GameObject:
   - component: {fileID: 283425303}
   - component: {fileID: 283425305}
   - component: {fileID: 283425304}
+  - component: {fileID: 283425306}
   m_Layer: 5
   m_Name: rarity
   m_TagString: Untagged
@@ -90901,8 +90902,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16.993958, y: -24.486004}
-  m_SizeDelta: {x: -47.387802, y: -70.996}
+  m_AnchoredPosition: {x: 149.50613, y: -29.991985}
+  m_SizeDelta: {x: 285.6121, y: -59.984}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &283425304
 MonoBehaviour:
@@ -90934,7 +90935,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545708
-  m_fontColor: {r: 0.9245283, g: 0.20060506, b: 0.20060506, a: 1}
+  m_fontColor: {r: 1, g: 0.89411765, b: 0.5647059, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -90951,10 +90952,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.65
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -91004,6 +91005,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283425302}
   m_CullTransparentMesh: 1
+--- !u!114 &283425306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283425302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::UnoAll
+  pref: 
+  param: real_job
+  param2: 
+  isStat: 0
+  isPar: 0
+  isMainPar: 0
+  hideEmpty: 0
+  hideEmptyAndBelow: 0
+  ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
+  isButton: 0
+  closeObj: {fileID: 0}
 --- !u!1001 &283679552
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -688019,7 +688045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &20334932924425242
 GameObject:
   m_ObjectHideFlags: 0
@@ -756758,6 +756784,7 @@ GameObject:
   - component: {fileID: 1539029311606405905}
   - component: {fileID: 4528291431205582034}
   - component: {fileID: 4194395267607416599}
+  - component: {fileID: 5216626223620564738}
   m_Layer: 5
   m_Name: nm
   m_TagString: Untagged
@@ -756765,6 +756792,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5216626223620564738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5216626223620564737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::UnoAll
+  pref: 
+  param: real_name
+  param2: 
+  isStat: 0
+  isPar: 0
+  isMainPar: 0
+  hideEmpty: 0
+  hideEmptyAndBelow: 0
+  ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
+  isButton: 0
+  closeObj: {fileID: 0}
 --- !u!114 &5217838660940276855
 MonoBehaviour:
   m_ObjectHideFlags: 0

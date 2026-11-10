@@ -909,21 +909,23 @@ public class ConfigLoader : MonoBehaviour
     public void ParseHeroes(string val)
     {
         var str = val.Split(new string[] {"\r\n", "\r", "\n"}, StringSplitOptions.RemoveEmptyEntries);
-        var columns = str[0].Split("\t", StringSplitOptions.RemoveEmptyEntries);
+        var columns = str[0].Split('\t');
         Trymo(columns);
         //NAME	COST	ORIGIN	CLASS	HEALTH	ARMOR	ATTACK	RANGE	ASPEED	DPS	SKILLULT	SKILLBASIC	INI_MANA	MAX_MANA
 
         for (int i = 1; i < str.Length; i++)
         {
             var mm = new FormatHero();
-            var tt = str[i].Split("\t", StringSplitOptions.RemoveEmptyEntries);
+            var tt = str[i].Split('\t');
             if (tt.Length < 1 || tt[0].IndexOf("----") >=0) continue;
-            for (int j = 0; j < tt.Length; j++)
+            for (int j = 0; j < tt.Length && j < columns.Length; j++)
             {
-                if (tt[j] == "x") continue;
+                if (string.IsNullOrEmpty(tt[j]) || tt[j] == "x") continue;
                 if (columns[j].ToUpper() == "NAME") mm.monsterName = tt[j];
                 
                 if (columns[j].ToUpper() == "DISPLAYNAME") mm.displayName = tt[j];
+                else if (columns[j].ToUpper() == "REALNAME") mm.realName = tt[j].Trim();
+                else if (columns[j].ToUpper() == "REALJOB") mm.realJob = tt[j].Trim();
                 else if (columns[j].ToUpper() == "ORIGIN") mm.origins.Add(tt[j]);
                 else if (columns[j].ToUpper() == "CLASS") mm.classes.Add(tt[j]);
                 else if (columns[j].ToUpper() == "DYNAMIC") mm.dynamic = tt[j];
@@ -959,7 +961,7 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "UPGRADE_COST")
                 {
-                    if (tt[j] == "x") continue;
+                    if (string.IsNullOrEmpty(tt[j]) || tt[j] == "x") continue;
                     var yh = tt[j].Split("#");
                     for (int o = 0; o < yh.Length; o++)
                     {
@@ -970,7 +972,7 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "UNLOCK_PRICE")
                 {
-                    if (tt[j] == "x") continue;
+                    if (string.IsNullOrEmpty(tt[j]) || tt[j] == "x") continue;
                     var yh = tt[j].Split("#");
                     mm.unlockPrice = new List<Bon>();
                     for (int o = 0; o < yh.Length; o++)
@@ -1030,7 +1032,7 @@ public class ConfigLoader : MonoBehaviour
                 
                 else if (columns[j].ToUpper() == "VULNERABLE" || columns[j].ToUpper() == "RESIST" || columns[j].ToUpper() == "IMMUNITIES" )
                 {
-                    if (tt[j] == "x") continue;
+                    if (string.IsNullOrEmpty(tt[j]) || tt[j] == "x") continue;
                     var yy = tt[j].Split("#");
                     //mm.extras = new List<Bon>();
                     for (int k = 0; k < yy.Length; k++)
@@ -3110,6 +3112,8 @@ public class FormatHero
 {
     public string monsterName = string.Empty;
     public string displayName = string.Empty;
+    public string realName = string.Empty;
+    public string realJob = string.Empty;
     public List<string> origins = new List<string>();
     public List<string> classes = new List<string>();
     public float health = 0;

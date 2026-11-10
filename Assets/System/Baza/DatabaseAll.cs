@@ -330,6 +330,8 @@ public class DatabaseAll : MonoBehaviour
             o.parsStr.Add("found_in", v.foundIn);
             o.parsStr.Add("encounter", v.encounter);
             o.parsStr.Add("codex_reward", v.codexReward);
+            o.parsStr.Add("realName", v.realName);
+            o.parsStr.Add("realJob", v.realJob);
             
         }
 
