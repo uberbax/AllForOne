@@ -55632,6 +55632,7 @@ GameObject:
   - component: {fileID: 166385866}
   - component: {fileID: 166385868}
   - component: {fileID: 166385867}
+  - component: {fileID: 166385869}
   m_Layer: 5
   m_Name: ico
   m_TagString: Untagged
@@ -55654,9 +55655,9 @@ RectTransform:
   m_Father: {fileID: 1179138378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.4921875, y: -311.3}
-  m_SizeDelta: {x: 1614.2288, y: 824.9127}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 125.3176, y: 92.205696}
+  m_SizeDelta: {x: 161.5, y: 158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &166385867
 MonoBehaviour:
@@ -55696,6 +55697,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166385865}
   m_CullTransparentMesh: 1
+--- !u!114 &166385869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166385865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::UnoAll
+  pref: 
+  param: id
+  param2: 
+  isStat: 0
+  isPar: 0
+  isMainPar: 0
+  hideEmpty: 0
+  hideEmptyAndBelow: 0
+  ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
+  isButton: 0
+  closeObj: {fileID: 0}
 --- !u!1 &166557340
 GameObject:
   m_ObjectHideFlags: 0
@@ -70522,6 +70548,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &212075343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1753542605802754740, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+  m_PrefabInstance: {fileID: 2068393121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &212171154
 GameObject:
   m_ObjectHideFlags: 0
@@ -120648,6 +120685,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &363838803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1753542605802754740, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+  m_PrefabInstance: {fileID: 1175745131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &363937826
 GameObject:
   m_ObjectHideFlags: 0
@@ -172009,7 +172057,6 @@ GameObject:
   - component: {fileID: 519431991}
   - component: {fileID: 519431993}
   - component: {fileID: 519431992}
-  - component: {fileID: 519431994}
   m_Layer: 5
   m_Name: Window
   m_TagString: Untagged
@@ -172077,35 +172124,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519431990}
   m_CullTransparentMesh: 1
---- !u!114 &519431994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519431990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee53179e0d86e741888aea1d8e93f0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Minimus::ObjHolder
-  deactIfNotNull: {fileID: 0}
-  attachedVeh: {fileID: 0}
-  filler: {fileID: 0}
-  noTrack: 1
-  inDrag: 0
-  asMain: 0
-  asCurObj: cur_hero
-  asObj: 
-  asDBObj: 
-  redirect: {fileID: 0}
-  copyTo: {fileID: 0}
-  alsoEnables: []
-  equipBtn: {fileID: 0}
-  slotBtn: {fileID: 0}
-  level: {fileID: 0}
-  miscShit: 0
-  ignoreScale: 0
 --- !u!1839735485 &519552984 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 6609350160067667153, guid: 00ea9dde9d56e0a4eb6b13f2f09bb8f9, type: 3}
@@ -213723,6 +213741,8 @@ MonoBehaviour:
   parNm: {fileID: 837140071}
   parImg: {fileID: 1161357036}
   isMain: 0
+  doPars: []
+  everyTurn: 0
 --- !u!1 &650940776
 GameObject:
   m_ObjectHideFlags: 0
@@ -327949,6 +327969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1030425114}
   - component: {fileID: 1030425115}
+  - component: {fileID: 1030425116}
   m_Layer: 5
   m_Name: statlist
   m_TagString: Untagged
@@ -328007,6 +328028,32 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &1030425116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030425113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0687f33b89f5b804ba3db1b0aed1918f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::ViewPar
+  fromWhere: {fileID: 0}
+  parName: 
+  parText: {fileID: 0}
+  parNm: {fileID: 0}
+  parImg: {fileID: 0}
+  isMain: 1
+  doPars:
+  - accuracy
+  - crit_chance
+  - attack
+  - dodge
+  - def
+  - speed
+  everyTurn: 1
 --- !u!1 &1030429549
 GameObject:
   m_ObjectHideFlags: 0
@@ -343649,6 +343696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081158067}
+  - component: {fileID: 1081158068}
   m_Layer: 5
   m_Name: INVENTORY
   m_TagString: Untagged
@@ -343679,6 +343727,35 @@ RectTransform:
   m_AnchoredPosition: {x: -166.57715, y: 4.934326}
   m_SizeDelta: {x: -451.89038, y: -289.46832}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1081158068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081158066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee53179e0d86e741888aea1d8e93f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::ObjHolder
+  deactIfNotNull: {fileID: 0}
+  attachedVeh: {fileID: 0}
+  filler: {fileID: 0}
+  noTrack: 1
+  inDrag: 0
+  asMain: 0
+  asCurObj: cur_hero
+  asObj: 
+  asDBObj: 
+  redirect: {fileID: 0}
+  copyTo: {fileID: 0}
+  alsoEnables: []
+  equipBtn: {fileID: 0}
+  slotBtn: {fileID: 0}
+  level: {fileID: 0}
+  miscShit: 0
+  ignoreScale: 0
 --- !u!1 &1081421453
 GameObject:
   m_ObjectHideFlags: 0
@@ -347306,6 +347383,8 @@ MonoBehaviour:
   parNm: {fileID: 1901248414}
   parImg: {fileID: 1935608044}
   isMain: 0
+  doPars: []
+  everyTurn: 0
 --- !u!1 &1089947771 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4115880062295205216, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -369639,6 +369718,8 @@ MonoBehaviour:
     - res
     - crit_chance
     - accuracy
+    - dodge
+    - speed
     m_values:
     - {fileID: 21300000, guid: 6dd98809192e24bb185001de5a7f7b38, type: 3}
     - {fileID: 21300000, guid: 413710b631bd5493ebbf1a29b2d82eb3, type: 3}
@@ -369656,6 +369737,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 4fa022f68ab454db491cecb86166356a, type: 3}
     - {fileID: 21300000, guid: 3c6f5b7a54bd84489ba7d655c5b7b812, type: 3}
     - {fileID: 21300000, guid: 7c38202bc1125471cb46578c474ed80e, type: 3}
+    - {fileID: 21300000, guid: d786f3638267743e7ac31e288eefa895, type: 3}
+    - {fileID: -3574375770695320266, guid: c0dae95f98ea0bf4b87d9934eb1b33a5, type: 3}
   diaAvas:
     m_keys:
     - hero
@@ -375688,7 +375771,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6293564794039109961, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
       propertyPath: m_Name
-      value: hp (1)
+      value: mp
       objectReference: {fileID: 0}
     - target: {fileID: 8471454914567482362, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
       propertyPath: m_Sprite
@@ -375729,7 +375812,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6293564794039109961, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1990006674}
   m_SourcePrefab: {fileID: 100100000, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
 --- !u!224 &1175745132 stripped
 RectTransform:
@@ -499723,6 +499809,8 @@ MonoBehaviour:
   parNm: {fileID: 0}
   parImg: {fileID: 0}
   isMain: 1
+  doPars: []
+  everyTurn: 0
 --- !u!1 &1560450709
 GameObject:
   m_ObjectHideFlags: 0
@@ -512961,6 +513049,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606062825}
   m_CullTransparentMesh: 1
+--- !u!1 &1606143752 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6293564794039109961, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+  m_PrefabInstance: {fileID: 2068393121}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1606726322
 GameObject:
   m_ObjectHideFlags: 0
@@ -544573,6 +544666,8 @@ MonoBehaviour:
   parNm: {fileID: 1567602802}
   parImg: {fileID: 683613114}
   isMain: 0
+  doPars: []
+  everyTurn: 0
 --- !u!1 &1710737008
 GameObject:
   m_ObjectHideFlags: 0
@@ -583097,6 +583192,7 @@ GameObject:
   - component: {fileID: 1830118914}
   - component: {fileID: 1830118916}
   - component: {fileID: 1830118915}
+  - component: {fileID: 1830118917}
   m_Layer: 5
   m_Name: Text_Message
   m_TagString: Untagged
@@ -583223,6 +583319,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830118913}
   m_CullTransparentMesh: 0
+--- !u!114 &1830118917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830118913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7490085712c5ad34caa43435b79326c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::UnoAll
+  pref: 
+  param: level
+  param2: 
+  isStat: 0
+  isPar: 0
+  isMainPar: 0
+  hideEmpty: 0
+  hideEmptyAndBelow: 0
+  ignoreOnce: 0
+  addDlt: 0
+  addVal: 0
+  isButton: 0
+  closeObj: {fileID: 0}
 --- !u!1 &1830178424
 GameObject:
   m_ObjectHideFlags: 0
@@ -590348,6 +590469,8 @@ MonoBehaviour:
   parNm: {fileID: 148737235}
   parImg: {fileID: 55500154}
   isMain: 0
+  doPars: []
+  everyTurn: 0
 --- !u!1 &1853953634
 GameObject:
   m_ObjectHideFlags: 0
@@ -636764,6 +636887,31 @@ MonoBehaviour:
   breathsPerMinute: 14
   horizontalScale: 0.008
   verticalScale: 0.018
+--- !u!1 &1990006673 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6293564794039109961, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+  m_PrefabInstance: {fileID: 1175745131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1990006674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990006673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0687f33b89f5b804ba3db1b0aed1918f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::ViewPar
+  fromWhere: {fileID: 519431991}
+  parName: mana/max_mana
+  parText: {fileID: 363838803}
+  parNm: {fileID: 0}
+  parImg: {fileID: 0}
+  isMain: 0
+  doPars: []
+  everyTurn: 1
 --- !u!1 &1990364149
 GameObject:
   m_ObjectHideFlags: 0
@@ -665252,13 +665400,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6293564794039109961, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2068393123}
   m_SourcePrefab: {fileID: 100100000, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
 --- !u!224 &2068393122 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5585888502309663845, guid: b845faaa0a2381c438115a962bdf9ccb, type: 3}
   m_PrefabInstance: {fileID: 2068393121}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2068393123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606143752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0687f33b89f5b804ba3db1b0aed1918f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::ViewPar
+  fromWhere: {fileID: 519431991}
+  parName: health/max_health
+  parText: {fileID: 212075343}
+  parNm: {fileID: 0}
+  parImg: {fileID: 0}
+  isMain: 0
+  doPars: []
+  everyTurn: 1
 --- !u!1001 &2068433681
 PrefabInstance:
   m_ObjectHideFlags: 0

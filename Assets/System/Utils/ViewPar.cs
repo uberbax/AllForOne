@@ -14,14 +14,20 @@ public class ViewPar : MonoBehaviour
 
     private RObj mon;
     public bool isMain = false;
+    public List<string> doPars = new List<string>();
+    public bool everyTurn = false;
     private void OnEnable()
     {
         if (isMain)
         {
             
             mon = fromWhere == null ? GetComponentInParent<ObjHolder>().obj : fromWhere.GetComponentInParent<ObjHolder>().obj;
-            
-            var gg = mon.GetNonZeroPars(new List<string>{"attack","max_health","def","res","crit_chance", "crit_dmg"});
+
+            List<string> gg = new List<string>();
+            if (doPars.Count == 0)
+                gg = mon.GetNonZeroPars(new List<string>
+                    { "attack", "max_health", "def", "res", "crit_chance", "crit_dmg" });
+            else gg = doPars;
             
             var d = gg.Count - transform.childCount;
             if (d > 0)
@@ -50,8 +56,30 @@ public class ViewPar : MonoBehaviour
     public void Fill()
     {
         mon = fromWhere == null ? GetComponentInParent<ObjHolder>().obj : fromWhere.GetComponentInParent<ObjHolder>().obj;
-        parNm.text = ConfigLoader.Instance.GetMeLocale(parName);
-        if (parImg) parImg.sprite = ResourceHolder.instance.pars[parName];
-        parText.text = mon.GetPar(parName).ToString();
+
+        if (parName.IndexOf("/") >= 0)
+        {
+            var ff = parName.Split("/");
+            
+            if (parNm) parNm.text = ConfigLoader.Instance.GetMeLocale(ff[0]);
+            if (parImg) parImg.sprite = ResourceHolder.instance.pars[ff[0]];
+            parText.text = mon.GetPar(ff[0]) + "/" + mon.GetPar(ff[1]);
+        }
+        else
+        {
+             if (parNm) parNm.text = ConfigLoader.Instance.GetMeLocale(parName);
+             if (parImg) parImg.sprite = ResourceHolder.instance.pars[parName];
+             parText.text = mon.GetPar(parName).ToString();
+        }
+
+    }
+
+    private void Update()
+    {
+        if (everyTurn)
+        {
+            if (isMain) OnEnable();
+            else Fill();
+        }
     }
 }
