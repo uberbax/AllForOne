@@ -440,8 +440,8 @@ public class MainCycleDark : MonoBehaviour
             MainStates.instance.Equip(main, skl, 52);
             
             MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_mage", Value = 1}});
-            MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_thief", Value = 1}});
-            MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_warrior", Value = 1}});
+            //MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_thief", Value = 1}});
+            //MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_warrior", Value = 1}});
             
         }
 

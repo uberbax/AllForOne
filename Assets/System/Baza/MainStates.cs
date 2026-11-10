@@ -3543,7 +3543,10 @@ public class MainStates : MonoBehaviour
             int g0 = (int)d1.dbObj.pars["difficulty"] + 1;
             e0 = g0 * 100;
             aa.Add(new Bon { Key = "exp", Value = e0 });
-            aa.Add(new Bon { Key = "gold", Value = (int)(g0 * 101) });
+            int gold = g0 * 101;
+            int wilmerShare = ModelStatistics.instance.GetStatValue(TavernDialogue.WilmerContractStat, false);
+            gold -= gold * Mathf.Clamp(wilmerShare, 0, 100) / 100;
+            aa.Add(new Bon { Key = "gold", Value = gold });
             aa.Add(new Bon { Key = "res1", Value = (int)(g0 * 12) });
             aa.Add(new Bon { Key = "battlepass_point", Value = 50 });
         }

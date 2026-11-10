@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -23,7 +24,27 @@ public sealed class PrisonDialogue : MonoBehaviour
 
     private int page;
 
-    private void OnEnable() => ResetDialogue();
+    private Action externalAdvance;
+    private Action externalLeave;
+
+    private void OnEnable()
+    {
+        if (externalAdvance == null) ResetDialogue();
+    }
+
+    public void ShowExternalPage(string line, string choice, string decline, string previousLine,
+        string playerReply, Action onAdvance, Action onLeave)
+    {
+        externalAdvance = onAdvance;
+        externalLeave = onLeave;
+        currentLine.text = line;
+        continueLabel.text = choice;
+        leaveLabel.text = decline;
+        leaveLabel.transform.parent.gameObject.SetActive(!string.IsNullOrEmpty(decline));
+        ShowHistory(recentLine, previousLine);
+        ShowHistory(oldestLine, playerReply);
+        gameObject.SetActive(true);
+    }
 
     public void ResetDialogue()
     {
@@ -33,6 +54,12 @@ public sealed class PrisonDialogue : MonoBehaviour
 
     public void Advance()
     {
+        if (externalAdvance != null)
+        {
+            externalAdvance();
+            return;
+        }
+
         if (page == Pages.Length - 1)
         {
             cages.SetActive(true);
@@ -44,7 +71,13 @@ public sealed class PrisonDialogue : MonoBehaviour
         Refresh();
     }
 
-    public void Leave() => prison.SetActive(false);
+    public void Leave()
+    {
+        if (externalLeave != null)
+            externalLeave();
+        else
+            prison.SetActive(false);
+    }
 
     private void Refresh()
     {
