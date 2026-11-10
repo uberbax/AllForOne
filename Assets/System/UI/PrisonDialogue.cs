@@ -52,13 +52,14 @@ public sealed class PrisonDialogue : MonoBehaviour
         currentLine.text = entry.Line;
         continueLabel.text = entry.Continue;
         leaveLabel.text = entry.Leave;
-        ShowHistory(recentLine, page - 1);
-        ShowHistory(oldestLine, page - 2);
+        var previous = page > 0 ? Pages[page - 1] : default;
+        ShowHistory(recentLine, previous.Line);      // dialogueNpc
+        ShowHistory(oldestLine, previous.Continue); // dialogueMe
     }
 
-    private static void ShowHistory(TMP_Text label, int index)
+    private static void ShowHistory(TMP_Text label, string line)
     {
-        label.text = index >= 0 ? Pages[index].Line : string.Empty;
-        label.transform.parent.gameObject.SetActive(index >= 0);
+        label.text = line ?? string.Empty;
+        label.transform.parent.gameObject.SetActive(!string.IsNullOrEmpty(line));
     }
 }
