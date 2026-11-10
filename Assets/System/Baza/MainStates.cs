@@ -711,31 +711,50 @@ public class MainStates : MonoBehaviour
 
 
         var d = gs.GetComponent<UnoSlot>();
-        if (d != null)
+        if (ti == null || (d != null && d.eqNum != ti.dbObj.pars["slot"])) return;
+
+        // The destination inventory can replace ti.owner during the move.
+        bool fromEquipment = tf.command == "GET_ITEMS_BY_SLOTS";
+        var sourceOwner = fromEquipment ? GetEquipmentOwner(tf) : ti.owner;
+        var previousWearer = ti.upgradePars.TryGetValue("used_slot", out float usedSlot) && usedSlot >= 0
+            ? sourceOwner
+            : null;
+
+        if (fromEquipment)
         {
-            if (d.eqNum != ti.dbObj.pars["slot"]) return;
-            GetCommandResult(tf.command, tf.param, tf.transform, "del", ti);
-            GetCommandResult(gf.command, gf.param, tf.transform, "add", ti);
-            
-            var gu = curObjs["cur_hero"];
-            var ww = lastAllySelected == null ? mainPlayer : lastAllySelected;
-            if (gu != null) ww = gu;
-            
-            Equip(ww, ti);
-            //event ?
-            UI_skills.GetComponent<UIfiller>().OnEnable();
+            if (!sourceOwner.inventory.Remove(ti)) return;
         }
         else
         {
-            GetCommandResult(tf.command, tf.param, null, "del", ti);
-            ti.index = -1;
-            ti.index = iver;
-            GetCommandResult(gf.command, gf.param, null, "add", ti, !tf.ignoreInvAny);
-            ti.SetPar("used_slot", -1);
-            ti.RecalcPars();
-            //event?
-            UI_skills.GetComponent<UIfiller>().OnEnable();
+            GetCommandResult(tf.command, tf.param, tf.transform, "del", ti);
         }
+
+        if (d != null)
+        {
+            var wearer = GetEquipmentOwner(gf);
+
+            if (previousWearer != wearer)
+                previousWearer?.RecalcPars();
+
+            if (gf.command != "GET_ITEMS_BY_SLOTS")
+                GetCommandResult(gf.command, gf.param, gf.transform, "add", ti);
+
+            Equip(wearer, ti);
+        }
+        else
+        {
+            ti.index = iver;
+            GetCommandResult(gf.command, gf.param, gf.transform, "add", ti, !tf.ignoreInvAny);
+            ti.SetPar("used_slot", -1);
+
+            if (previousWearer != null)
+            {
+                previousWearer.RecalcPars();
+                EventManager.INV("equip_change", new ArgPass{});
+            }
+        }
+
+        UI_skills.GetComponent<UIfiller>().OnEnable();
 
         
         tf.OnEnable();
@@ -745,6 +764,15 @@ public class MainStates : MonoBehaviour
         {
             UI_inventory.GetComponent<UIfiller>().OnEnable();
         }
+    }
+
+    private RObj GetEquipmentOwner(UIfiller filler)
+    {
+        if (curObjs.TryGetValue("cur_hero", out var hero) && hero != null)
+            return hero;
+
+        return (filler.findRobj ? filler.GetComponentInParent<ObjHolder>()?.obj : null)
+            ?? lastAllySelected ?? mainPlayer;
     }
 
     public void B(ArgPass evt)
