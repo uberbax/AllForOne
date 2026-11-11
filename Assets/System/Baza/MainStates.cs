@@ -653,6 +653,8 @@ public class MainStates : MonoBehaviour
 
     public void OnEndDrag(Transform t, Vector3 dlt)
     {
+        if (TryMarketDrop(t, dlt)) return;
+
         UIfiller gf = null;
         Transform gs = null;
         float dst = 1e+10f;
@@ -708,6 +710,7 @@ public class MainStates : MonoBehaviour
             return;
         }
         if (tf.compatibility != gf.compatibility) return;
+        if (gf.from != null && gf.fillFunc.Split(',').Contains("buy")) return;
 
 
         var d = gs.GetComponent<UnoSlot>();
@@ -765,6 +768,98 @@ public class MainStates : MonoBehaviour
             UI_inventory.GetComponent<UIfiller>().OnEnable();
         }
     }
+
+    private bool TryMarketDrop(Transform dragged, Vector3 offset)
+    {
+        var holder = dragged.GetComponent<ObjHolder>();
+        var source = holder != null ? holder.filler : null;
+        if (source == null || holder.obj == null) return false;
+
+        var market = source.transform;
+        while (market != null && market.name != "MARKET")
+            market = market.parent;
+        if (market == null) return false;
+
+        bool fromShop = source.from != null && source.fillFunc.Split(',').Contains("buy");
+        foreach (var target in UIfiller.instances)
+        {
+            if (target == source || !target.isActiveAndEnabled || !target.transform.IsChildOf(market))
+                continue;
+
+            bool toShop = target.from != null && target.fillFunc.Split(',').Contains("buy");
+            if (fromShop == toShop || target.command != "GET_ITEMS" ||
+                (!toShop && (target.from != null || target.findRobj)))
+                continue;
+
+            var scroll = target.GetComponentInParent<UnityEngine.UI.ScrollRect>();
+            var rect = scroll != null && scroll.viewport != null ? scroll.viewport : target.transform as RectTransform;
+            var canvas = target.GetComponentInParent<Canvas>();
+            var camera = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.worldCamera : null;
+            if (rect == null || !RectTransformUtility.RectangleContainsScreenPoint(rect, dragged.position + offset, camera))
+                continue;
+
+            if (source.compatibility == target.compatibility)
+            {
+                var shop = fromShop ? source : target;
+                var merchant = shop.from.spawnedUnit;
+                var player = lastAllySelected ?? mainPlayer;
+                if (merchant != null && player != merchant)
+                    TradeMarketItem(holder.obj, fromShop ? merchant : player, fromShop ? player : merchant, fromShop);
+            }
+
+            source.OnEnable();
+            target.OnEnable();
+            return true;
+        }
+
+        // Shop goods must never fall through to the unpaid inventory transfer.
+        return fromShop;
+    }
+
+    private bool TradeMarketItem(RObj item, RObj seller, RObj buyer, bool buying)
+    {
+        int amount = (int)item.GetPar("amount");
+        int count = Mathf.Max(1, (int)item.GetPar("count_sell"));
+        if (!seller.inventory.Contains(item) || amount < count) return false;
+
+        var price = UpgradeSystem.instance.GetPrice(item, buying ? "buy" : "sell");
+        if (price == null || price.Any(cost => cost.Value < 0)) return false;
+        if (buying && !HaveAmount(price))
+        {
+            if (UI_noMoney != null) UI_noMoney.SetActive(true);
+            return false;
+        }
+
+        // Prepare a split before changing currency or stock. Equipment keeps its instance.
+        var moved = item;
+        if (count < amount)
+        {
+            moved = item.Clone();
+            moved.RID = item.dbObj.ID + "_" + Guid.NewGuid().ToString("N");
+            moved.SetPar("amount", count);
+        }
+
+        if (buying) DelItems(price);
+        if (count == amount)
+            seller.inventory.Remove(item);
+        else
+            item.ChangePar("amount", -count);
+
+        bool wasEquipped = moved.GetPar("used_slot") >= 0;
+        moved.SetPar("used_slot", -1);
+        AddItem(buyer, moved);
+        if (!buying) AddItems(price);
+        if (wasEquipped)
+        {
+            seller.RecalcPars();
+            EventManager.INV("equip_change", new ArgPass{});
+        }
+
+        if (buying) OnBuy(moved);
+        Save();
+        return true;
+    }
+
 
     private RObj GetEquipmentOwner(UIfiller filler)
     {
