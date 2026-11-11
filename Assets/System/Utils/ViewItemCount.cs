@@ -1,3 +1,4 @@
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,8 @@ public class ViewItemCount : MonoBehaviour
     public Image fill;
     public Image icon;
     public TextMeshProUGUI amount;
+
+    public int delimeter = 0;
     
     void Start()
     {
@@ -25,6 +28,10 @@ public class ViewItemCount : MonoBehaviour
         var c = MainStates.instance.GetItemsCount(itemName);
         if (fill) fill.fillAmount = c / max;
         if (amount)
-            amount.text = c.ToString();
+        {
+            if (delimeter > 0)
+                amount.text = c.ToString("N0", CultureInfo.InvariantCulture/*CultureInfo.GetCultureInfo("de-DE")*/);
+            else amount.text = c.ToString();
+        }
     }
 }
