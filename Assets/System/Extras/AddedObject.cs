@@ -47,7 +47,7 @@ public class AddedObject : MonoBehaviour
     public List<Bon> extraMonsters = new List<Bon>();
 
     private bool inst = false;
-    private RObj spawnedUnit;
+    public RObj spawnedUnit;
     private float respawnAt = -1f;
     private Vector3 deathPosition;
     private GameObject corpse;

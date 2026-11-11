@@ -771,6 +771,7 @@ public class MainStates : MonoBehaviour
         if (curObjs.TryGetValue("cur_hero", out var hero) && hero != null)
             return hero;
 
+        if (filler.from != null) return filler.from.spawnedUnit;
         return (filler.findRobj ? filler.GetComponentInParent<ObjHolder>()?.obj : null)
             ?? lastAllySelected ?? mainPlayer;
     }

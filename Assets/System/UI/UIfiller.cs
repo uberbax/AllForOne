@@ -89,6 +89,8 @@ public class UIfiller : MonoBehaviour
     public List<RObj> selfRewardObj = new List<RObj>();
     
     public bool findRobj = false;
+    public AddedObject from;
+    
     public bool doAdorns = false;
     
     public string asMainCur = "";
@@ -161,6 +163,11 @@ public class UIfiller : MonoBehaviour
                     root.GetChild(i).gameObject.SetActive(i < t0);
                 }
             }
+        }
+
+        if (from != null)
+        {
+            rr = from.spawnedUnit;
         }
 
         List<RObj> res = new List<RObj>();

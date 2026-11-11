@@ -35,10 +35,15 @@ public sealed class TavernDialogue : MonoBehaviour
     public void TalkToRoland()
     {
         Begin("Roland");
+        if (HasJoined(RolandId))
+        {
+            End("I can't wait for our next adventure. Oathwake is still out there, and so is the road.");
+            return;
+        }
         Show("Roland. I used to carry a knight's banner. These days, I carry something smaller.",
             "What's in the cloth?", () =>
             {
-                if (OwnsHero(RolandId))
+                if (HasJoined(RolandId))
                 {
                     End("The hilt of Oathwake. I'll keep it close. I can't wait to see what lies beyond these walls.");
                     return;
@@ -52,13 +57,18 @@ public sealed class TavernDialogue : MonoBehaviour
     public void TalkToWilmer()
     {
         Begin("Wilmer");
+        if (HasJoined(WilmerId))
+        {
+            End("I'm still in. Here's hoping the next chest is so full we have to carry it out between us.");
+            return;
+        }
         Show("Wilmer. Bounty hunter, mercenary, whatever the contract calls for. I get paid when the job's done. And a little before.",
             "What's your price?", OfferWilmer);
     }
 
     private void OfferWilmer()
     {
-        if (OwnsHero(WilmerId))
+        if (HasJoined(WilmerId))
         {
             End("I'm still in. Here's hoping the next chest is so full we have to carry it out between us.");
             return;
@@ -109,7 +119,7 @@ public sealed class TavernDialogue : MonoBehaviour
             return;
         }
 
-        if (OwnsHero(id))
+        if (HasJoined(id))
         {
             End(joinedLine);
             return;
@@ -130,7 +140,15 @@ public sealed class TavernDialogue : MonoBehaviour
         UIfiller.GlobalRefresh();
     }
 
-    private static bool OwnsHero(string id) => MainStates.instance != null && MainStates.instance.GetItemsCount(id) > 0;
+    private static bool HasJoined(string id)
+    {
+        var state = MainStates.instance;
+        if (state == null || !state.HasMain()) return false;
+        if (state.GetItemsCount(id) > 0) return true;
+
+        var stat = id == RolandId ? RolandQuestStat : WilmerContractStat;
+        return ModelStatistics.instance != null && ModelStatistics.instance.GetStatValue(stat, false) > 0;
+    }
 
     private static bool Pay(MainStates state, int price)
     {
