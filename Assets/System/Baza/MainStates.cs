@@ -16,6 +16,9 @@ using Random = UnityEngine.Random;
 
 public class MainStates : MonoBehaviour
 {
+    public List<GameObject> commonWindows = new List<GameObject>();
+    
+    
     public float visDistCheck = 10;
     public float vampDistCheck = 5;
 
@@ -254,6 +257,32 @@ public class MainStates : MonoBehaviour
     //
     public Transform trashRoot;
     public static float inBattleScale = 1.0f;
+
+    public void DoOpen(GameObject go)
+    {
+        var b = commonWindows.Find(x => x == go);
+        GameObject rel = null;
+        if (go.name.IndexOf("INVENTORY") >= 0) rel = commonWindows.Find(x => x.name.IndexOf("HERO_PAN") >= 0);
+        
+        if (b != null)
+        {
+            if (b.activeSelf)
+            {
+                b.SetActive(false);
+                if (rel) rel.SetActive(false);
+            }
+            else
+            {
+                commonWindows.ForEach(x => x.SetActive(false));
+                go.SetActive(true);
+                if (rel) rel.SetActive(true);
+            }
+        }
+        else
+        {
+            go.SetActive(true);
+        }
+    }
     
     public bool HasMain()
     {

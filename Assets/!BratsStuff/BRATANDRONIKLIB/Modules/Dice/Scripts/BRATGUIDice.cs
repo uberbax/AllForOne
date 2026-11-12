@@ -114,9 +114,9 @@ public sealed class BRATGUIDice : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             _bodies[i].WakeUp();
-            _bodies[i].linearVelocity = new Vector3(Random.Range(-6f, -4.5f),
-                Random.Range(2.1f, 2.8f), Random.Range(1.7f, 3.1f));
-            _bodies[i].angularVelocity = Random.onUnitSphere * Random.Range(10f, 16f);
+            _bodies[i].linearVelocity = new Vector3(Random.Range(-9f, -6.75f),
+                Random.Range(2.1f, 2.8f), Random.Range(2.55f, 4.65f));
+            _bodies[i].angularVelocity = Random.onUnitSphere * Random.Range(15f, 24f);
         }
         const float step = 1f / 120f;
         float accumulator = 0, elapsed = 0, stillTime = 0, tiltedTime = 0;
