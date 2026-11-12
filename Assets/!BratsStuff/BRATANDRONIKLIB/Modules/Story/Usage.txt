@@ -1,0 +1,39 @@
+ODIUM — standalone illustrated prologue
+
+Scene: Scenes/BRATSceneStory.unity
+Controller: Story / BRATGUIStoryIntro
+
+Open the scene and press Play. The six chapters run automatically.
+The scene contains its own camera, Canvas and EventSystem.
+No gameplay managers or other BRAT modules are required.
+
+Inspector:
+- Chapters: title, English narration, illustration root, independent Layers and extra reading time.
+- Layers: separate character/prop images and their small independent Travel offsets.
+- Characters Per Second: typing speed (28 by default).
+- Reading Hold: pause after the complete paragraph (3.5 seconds).
+- Fade Duration: time to fade to/from black (1.25 seconds).
+- Black Hold: pause between illustrations (0.3 seconds).
+- On Completed: optional external action after the last chapter; intentionally unassigned.
+
+Public actions:
+- Play(): restart the whole prologue in Play Mode.
+- Next(): advance to the next chapter through black, even during typing.
+- SkipStory(): fade to black and invoke On Completed once. Does not load another scene.
+- Stop(): cancel playback and restore the first chapter as a stable preview.
+
+Next is at bottom right, Skip Story at bottom left, using the book's ink-stroke button style.
+Replay appears after completion or Skip Story and calls Play().
+All timing uses unscaled time. Disabling the controller cancels playback and resets the view.
+Portrait layouts stack illustration above narration; landscape layouts place them side by side.
+
+StoryNarration.txt is a readable copy of the initial story. Runtime text is serialized in Chapters.
+Images/Layers/ contains eleven newly generated terrain-free dark painted subjects.
+The six original combined illustrations remain in Images/ as unused references.
+Textures/ contains technical lower-screen black gradients; the upper backdrop is unchanged.
+Deep shadow dims the backdrop at 42% opacity. Individual layer Travel is five times the first layered draft.
+Materials/BRATMaterialStoryColor adjusts illustration saturation and colour balance; layer Image tint is neutral white.
+The colour material is used only by the eleven illustrations, not by the backdrop or text. Source PNGs remain unchanged.
+LayerImagePrompts.json records the revised built-in image_gen prompts.
+ImagePrompts.json records the first draft prompts and the original book references.
+The old book is a visual reference only. Existing scene objects were not copied.
