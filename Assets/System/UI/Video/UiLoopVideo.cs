@@ -12,6 +12,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     {
         public string anim;
         public VideoClip clip;
+        [Min(0)] public float startTime;
     }
 
     [SerializeField] private VideoClip clip;
@@ -28,8 +29,20 @@ public sealed class UiLoopVideo : MonoBehaviour
     private string currentName;
     private string pendingName;
     private bool fading;
+    private bool pendingInstant;
     private float elapsed;
     private Color fadeColor;
+    private long pendingStartFrame;
+    private long currentStartFrame;
+    private bool pendingLoop;
+    private bool currentLoop;
+    private int pendingFrameReadyAt = -1;
+    private int visibleSinceFrame = -1;
+    private bool waitingForLoopFrame;
+    private RenderTexture loopHold;
+    private int loopFrameReadyAt = -1;
+    private readonly List<(RenderTexture Texture, int Frame)> retiredTextures =
+        new List<(RenderTexture, int)>();
 
     private void OnEnable()
     {
@@ -42,7 +55,16 @@ public sealed class UiLoopVideo : MonoBehaviour
             StartClip("idle", idle, true);
     }
 
-    public void CrossFade(string anim)
+    public void CrossFade(string anim) => ChangeAnimation(anim, false);
+
+    public void Play(string anim) => ChangeAnimation(anim, true);
+
+    public bool IsAnimationVisible(string anim) =>
+        current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
+        view != null && view.enabled && view.texture == current.targetTexture &&
+        !waitingForLoopFrame && Time.frameCount > visibleSinceFrame;
+
+    private void ChangeAnimation(string anim, bool instant)
     {
         if (!isActiveAndEnabled || string.IsNullOrWhiteSpace(anim))
             return;
@@ -56,13 +78,17 @@ public sealed class UiLoopVideo : MonoBehaviour
         }
 
         if (pending != null && pendingName == anim)
+        {
+            pendingInstant = instant;
+            if (instant && fading) FinishFade();
             return;
+        }
 
         CancelPending();
-        if (current != null && currentName == anim && (current.isPlaying || current.isLooping))
+        if (current != null && currentName == anim && (current.isPlaying || currentLoop))
             return;
 
-        StartClip(anim, next, anim == "idle" || anim == "walk");
+        StartClip(anim, next, anim == "idle" || anim == "walk", instant);
     }
 
     private VideoClip FindClip(string anim)
@@ -75,13 +101,24 @@ public sealed class UiLoopVideo : MonoBehaviour
         return anim == "idle" ? clip : null;
     }
 
-    private void StartClip(string anim, VideoClip next, bool loop)
+    private void StartClip(string anim, VideoClip next, bool loop, bool instant = false)
     {
         if (current == primary && secondary == null)
             secondary = gameObject.AddComponent<VideoPlayer>();
 
         pending = current == primary ? secondary : primary;
         pendingName = anim;
+        pendingInstant = instant;
+        pendingLoop = loop;
+        pendingFrameReadyAt = -1;
+        double startTime = 0;
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
+            {
+                startTime = Math.Min(entry.startTime, Math.Max(0, next.length - 1 / next.frameRate));
+                break;
+            }
+        pendingStartFrame = (long)Math.Ceiling(startTime * next.frameRate);
         pending.playOnAwake = false;
         pending.source = VideoSource.VideoClip;
         pending.clip = next;
@@ -93,7 +130,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             filterMode = FilterMode.Bilinear
         };
         pending.targetTexture.Create();
-        pending.isLooping = loop;
+        pending.isLooping = loop && pendingStartFrame == 0;
         pending.audioOutputMode = VideoAudioOutputMode.None;
         pending.timeUpdateMode = VideoTimeUpdateMode.UnscaledGameTime;
         pending.waitForFirstFrame = true;
@@ -101,23 +138,48 @@ public sealed class UiLoopVideo : MonoBehaviour
         pending.prepareCompleted += Prepared;
         pending.frameReady += FirstFrame;
         pending.errorReceived += Failed;
+        pending.loopPointReached += LoopPointReached;
         pending.Prepare();
     }
 
     private void Prepared(VideoPlayer source)
     {
-        if (source == pending)
-            source.Play();
+        if (source != pending) return;
+        if (pendingStartFrame > 0) source.frame = pendingStartFrame;
+        source.Play();
     }
 
     private void FirstFrame(VideoPlayer source, long frame)
     {
-        if (source != pending)
-            return;
-
+        if (source != pending || frame < pendingStartFrame) return;
         source.sendFrameReadyEvents = false;
         source.frameReady -= FirstFrame;
-        if (current == null || crossFadeDuration <= 0)
+        // frameReady can precede the decoder's copy into the RenderTexture.
+        pendingFrameReadyAt = Time.frameCount;
+    }
+
+    private void LateUpdate()
+    {
+        if (pendingFrameReadyAt >= 0 && Time.frameCount > pendingFrameReadyAt && pending != null)
+        {
+            pendingFrameReadyAt = -1;
+            BeginTransition();
+        }
+
+        if (waitingForLoopFrame && loopFrameReadyAt >= 0 && Time.frameCount > loopFrameReadyAt)
+        {
+            view.texture = current.targetTexture;
+            RetireLoopHold();
+            waitingForLoopFrame = false;
+            visibleSinceFrame = Time.frameCount;
+        }
+
+        ReleaseRetiredTextures(false);
+    }
+
+    private void BeginTransition()
+    {
+        if (current == null || pendingInstant || crossFadeDuration <= 0)
         {
             FinishFade();
             return;
@@ -138,7 +200,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         overlay.material = view.material;
         overlay.uvRect = view.uvRect;
         overlay.maskable = view.maskable;
-        overlay.texture = source.targetTexture;
+        overlay.texture = pending.targetTexture;
         fadeColor = view.color;
         overlay.color = WithAlpha(fadeColor, 0);
         overlay.enabled = true;
@@ -165,6 +227,11 @@ public sealed class UiLoopVideo : MonoBehaviour
         var outgoing = current;
         current = pending;
         currentName = pendingName;
+        currentStartFrame = pendingStartFrame;
+        currentLoop = pendingLoop;
+        RetireLoopHold();
+        waitingForLoopFrame = false;
+        visibleSinceFrame = Time.frameCount;
         pending = null;
         pendingName = null;
         view.texture = current.targetTexture;
@@ -176,6 +243,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     {
         ClearOverlay();
         var cancelled = pending;
+        pendingFrameReadyAt = -1;
         pending = null;
         pendingName = null;
         Release(cancelled);
@@ -193,6 +261,29 @@ public sealed class UiLoopVideo : MonoBehaviour
         }
     }
 
+    private void LoopPointReached(VideoPlayer source)
+    {
+        if (source != current || !currentLoop || currentStartFrame <= 0 || waitingForLoopFrame) return;
+        loopHold = new RenderTexture(source.targetTexture.descriptor) { name = name + " loop hold" };
+        loopHold.Create();
+        Graphics.Blit(source.targetTexture, loopHold);
+        view.texture = loopHold;
+        waitingForLoopFrame = true;
+        loopFrameReadyAt = -1;
+        source.sendFrameReadyEvents = true;
+        source.frameReady += LoopFrame;
+        source.frame = currentStartFrame;
+        source.Play();
+    }
+
+    private void LoopFrame(VideoPlayer source, long frame)
+    {
+        if (source != current || frame < currentStartFrame) return;
+        source.frameReady -= LoopFrame;
+        source.sendFrameReadyEvents = false;
+        loopFrameReadyAt = Time.frameCount;
+    }
+
     private void Failed(VideoPlayer source, string message)
     {
         Debug.LogError("UI video: " + message, this);
@@ -208,6 +299,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             current = null;
             currentName = null;
             ShowPoster();
+            RetireLoopHold();
             Release(source);
         }
     }
@@ -220,6 +312,8 @@ public sealed class UiLoopVideo : MonoBehaviour
         currentName = null;
         ShowPoster();
         Release(outgoing);
+        RetireLoopHold();
+        ReleaseRetiredTextures(true);
     }
 
     private void ShowPoster()
@@ -238,14 +332,33 @@ public sealed class UiLoopVideo : MonoBehaviour
         player.prepareCompleted -= Prepared;
         player.frameReady -= FirstFrame;
         player.errorReceived -= Failed;
+        player.loopPointReached -= LoopPointReached;
+        player.frameReady -= LoopFrame;
         player.sendFrameReadyEvents = false;
-        player.Stop();
         var target = player.targetTexture;
         player.targetTexture = null;
+        player.Stop();
         if (target != null)
+            retiredTextures.Add((target, Time.frameCount));
+    }
+
+    private void RetireLoopHold()
+    {
+        if (loopHold == null) return;
+        retiredTextures.Add((loopHold, Time.frameCount));
+        loopHold = null;
+    }
+
+    private void ReleaseRetiredTextures(bool all)
+    {
+        for (int i = retiredTextures.Count - 1; i >= 0; i--)
         {
-            target.Release();
-            Destroy(target);
+            var retired = retiredTextures[i];
+            if (!all && Time.frameCount <= retired.Frame + 1) continue;
+            retired.Texture.Release();
+            if (Application.isPlaying) Destroy(retired.Texture);
+            else DestroyImmediate(retired.Texture);
+            retiredTextures.RemoveAt(i);
         }
     }
 

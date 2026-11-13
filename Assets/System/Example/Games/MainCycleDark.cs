@@ -76,6 +76,9 @@ public class MainCycleDark : MonoBehaviour
     
     public void HandleLift()
     {
+        canMovePrison = false;
+        UpdatePrisonArrows();
+        StopPrisonMovement();
         Transitioner.instance.Simple(null, new List<GameObject>{cages}, () =>
         {
             UtilsControl.Instance.MoveTo(lift.transform, 200f, liftLo.position, () =>
@@ -87,12 +90,10 @@ public class MainCycleDark : MonoBehaviour
                     //enable movement
                     
                     //we move char
-                    charLift.CrossFade("walk");
-                    UtilsControl.Instance.MoveTo(charLift.transform, 200, charEnd.position, () =>
-                    {
-                        charLift.CrossFade("idle");
-                        canMovePrison = true;
-                    }, null, useRight:false);
+                    charLift.transform.parent = lift.transform.parent; 
+                    //lift.transform.parent = lift.transform.parent.parent;
+                    
+                    StartCoroutine(WalkFromPrisonLift());
                     
                 }, null, useRight:false);
             }, null, useRight:false);
@@ -103,9 +104,118 @@ public class MainCycleDark : MonoBehaviour
     public GameObject buttonNext;
     public GameObject buttonPrev;
     
+    [SerializeField, Min(0)] private float prisonMoveSpeed = 200f;
+    [SerializeField] private bool prisonVideoFacesLeft = true;
+
+    private PrisonMoveArrow prisonNextArrow;
+    private PrisonMoveArrow prisonPrevArrow;
+    private bool prisonWalking;
+
+    private void UpdatePrisonArrows()
+    {
+        if (buttonNext != null && buttonNext.activeSelf != canMovePrison)
+            buttonNext.SetActive(canMovePrison);
+        if (buttonPrev != null && buttonPrev.activeSelf != canMovePrison)
+            buttonPrev.SetActive(canMovePrison);
+    }
+
+    private void HandlePrisonMovement()
+    {
+        UpdatePrisonArrows();
+        if (!canMovePrison || charLift == null || cages == null ||
+            !cages.activeInHierarchy || !charLift.isActiveAndEnabled)
+        {
+            SetPrisonWalking(false);
+            return;
+        }
+
+        int direction = (prisonNextArrow != null && prisonNextArrow.IsHeld ? 1 : 0) -
+                        (prisonPrevArrow != null && prisonPrevArrow.IsHeld ? 1 : 0);
+        var area = cages.transform as RectTransform;
+        var characterRect = charLift.transform as RectTransform;
+        if (direction == 0 || area == null || characterRect == null)
+        {
+            SetPrisonWalking(false);
+            return;
+        }
+
+        var position = area.InverseTransformPoint(characterRect.position);
+        float halfWidth = Mathf.Abs(area.InverseTransformVector(
+            characterRect.TransformVector(Vector3.right * characterRect.rect.width)).x) * .5f;
+        float margin = Mathf.Min(halfWidth, area.rect.width * .5f);
+        float nextX = Mathf.Clamp(position.x + direction * prisonMoveSpeed * Time.unscaledDeltaTime,
+            area.rect.xMin + margin, area.rect.xMax - margin);
+        bool moving = !Mathf.Approximately(nextX, position.x);
+        SetPrisonWalking(moving);
+        if (moving)
+        {
+            FacePrisonDirection(direction);
+            if (!charLift.IsAnimationVisible("walk")) return;
+            position.x = nextX;
+            characterRect.position = area.TransformPoint(position);
+        }
+    }
+
+    private IEnumerator WalkFromPrisonLift()
+    {
+        var direction = cages.transform.InverseTransformPoint(charEnd.position).x -
+                        cages.transform.InverseTransformPoint(charLift.transform.position).x;
+        FacePrisonDirection(direction);
+        charLift.Play("walk");
+        while (!charLift.IsAnimationVisible("walk"))
+        {
+            if (!cages.activeInHierarchy || !charLift.isActiveAndEnabled) yield break;
+            yield return null;
+        }
+
+        UtilsControl.Instance.MoveTo(charLift.transform, 200, charEnd.position, () =>
+        {
+            charLift.Play("idle");
+            canMovePrison = true;
+            UpdatePrisonArrows();
+        }, null, useRight:false, ignoreFlip:true);
+    }
+
+    private void FacePrisonDirection(float direction)
+    {
+        if (Mathf.Approximately(direction, 0)) return;
+        var characterTransform = charLift.transform;
+        var parent = characterTransform.parent;
+        var right = cages.transform.TransformVector(Vector3.right);
+        float parentDirection = parent != null ? parent.InverseTransformVector(right).x : right.x;
+        var scale = characterTransform.localScale;
+        scale.x = Mathf.Abs(scale.x) * Mathf.Sign(direction * parentDirection) *
+                  (prisonVideoFacesLeft ? -1 : 1);
+        characterTransform.localScale = scale;
+    }
+
+    private void SetPrisonWalking(bool walking)
+    {
+        if (prisonWalking == walking) return;
+        prisonWalking = walking;
+        if (charLift != null) charLift.Play(walking ? "walk" : "idle");
+    }
+
+    private void StopPrisonMovement()
+    {
+        if (prisonNextArrow != null) prisonNextArrow.Release();
+        if (prisonPrevArrow != null) prisonPrevArrow.Release();
+        SetPrisonWalking(false);
+    }
+
+    private void OnDisable() => StopPrisonMovement();
+
+    private void OnApplicationFocus(bool focused)
+    {
+        if (!focused) StopPrisonMovement();
+    }
+
+
     public void ClosePrisonCages()
     {
         canMovePrison = false;
+        UpdatePrisonArrows();
+        StopPrisonMovement();
     }
     
     public void DoMenu(bool hasRun)
@@ -129,6 +239,11 @@ public class MainCycleDark : MonoBehaviour
     
     private void Awake()
     {
+        UpdatePrisonArrows();
+        if (buttonNext != null)
+            prisonNextArrow = buttonNext.GetComponent<PrisonMoveArrow>() ?? buttonNext.AddComponent<PrisonMoveArrow>();
+        if (buttonPrev != null)
+            prisonPrevArrow = buttonPrev.GetComponent<PrisonMoveArrow>() ?? buttonPrev.AddComponent<PrisonMoveArrow>();
         EventManager.SUB("PARSE_ENDED", B);
 
         //give one building at start
@@ -594,6 +709,7 @@ public class MainCycleDark : MonoBehaviour
 
     private void Update()
     {
+        HandlePrisonMovement();
         HandleAutomove();
 
 
