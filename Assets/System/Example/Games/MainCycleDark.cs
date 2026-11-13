@@ -7,6 +7,7 @@ using NavMeshPlus.Extensions;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -52,6 +53,9 @@ public class MainCycleDark : MonoBehaviour
     public GameObject character;
     public GameObject door;
     
+    public Transform charEnd;
+    public UiLoopVideo charLift;
+    
     [Header("Embark")]
     public Button embark;
     public GameObject map;
@@ -82,11 +86,27 @@ public class MainCycleDark : MonoBehaviour
                     door.GetComponent<SpriterAnim>().CrossFade("open", 0.1f);
                     //enable movement
                     
+                    //we move char
+                    charLift.CrossFade("walk");
+                    UtilsControl.Instance.MoveTo(charLift.transform, 200, charEnd.position, () =>
+                    {
+                        charLift.CrossFade("idle");
+                        canMovePrison = true;
+                    }, null, useRight:false);
+                    
                 }, null, useRight:false);
             }, null, useRight:false);
         });
     }
+
+    public bool canMovePrison = false;
+    public GameObject buttonNext;
+    public GameObject buttonPrev;
     
+    public void ClosePrisonCages()
+    {
+        canMovePrison = false;
+    }
     
     public void DoMenu(bool hasRun)
     {

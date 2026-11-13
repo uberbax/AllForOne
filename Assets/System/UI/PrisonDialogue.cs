@@ -62,7 +62,14 @@ public sealed class PrisonDialogue : MonoBehaviour
 
         if (page == Pages.Length - 1)
         {
-            cages.SetActive(true);
+            var cycle = FindFirstObjectByType<MainCycleDark>();
+            if (cycle == null || cycle.goDownPrison == null)
+            {
+                Debug.LogError("Prison dialogue requires MainCycleDark.goDownPrison.", this);
+                return;
+            }
+
+            cycle.goDownPrison.onClick.Invoke();
             Leave();
             return;
         }
