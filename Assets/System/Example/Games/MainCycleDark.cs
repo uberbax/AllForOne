@@ -77,6 +77,7 @@ public class MainCycleDark : MonoBehaviour
     public void HandleLift()
     {
         canMovePrison = false;
+        prisonScrollInitialized = false;
         UpdatePrisonArrows();
         StopPrisonMovement();
         Transitioner.instance.Simple(null, new List<GameObject>{cages}, () =>
@@ -110,6 +111,12 @@ public class MainCycleDark : MonoBehaviour
     private PrisonMoveArrow prisonNextArrow;
     private PrisonMoveArrow prisonPrevArrow;
     private bool prisonWalking;
+    private bool prisonScrollInitialized;
+    private Vector3 prisonBackgroundHome;
+    private Vector3 prisonLiftHome;
+    private float prisonScrollOffset;
+    private float prisonMaxScroll;
+    private readonly Vector3[] prisonContentCorners = new Vector3[4];
 
     private void UpdatePrisonArrows()
     {
@@ -139,21 +146,61 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
 
+        if (!prisonScrollInitialized) InitializePrisonScroll(area);
         var position = area.InverseTransformPoint(characterRect.position);
+        float worldX = position.x + prisonScrollOffset;
         float halfWidth = Mathf.Abs(area.InverseTransformVector(
             characterRect.TransformVector(Vector3.right * characterRect.rect.width)).x) * .5f;
         float margin = Mathf.Min(halfWidth, area.rect.width * .5f);
-        float nextX = Mathf.Clamp(position.x + direction * prisonMoveSpeed * Time.unscaledDeltaTime,
-            area.rect.xMin + margin, area.rect.xMax - margin);
-        bool moving = !Mathf.Approximately(nextX, position.x);
+        float nextX = Mathf.Clamp(worldX + direction * prisonMoveSpeed * Time.unscaledDeltaTime,
+            area.rect.xMin + margin, area.rect.xMax - margin + prisonMaxScroll);
+        bool moving = !Mathf.Approximately(nextX, worldX);
         SetPrisonWalking(moving);
         if (moving)
         {
             FacePrisonDirection(direction);
             if (!charLift.IsAnimationVisible("walk")) return;
-            position.x = nextX;
-            characterRect.position = area.TransformPoint(position);
+            ApplyPrisonScroll(area, characterRect, nextX);
         }
+    }
+
+    private void InitializePrisonScroll(RectTransform area)
+    {
+        prisonScrollOffset = 0;
+        prisonMaxScroll = 0;
+        if (dynScreen != null)
+        {
+            prisonBackgroundHome = area.InverseTransformPoint(dynScreen.transform.position);
+            var content = dynScreen.transform.Find("total") as RectTransform;
+            if (content != null)
+            {
+                content.GetWorldCorners(prisonContentCorners);
+                float rightEdge = area.rect.xMax;
+                foreach (var corner in prisonContentCorners)
+                    rightEdge = Mathf.Max(rightEdge, area.InverseTransformPoint(corner).x);
+                prisonMaxScroll = Mathf.Max(0, rightEdge - area.rect.xMax);
+            }
+        }
+
+        if (lift != null)
+        {
+            if (lift.transform.parent != area) lift.transform.SetParent(area, true);
+            prisonLiftHome = area.InverseTransformPoint(lift.transform.position);
+        }
+
+        prisonScrollInitialized = true;
+    }
+
+    private void ApplyPrisonScroll(RectTransform area, RectTransform actor, float worldX)
+    {
+        prisonScrollOffset = Mathf.Clamp(worldX - area.rect.center.x, 0, prisonMaxScroll);
+        if (dynScreen != null)
+            dynScreen.transform.position = area.TransformPoint(prisonBackgroundHome - Vector3.right * prisonScrollOffset);
+        //if (lift != null) lift.transform.position = area.TransformPoint(prisonLiftHome);
+
+        var position = area.InverseTransformPoint(actor.position);
+        position.x = worldX - prisonScrollOffset;
+        actor.position = area.TransformPoint(position);
     }
 
     private IEnumerator WalkFromPrisonLift()
@@ -171,9 +218,17 @@ public class MainCycleDark : MonoBehaviour
         UtilsControl.Instance.MoveTo(charLift.transform, 200, charEnd.position, () =>
         {
             charLift.Play("idle");
+            InitializePrisonScroll((RectTransform)cages.transform);
             canMovePrison = true;
+            lift.transform.parent = dynScreen.transform;
             UpdatePrisonArrows();
         }, null, useRight:false, ignoreFlip:true);
+    }
+
+    private void LateUpdate()
+    {
+        //if (canMovePrison && prisonScrollInitialized && cages != null && lift != null)
+        //    lift.transform.position = cages.transform.TransformPoint(prisonLiftHome);
     }
 
     private void FacePrisonDirection(float direction)
