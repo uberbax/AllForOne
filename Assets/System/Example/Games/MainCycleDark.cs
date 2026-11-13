@@ -76,25 +76,35 @@ public class MainCycleDark : MonoBehaviour
     
     public void HandleLift()
     {
+        if (prisonVisitActive) return;
+        CapturePrisonState();
+        prisonVisitActive = true;
+        int visit = ++prisonVisit;
         canMovePrison = false;
         prisonScrollInitialized = false;
         UpdatePrisonArrows();
         StopPrisonMovement();
-        Transitioner.instance.Simple(null, new List<GameObject>{cages}, () =>
+        Transitioner.instance.DoFade(1, 1, () =>
         {
+            if (prisonVisitActive && visit == prisonVisit) cages.SetActive(true);
+        }, () =>
+        {
+            if (!prisonVisitActive || visit != prisonVisit) return;
             UtilsControl.Instance.MoveTo(lift.transform, 200f, liftLo.position, () =>
             {
+                if (!prisonVisitActive || visit != prisonVisit) return;
                 UtilsControl.Instance.MoveTo(dynScreen.transform, 200f, dynScreenLo.position, () =>
                 {
+                    if (!prisonVisitActive || visit != prisonVisit) return;
                     //particles dust ?
-                    door.GetComponent<SpriterAnim>().CrossFade("open", 0.1f);
+                    door.GetComponent<SpriterAnim>().CrossFade("open", 0);
                     //enable movement
                     
                     //we move char
                     charLift.transform.parent = lift.transform.parent; 
                     //lift.transform.parent = lift.transform.parent.parent;
                     
-                    StartCoroutine(WalkFromPrisonLift());
+                    prisonExitRoutine = StartCoroutine(WalkFromPrisonLift(visit));
                     
                 }, null, useRight:false);
             }, null, useRight:false);
@@ -117,6 +127,129 @@ public class MainCycleDark : MonoBehaviour
     private float prisonScrollOffset;
     private float prisonMaxScroll;
     private readonly Vector3[] prisonContentCorners = new Vector3[4];
+
+    private PrisonTransformState[] prisonInitialState;
+    private int prisonVisit;
+    private bool prisonVisitActive;
+    private Coroutine prisonExitRoutine;
+    private string prisonDoorState;
+
+    private void CapturePrisonState()
+    {
+        prisonInitialState = new[]
+        {
+            new PrisonTransformState(dynScreen.transform),
+            new PrisonTransformState(lift.transform),
+            new PrisonTransformState(charLift.transform)
+        };
+        var animation = door != null ? door.GetComponent<SpriterAnim>() : null;
+        prisonDoorState = animation != null
+            ? string.IsNullOrEmpty(animation.curAnim) ? animation.defaultAnim : animation.curAnim
+            : null;
+    }
+
+    public void RestorePrisonState()
+    {
+        prisonVisit++;
+        prisonVisitActive = false;
+        canMovePrison = false;
+        UpdatePrisonArrows();
+        StopPrisonMovement();
+        if (prisonExitRoutine != null)
+        {
+            StopCoroutine(prisonExitRoutine);
+            prisonExitRoutine = null;
+        }
+
+        prisonScrollInitialized = false;
+        prisonScrollOffset = 0;
+        prisonMaxScroll = 0;
+        if (prisonInitialState == null) return;
+
+        foreach (var state in prisonInitialState)
+        {
+            if (state.Target == null) continue;
+            var move = state.Target.GetComponent<MoveDir>();
+            if (move != null && move.cr != null)
+            {
+                if (UtilsControl.Instance != null) UtilsControl.Instance.StopCoroutine(move.cr);
+                move.cr = null;
+            }
+
+            state.Target.SetParent(state.Parent, false);
+        }
+
+        foreach (var state in prisonInitialState) state.Restore();
+        Array.Sort(prisonInitialState, (a, b) => a.SiblingIndex.CompareTo(b.SiblingIndex));
+        foreach (var state in prisonInitialState)
+            if (state.Target != null) state.Target.SetSiblingIndex(state.SiblingIndex);
+        prisonInitialState = null;
+
+        var animation = door != null ? door.GetComponent<SpriterAnim>() : null;
+        if (animation != null && !string.IsNullOrEmpty(prisonDoorState))
+            animation.CrossFade(prisonDoorState, 0);
+        if (charLift != null) charLift.Play("idle");
+    }
+
+    private sealed class PrisonTransformState
+    {
+        public Transform Target { get; }
+        public Transform Parent { get; }
+        public int SiblingIndex { get; }
+
+        private readonly Vector3 position;
+        private readonly Quaternion rotation;
+        private readonly Vector3 scale;
+        private readonly Vector2 anchorMin, anchorMax, pivot, sizeDelta;
+        private readonly Vector3 anchoredPosition;
+        private readonly string name;
+        private readonly bool active;
+
+        public PrisonTransformState(Transform target)
+        {
+            Target = target;
+            Parent = target.parent;
+            SiblingIndex = target.GetSiblingIndex();
+            position = target.localPosition;
+            rotation = target.localRotation;
+            scale = target.localScale;
+            name = target.name;
+            active = target.gameObject.activeSelf;
+            if (target is RectTransform rect)
+            {
+                anchorMin = rect.anchorMin;
+                anchorMax = rect.anchorMax;
+                pivot = rect.pivot;
+                sizeDelta = rect.sizeDelta;
+                anchoredPosition = rect.anchoredPosition3D;
+            }
+        }
+
+        public void Restore()
+        {
+            if (Target == null) return;
+            Target.name = name;
+            if (Target is RectTransform rect)
+            {
+                rect.anchorMin = anchorMin;
+                rect.anchorMax = anchorMax;
+                rect.pivot = pivot;
+                rect.sizeDelta = sizeDelta;
+                rect.anchoredPosition3D = anchoredPosition;
+            }
+            else Target.localPosition = position;
+            Target.localRotation = rotation;
+            Target.localScale = scale;
+            var move = Target.GetComponent<MoveDir>();
+            if (move != null)
+            {
+                move.where = Target.position;
+                move.dir = Vector3.zero;
+            }
+            Target.gameObject.SetActive(active);
+        }
+    }
+
 
     private void UpdatePrisonArrows()
     {
@@ -203,7 +336,7 @@ public class MainCycleDark : MonoBehaviour
         actor.position = area.TransformPoint(position);
     }
 
-    private IEnumerator WalkFromPrisonLift()
+    private IEnumerator WalkFromPrisonLift(int visit)
     {
         var direction = cages.transform.InverseTransformPoint(charEnd.position).x -
                         cages.transform.InverseTransformPoint(charLift.transform.position).x;
@@ -211,12 +344,15 @@ public class MainCycleDark : MonoBehaviour
         charLift.Play("walk");
         while (!charLift.IsAnimationVisible("walk"))
         {
-            if (!cages.activeInHierarchy || !charLift.isActiveAndEnabled) yield break;
+            if (!prisonVisitActive || visit != prisonVisit ||
+                !cages.activeInHierarchy || !charLift.isActiveAndEnabled) yield break;
             yield return null;
         }
 
+        if (!prisonVisitActive || visit != prisonVisit) yield break;
         UtilsControl.Instance.MoveTo(charLift.transform, 200, charEnd.position, () =>
         {
+            if (!prisonVisitActive || visit != prisonVisit) return;
             charLift.Play("idle");
             InitializePrisonScroll((RectTransform)cages.transform);
             canMovePrison = true;
@@ -268,11 +404,10 @@ public class MainCycleDark : MonoBehaviour
 
     public void ClosePrisonCages()
     {
-        canMovePrison = false;
-        UpdatePrisonArrows();
-        StopPrisonMovement();
+        RestorePrisonState();
+        cages.SetActive(false);
     }
-    
+
     public void DoMenu(bool hasRun)
     {
         if (hasRun)
