@@ -45,6 +45,8 @@ public sealed class BRATGUIStoryIntro : MonoBehaviour
     public Image blackFade;
     public Image[] chapterMarks = Array.Empty<Image>();
     public GameObject replayButton;
+    [Tooltip("Optional left-side Replay Story button, shown after the prologue finishes. Wire its On Click to Play().")]
+    public GameObject repeatStoryButton;
     public Button nextButton;
     public Button skipButton;
     [Header("Playback")]
@@ -178,6 +180,7 @@ public sealed class BRATGUIStoryIntro : MonoBehaviour
         _sequence = null;
         ShowNavigation(false);
         if (replayButton) replayButton.SetActive(true);
+        if (repeatStoryButton) repeatStoryButton.SetActive(true);
         if (_completionSent) return;
         _completionSent = true;
         onCompleted.Invoke();
@@ -210,6 +213,7 @@ public sealed class BRATGUIStoryIntro : MonoBehaviour
         SetBlack(0f);
         if (replayButton) replayButton.SetActive(false);
         ShowNavigation(true);
+        if (repeatStoryButton) repeatStoryButton.SetActive(false);
     }
 
     private void Update()
