@@ -42,6 +42,9 @@ public class MainCycleDark : MonoBehaviour
     public GameObject firstSlide;
 
     [Header("Lift")] 
+    public List<Transform> demonGuis = new List<Transform>();
+    [SerializeField, Min(0)] private float demonGuiDistance = 300f;
+    [SerializeField, Min(0)] private float demonGuiDistanceHysteresis = 50f;
     public Button goDownPrison;
     public GameObject cages;
     public GameObject lift;
@@ -153,6 +156,7 @@ public class MainCycleDark : MonoBehaviour
         prisonVisit++;
         prisonVisitActive = false;
         canMovePrison = false;
+        UpdateDemonGuis();
         UpdatePrisonArrows();
         StopPrisonMovement();
         if (prisonExitRoutine != null)
@@ -363,8 +367,27 @@ public class MainCycleDark : MonoBehaviour
 
     private void LateUpdate()
     {
+        UpdateDemonGuis();
         //if (canMovePrison && prisonScrollInitialized && cages != null && lift != null)
         //    lift.transform.position = cages.transform.TransformPoint(prisonLiftHome);
+    }
+
+    private void UpdateDemonGuis()
+    {
+        if (demonGuis == null) return;
+        bool canShow = canMovePrison && cages != null && cages.activeInHierarchy &&
+                       charLift != null && charLift.isActiveAndEnabled;
+        var area = cages != null ? cages.transform : null;
+        float characterX = canShow ? area.InverseTransformPoint(charLift.transform.position).x : 0;
+        float distance = Mathf.Max(0, demonGuiDistance);
+        float hysteresis = Mathf.Max(0, demonGuiDistanceHysteresis);
+        foreach (var gui in demonGuis)
+        {
+            if (gui == null) continue;
+            bool visible = canShow && Mathf.Abs(area.InverseTransformPoint(gui.position).x - characterX) <=
+                distance + (gui.gameObject.activeSelf ? hysteresis : 0);
+            if (gui.gameObject.activeSelf != visible) gui.gameObject.SetActive(visible);
+        }
     }
 
     private void FacePrisonDirection(float direction)

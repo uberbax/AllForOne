@@ -37,6 +37,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     private bool pendingLoop;
     private bool currentLoop;
     private int pendingFrameReadyAt = -1;
+    private bool pendingPlaybackStarted;
     private int visibleSinceFrame = -1;
     private bool waitingForLoopFrame;
     private RenderTexture loopHold;
@@ -111,6 +112,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         pendingInstant = instant;
         pendingLoop = loop;
         pendingFrameReadyAt = -1;
+        pendingPlaybackStarted = false;
         double startTime = 0;
         foreach (var entry in animations)
             if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
@@ -146,12 +148,13 @@ public sealed class UiLoopVideo : MonoBehaviour
     {
         if (source != pending) return;
         if (pendingStartFrame > 0) source.frame = pendingStartFrame;
+        pendingPlaybackStarted = true;
         source.Play();
     }
 
     private void FirstFrame(VideoPlayer source, long frame)
     {
-        if (source != pending || frame < pendingStartFrame) return;
+        if (source != pending || !pendingPlaybackStarted || frame < pendingStartFrame) return;
         source.sendFrameReadyEvents = false;
         source.frameReady -= FirstFrame;
         // frameReady can precede the decoder's copy into the RenderTexture.
