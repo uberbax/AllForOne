@@ -43104,6 +43104,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 519420035}
     - target: {fileID: 7504629633826217340, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
       propertyPath: m_Name
       value: RO_Settings
@@ -66609,6 +66613,13 @@ MonoBehaviour:
   buttonPrev: {fileID: 1045261802}
   prisonMoveSpeed: 250
   prisonVideoFacesLeft: 1
+  actives:
+  - {fileID: 633009340}
+  - {fileID: 1623419894}
+  - {fileID: 1539404499}
+  - {fileID: 2087058527}
+  - {fileID: 1589522555}
+  musicMain: {fileID: 8300000, guid: 868a10f9bc0b9d2478b5474bb1a8e153, type: 3}
   battlePoint: {fileID: 0}
   playerPos: {fileID: 0}
   basePos: {fileID: 0}
@@ -172714,9 +172725,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: cf9504d28b694ad45989c01040742923, type: 3}
+  m_Resource: {fileID: 8300000, guid: 868a10f9bc0b9d2478b5474bb1a8e153, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -211185,6 +211196,7 @@ GameObject:
   - component: {fileID: 633009343}
   - component: {fileID: 633009342}
   - component: {fileID: 633009345}
+  - component: {fileID: 633009346}
   m_Layer: 5
   m_Name: TAVERN
   m_TagString: Untagged
@@ -211286,6 +211298,20 @@ MonoBehaviour:
   speakerLabel: {fileID: 509366977}
   roomPrice: 25
   wilmerPrice: 150
+--- !u!114 &633009346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633009340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: 35da5b3d0c26908449427165cdb40a7a, type: 3}
 --- !u!1 &633300945
 GameObject:
   m_ObjectHideFlags: 0
@@ -512760,6 +512786,7 @@ GameObject:
   - component: {fileID: 1539404503}
   - component: {fileID: 1539404502}
   - component: {fileID: 1539404501}
+  - component: {fileID: 1539404504}
   m_Layer: 5
   m_Name: PRISON
   m_TagString: Untagged
@@ -512843,6 +512870,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539404499}
   m_CullTransparentMesh: 1
+--- !u!114 &1539404504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539404499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: fbdcd62596ac7554bbe8a44a7e860020, type: 3}
 --- !u!224 &1539541202 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6998061027292192183, guid: acefefd61e133c944b130b4c55ba71d6, type: 3}
@@ -537158,6 +537199,7 @@ GameObject:
   - component: {fileID: 1623419897}
   - component: {fileID: 1623419896}
   - component: {fileID: 1623419898}
+  - component: {fileID: 1623419899}
   m_Layer: 5
   m_Name: MARKET
   m_TagString: Untagged
@@ -537239,6 +537281,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
+--- !u!114 &1623419899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623419894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: 35da5b3d0c26908449427165cdb40a7a, type: 3}
 --- !u!1 &1623673785
 GameObject:
   m_ObjectHideFlags: 0
@@ -689956,6 +690012,7 @@ GameObject:
   - component: {fileID: 2087058530}
   - component: {fileID: 2087058529}
   - component: {fileID: 2087058532}
+  - component: {fileID: 2087058533}
   m_Layer: 5
   m_Name: FORGE
   m_TagString: Untagged
@@ -690062,6 +690119,20 @@ MonoBehaviour:
   - {fileID: 2108021536}
   - {fileID: 1345821168}
   - {fileID: 1896408637}
+--- !u!114 &2087058533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087058527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: fbdcd62596ac7554bbe8a44a7e860020, type: 3}
 --- !u!1 &2087114777
 GameObject:
   m_ObjectHideFlags: 0

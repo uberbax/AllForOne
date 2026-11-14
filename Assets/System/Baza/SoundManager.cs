@@ -5,6 +5,8 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
     public AudioClip click;
+
+    public AudioSource source;
     private void Awake()
     {
         instance = this;

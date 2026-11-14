@@ -365,9 +365,23 @@ public class MainCycleDark : MonoBehaviour
         }, null, useRight:false, ignoreFlip:true);
     }
 
+    public List<GameObject> actives;
+    public AudioClip musicMain;
+    public void MusicCheck()
+    {
+        bool q = false;
+        foreach (var a in actives) if (a.activeInHierarchy) q = true;
+        if (!q && musicMain != SoundManager.instance.source.clip)
+        {
+            SoundManager.instance.source.clip = musicMain;
+            SoundManager.instance.source.Play();
+        }
+    }
+    
     private void LateUpdate()
     {
         UpdateDemonGuis();
+        MusicCheck();
         //if (canMovePrison && prisonScrollInitialized && cages != null && lift != null)
         //    lift.transform.position = cages.transform.TransformPoint(prisonLiftHome);
     }
