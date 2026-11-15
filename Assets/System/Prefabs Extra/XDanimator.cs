@@ -16,6 +16,7 @@ public class XDanimator : ComponentBehavior
     private PrAnimat anim2;
     
     GUIControls guiControls;
+    UiLoopVideo animVideo;
     //params:
     //pr
     
@@ -28,14 +29,20 @@ public class XDanimator : ComponentBehavior
         anim = mon.visuals["vis_main"].GetComponentInChildren<Animator>();
         anim1 = mon.visuals["vis_main"].GetComponent<SpriterAnim>();
         
-        if (pars.ContainsKey("pr") && (anim == null || !anim.enabled))
+        guiControls = mon.visuals["vis_main"].GetComponent<GUIControls>();
+        
+        animVideo = mon.visuals["vis_main"].GetComponent<UiLoopVideo>();
+        
+        if (pars.ContainsKey("pr") && (anim == null && guiControls == null && animVideo == null || !anim.enabled))
         {
             mon.visuals["vis_main"].AddComponent<PrAnimat>();
         }        
         
         anim2 = mon.visuals["vis_main"].GetComponent<PrAnimat>();
         
-        guiControls = mon.visuals["vis_main"].GetComponent<GUIControls>();
+
+        
+        
     }
 
     public string prevState = "";
@@ -72,6 +79,12 @@ public class XDanimator : ComponentBehavior
             
             
             guiControls.CrossFade(prevState + da, 0.2f);
+            return;
+        }
+
+        if (animVideo != null)
+        {
+            animVideo.CrossFade(prevState);
             return;
         }
 

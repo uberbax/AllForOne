@@ -582,14 +582,106 @@ public class MainCycleDark : MonoBehaviour
                 infoBattle.gameObject.SetActive(true);
             });
         }
+        
+        List<GameObject> toDeactiv = new List<GameObject>();
+        toDeactiv.Add(managment);
+        toDeactiv.AddRange(deactivateBattle);
 
         goBattle.onClick.AddListener(() =>
             {
+                List<GameObject> pap = new List<GameObject>{backs, heroes, battleUI};
+                pap.AddRange(battleBgs);
                 //infoBattle.gameObject.SetActive(false);
-                Transitioner.instance.Simple(map, new List<GameObject> { backs, heroes, battleUI }, null, 
-                    new List<GameObject> { managment } );
+                Transitioner.instance.Simple(map, pap, ()=>
+                {
+                    SpawnInventoryHeroes();
+                    
+                }, 
+                    toDeactiv);
             }
         );
+    }
+
+    private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
+
+    private void SpawnInventoryHeroes()
+    {
+        var state = MainStates.instance;
+        var resources = ResourceHolder.instance;
+        var positions = heroes != null ? heroes.transform.Find("heroes") : null;
+        if (state == null || state.mainPlayer == null || resources == null ||
+            DatabaseAll.instance == null || positions == null || positions.childCount == 0)
+        {
+            Debug.LogWarning("Cannot spawn inventory heroes: missing player, resources or HEROES/heroes positions.", this);
+            return;
+        }
+
+        foreach (var spawned in battleInventoryHeroes)
+        {
+            if (spawned == null) continue;
+            spawned.SetActive(false);
+            Destroy(spawned);
+        }
+        battleInventoryHeroes.Clear();
+
+        int index = 0;
+        int columns = positions.childCount;
+        foreach (var hero in state.mainPlayer.inventory)
+        {
+            if (hero == null || hero.it != ItemType.monster || hero.dbObj == null) continue;
+            if (!resources.monsters.TryGetValue(hero.dbObj.ID, out var prefab) || prefab == null)
+            {
+                Debug.LogWarning($"No monster prefab for inventory hero '{hero.dbObj.ID}'.", this);
+                continue;
+            }
+
+            var slot = positions.GetChild(index % columns);
+            var position = slot.position + positions.TransformVector(Vector3.down * (1.5f * (index / columns)));
+            var copy = hero.Clone();
+            copy.RID = "battle_hero_" + Guid.NewGuid().ToString("N");
+            var visual = DatabaseAll.instance.CreateOnlyVizual(copy, position);
+            battleInventoryHeroes.Add(visual);
+            visual.transform.SetParent(heroes.transform, true);
+            copy.Position = position;
+            copy.SetScale(true);
+            PrepareBattleHeroCanvas(copy, slot);
+            copy.AddViz("animator#pr:1");
+            index++;
+        }
+
+        // Keep the position markers, but hide their placeholder portraits.
+        for (int i = 0; i < columns; i++)
+        {
+            var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
+            if (placeholder != null) placeholder.enabled = false;
+        }
+    }
+
+
+    private void PrepareBattleHeroCanvas(RObj hero, Transform slot)
+    {
+        var image = hero.visMain.GetComponent<RawImage>();
+        if (image == null) return;
+
+        var rect = image.rectTransform;
+        var placeholder = slot.GetComponent<SpriteRenderer>();
+        float targetHeight = placeholder != null && placeholder.sprite != null
+            ? placeholder.bounds.size.y : 3.3f;
+        float sourceHeight = rect.rect.height * Mathf.Abs(rect.localScale.y);
+        var canvasObject = new GameObject("Hero Video Canvas", typeof(RectTransform), typeof(Canvas));
+        canvasObject.transform.SetParent(hero.main.transform, false);
+        var canvas = canvasObject.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.overrideSorting = true;
+        canvas.sortingLayerID = placeholder != null ? placeholder.sortingLayerID : 0;
+        canvas.sortingOrder = placeholder != null ? placeholder.sortingOrder : 100;
+        var canvasRect = (RectTransform)canvasObject.transform;
+        canvasRect.sizeDelta = rect.rect.size;
+        canvasRect.localScale = Vector3.one * (targetHeight / Mathf.Max(.001f, sourceHeight));
+        rect.SetParent(canvasRect, false);
+        rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, .5f);
+        rect.anchoredPosition3D = Vector3.zero;
+        image.raycastTarget = false;
     }
 
     public void HandleEmbark()
@@ -606,6 +698,8 @@ public class MainCycleDark : MonoBehaviour
     public Transform playerPos;
     public Transform basePos;
 
+    public List<GameObject> battleBgs = new List<GameObject>();
+    public List<GameObject> deactivateBattle = new List<GameObject>();
 
     public void SkipTurn()
     {

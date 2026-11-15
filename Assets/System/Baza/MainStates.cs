@@ -4056,7 +4056,9 @@ public class MainStates : MonoBehaviour
     public int lastBattleResult = 0;
     public static bool handleVampire;
     public static float lastBattleTime;
-
+    
+    //
+    
     public List<RObj> GetMines(string meta)
     {
         var cc = combats.FindAll(x => x.META_TAGS.Contains(meta) && x.tags.Contains("player"));
