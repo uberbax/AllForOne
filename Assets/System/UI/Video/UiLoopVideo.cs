@@ -60,6 +60,9 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     public void Play(string anim) => ChangeAnimation(anim, true);
 
+    public bool HasAnimation(string anim) =>
+        !string.IsNullOrWhiteSpace(anim) && FindClip(anim.Trim().ToLowerInvariant()) != null;
+
     public bool IsAnimationVisible(string anim) =>
         current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
         view != null && view.enabled && view.texture == current.targetTexture &&

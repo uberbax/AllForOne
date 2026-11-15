@@ -432,11 +432,19 @@ public class MainCycleDark : MonoBehaviour
         SetPrisonWalking(false);
     }
 
-    private void OnDisable() => StopPrisonMovement();
+    private void OnDisable()
+    {
+        StopPrisonMovement();
+        SetBattleWalking(false);
+    }
 
     private void OnApplicationFocus(bool focused)
     {
-        if (!focused) StopPrisonMovement();
+        if (!focused)
+        {
+            StopPrisonMovement();
+            SetBattleWalking(false);
+        }
     }
 
 
@@ -605,6 +613,97 @@ public class MainCycleDark : MonoBehaviour
 
     private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
 
+    [SerializeField, Min(0)] private float battleMoveSpeed = 2.5f;
+    [SerializeField] private bool battleVideoFacesLeft = true;
+    private readonly List<BattleHeroMovement> battleMovingHeroes = new List<BattleHeroMovement>();
+    private bool battleWalking;
+    private Camera battleMovementCamera;
+
+    private sealed class BattleHeroMovement
+    {
+        public RObj Hero;
+        public UiLoopVideo Video;
+        public bool HasWalk;
+    }
+
+    private void HandleBattleMovement()
+    {
+        int direction = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) -
+                        (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
+        MoveBattleHeroes(direction, Time.unscaledDeltaTime);
+    }
+
+    private void MoveBattleHeroes(int direction, float deltaTime)
+    {
+        if (direction == 0 || battleMoveSpeed <= 0 || battleMovingHeroes.Count == 0 ||
+            heroes == null || !heroes.activeInHierarchy || battleUI == null || !battleUI.activeInHierarchy)
+        {
+            SetBattleWalking(false);
+            return;
+        }
+
+        if (battleMovementCamera == null || !battleMovementCamera.isActiveAndEnabled)
+            battleMovementCamera = Camera.main;
+        float delta = direction * battleMoveSpeed * deltaTime;
+        float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+        foreach (var member in battleMovingHeroes)
+        {
+            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            float x = member.Hero.main.transform.position.x;
+            minX = Mathf.Min(minX, x);
+            maxX = Mathf.Max(maxX, x);
+        }
+        if (float.IsPositiveInfinity(minX)) { SetBattleWalking(false); return; }
+        if (battleMovementCamera != null)
+        {
+            float depth = Vector3.Dot(heroes.transform.position - battleMovementCamera.transform.position,
+                battleMovementCamera.transform.forward);
+            float left = battleMovementCamera.ViewportToWorldPoint(new Vector3(.08f, .5f, depth)).x;
+            float right = battleMovementCamera.ViewportToWorldPoint(new Vector3(.92f, .5f, depth)).x;
+            delta = Mathf.Clamp(delta, Mathf.Min(0, left - minX), Mathf.Max(0, right - maxX));
+        }
+        if (Mathf.Approximately(delta, 0)) { SetBattleWalking(false); return; }
+
+        SetBattleWalking(true);
+        bool ready = true;
+        foreach (var member in battleMovingHeroes)
+        {
+            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            if (member.Video != null)
+            {
+                var scale = member.Video.transform.localScale;
+                scale.x = Mathf.Abs(scale.x) * direction * (battleVideoFacesLeft ? -1 : 1);
+                member.Video.transform.localScale = scale;
+                if (member.HasWalk && !member.Video.IsAnimationVisible("walk")) ready = false;
+            }
+            else member.Hero.SetScale(direction > 0);
+        }
+        // Wait for the decoded walk frame so the party never slides in an idle pose.
+        if (!ready) return;
+        foreach (var member in battleMovingHeroes)
+        {
+            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            member.Hero.main.transform.position += Vector3.right * delta;
+            member.Hero.Position = member.Hero.main.transform.position;
+        }
+    }
+
+    private void SetBattleWalking(bool walking)
+    {
+        if (battleWalking == walking) return;
+        battleWalking = walking;
+        foreach (var member in battleMovingHeroes)
+        {
+            if (member.Video != null)
+            {
+                if (!walking || member.HasWalk) member.Video.Play(walking ? "walk" : "idle");
+            }
+            else if (member.Hero.HasVis("animator"))
+                member.Hero.visuals["animator"].GetComponent<XDanimator>()?.SetState(walking ? "walk" : "idle");
+        }
+    }
+
+
     private void SpawnInventoryHeroes()
     {
         var state = MainStates.instance;
@@ -624,6 +723,8 @@ public class MainCycleDark : MonoBehaviour
             Destroy(spawned);
         }
         battleInventoryHeroes.Clear();
+        battleMovingHeroes.Clear();
+        battleWalking = false;
 
         int index = 0;
         int columns = positions.childCount;
@@ -646,7 +747,13 @@ public class MainCycleDark : MonoBehaviour
             copy.Position = position;
             copy.SetScale(true);
             PrepareBattleHeroCanvas(copy, slot);
-            copy.AddViz("animator#pr:1");
+            AddBattleHeroShadow(copy, slot);
+            var video = copy.visMain.GetComponent<UiLoopVideo>();
+            copy.AddViz(video != null ? "animator" : "animator#pr:1");
+            battleMovingHeroes.Add(new BattleHeroMovement
+            {
+                Hero = copy, Video = video, HasWalk = video != null && video.HasAnimation("walk")
+            });
             index++;
         }
 
@@ -755,6 +862,49 @@ public class MainCycleDark : MonoBehaviour
         }
     }
 
+
+    [SerializeField] private Sprite battleShadowSprite;
+
+    private void AddBattleHeroShadow(RObj hero, Transform slot)
+    {
+        var canvas = hero.visMain.GetComponentInParent<Canvas>();
+        var videoImage = hero.visMain.GetComponent<RawImage>();
+        if (canvas != null && videoImage != null)
+        {
+            if (!ResourceHolder.instance.XD.TryGetValue("shadow", out var template) || template == null) return;
+            var source = template.GetComponentInChildren<SpriteRenderer>(true);
+            if (source == null || source.sprite == null) return;
+
+            var shadow = new GameObject("Foot Shadow", typeof(RectTransform), typeof(Image));
+            shadow.layer = videoImage.gameObject.layer;
+            var rect = (RectTransform)shadow.transform;
+            rect.SetParent(canvas.transform, false);
+            rect.SetAsFirstSibling();
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, .5f);
+            var legs = hero.visMain.transform.Find("legs");
+            rect.position = legs != null ? legs.position : hero.main.transform.position;
+            var scale = canvas.transform.lossyScale;
+            var size = source.sprite.bounds.size * 1.4f;
+            rect.sizeDelta = new Vector2(size.x / Mathf.Max(.0001f, Mathf.Abs(scale.x)),
+                size.y / Mathf.Max(.0001f, Mathf.Abs(scale.y)));
+            var image = shadow.GetComponent<Image>();
+            image.sprite = battleShadowSprite != null ? battleShadowSprite : source.sprite;
+            rect.localScale = new Vector3(1, .7f, 1);
+            image.color = new Color(0, 0, 0, .65f);
+            image.raycastTarget = false;
+            hero.visuals["shadow"] = shadow;
+            return;
+        }
+
+        hero.AddViz("shadow");
+        if (!hero.HasVis("shadow")) return;
+        var placeholder = slot.GetComponent<SpriteRenderer>();
+        foreach (var renderer in hero.visuals["shadow"].GetComponentsInChildren<Renderer>(true))
+        {
+            renderer.sortingLayerID = placeholder != null ? placeholder.sortingLayerID : 0;
+            renderer.sortingOrder = (placeholder != null ? placeholder.sortingOrder : 100) - 1;
+        }
+    }
 
     private void PrepareBattleHeroCanvas(RObj hero, Transform slot)
     {
@@ -1133,6 +1283,7 @@ public class MainCycleDark : MonoBehaviour
     private void Update()
     {
         HandlePrisonMovement();
+        HandleBattleMovement();
         HandleAutomove();
 
 
