@@ -381,6 +381,7 @@ public class MainCycleDark : MonoBehaviour
     private void LateUpdate()
     {
         UpdateDemonGuis();
+        UpdateBattleHeroBars();
         MusicCheck();
         //if (canMovePrison && prisonScrollInitialized && cages != null && lift != null)
         //    lift.transform.position = cages.transform.TransformPoint(prisonLiftHome);
@@ -649,11 +650,108 @@ public class MainCycleDark : MonoBehaviour
             index++;
         }
 
+        BindBattleHeroBars();
+
         // Keep the position markers, but hide their placeholder portraits.
         for (int i = 0; i < columns; i++)
         {
             var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
             if (placeholder != null) placeholder.enabled = false;
+        }
+    }
+
+
+    private readonly List<BattleHeroBar> battleHeroBars = new List<BattleHeroBar>();
+    private readonly List<RectTransform> battleBarSlots = new List<RectTransform>();
+    private Camera battleBarsCamera;
+
+    private sealed class BattleHeroBar
+    {
+        public RObj Hero;
+        public RectTransform Rect;
+        public RectTransform Parent;
+        public Canvas Canvas;
+        public Slider Hp;
+        public Slider Mp;
+    }
+
+    private void BindBattleHeroBars()
+    {
+        battleHeroBars.Clear();
+        var team = battleUI != null ? battleUI.transform.Find("bars/Team") : null;
+        if (team == null)
+        {
+            Debug.LogWarning("Cannot bind hero bars: BATTLE/bars/Team is missing.", this);
+            return;
+        }
+
+        battleBarSlots.Clear();
+        for (int i = 0; i < team.childCount; i++)
+        {
+            var child = team.GetChild(i) as RectTransform;
+            if (child != null && child.Find("HpBar") != null && child.Find("MpBar") != null)
+                battleBarSlots.Add(child);
+        }
+        if (battleBarSlots.Count == 0) return;
+        Canvas.ForceUpdateCanvases();
+        while (battleBarSlots.Count < battleInventoryHeroes.Count)
+            battleBarSlots.Add(Instantiate(battleBarSlots[0], team));
+
+        battleBarsCamera = Camera.main;
+        for (int i = 0; i < battleBarSlots.Count; i++)
+        {
+            var rect = battleBarSlots[i];
+            // The bars follow projected hero positions instead of the horizontal layout.
+            var layout = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
+            layout.ignoreLayout = true;
+            bool used = i < battleInventoryHeroes.Count;
+            var holder = rect.GetComponent<ObjHolder>() ?? rect.gameObject.AddComponent<ObjHolder>();
+            holder.noTrack = true;
+            holder.obj = used ? battleInventoryHeroes[i].GetComponent<ObjHolder>().obj : null;
+            rect.gameObject.SetActive(used);
+            if (!used) continue;
+
+            var hp = rect.Find("HpBar").GetComponent<Slider>();
+            var mp = rect.Find("MpBar").GetComponent<Slider>();
+            if (hp == null || mp == null) continue;
+            hp.minValue = mp.minValue = 0;
+            hp.maxValue = mp.maxValue = 1;
+            hp.wholeNumbers = mp.wholeNumbers = false;
+            hp.interactable = mp.interactable = false;
+            battleHeroBars.Add(new BattleHeroBar
+            {
+                Hero = holder.obj, Rect = rect, Parent = rect.parent as RectTransform,
+                Canvas = rect.GetComponentInParent<Canvas>(), Hp = hp, Mp = mp
+            });
+        }
+        UpdateBattleHeroBars();
+    }
+
+    private void UpdateBattleHeroBars()
+    {
+        if (battleHeroBars.Count == 0 || battleUI == null || !battleUI.activeInHierarchy) return;
+        if (battleBarsCamera == null || !battleBarsCamera.isActiveAndEnabled) battleBarsCamera = Camera.main;
+        foreach (var bar in battleHeroBars)
+        {
+            if (bar.Rect == null) continue;
+            bool visible = bar.Hero?.main != null && bar.Hero.main.activeInHierarchy;
+            if (bar.Rect.gameObject.activeSelf != visible) bar.Rect.gameObject.SetActive(visible);
+            if (!visible) continue;
+
+            float maxHp = bar.Hero.GetPar("max_health");
+            float maxMp = bar.Hero.GetPar("max_mana");
+            bar.Hp.SetValueWithoutNotify(maxHp > 0 ? Mathf.Clamp01(bar.Hero.GetPar("health") / maxHp) : 0);
+            bar.Mp.SetValueWithoutNotify(maxMp > 0 ? Mathf.Clamp01(bar.Hero.GetPar("mana") / maxMp) : 0);
+            if (battleBarsCamera == null || bar.Parent == null || bar.Canvas == null) continue;
+            var screen = battleBarsCamera.WorldToScreenPoint(bar.Hero.main.transform.position);
+            var canvas = bar.Canvas.rootCanvas;
+            var uiCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bar.Parent, screen, uiCamera, out var point))
+            {
+                var position = bar.Rect.localPosition;
+                position.x = point.x;
+                bar.Rect.localPosition = position;
+            }
         }
     }
 
