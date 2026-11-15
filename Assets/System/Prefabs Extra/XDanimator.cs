@@ -33,15 +33,12 @@ public class XDanimator : ComponentBehavior
         
         animVideo = mon.visuals["vis_main"].GetComponent<UiLoopVideo>();
         
+        anim2 = mon.visuals["vis_main"].GetComponent<PrAnimat>();        
+        
         if (pars.ContainsKey("pr") && (anim == null && guiControls == null && animVideo == null || !anim.enabled))
         {
             mon.visuals["vis_main"].AddComponent<PrAnimat>();
         }        
-        
-        anim2 = mon.visuals["vis_main"].GetComponent<PrAnimat>();
-        
-
-        
         
     }
 

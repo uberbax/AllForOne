@@ -682,6 +682,10 @@ public class MainCycleDark : MonoBehaviour
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, .5f);
         rect.anchoredPosition3D = Vector3.zero;
         image.raycastTarget = false;
+
+        var legs = rect.Find("legs");
+        if (legs != null)
+            canvasRect.position += hero.main.transform.position - legs.position;
     }
 
     public void HandleEmbark()
