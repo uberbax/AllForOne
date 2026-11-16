@@ -152,7 +152,7 @@ public class UIfiller : MonoBehaviour
         int t0 = 0;
         if (findRobj)
         {
-            Debug.Log(gameObject.name);
+            //Debug.Log(gameObject.name);
             rr = GetComponentInParent<ObjHolder>().obj;
 
             if (doAdorns)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -895,8 +895,8 @@ public class MainStates : MonoBehaviour
         if (curObjs.TryGetValue("cur_hero", out var hero) && hero != null)
             return hero;
 
-        if (filler.from != null) return filler.from.spawnedUnit;
-        return (filler.findRobj ? filler.GetComponentInParent<ObjHolder>()?.obj : null)
+        if (filler != null && filler.from != null) return filler.from.spawnedUnit;
+        return (filler != null && filler.findRobj ? filler.GetComponentInParent<ObjHolder>()?.obj : null)
             ?? lastAllySelected ?? mainPlayer;
     }
 
@@ -2359,7 +2359,7 @@ public class MainStates : MonoBehaviour
             }
             else if (SV == "equip")
             {
-                Equip(all["main_player"], o);
+                Equip(GetEquipmentOwner(h != null ? h.filler : null), o);
             }
             else if (SV == "cast")
             {
@@ -2625,10 +2625,13 @@ public class MainStates : MonoBehaviour
     {
         if (!who.inventory.Contains(what))
         {
+            var previousOwner = what.owner;
+            bool transferred = previousOwner != null && previousOwner != who && previousOwner.inventory.Remove(what);
             who.inventory.Add(what);
             what.owner = who;
             what.upgradePars["used_slot"] = -1;
             what.RecalcPars();
+            if (transferred) previousOwner.RecalcPars();
         }
 
         var b = who.inventory.Find(
@@ -2643,6 +2646,7 @@ public class MainStates : MonoBehaviour
         if (b == what)
         {
             who.RecalcPars();
+            Save();
             return;
         }
 
@@ -2661,6 +2665,7 @@ public class MainStates : MonoBehaviour
         who.RecalcPars();
         
         EventManager.INV("equip_change", new ArgPass{});
+        Save();
     }
 
     List<UnoSub> allSubs  = new List<UnoSub>();
