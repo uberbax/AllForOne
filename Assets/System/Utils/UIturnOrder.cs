@@ -5,10 +5,12 @@ public class UIturnOrder : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Transform holder;
+    public float scl = 2;
     void Awake()
     {
         EventManager.SUB("turn_order", TurnOrder);
     }
+    
 
     private void TurnOrder(ArgPass obj)
     {
@@ -20,7 +22,7 @@ public class UIturnOrder : MonoBehaviour
             if (obj.whats[l].tags.Contains("player"))
             {
                 g.GetComponent<Image>().color = Color.green;
-                g.transform.Find("icon").localScale = new Vector3(2, 2, 2);
+                g.transform.Find("icon").localScale = new Vector3(scl, scl, scl);
             }
             else
             {

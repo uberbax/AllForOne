@@ -257,7 +257,10 @@ public class SkillExecutor : MonoBehaviour
         {
             var dmgType = skl.GetPar("dmg_type");
             ll = new SkillEtc();
-            ll.projHit = ResourceHolder.instance.defaultSlashes[(int)dmgType];
+            var slashes = ResourceHolder.instance.defaultSlashes;
+            if (!slashes.TryGetValue((int)dmgType, out var defaultSlash))
+                slashes.TryGetValue(0, out defaultSlash);
+            ll.projHit = defaultSlash;
             ll.conds.Add("_any");
             ll.conds.Add(skl.dbObj.ID);
             ll.angle = 45;

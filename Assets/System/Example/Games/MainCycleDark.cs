@@ -436,6 +436,7 @@ public class MainCycleDark : MonoBehaviour
     {
         StopPrisonMovement();
         SetBattleWalking(false);
+        StopStageCombat();
         RestoreBattleCamera();
     }
 
@@ -715,6 +716,57 @@ public class MainCycleDark : MonoBehaviour
     }
 
 
+    private bool stageCombatActive;
+    private bool stageCombatPending;
+
+    private void PrepareStageCombat(RObj unit)
+    {
+        // Inventory clones may inherit this tag, but their new RID must be registered separately.
+        unit.META_TAGS.RemoveAll(meta => meta == "sword");
+        unit.AddMeta("sword");
+        MainStates.instance.all[unit.RID] = unit;
+        unit.AddViz("combat#no:1");
+        foreach (var skill in unit.actSkills) skill.SetPar("action_req", -1);
+    }
+
+    private bool StageCombatReady()
+    {
+        foreach (var bar in battleHeroBars)
+        {
+            var unit = bar.Hero;
+            if (unit?.main == null || !unit.HasVis("combat")) return false;
+            var combat = unit.visuals["combat"].GetComponent<XDcombat>();
+            if (combat == null || combat.mon != unit) return false;
+        }
+        return battleHeroBars.Count > 0;
+    }
+
+    private void StopStageCombat()
+    {
+        if (!stageCombatActive && !stageCombatPending) return;
+        stageCombatActive = stageCombatPending = false;
+        var state = MainStates.instance;
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        if (state != null)
+        {
+            state.inBattle = false;
+            state.InIteration = false;
+            foreach (var bar in battleHeroBars)
+            {
+                var unit = bar.Hero;
+                if (unit == null) continue;
+                state.awaitUnits.Remove(unit.RID);
+                if (state.allMetas.TryGetValue(unit.RID, out var meta) && ReferenceEquals(meta, unit))
+                    state.allMetas.Remove(unit.RID);
+            }
+        }
+    }
+
+
     private void SpawnInventoryHeroes()
     {
         var state = MainStates.instance;
@@ -727,10 +779,13 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
 
+        StopStageCombat();
         RestoreBattleCamera();
         foreach (var spawned in battleInventoryHeroes)
         {
             if (spawned == null) continue;
+            var oldHolder = spawned.GetComponent<ObjHolder>();
+            if (oldHolder != null && oldHolder.obj != null) RemoveBattleEnemyData(oldHolder.obj);
             spawned.SetActive(false);
             Destroy(spawned);
         }
@@ -762,6 +817,8 @@ public class MainCycleDark : MonoBehaviour
             AddBattleHeroShadow(copy, slot);
             var video = copy.visMain.GetComponent<UiLoopVideo>();
             copy.AddViz(video != null ? "animator" : "animator#pr:1");
+            PrepareStageCombat(copy);
+            state.awaitUnits[copy.RID] = 1;
             battleMovingHeroes.Add(new BattleHeroMovement
             {
                 Hero = copy, Video = video, HasWalk = video != null && video.HasAnimation("walk")
@@ -820,12 +877,20 @@ public class MainCycleDark : MonoBehaviour
             PrepareBattleHeroCanvas(enemy, slot);
             AddBattleHeroShadow(enemy, slot);
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
+            PrepareStageCombat(enemy);
         }
         for (int i = 0; i < positions.childCount; i++)
         {
             var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
             if (placeholder != null) placeholder.enabled = false;
         }
+        
+        //
+        //extra
+        ModelStatistics.instance.SetStatValue("battle", 2);
+        stageCombatPending = battleSpawnedEnemies.Count > 0 && battleInventoryHeroes.Count > 0;
+        stageCombatActive = stageCombatPending;
+        MainStates.instance.inBattle = stageCombatActive;
     }
 
     private void RemoveBattleEnemyData(RObj enemy)
@@ -835,6 +900,10 @@ public class MainCycleDark : MonoBehaviour
         foreach (var passive in enemy.buffs) RemoveBattleEnemyData(passive);
         var state = MainStates.instance;
         if (state == null) return;
+        state.awaitUnits.Remove(enemy.RID);
+        state.combats.Remove(enemy);
+        if (state.allMetas.TryGetValue(enemy.RID, out var meta) && ReferenceEquals(meta, enemy))
+            state.allMetas.Remove(enemy.RID);
         if (state.all.TryGetValue(enemy.RID, out var registered) && ReferenceEquals(registered, enemy))
             state.all.Remove(enemy.RID);
         if (state.allMons.TryGetValue(enemy.RID, out var monster) && ReferenceEquals(monster, enemy))
@@ -1400,6 +1469,13 @@ public class MainCycleDark : MonoBehaviour
         }
         */
 
+        if (stageCombatActive && (battleUI == null || !battleUI.activeInHierarchy ||
+            heroes == null || !heroes.activeInHierarchy)) StopStageCombat();
+        if (stageCombatPending)
+        {
+            if (!StageCombatReady()) return;
+            stageCombatPending = false;
+        }
         if (MainStates.instance.inBattle)
         {
             if (!MainStates.instance.InIteration)
