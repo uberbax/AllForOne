@@ -436,6 +436,7 @@ public class MainCycleDark : MonoBehaviour
     {
         StopPrisonMovement();
         SetBattleWalking(false);
+        RestoreBattleCamera();
     }
 
     private void OnApplicationFocus(bool focused)
@@ -618,6 +619,8 @@ public class MainCycleDark : MonoBehaviour
     private readonly List<BattleHeroMovement> battleMovingHeroes = new List<BattleHeroMovement>();
     private bool battleWalking;
     private Camera battleMovementCamera;
+    private float battleCameraHomeX;
+    private bool battleCameraMoved;
 
     private sealed class BattleHeroMovement
     {
@@ -635,8 +638,13 @@ public class MainCycleDark : MonoBehaviour
 
     private void MoveBattleHeroes(int direction, float deltaTime)
     {
-        if (direction == 0 || battleMoveSpeed <= 0 || battleMovingHeroes.Count == 0 ||
-            heroes == null || !heroes.activeInHierarchy || battleUI == null || !battleUI.activeInHierarchy)
+        if (heroes == null || !heroes.activeInHierarchy || battleUI == null || !battleUI.activeInHierarchy)
+        {
+            SetBattleWalking(false);
+            RestoreBattleCamera();
+            return;
+        }
+        if (direction == 0 || battleMoveSpeed <= 0 || battleMovingHeroes.Count == 0)
         {
             SetBattleWalking(false);
             return;
@@ -645,30 +653,16 @@ public class MainCycleDark : MonoBehaviour
         if (battleMovementCamera == null || !battleMovementCamera.isActiveAndEnabled)
             battleMovementCamera = Camera.main;
         float delta = direction * battleMoveSpeed * deltaTime;
-        float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
-        foreach (var member in battleMovingHeroes)
-        {
-            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
-            float x = member.Hero.main.transform.position.x;
-            minX = Mathf.Min(minX, x);
-            maxX = Mathf.Max(maxX, x);
-        }
-        if (float.IsPositiveInfinity(minX)) { SetBattleWalking(false); return; }
-        if (battleMovementCamera != null)
-        {
-            float depth = Vector3.Dot(heroes.transform.position - battleMovementCamera.transform.position,
-                battleMovementCamera.transform.forward);
-            float left = battleMovementCamera.ViewportToWorldPoint(new Vector3(.08f, .5f, depth)).x;
-            float right = battleMovementCamera.ViewportToWorldPoint(new Vector3(.92f, .5f, depth)).x;
-            delta = Mathf.Clamp(delta, Mathf.Min(0, left - minX), Mathf.Max(0, right - maxX));
-        }
+        if (battleMovementCamera == null) { SetBattleWalking(false); return; }
         if (Mathf.Approximately(delta, 0)) { SetBattleWalking(false); return; }
 
         SetBattleWalking(true);
         bool ready = true;
+        bool hasActiveHero = false;
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            hasActiveHero = true;
             if (member.Video != null)
             {
                 var scale = member.Video.transform.localScale;
@@ -679,13 +673,30 @@ public class MainCycleDark : MonoBehaviour
             else member.Hero.SetScale(direction > 0);
         }
         // Wait for the decoded walk frame so the party never slides in an idle pose.
-        if (!ready) return;
+        if (!ready || !hasActiveHero) return;
+        if (!battleCameraMoved)
+        {
+            battleCameraHomeX = battleMovementCamera.transform.position.x;
+            battleCameraMoved = true;
+        }
+        battleMovementCamera.transform.position += Vector3.right * delta;
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
             member.Hero.main.transform.position += Vector3.right * delta;
             member.Hero.Position = member.Hero.main.transform.position;
         }
+    }
+
+    private void RestoreBattleCamera()
+    {
+        if (battleCameraMoved && battleMovementCamera != null)
+        {
+            var position = battleMovementCamera.transform.position;
+            position.x = battleCameraHomeX;
+            battleMovementCamera.transform.position = position;
+        }
+        battleCameraMoved = false;
     }
 
     private void SetBattleWalking(bool walking)
@@ -716,6 +727,7 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
 
+        RestoreBattleCamera();
         foreach (var spawned in battleInventoryHeroes)
         {
             if (spawned == null) continue;
@@ -757,6 +769,7 @@ public class MainCycleDark : MonoBehaviour
             index++;
         }
 
+        SpawnBattleEnemies();
         BindBattleHeroBars();
 
         // Keep the position markers, but hide their placeholder portraits.
@@ -765,6 +778,67 @@ public class MainCycleDark : MonoBehaviour
             var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
             if (placeholder != null) placeholder.enabled = false;
         }
+    }
+
+
+    private readonly List<GameObject> battleSpawnedEnemies = new List<GameObject>();
+
+    private void SpawnBattleEnemies()
+    {
+        var state = MainStates.instance;
+        foreach (var spawned in battleSpawnedEnemies)
+        {
+            if (spawned == null) continue;
+            var holder = spawned.GetComponent<ObjHolder>();
+            if (holder != null && holder.obj != null) RemoveBattleEnemyData(holder.obj);
+            spawned.SetActive(false);
+            Destroy(spawned);
+        }
+        battleSpawnedEnemies.Clear();
+        var positions = heroes != null ? heroes.transform.Find("enemy") : null;
+        if (positions == null || state == null || ResourceHolder.instance == null || DatabaseAll.instance == null) return;
+        string[] ids = { "zombie1", "zombie3" };
+        for (int i = 0; i < ids.Length && i < positions.childCount; i++)
+        {
+            var id = ids[i];
+            if (!DatabaseAll.instance.heroes.ContainsKey(id) ||
+                !ResourceHolder.instance.monsters.TryGetValue(id, out var prefab) || prefab == null)
+            {
+                Debug.LogWarning($"Cannot spawn battle enemy '{id}': missing hero config or monster prefab.", this);
+                continue;
+            }
+            var slot = positions.GetChild(i);
+            var position = slot.position;
+            if (battleInventoryHeroes.Count > 0) position.y = battleInventoryHeroes[0].transform.position.y;
+            // Battle stage visuals do not participate in the overworld distance culling (allMons).
+            var enemy = new RObj(id, 1, 1, false, position, false, ItemType.monster, isEnemy: true);
+            DatabaseAll.instance.CreateOnlyVizual(enemy, position);
+            battleSpawnedEnemies.Add(enemy.main);
+            enemy.main.transform.SetParent(heroes.transform, true);
+            enemy.Position = position;
+            enemy.SetScale(false);
+            PrepareBattleHeroCanvas(enemy, slot);
+            AddBattleHeroShadow(enemy, slot);
+            enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
+        }
+        for (int i = 0; i < positions.childCount; i++)
+        {
+            var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
+            if (placeholder != null) placeholder.enabled = false;
+        }
+    }
+
+    private void RemoveBattleEnemyData(RObj enemy)
+    {
+        // These objects and their owned skills were created only for this battle entry.
+        foreach (var skill in enemy.actSkills) RemoveBattleEnemyData(skill);
+        foreach (var passive in enemy.buffs) RemoveBattleEnemyData(passive);
+        var state = MainStates.instance;
+        if (state == null) return;
+        if (state.all.TryGetValue(enemy.RID, out var registered) && ReferenceEquals(registered, enemy))
+            state.all.Remove(enemy.RID);
+        if (state.allMons.TryGetValue(enemy.RID, out var monster) && ReferenceEquals(monster, enemy))
+            state.allMons.Remove(enemy.RID);
     }
 
 
@@ -785,10 +859,17 @@ public class MainCycleDark : MonoBehaviour
     private void BindBattleHeroBars()
     {
         battleHeroBars.Clear();
-        var team = battleUI != null ? battleUI.transform.Find("bars/Team") : null;
+        BindBattleBars("Team", battleInventoryHeroes);
+        BindBattleBars("Enemy", battleSpawnedEnemies);
+        UpdateBattleHeroBars();
+    }
+
+    private void BindBattleBars(string groupName, List<GameObject> units)
+    {
+        var team = battleUI != null ? battleUI.transform.Find("bars/" + groupName) : null;
         if (team == null)
         {
-            Debug.LogWarning("Cannot bind hero bars: BATTLE/bars/Team is missing.", this);
+            Debug.LogWarning($"Cannot bind battle bars: BATTLE/bars/{groupName} is missing.", this);
             return;
         }
 
@@ -801,7 +882,7 @@ public class MainCycleDark : MonoBehaviour
         }
         if (battleBarSlots.Count == 0) return;
         Canvas.ForceUpdateCanvases();
-        while (battleBarSlots.Count < battleInventoryHeroes.Count)
+        while (battleBarSlots.Count < units.Count)
             battleBarSlots.Add(Instantiate(battleBarSlots[0], team));
 
         battleBarsCamera = Camera.main;
@@ -811,10 +892,10 @@ public class MainCycleDark : MonoBehaviour
             // The bars follow projected hero positions instead of the horizontal layout.
             var layout = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
             layout.ignoreLayout = true;
-            bool used = i < battleInventoryHeroes.Count;
+            bool used = i < units.Count;
             var holder = rect.GetComponent<ObjHolder>() ?? rect.gameObject.AddComponent<ObjHolder>();
             holder.noTrack = true;
-            holder.obj = used ? battleInventoryHeroes[i].GetComponent<ObjHolder>().obj : null;
+            holder.obj = used ? units[i].GetComponent<ObjHolder>().obj : null;
             rect.gameObject.SetActive(used);
             if (!used) continue;
 
@@ -831,7 +912,6 @@ public class MainCycleDark : MonoBehaviour
                 Canvas = rect.GetComponentInParent<Canvas>(), Hp = hp, Mp = mp
             });
         }
-        UpdateBattleHeroBars();
     }
 
     private void UpdateBattleHeroBars()
