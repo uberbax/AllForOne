@@ -7,6 +7,7 @@ public sealed class BattleTurnPanel : MonoBehaviour
     [SerializeField] private Transform stageRoot;
     private UIfiller[] fillers;
     private RObj current;
+    public RObj CurrentAlly => current;
 
     private void Awake()
     {

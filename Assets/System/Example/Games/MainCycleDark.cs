@@ -843,6 +843,7 @@ public class MainCycleDark : MonoBehaviour
     private void SpawnBattleEnemies()
     {
         var state = MainStates.instance;
+        if (state != null) state.lastTargetSelected = null;
         foreach (var spawned in battleSpawnedEnemies)
         {
             if (spawned == null) continue;
@@ -878,6 +879,7 @@ public class MainCycleDark : MonoBehaviour
             AddBattleHeroShadow(enemy, slot);
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
             PrepareStageCombat(enemy);
+            BattleEnemyClick.Attach(enemy);
         }
         for (int i = 0; i < positions.childCount; i++)
         {

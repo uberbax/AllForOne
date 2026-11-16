@@ -4081,7 +4081,10 @@ public class MainStates : MonoBehaviour
             if (v.Value.META_TAGS.Contains("my_side") || v.Value.META_TAGS.Contains("wave")) acts.Add(v.Value);
         }
         */
-        var combats = allMetas.Values.ToList();
+        // Initiative follows the hero definition; speed on items/skills also serves their own movement.
+        var combats = allMetas.Values.OrderByDescending(unit =>
+            unit.dbObj != null && unit.dbObj.pars.TryGetValue("speed", out float speed)
+                ? speed : unit.GetPar("speed")).ToList();
         
         //combats.RemoveAll(x => x.main == null || !x.HasVis("combat") || x.main.GetComponentInChildren<XDcombat>() == null);
         
