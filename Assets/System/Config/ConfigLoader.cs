@@ -926,6 +926,8 @@ public class ConfigLoader : MonoBehaviour
                 if (columns[j].ToUpper() == "DISPLAYNAME") mm.displayName = tt[j];
                 else if (columns[j].ToUpper() == "REALNAME") mm.realName = tt[j].Trim();
                 else if (columns[j].ToUpper() == "REALJOB") mm.realJob = tt[j].Trim();
+                else if (columns[j].ToUpper() == "JOB1") mm.job1 = tt[j].Trim();
+                else if (columns[j].ToUpper() == "JOB2") mm.job2 = tt[j].Trim();
                 else if (columns[j].ToUpper() == "ORIGIN") mm.origins.Add(tt[j]);
                 else if (columns[j].ToUpper() == "CLASS") mm.classes.Add(tt[j]);
                 else if (columns[j].ToUpper() == "DYNAMIC") mm.dynamic = tt[j];
@@ -3114,6 +3116,8 @@ public class FormatHero
     public string displayName = string.Empty;
     public string realName = string.Empty;
     public string realJob = string.Empty;
+    public string job1 = string.Empty;
+    public string job2 = string.Empty;
     public List<string> origins = new List<string>();
     public List<string> classes = new List<string>();
     public float health = 0;

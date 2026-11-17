@@ -292,6 +292,17 @@ public class ResourceHolder : MonoBehaviour
             return;
         }
         
+        if (a.param == "job1")
+        {
+            a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["job1"];
+            return;
+        }
+        
+        if (a.param == "job2")
+        {
+            a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["job2"];
+            return;
+        }
         
         if (a.isPar)
         {

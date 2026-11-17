@@ -981,6 +981,8 @@ public class MainCycleDark : MonoBehaviour
             hp.maxValue = mp.maxValue = 1;
             hp.wholeNumbers = mp.wholeNumbers = false;
             hp.interactable = mp.interactable = false;
+            // Disabled Sliders accept values but do not update their fill graphics.
+            hp.enabled = mp.enabled = true;
             battleHeroBars.Add(new BattleHeroBar
             {
                 Hero = holder.obj, Rect = rect, Parent = rect.parent as RectTransform,
