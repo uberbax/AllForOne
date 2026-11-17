@@ -65,7 +65,7 @@ public class ViewPar : MonoBehaviour
             if (parImg) parImg.sprite = ResourceHolder.instance.pars[ff[0]];
             parText.text = mon.GetPar(ff[0]) + "/" + mon.GetPar(ff[1]);
         }
-        else
+        else if (parName.Length > 1)
         {
              if (parNm) parNm.text = ConfigLoader.Instance.GetMeLocale(parName);
              if (parImg) parImg.sprite = ResourceHolder.instance.pars[parName];
