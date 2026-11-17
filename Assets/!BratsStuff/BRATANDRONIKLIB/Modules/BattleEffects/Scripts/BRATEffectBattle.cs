@@ -58,6 +58,7 @@ namespace BRATANDRONIKLIB
         private Effect _effect;
         private bool _ready;
         private bool _running;
+        private bool _explicitActors;
 
         private enum Effect { Strike, HeavyStrike, Heal }
 
@@ -71,6 +72,7 @@ namespace BRATANDRONIKLIB
             public Vector3 foot;
             public Vector3 footLocal;
             public Vector3 center;
+            public Vector3 centerLocal;
 
             public ActorState(SpriteRenderer value)
             {
@@ -83,6 +85,24 @@ namespace BRATANDRONIKLIB
                 center = value.bounds.center;
                 foot = center - Vector3.up * (value.bounds.extents.y * 0.72f);
                 footLocal = transform.InverseTransformPoint(foot);
+                centerLocal = transform.InverseTransformPoint(center);
+            }
+
+            public ActorState(Transform value)
+            {
+                transform = value;
+                if (!value) return;
+                renderer = value.GetComponent<SpriteRenderer>();
+                position = value.localPosition;
+                rotation = value.localRotation;
+                scale = value.localScale;
+                center = value.position;
+                if (value is RectTransform rect) center = rect.TransformPoint(rect.rect.center);
+                else if (renderer) center = renderer.bounds.center;
+                var legs = value.Find("legs");
+                foot = legs ? legs.position : center;
+                footLocal = value.InverseTransformPoint(foot);
+                centerLocal = value.InverseTransformPoint(center);
             }
 
             public void Restore()
@@ -178,14 +198,42 @@ namespace BRATANDRONIKLIB
         public void PlayHeavyStrike() => Play(Effect.HeavyStrike);
         public void PlayHeal() => Play(Effect.Heal);
 
+        // Explicit participants also support video characters displayed by UI Graphics.
+        public void PlayStrike(Transform attacker, Transform target) => PlayActors(attacker, target, Effect.Strike);
+        public void PlayHeavyStrike(Transform attacker, Transform target) => PlayActors(attacker, target, Effect.HeavyStrike);
+
+        private void PlayActors(Transform attacker, Transform target, Effect effect)
+        {
+            if (!Application.isPlaying || !isActiveAndEnabled || !attacker || !target || attacker == target) return;
+            StopAndRestore();
+            _explicitActors = true;
+            _hero = new ActorState(attacker);
+            _enemy = new ActorState(target);
+            if (_camera)
+            {
+                _cameraPosition = _camera.transform.localPosition;
+                _cameraRotation = _camera.transform.localRotation;
+                _cameraSize = _camera.orthographicSize;
+                _cameraFov = _camera.fieldOfView;
+            }
+            StartEffect(effect);
+        }
+
         private void Play(Effect effect)
         {
             if (!Application.isPlaying || !isActiveAndEnabled) return;
             StopAndRestore();
-            if (!_ready || !_camera || !_hero.renderer ||
-                (effect == Effect.Heal ? !_healer.renderer : !_enemy.renderer)) return;
-            if (!_hero.renderer.gameObject.activeInHierarchy ||
-                !(effect == Effect.Heal ? _healer.renderer : _enemy.renderer).gameObject.activeInHierarchy) return;
+            _explicitActors = false;
+            _hero = new ActorState(hero);
+            _enemy = new ActorState(enemy);
+            StartEffect(effect);
+        }
+
+        private void StartEffect(Effect effect)
+        {
+            var other = effect == Effect.Heal ? _healer : _enemy;
+            if (!_ready || !_camera || _hero == null || !_hero.transform || other == null || !other.transform) return;
+            if (!_hero.transform.gameObject.activeInHierarchy || !other.transform.gameObject.activeInHierarchy) return;
 
             _effect = effect;
             _elapsed = 0f;
@@ -199,8 +247,9 @@ namespace BRATANDRONIKLIB
         private void LateUpdate()
         {
             if (!_running) return;
-            if (!_camera || !_hero.renderer ||
-                (_effect == Effect.Heal ? !_healer.renderer : !_enemy.renderer))
+            if (!_camera || !_hero.transform || !_hero.transform.gameObject.activeInHierarchy ||
+                (_effect == Effect.Heal ? !_healer.transform : !_enemy.transform) ||
+                !(_effect == Effect.Heal ? _healer.transform : _enemy.transform).gameObject.activeInHierarchy)
             {
                 StopAndRestore();
                 return;
@@ -232,8 +281,8 @@ namespace BRATANDRONIKLIB
             float afterPause = Mathf.Max(0f, afterHit - Mathf.Max(0f, impactPause));
             float impact = afterHit < 0f ? 0f : Mathf.Clamp01(1f - afterPause / (heavy ? 0.36f : 0.26f)) * (1f - returning);
             float recoil = impact * Mathf.Sin(Mathf.Clamp01(afterPause / 0.18f) * Mathf.PI * 0.6f);
-            ActorState source = heavy ? _enemy : heal ? _healer : _hero;
-            ActorState target = heavy || heal ? _hero : _enemy;
+            ActorState source = heal ? _healer : heavy && !_explicitActors ? _enemy : _hero;
+            ActorState target = heal || heavy && !_explicitActors ? _hero : _enemy;
             float direction = target.center.x >= source.center.x ? 1f : -1f;
             float grow = Mathf.Lerp(1f, foregroundScale, focus);
 
@@ -260,7 +309,7 @@ namespace BRATANDRONIKLIB
             float tremor = heal ? 0f : impact * (afterHit >= impactPause ? 1f : 0f);
             ApplyCamera(source, target, focus, tremor, heavy, direction);
             ApplySprites(source.renderer, target.renderer, focus, flash, impact, pulse, heal);
-            Vector3 center = target.renderer.bounds.center;
+            Vector3 center = target.transform.TransformPoint(target.centerLocal);
             _vfx?.Draw(_camera, center, focus, heal ? 0f : impact, pulse,
                 afterPause, heavy);
         }
@@ -268,7 +317,7 @@ namespace BRATANDRONIKLIB
         private void ApplyCamera(ActorState source, ActorState target, float focus, float tremor, bool heavy, float direction)
         {
             Vector3 center = (source.center + target.center) * 0.5f;
-            center.x = Mathf.Clamp(center.x + (heavy ? -0.25f : 0.25f), -1.65f, 1.65f);
+            if (!_explicitActors) center.x = Mathf.Clamp(center.x + (heavy ? -0.25f : 0.25f), -1.65f, 1.65f);
             center.y -= 0.48f;
             Transform ct = _camera.transform;
             Vector3 baseWorld = ct.parent ? ct.parent.TransformPoint(_cameraPosition) : _cameraPosition;

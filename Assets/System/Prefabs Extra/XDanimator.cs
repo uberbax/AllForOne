@@ -43,19 +43,22 @@ public class XDanimator : ComponentBehavior
     }
 
     public string prevState = "";
+    private int stateVersion;
     public void SetState(string state, string onlyFrom = "")
     {
         if (state == prevState) return;
         if (onlyFrom != "" && prevState != onlyFrom) return;
         prevState = state;
+        int version = ++stateVersion;
 
         if (state == "attack")
         {
             FunctionTimer.Create(() =>
             {
-                if (mon.GetPar("health") > 0)
+                if (this != null && version == stateVersion && prevState == "attack" &&
+                    mon != null && mon.GetPar("health") > 0)
                     SetState("idle");
-            }, 0.5f);
+            }, animVideo != null ? 3f : 0.5f);
         }
 
         if (guiControls != null)

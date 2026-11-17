@@ -5805,7 +5805,7 @@ GameObject:
   - component: {fileID: 14718712}
   - component: {fileID: 14718711}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: ButtonHeaveStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5875,8 +5875,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 214550084}
-        m_TargetAssemblyTypeName: BRATANDRONIKLIB.BRATEffectBattle, Assembly-CSharp
+      - m_Target: {fileID: 214550087}
+        m_TargetAssemblyTypeName: BattleTestStrikes, Assembly-CSharp
         m_MethodName: PlayHeavyStrike
         m_Mode: 0
         m_Arguments:
@@ -72878,6 +72878,7 @@ GameObject:
   - component: {fileID: 214550084}
   - component: {fileID: 214550085}
   - component: {fileID: 214550086}
+  - component: {fileID: 214550087}
   m_Layer: 5
   m_Name: BATTLE
   m_TagString: Untagged
@@ -73001,6 +73002,21 @@ MonoBehaviour:
   turns: {fileID: 214550085}
   targetMy: {fileID: 1555987597}
   targetEnemy: {fileID: 2012228616}
+  stageRoot: {fileID: 43607658}
+--- !u!114 &214550087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214550081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5110e014700b4e540bac3127eea4cd56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleTestStrikes
+  turns: {fileID: 214550085}
+  effects: {fileID: 214550084}
   stageRoot: {fileID: 43607658}
 --- !u!1 &214688911
 GameObject:
@@ -380465,7 +380481,7 @@ GameObject:
   - component: {fileID: 1147320732}
   - component: {fileID: 1147320731}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ButtonStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -380535,8 +380551,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 214550084}
-        m_TargetAssemblyTypeName: BRATANDRONIKLIB.BRATEffectBattle, Assembly-CSharp
+      - m_Target: {fileID: 214550087}
+        m_TargetAssemblyTypeName: BattleTestStrikes, Assembly-CSharp
         m_MethodName: PlayStrike
         m_Mode: 0
         m_Arguments:

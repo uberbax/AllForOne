@@ -279,7 +279,8 @@ public class SkillExecutor : MonoBehaviour
             Destroy(kk, 1);
         }
         
-        if (target != who && overPos == default)
+        bool isVideoCharacter = who.visMain.GetComponent<UiLoopVideo>() != null;
+        if (!isVideoCharacter && target != who && overPos == default)
             who.SetScale(target.Position.x > who.Position.x);
         
         //animation attack
@@ -324,7 +325,8 @@ public class SkillExecutor : MonoBehaviour
             }
         }
 
-        if (rotateTowards && targ[0].tags[0] != "player")
+        // Canvas video characters face sideways; a 3D yaw turns their canvas edge-on.
+        if (rotateTowards && targ[0].tags[0] != "player" && !isVideoCharacter)
         {
             var vv = targ[0].Position - who.Position;
             vv.y = 0;

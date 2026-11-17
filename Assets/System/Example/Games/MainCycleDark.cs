@@ -817,6 +817,8 @@ public class MainCycleDark : MonoBehaviour
             AddBattleHeroShadow(copy, slot);
             var video = copy.visMain.GetComponent<UiLoopVideo>();
             copy.AddViz(video != null ? "animator" : "animator#pr:1");
+            copy.AddViz("coll#val:1.3,scale:1.3");
+            copy.AddViz("dmg_track");
             PrepareStageCombat(copy);
             state.awaitUnits[copy.RID] = 1;
             battleMovingHeroes.Add(new BattleHeroMovement
@@ -878,6 +880,8 @@ public class MainCycleDark : MonoBehaviour
             PrepareBattleHeroCanvas(enemy, slot);
             AddBattleHeroShadow(enemy, slot);
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
+            enemy.AddViz("coll#val:1.3,scale:1.3");
+            enemy.AddViz("dmg_track");
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
         }
@@ -1398,6 +1402,8 @@ public class MainCycleDark : MonoBehaviour
         //pet time
         var main_pet = new RObj("empty", 1, 1, true, Vector3.zero, true, ItemType.monster, "main_pet");
         main_pet.AddViz("pet");
+
+        XDdmgTrack.scaleMult = 0.3f;
     }
 
     public void BattleEnded(ArgPass obj)

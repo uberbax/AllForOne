@@ -48,6 +48,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     private void OnEnable()
     {
         view = GetComponent<RawImage>();
+        if (!TryGetComponent<UiVideoAspect>(out _)) gameObject.AddComponent<UiVideoAspect>();
         primary = GetComponent<VideoPlayer>();
         view.raycastTarget = false;
         ShowPoster();
@@ -193,7 +194,7 @@ public sealed class UiLoopVideo : MonoBehaviour
 
         if (overlay == null)
         {
-            var layer = new GameObject("Video CrossFade", typeof(RectTransform), typeof(RawImage));
+            var layer = new GameObject("Video CrossFade", typeof(RectTransform), typeof(RawImage), typeof(UiVideoAspect));
             layer.transform.SetParent(transform, false);
             overlay = layer.GetComponent<RawImage>();
             overlay.rectTransform.anchorMin = Vector2.zero;
