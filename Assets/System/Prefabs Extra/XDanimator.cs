@@ -44,14 +44,14 @@ public class XDanimator : ComponentBehavior
 
     public string prevState = "";
     private int stateVersion;
-    public void SetState(string state, string onlyFrom = "")
+    public void SetState(string state, string onlyFrom = "", bool autoIdle = true)
     {
         if (state == prevState) return;
         if (onlyFrom != "" && prevState != onlyFrom) return;
         prevState = state;
         int version = ++stateVersion;
 
-        if (state == "attack")
+        if (state == "attack" && autoIdle)
         {
             FunctionTimer.Create(() =>
             {

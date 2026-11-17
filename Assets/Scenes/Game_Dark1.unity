@@ -35209,47 +35209,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 102199415}
   m_CullTransparentMesh: 1
---- !u!21 &102561336
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - PixelSnap: 0
-    - _EnableExternalAlpha: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &102729262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3056352512099571632, guid: 8b806b40ab85bb2428a0b149e2c59142, type: 3}
@@ -384756,6 +384715,7 @@ MonoBehaviour:
     - basic_magic
     - lightning_strike
     - fireball
+    - basic_melee_double
     m_values:
     - {fileID: 21300000, guid: 7584fe5e6cef2bb4ca2317f4c3c70455, type: 3}
     - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
@@ -384828,6 +384788,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e755888d9b5f1441ead164d78166d916, type: 3}
     - {fileID: -8073884052667703520, guid: dd56be1a33c1d1f4088313ee03567131, type: 3}
     - {fileID: -8127487528002223245, guid: 297925ece73b0944199aac7cf2006cd8, type: 3}
+    - {fileID: 21300000, guid: ed35461fba0327c4ab3f6c82b5838893, type: 3}
   pars:
     m_keys:
     - health
@@ -385211,6 +385172,26 @@ MonoBehaviour:
     - {fileID: 8952178400791691048, guid: fdc915e5e782af2459b2a76f10cf3853, type: 3}
     - {fileID: 6444354472735232964, guid: 13548a865a38cbc49b013600dbaf5e78, type: 3}
   skillEffects:
+  - effSelf: {fileID: 0}
+    conds:
+    - hero_warrior
+    - basic_melee
+    projHit: {fileID: 6389406066330802589, guid: 5ef8d476ac4025a4e85cc5e7c5004889, type: 3}
+    proj: {fileID: 234984525910039312, guid: ffbbdf4a28632b648bac5271aafcc07b, type: 3}
+    projDelay: 0.9
+    projHitMark: 
+    angle: 0
+    projSpawnType: 0
+  - effSelf: {fileID: 0}
+    conds:
+    - hero_thief
+    - basic_melee
+    projHit: {fileID: 6389406066330802589, guid: 5ef8d476ac4025a4e85cc5e7c5004889, type: 3}
+    proj: {fileID: 234984525910039312, guid: ffbbdf4a28632b648bac5271aafcc07b, type: 3}
+    projDelay: 0.7
+    projHitMark: 
+    angle: 0
+    projSpawnType: 0
   - effSelf: {fileID: 0}
     conds:
     - _any
@@ -720183,7 +720164,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -738511,18 +738492,28 @@ MonoBehaviour:
   - anim: attack
     clip: {fileID: 0}
     startTime: 0
+    visualScale: 1
+    visualOffset: {x: 0, y: 0}
   - anim: idle
     clip: {fileID: 32900000, guid: f21b3b159d4cfc445807e94b90daad43, type: 3}
     startTime: 0
+    visualScale: 1
+    visualOffset: {x: 0, y: 0}
   - anim: walk
     clip: {fileID: 32900000, guid: 7045534783bb57f46b39ad3dcc6e5613, type: 3}
     startTime: 0
+    visualScale: 1
+    visualOffset: {x: 0, y: 0}
   - anim: hit
     clip: {fileID: 0}
     startTime: 0
+    visualScale: 1
+    visualOffset: {x: 0, y: 0}
   - anim: death
     clip: {fileID: 0}
     startTime: 0
+    visualScale: 1
+    visualOffset: {x: 0, y: 0}
   crossFadeDuration: 0.15
 --- !u!114 &2099649949695629858
 MonoBehaviour:

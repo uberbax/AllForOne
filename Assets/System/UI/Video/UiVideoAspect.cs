@@ -6,6 +6,17 @@ using UnityEngine.UI;
 public sealed class UiVideoAspect : BaseMeshEffect
 {
     private RawImage view;
+    private float visualScale = 1f;
+    private Vector2 visualOffset;
+
+    public void SetFraming(float scale, Vector2 offset)
+    {
+        scale = scale > 0 ? scale : 1f;
+        if (Mathf.Approximately(visualScale, scale) && visualOffset == offset) return;
+        visualScale = scale;
+        visualOffset = offset;
+        if (graphic != null) graphic.SetVerticesDirty();
+    }
 
     protected override void Awake()
     {
@@ -29,7 +40,8 @@ public sealed class UiVideoAspect : BaseMeshEffect
         {
             vertices.PopulateUIVertex(ref vertex, i);
             var position = vertex.position;
-            position.x = rect.center.x + (position.x - rect.center.x) * scaleX;
+            position.x = rect.center.x + (position.x - rect.center.x) * scaleX * visualScale + visualOffset.x * rect.width;
+            position.y = rect.center.y + (position.y - rect.center.y) * visualScale + visualOffset.y * rect.height;
             vertex.position = position;
             vertices.SetUIVertex(vertex, i);
         }

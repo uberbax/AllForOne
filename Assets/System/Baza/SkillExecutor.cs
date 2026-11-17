@@ -280,11 +280,13 @@ public class SkillExecutor : MonoBehaviour
         }
         
         bool isVideoCharacter = who.visMain.GetComponent<UiLoopVideo>() != null;
+        bool useNaprig = overPos == default && UsesNaprig(skl);
+        float projectileDelay = ll != null ? Mathf.Max(0, ll.projDelay) : 0;
         if (!isVideoCharacter && target != who && overPos == default)
             who.SetScale(target.Position.x > who.Position.x);
         
         //animation attack
-        if (overPos == default)
+        if (overPos == default && !useNaprig)
         {
             if (skl.dbObj.pars["anim_type"] > 0)
                 DoCustom(who, skl, targ[0]);
@@ -293,10 +295,6 @@ public class SkillExecutor : MonoBehaviour
         }
 
         if (ll != null && ll.angle == 45) spellType = 2;
-        if (overPos == default)
-        {
-            SoundManager.instance.PlayAny(skl.dbObj.ID, spellType);
-        }
             
         
         int p = (int)skl.GetPar("proj_amount");
@@ -333,127 +331,149 @@ public class SkillExecutor : MonoBehaviour
             who.main.transform.forward = vv;
         }
         
-        if (skl.dbObj.spawn != "")
+        void LaunchProjectiles()
         {
-            var gg = Instantiate(ResourceHolder.instance.skillsWorld[skl.dbObj.spawn], who.main.transform);
-            gg.GetComponent<SkillBehavior>().SetTarget(targ[0]);
-        }
-        else
-        {
-            for (int i = 0; i < Mathf.Min(targ.Count, skl.GetPar("targets")); i++)
+            if (who.main == null || !who.main.activeInHierarchy || (useNaprig && who.GetPar("health") <= 0)) return;
+            if (overPos == default) SoundManager.instance.PlayAny(skl.dbObj.ID, spellType);
+            if (skl.dbObj.spawn != "")
             {
-
-                for (int j = 0; j < p; j++)
+                var gg = Instantiate(ResourceHolder.instance.skillsWorld[skl.dbObj.spawn], who.main.transform);
+                gg.GetComponent<SkillBehavior>().SetTarget(targ[0]);
+            }
+            else
+            {
+                for (int i = 0; i < Mathf.Min(targ.Count, skl.GetPar("targets")); i++)
                 {
-                    RObj ro = null;
-                    if (!useSame)
-                    {
-                        ro = DatabaseAll.instance.CreateProjectile(who, skl.dbObj.ID, overPos == default ? Vector3.zero : overPos - who.Position, addPars:addPars);
-                        //ro = skl.Clone();
-                        //?
-                        var tt = who.visMain.transform.Find("legs");
-                        var tt1 = who.visMain.transform.Find("head");
-                        var hh = who.GetScale();
-                        ro.main.transform.position = (tt.position + tt1.position) / 2 + new Vector3(hh * 0.2f, 0, 0);
+                    var projectileTarget = targ[i];
+                    if (projectileTarget?.main == null || !projectileTarget.main.activeInHierarchy) continue;
 
-                        if (projSpawnType == 1)
+                    for (int j = 0; j < p; j++)
+                    {
+                        FunctionTimer.Create(() =>
                         {
-                            ro.main.transform.position =
-                                (tt.position + targ[0].main.transform.position)/2 + new Vector3(0, 4, 0);
-                        }
-                        //
-                        ro.AddViz("coll");
-                    }
-                    else
-                    {
-                        ro = skl;
-                    }
-
-                    if (change != null)
-                        ro.ChangePar(change.Key, change.Value);
-
-                    if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_exact_target) == 1 && ft == 0)
-                        ro.exact = target;
-                    
-                    if (ro.dbObj.ID == "put")
-                    {
-                        ro.main.transform.position = who.Position + new Vector3(0,0.5f,0);
-                        ro.Position = ro.main.transform.position;
-                        if (who.attachables.Count > 0)
+                        if (who.main == null || !who.main.activeInHierarchy) return;
+                        RObj ro = null;
+                        if (!useSame)
                         {
-                            for (int o = who.attachables.Count - 1; o >= 0; o--)
+                            ro = DatabaseAll.instance.CreateProjectile(who, skl.dbObj.ID, overPos == default ? Vector3.zero : overPos - who.Position, addPars:addPars);
+                            //ro = skl.Clone();
+                            //?
+                            var tt = who.visMain.transform.Find("legs");
+                            var tt1 = who.visMain.transform.Find("head");
+                            var hh = who.GetScale();
+                            ro.main.transform.position = (tt.position + tt1.position) / 2 + new Vector3(hh * 0.2f, 0, 0);
+
+                            if (projSpawnType == 1)
                             {
-                                who.attachables[o].parent = ro.main.transform;
-                                ro.attachables.Add(who.attachables[o]);
+                                ro.main.transform.position =
+                                    (tt.position + targ[0].main.transform.position)/2 + new Vector3(0, 4, 0);
                             }
-                            who.attachables.Clear();
-                        }
-                    }
-
-                    float yy = timeWait;
-                    if (isEmpty) yy -= 0.3f;
-
-                    if (ro.dbObj.ID == "move") yy = 0;
-                    
-                    ro.main.SetActive(false);
-                    FunctionTimer.Create(() =>
-                    {
-                        ro.main.SetActive(true);
-                    }, yy);
-                    
-                    FunctionTimer.Create(() =>
-                    {
-                        Transform tt_1 = null;
-                        Transform tt_2 = null;
-                        
-                        if (targ[i].visMain == null)
-                        {
-                            tt_1 = ro.main.transform;
-                            tt_2 = ro.main.transform;
+                            //
+                            ro.Position = ro.main.transform.position;
+                            ro.AddViz("coll");
                         }
                         else
                         {
-                            tt_1 = targ[i].visMain.transform.Find("legs");
-                            tt_2 = targ[i].visMain.transform.Find("head");                            
+                            ro = skl;
                         }
 
-                        if (tt_1 == null) tt_1 = targ[i].visMain.transform;
-                        if (tt_2 == null) tt_2 = targ[i].visMain.transform;
-                        
-                        
-                        UtilsControl.Instance.MoveTo(ro.main.transform, skl.GetPar("speed"),
-                            (tt_1.position + tt_2.position) / 2,
-                            () =>
+                        if (change != null)
+                            ro.ChangePar(change.Key, change.Value);
+
+                        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_exact_target) == 1 && ft == 0)
+                            ro.exact = target;
+                    
+                        if (ro.dbObj.ID == "put")
+                        {
+                            ro.main.transform.position = who.Position + new Vector3(0,0.5f,0);
+                            ro.Position = ro.main.transform.position;
+                            if (who.attachables.Count > 0)
                             {
-                                //Debug.Log("NYAM");
-                                ro.RemoveViz("coll");
-                                if (ro.GetPar("aoe") > 0)
+                                for (int o = who.attachables.Count - 1; o >= 0; o--)
                                 {
-                                    Explode(ro);
+                                    who.attachables[o].parent = ro.main.transform;
+                                    ro.attachables.Add(who.attachables[o]);
                                 }
-                                else
+                                who.attachables.Clear();
+                            }
+                        }
+
+                        float yy = useNaprig ? 0f : timeWait;
+                        if (!useNaprig && isEmpty) yy -= 0.3f;
+
+                        if (ro.dbObj.ID == "move") yy = 0;
+                    
+                        ro.main.SetActive(false);
+                        FunctionTimer.Create(() =>
+                        {
+                            if (ro.main != null) ro.main.SetActive(true);
+                        }, yy);
+                    
+                        FunctionTimer.Create(() =>
+                        {
+                            if (ro.main == null || projectileTarget.main == null || !projectileTarget.main.activeInHierarchy)
+                            {
+                                if (ro.main != null) Destroy(ro.main);
+                                return;
+                            }
+                            Transform tt_1 = null;
+                            Transform tt_2 = null;
+                        
+                            if (projectileTarget.visMain == null)
+                            {
+                                tt_1 = ro.main.transform;
+                                tt_2 = ro.main.transform;
+                            }
+                            else
+                            {
+                                tt_1 = projectileTarget.visMain.transform.Find("legs");
+                                tt_2 = projectileTarget.visMain.transform.Find("head");
+                            }
+
+                            if (tt_1 == null) tt_1 = projectileTarget.visMain.transform;
+                            if (tt_2 == null) tt_2 = projectileTarget.visMain.transform;
+                        
+                        
+                            UtilsControl.Instance.MoveTo(ro.main.transform, skl.GetPar("speed"),
+                                (tt_1.position + tt_2.position) / 2,
+                                () =>
                                 {
-                                    if (ro.exact == who)
+                                    //Debug.Log("NYAM");
+                                    ro.RemoveViz("coll");
+                                    if (ro.GetPar("aoe") > 0)
                                     {
-                                        MainStates.instance.DealDamage(who, ro);
+                                        Explode(ro);
+                                    }
+                                    else
+                                    {
+                                        if (ro.exact == who)
+                                        {
+                                            MainStates.instance.DealDamage(who, ro);
+                                        }
+
+                                        Destroy(ro.main);
                                     }
 
-                                    Destroy(ro.main);
-                                }
+                                }, null, dltTime:yy);
+                        }, 0);
+                        }, dt * (float)j);
 
-                            }, null, dltTime:yy);
-                    }, dt * (float)j);
 
+                    }
 
                 }
-
             }
         }
-
-        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 && skl.dbObj.ID == "basic_melee")
+        if (useNaprig)
         {
-            MainStates.instance.DoNaprig(who, target);
+            var attackTarget = target;
+            MainStates.instance.DoNaprig(who, target, () =>
+            {
+                PlayNaprigAttack(who, skl, attackTarget);
+                FunctionTimer.Create(LaunchProjectiles, projectileDelay);
+            });
         }
+        else FunctionTimer.Create(LaunchProjectiles, projectileDelay);
 
         if (overPos == default)
             skl.SetPar("cd", skl.GetPar("cooldown"));
@@ -707,7 +727,6 @@ public class SkillExecutor : MonoBehaviour
                 
                 var tmpSkl = lastSkl;
                 //if (!tmpSkl.HasVis("coll")) tmpSkl.AddViz("coll");       
-                SoundManager.instance.PlayAny(lastSkl.dbObj.ID);
                 
                 var ll = ResourceHolder.instance.GetMeSkillEtc(lastWho.dbObj, lastSkl.dbObj.ID);
                 if (ll != null && ll.effSelf != null)
@@ -719,167 +738,192 @@ public class SkillExecutor : MonoBehaviour
                 
 
                 
-                if (lastSkl.dbObj.spawn != "")
+                var projectileOwner = lastWho;
+                var projectileSkill = lastSkl;
+                var projectileTarget = curTargeter.find;
+                bool freeTargeting = MainStates.instance.freeTargeting;
+                bool useTargetedNaprig = UsesNaprig(projectileSkill);
+                float projectileDelay = ll != null ? Mathf.Max(0, ll.projDelay) : 0;
+                void LaunchTargetedProjectiles()
                 {
-                    var gg = Instantiate(ResourceHolder.instance.skillsWorld[lastSkl.dbObj.spawn], lastWho.main.transform);
-                    if (MainStates.instance.freeTargeting)
-                        gg.GetComponent<SkillBehavior>().SetTarget(pos);
-                    else gg.GetComponent<SkillBehavior>().SetTarget(curTargeter.find);
-                }
-                else
-                {
-                    for (int j = 0; j < p; j++)
+                    if (projectileOwner.main == null || !projectileOwner.main.activeInHierarchy ||
+                        (useTargetedNaprig && projectileOwner.GetPar("health") <= 0)) return;
+                    SoundManager.instance.PlayAny(savedSkl);
+                    if (projectileSkill.dbObj.spawn != "")
                     {
-                        FunctionTimer.Create(() =>
-                        {
-                            var ro = DatabaseAll.instance.CreateProjectile(
-                                MainStates.instance.lastAllySelected == null
-                                    ? MainStates.instance.mainPlayer
-                                    : MainStates.instance.lastAllySelected,
-                                savedSkl, Vector3.zero);
-                            ro.AddViz("coll#scale:0.2");
-
-                            if (ro.dbObj.ID == "put")
-                            {
-                                ro.main.transform.position = lastWho.Position + new Vector3(0,0.5f,0);
-                                ro.Position = ro.main.transform.position;
-                                if (lastWho.attachables.Count > 0)
-                                {
-                                    for (int o = lastWho.attachables.Count - 1; o >= 0; o--)
-                                    {
-                                        lastWho.attachables[o].parent = ro.main.transform;
-                                        ro.attachables.Add(lastWho.attachables[o]);
-                                    }
-                                    lastWho.attachables.Clear();
-                                }
-                            }
-                            
-                            if (lastSkl.exact != null)
-                                ro.exact = lastSkl.exact;
-                            ro.trg = pos;
-                            Vector3 ep = pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0);
-                            if (da > 0)
-                            {
-                                var vec = pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0) - ro.Position;
-                                Vector3 rotatedVector = Quaternion.Euler(0, 0, Random.Range(-da, da)) * vec;
-                                ep = ro.Position + rotatedVector;
-                            }
-
-                            UtilsControl.Instance.MoveTo(ro.main.transform, ro.GetPar("speed"),
-                                ep,
-                                () =>
-                                {
-                                    ro.RemoveViz("coll");
-                                    Explode(ro);
-                                    if (ro.effect != null)
-                                    {
-                                        var go = Instantiate(ro.effect);
-                                        go.transform.position = ep; //ro.main.transform.position;
-                                        go.transform.Rotate(0,0, ro.angle);
-                                        Destroy(go, 1);
-                                        ro.RemoveViz("vis_main");
-                                    }
-
-                                    //
-                                    if (ro.dbObj.ID == "move")
-                                    {
-                                        if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0 
-                                            || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0
-                                            ||  ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
-                                        {
-                                            var savedOwner = ro.owner;
-                                            var savedPos = ro.main.transform.position;
-                                            UtilsControl.Instance.MoveToMany(savedOwner.main.transform, 10, UtilsControl.ConvertPath(movePath.lastPath), 0,
-                                                () =>
-                                                {
-                                                    savedOwner.Position = savedPos;
-                                                    savedOwner.AdjustPosition();
-                                                    if (savedOwner == MainStates.instance.mainPlayer)
-                                                    {
-                                                        EventManager.INV("main_move", new ArgPass { pos = savedPos });
-                                                    }
-                                                }, () =>
-                                                {
-                                                    savedOwner.Position = savedOwner.main.transform.position;
-                                                    savedOwner.AdjustPosition();
-                                                });
-                                        }
-                                        else
-                                        {
-                                            var savedOwner = ro.owner;
-                                            var savedPos = ro.main.transform.position;
-                                            var bn = PositionSetter.instance.GetClosestPos(savedPos);
-                                            savedOwner.ref_pos_x = bn.Item1;
-                                            savedOwner.ref_pos_y = bn.Item2;
-
-                                            UtilsControl.Instance.MoveTo(ro.owner.main.transform,
-                                                ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_move), ro.main.transform.position,
-                                                () =>
-                                                {
-                                                    savedOwner.Position = savedPos;
-                                                    savedOwner.AdjustPosition();
-                                                    if (savedOwner == MainStates.instance.mainPlayer)
-                                                    {
-                                                        EventManager.INV("main_move", new ArgPass { pos = savedPos });
-                                                    }
-
-                                                }, null, useRight: false);                                            
-                                        }
-
-                                        
-                                        
-                                    }
-                                    else if (ro.dbObj.ID == "teleport")
-                                    {
-                                        ro.owner.main.transform.position = ro.main.transform.position;
-                                        ro.owner.Position = ro.main.transform.position;
-                                        ro.owner.AdjustPosition();
-                                        if (ro.owner == MainStates.instance.mainPlayer)
-                                        {
-                                            EventManager.INV("main_move", new ArgPass { pos = ro.owner.Position });
-                                        }
-                                    }
-                                    else if (ro.dbObj.ID == "put")
-                                    {
-                                        foreach (var v in ro.attachables)
-                                        {
-                                            v.parent = null;
-                                            v.GetComponentInChildren<XDpick>().picked = false;
-                                            v.GetComponentInChildren<XDpick>().EnableCollider();
-                                            
-                                            var kk = v.GetComponent<ObjHolder>();
-                                            kk.enabled = true;
-                                            kk.obj.Position = v.position;
-                                            kk.obj.AdjustPosition();
-                                            var tt = v.GetComponent<MoveDir>();
-                                            if (tt != null) tt.enabled = true;
-                                        }
-                                    }
-                                    else if (ro.dbObj.ID.IndexOf("summon") >= 0)
-                                    {
-                                        var gg = WaveSpawner.instance.DoSpawnAny(ro.dbObj.extraPars, "player", null,
-                                            null, false,
-                                            ro.Position, ro.Position, true);
-                                        foreach (var v in gg)
-                                        {
-                                            v.AdjustPosition();
-                                        }
-                                        //action_req ? or mark them as summon ?
-                                    }
-
-                                }, null, travelType: (TravelType)ro.GetPar("travel"));
-                        }, dt * (float)j);
-
-
-
+                        var gg = Instantiate(ResourceHolder.instance.skillsWorld[projectileSkill.dbObj.spawn], projectileOwner.main.transform);
+                        if (freeTargeting)
+                            gg.GetComponent<SkillBehavior>().SetTarget(pos);
+                        else gg.GetComponent<SkillBehavior>().SetTarget(projectileTarget);
                     }
-                }
+                    else
+                    {
+                        for (int j = 0; j < p; j++)
+                        {
+                            FunctionTimer.Create(() =>
+                            {
+                                if (projectileOwner.main == null || !projectileOwner.main.activeInHierarchy ||
+                                    (useTargetedNaprig && projectileOwner.GetPar("health") <= 0)) return;
+                                var ro = DatabaseAll.instance.CreateProjectile(
+                                    projectileOwner,
+                                    savedSkl, Vector3.zero);
+                                if (useTargetedNaprig && projectileOwner.visMain != null)
+                                {
+                                    var legs = projectileOwner.visMain.transform.Find("legs");
+                                    var head = projectileOwner.visMain.transform.Find("head");
+                                    ro.main.transform.position = legs != null && head != null
+                                        ? (legs.position + head.position) * 0.5f : projectileOwner.main.transform.position;
+                                    ro.Position = ro.main.transform.position;
+                                }
+                                ro.AddViz("coll#scale:0.2");
 
-                if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 && lastSkl.dbObj.ID == "basic_melee")
-                {
-                    MainStates.instance.DoNaprig(lastWho, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0));
+                                if (ro.dbObj.ID == "put")
+                                {
+                                    ro.main.transform.position = projectileOwner.Position + new Vector3(0,0.5f,0);
+                                    ro.Position = ro.main.transform.position;
+                                    if (projectileOwner.attachables.Count > 0)
+                                    {
+                                        for (int o = projectileOwner.attachables.Count - 1; o >= 0; o--)
+                                        {
+                                            projectileOwner.attachables[o].parent = ro.main.transform;
+                                            ro.attachables.Add(projectileOwner.attachables[o]);
+                                        }
+                                        projectileOwner.attachables.Clear();
+                                    }
+                                }
+                            
+                                if (projectileSkill.exact != null)
+                                    ro.exact = projectileSkill.exact;
+                                ro.trg = pos;
+                                Vector3 ep = pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0);
+                                if (da > 0)
+                                {
+                                    var vec = pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0) - ro.Position;
+                                    Vector3 rotatedVector = Quaternion.Euler(0, 0, Random.Range(-da, da)) * vec;
+                                    ep = ro.Position + rotatedVector;
+                                }
+
+                                UtilsControl.Instance.MoveTo(ro.main.transform, ro.GetPar("speed"),
+                                    ep,
+                                    () =>
+                                    {
+                                        ro.RemoveViz("coll");
+                                        Explode(ro);
+                                        if (ro.effect != null)
+                                        {
+                                            var go = Instantiate(ro.effect);
+                                            go.transform.position = ep; //ro.main.transform.position;
+                                            go.transform.Rotate(0,0, ro.angle);
+                                            Destroy(go, 1);
+                                            ro.RemoveViz("vis_main");
+                                        }
+
+                                        //
+                                        if (ro.dbObj.ID == "move")
+                                        {
+                                            if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_manhattan) > 0 
+                                                || ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_isometric) > 0
+                                                ||  ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.mode_hex) > 0)
+                                            {
+                                                var savedOwner = ro.owner;
+                                                var savedPos = ro.main.transform.position;
+                                                UtilsControl.Instance.MoveToMany(savedOwner.main.transform, 10, UtilsControl.ConvertPath(movePath.lastPath), 0,
+                                                    () =>
+                                                    {
+                                                        savedOwner.Position = savedPos;
+                                                        savedOwner.AdjustPosition();
+                                                        if (savedOwner == MainStates.instance.mainPlayer)
+                                                        {
+                                                            EventManager.INV("main_move", new ArgPass { pos = savedPos });
+                                                        }
+                                                    }, () =>
+                                                    {
+                                                        savedOwner.Position = savedOwner.main.transform.position;
+                                                        savedOwner.AdjustPosition();
+                                                    });
+                                            }
+                                            else
+                                            {
+                                                var savedOwner = ro.owner;
+                                                var savedPos = ro.main.transform.position;
+                                                var bn = PositionSetter.instance.GetClosestPos(savedPos);
+                                                savedOwner.ref_pos_x = bn.Item1;
+                                                savedOwner.ref_pos_y = bn.Item2;
+
+                                                UtilsControl.Instance.MoveTo(ro.owner.main.transform,
+                                                    ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.global_move), ro.main.transform.position,
+                                                    () =>
+                                                    {
+                                                        savedOwner.Position = savedPos;
+                                                        savedOwner.AdjustPosition();
+                                                        if (savedOwner == MainStates.instance.mainPlayer)
+                                                        {
+                                                            EventManager.INV("main_move", new ArgPass { pos = savedPos });
+                                                        }
+
+                                                    }, null, useRight: false);                                            
+                                            }
+
+                                        
+                                        
+                                        }
+                                        else if (ro.dbObj.ID == "teleport")
+                                        {
+                                            ro.owner.main.transform.position = ro.main.transform.position;
+                                            ro.owner.Position = ro.main.transform.position;
+                                            ro.owner.AdjustPosition();
+                                            if (ro.owner == MainStates.instance.mainPlayer)
+                                            {
+                                                EventManager.INV("main_move", new ArgPass { pos = ro.owner.Position });
+                                            }
+                                        }
+                                        else if (ro.dbObj.ID == "put")
+                                        {
+                                            foreach (var v in ro.attachables)
+                                            {
+                                                v.parent = null;
+                                                v.GetComponentInChildren<XDpick>().picked = false;
+                                                v.GetComponentInChildren<XDpick>().EnableCollider();
+                                            
+                                                var kk = v.GetComponent<ObjHolder>();
+                                                kk.enabled = true;
+                                                kk.obj.Position = v.position;
+                                                kk.obj.AdjustPosition();
+                                                var tt = v.GetComponent<MoveDir>();
+                                                if (tt != null) tt.enabled = true;
+                                            }
+                                        }
+                                        else if (ro.dbObj.ID.IndexOf("summon") >= 0)
+                                        {
+                                            var gg = WaveSpawner.instance.DoSpawnAny(ro.dbObj.extraPars, "player", null,
+                                                null, false,
+                                                ro.Position, ro.Position, true);
+                                            foreach (var v in gg)
+                                            {
+                                                v.AdjustPosition();
+                                            }
+                                            //action_req ? or mark them as summon ?
+                                        }
+
+                                    }, null, travelType: (TravelType)ro.GetPar("travel"));
+                            }, dt * (float)j);
+
+
+
+                        }
+                    }
+
                 }
-                
+                if (useTargetedNaprig)
+                {
+                    MainStates.instance.DoNaprig(projectileOwner, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0), () =>
+                    {
+                        PlayNaprigAttack(projectileOwner, projectileSkill, projectileSkill.exact);
+                        FunctionTimer.Create(LaunchTargetedProjectiles, projectileDelay);
+                    });
+                }
+                else FunctionTimer.Create(LaunchTargetedProjectiles, projectileDelay);
+
                 lastSkl.SetPar("cd", lastSkl.GetPar("cooldown"));
                 lastWho.ChangePar("mana", -lastSkl.GetPar("manacost")); 
                 
@@ -889,6 +933,18 @@ public class SkillExecutor : MonoBehaviour
                 
             }
         }
+    }
+
+    private static bool UsesNaprig(RObj skill) =>
+        ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 &&
+        (skill.dbObj.ID == "basic_melee" || skill.GetPar("use_naprig") > 0);
+
+    private void PlayNaprigAttack(RObj who, RObj skill, RObj target)
+    {
+        if (skill.dbObj.pars["anim_type"] > 0 && target != null)
+            DoCustom(who, skill, target);
+        else if (who.visuals.TryGetValue("animator", out var animator) && animator != null)
+            animator.GetComponentInChildren<XDanimator>()?.SetState("attack", autoIdle: false);
     }
 
     public void DoCustom(RObj who, RObj skl, RObj targ)

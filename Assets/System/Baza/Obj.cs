@@ -123,6 +123,18 @@ public class RObj
         // Runs AFTER all JSON fields have been populated
         dbObj = DatabaseAll.instance.GetDBItemByID(dbID);
         it = DatabaseAll.instance.GetItemType(dbID,"");
+        // Upgrade the saved legacy basic attack when the hero config selects the double variant.
+        if (it == ItemType.monster && dbObj.skills.Count > 0 && dbObj.skills[0] == "basic_melee_double")
+        {
+            foreach (var skill in actSkills)
+            {
+                if (skill.dbID != "basic_melee") continue;
+                skill.dbID = "basic_melee_double";
+                skill.dbObj = DatabaseAll.instance.skills[skill.dbID];
+                skill.owner = this;
+                skill.RecalcPars();
+            }
+        }
     }
     
     //?????
@@ -276,7 +288,8 @@ public class RObj
     {
         foreach (var v in actSkills)
         {
-            if (v.dbObj.ID == "basic_melee" || v.dbObj.ID == "basic_range" || v.dbObj.ID == "basic_magic")
+            if (v.dbObj.ID == "basic_melee" || v.dbObj.ID == "basic_melee_double" ||
+                v.dbObj.ID == "basic_range" || v.dbObj.ID == "basic_magic")
                 return v;
         }
 
@@ -997,7 +1010,8 @@ public class RObj
         for (int i = 0; i < y.actSkills.Count; i++)
         {
             y.actSkills[i].it = actSkills[i].it;
-            y.actSkills[i].dbObj = actSkills[i].dbObj;
+            y.actSkills[i].dbObj = y.actSkills[i].dbID == actSkills[i].dbID
+                ? actSkills[i].dbObj : DatabaseAll.instance.GetDBItemByID(y.actSkills[i].dbID);
             y.actSkills[i].owner = y;
         }
         for (int i = 0; i < y.buffs.Count; i++)

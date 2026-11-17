@@ -529,6 +529,7 @@ public class SkillEtc
     public List<string> conds = new List<string>();
     public GameObject projHit;
     public GameObject proj;
+    [Min(0), Tooltip("Delay in seconds before releasing projectiles. With naprig, counted from arrival and the start of the attack animation.")]
     public float projDelay;
     public string projHitMark = "";
 

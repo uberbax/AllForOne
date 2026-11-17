@@ -3579,27 +3579,10 @@ public class MainStates : MonoBehaviour
         }
     }
 
-    public void DoNaprig(RObj who, RObj target)
+    public void DoNaprig(RObj who, RObj target, Action onArrived = null)
     {
-        Vector3 saved1 = who.Position;
-        Vector3 saved2 = who.Position +
-                         (target.Position - who.Position) * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
-        
-        var t = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig);
-            
-        UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
-        {
-            FunctionTimer.Create(() =>
-
-                UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
-                {
-
-                }, null, useRight: false, ignoreFlip: true),
-                
-                t
-
-            );
-        }, null,useRight:false,ignoreFlip:true);
+        if (target == null) return;
+        DoNaprig(who, target.Position, onArrived);
     }
 
     public void MultiplyPars(RObj who, float mult)
@@ -3786,28 +3769,43 @@ public class MainStates : MonoBehaviour
     }
     
     
-    public void DoNaprig(RObj who, Vector3 target)
+    public void DoNaprig(RObj who, Vector3 target, Action onArrived = null)
     {
-        Vector3 saved1 = who.Position;
-        Vector3 saved2 = who.Position +
-                         (target - who.Position) * ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
-        
-        var t = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig);
-            
-        UtilsControl.Instance.MoveTo(who.main.transform, 5, saved2, () =>
+        if (who?.main == null || !who.main.activeInHierarchy) return;
+        Vector3 home = who.main.transform.position;
+        Vector3 destination = home + (target - home) *
+            ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
+        UtilsControl.Instance.MoveTo(who.main.transform, 5, destination, () =>
         {
-            FunctionTimer.Create( () =>
-            
-                UtilsControl.Instance.MoveTo(who.main.transform, 5, saved1, () =>
-                {
-                    
-                }, null,useRight:false, ignoreFlip:true),
-                
-                t
-            );
+            if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) return;
+            StartCoroutine(FinishNaprig(who, home, onArrived));
+        }, null, useRight: false, ignoreFlip: true);
+    }
 
+    private IEnumerator FinishNaprig(RObj who, Vector3 home, Action onArrived)
+    {
+        var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
+            ? visual.GetComponentInChildren<XDanimator>() : null;
+        var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+        if (onArrived != null) onArrived();
+        else if (animator != null) animator.SetState("attack", autoIdle: false);
 
-        }, null,useRight:false, ignoreFlip:true);
+        bool waitForVideo = video != null && video.HasAnimation("attack") &&
+            animator != null && animator.prevState == "attack";
+        float duration = waitForVideo ? video.GetAnimationDuration("attack") + 10f :
+            video != null ? 3f : Mathf.Max(0, ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig));
+        float deadline = Time.realtimeSinceStartup + duration;
+        while (Time.realtimeSinceStartup < deadline)
+        {
+            if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+            if (waitForVideo && (video == null || !video.isActiveAndEnabled ||
+                video.IsAnimationFinished("attack") || animator == null || animator.prevState != "attack")) break;
+            yield return null;
+        }
+
+        if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+        if (animator != null && animator.prevState == "attack") animator.SetState("idle");
+        UtilsControl.Instance.MoveTo(who.main.transform, 5, home, null, null, useRight: false, ignoreFlip: true);
     }
     
     public static List<Vizualo> allVisuals = new List<Vizualo>();

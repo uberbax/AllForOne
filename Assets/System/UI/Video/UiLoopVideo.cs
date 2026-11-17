@@ -13,6 +13,9 @@ public sealed class UiLoopVideo : MonoBehaviour
         public string anim;
         public VideoClip clip;
         [Min(0)] public float startTime;
+        [Min(0.01f)] public float visualScale = 1f;
+        [Tooltip("Image offset as a fraction of the UI rectangle; does not move legs/head anchors.")]
+        public Vector2 visualOffset;
     }
 
     [SerializeField] private VideoClip clip;
@@ -22,6 +25,8 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     private RawImage view;
     private RawImage overlay;
+    private UiVideoAspect viewAspect;
+    private UiVideoAspect overlayAspect;
     private VideoPlayer primary;
     private VideoPlayer secondary;
     private VideoPlayer current;
@@ -36,6 +41,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     private long currentStartFrame;
     private bool pendingLoop;
     private bool currentLoop;
+    private bool currentFinished;
+    private bool pendingFinished;
     private int pendingFrameReadyAt = -1;
     private bool pendingPlaybackStarted;
     private int visibleSinceFrame = -1;
@@ -48,7 +55,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     private void OnEnable()
     {
         view = GetComponent<RawImage>();
-        if (!TryGetComponent<UiVideoAspect>(out _)) gameObject.AddComponent<UiVideoAspect>();
+        if (!TryGetComponent(out viewAspect)) viewAspect = gameObject.AddComponent<UiVideoAspect>();
         primary = GetComponent<VideoPlayer>();
         view.raycastTarget = false;
         ShowPoster();
@@ -63,6 +70,19 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     public bool HasAnimation(string anim) =>
         !string.IsNullOrWhiteSpace(anim) && FindClip(anim.Trim().ToLowerInvariant()) != null;
+
+    public bool IsAnimationFinished(string anim) => current != null && currentFinished &&
+        string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase);
+
+    public float GetAnimationDuration(string anim)
+    {
+        var value = FindClip(anim);
+        if (value == null) return 0;
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
+                return (float)Math.Max(0, value.length - entry.startTime);
+        return (float)value.length;
+    }
 
     public bool IsAnimationVisible(string anim) =>
         current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
@@ -106,6 +126,18 @@ public sealed class UiLoopVideo : MonoBehaviour
         return anim == "idle" ? clip : null;
     }
 
+    private void ApplyFraming(UiVideoAspect aspect, string anim)
+    {
+        if (aspect == null) return;
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
+            {
+                aspect.SetFraming(entry.visualScale, entry.visualOffset);
+                return;
+            }
+        aspect.SetFraming(1f, Vector2.zero);
+    }
+
     private void StartClip(string anim, VideoClip next, bool loop, bool instant = false)
     {
         if (current == primary && secondary == null)
@@ -115,6 +147,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         pendingName = anim;
         pendingInstant = instant;
         pendingLoop = loop;
+        pendingFinished = false;
         pendingFrameReadyAt = -1;
         pendingPlaybackStarted = false;
         double startTime = 0;
@@ -197,6 +230,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             var layer = new GameObject("Video CrossFade", typeof(RectTransform), typeof(RawImage), typeof(UiVideoAspect));
             layer.transform.SetParent(transform, false);
             overlay = layer.GetComponent<RawImage>();
+            overlayAspect = layer.GetComponent<UiVideoAspect>();
             overlay.rectTransform.anchorMin = Vector2.zero;
             overlay.rectTransform.anchorMax = Vector2.one;
             overlay.rectTransform.offsetMin = Vector2.zero;
@@ -208,6 +242,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         overlay.uvRect = view.uvRect;
         overlay.maskable = view.maskable;
         overlay.texture = pending.targetTexture;
+        ApplyFraming(overlayAspect, pendingName);
         fadeColor = view.color;
         overlay.color = WithAlpha(fadeColor, 0);
         overlay.enabled = true;
@@ -236,6 +271,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         currentName = pendingName;
         currentStartFrame = pendingStartFrame;
         currentLoop = pendingLoop;
+        currentFinished = pendingFinished;
         RetireLoopHold();
         waitingForLoopFrame = false;
         visibleSinceFrame = Time.frameCount;
@@ -243,6 +279,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         pendingName = null;
         view.texture = current.targetTexture;
         view.enabled = true;
+        ApplyFraming(viewAspect, currentName);
         Release(outgoing);
     }
 
@@ -270,6 +307,8 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     private void LoopPointReached(VideoPlayer source)
     {
+        if (source == pending && !pendingLoop) pendingFinished = true;
+        if (source == current && !currentLoop) currentFinished = true;
         if (source != current || !currentLoop || currentStartFrame <= 0 || waitingForLoopFrame) return;
         loopHold = new RenderTexture(source.targetTexture.descriptor) { name = name + " loop hold" };
         loopHold.Create();
@@ -328,6 +367,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         if (view == null)
             return;
         view.texture = poster;
+        if (viewAspect != null) viewAspect.SetFraming(1f, Vector2.zero);
         view.enabled = poster != null;
     }
 
