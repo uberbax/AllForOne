@@ -113,7 +113,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         if (current != null && currentName == anim && (current.isPlaying || currentLoop))
             return;
 
-        StartClip(anim, next, anim == "idle" || anim == "walk", instant);
+        StartClip(anim, next, anim == "idle" || anim == "walk" || anim == "run", instant);
     }
 
     private VideoClip FindClip(string anim)

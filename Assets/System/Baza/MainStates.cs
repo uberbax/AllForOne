@@ -3775,6 +3775,34 @@ public class MainStates : MonoBehaviour
         Vector3 home = who.main.transform.position;
         Vector3 destination = home + (target - home) *
             ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
+        StartCoroutine(ApproachNaprig(who, home, destination, onArrived));
+    }
+
+    private IEnumerator ApproachNaprig(RObj who, Vector3 home, Vector3 destination, Action onArrived)
+    {
+        var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
+            ? visual.GetComponentInChildren<XDanimator>() : null;
+        var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+        string movement = video == null || video.HasAnimation("run") ? "run" :
+            video.HasAnimation("walk") ? "walk" : null;
+        if (movement != null)
+        {
+            if (animator != null) animator.SetState(movement);
+            if (video != null)
+            {
+                // Keep the previous decoded frame until run is ready, then move immediately.
+                video.Play(movement);
+                float deadline = Time.realtimeSinceStartup + 5f;
+                while (!video.IsAnimationVisible(movement))
+                {
+                    if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
+                        !video.isActiveAndEnabled) yield break;
+                    if (Time.realtimeSinceStartup >= deadline) yield break;
+                    yield return null;
+                }
+            }
+        }
+        if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
         UtilsControl.Instance.MoveTo(who.main.transform, 5, destination, () =>
         {
             if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) return;
@@ -3787,6 +3815,8 @@ public class MainStates : MonoBehaviour
         var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
             ? visual.GetComponentInChildren<XDanimator>() : null;
         var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+        if (animator != null && (animator.prevState == "run" || animator.prevState == "walk"))
+            animator.SetState("idle");
         if (onArrived != null) onArrived();
         else if (animator != null) animator.SetState("attack", autoIdle: false);
 
