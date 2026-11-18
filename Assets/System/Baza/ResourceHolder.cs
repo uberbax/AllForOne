@@ -531,6 +531,8 @@ public class SkillEtc
     public GameObject proj;
     [Min(0), Tooltip("Delay in seconds before releasing projectiles. With naprig, counted from arrival and the start of the attack animation.")]
     public float projDelay;
+    [Tooltip("For naprig video attacks, measure Proj Delay from the first clip frame using the video clock.")]
+    public bool syncProjectileToAttackVideo;
     public string projHitMark = "";
 
     public float angle = 0;

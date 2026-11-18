@@ -36,6 +36,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     private VideoPlayer secondary;
     private VideoPlayer current;
     private VideoPlayer pending;
+    private VideoPlayer frameSyncedPlayer;
+    private bool savedSkipOnDrop;
     private string currentName;
     private string pendingName;
     private bool fading;
@@ -72,6 +74,23 @@ public sealed class UiLoopVideo : MonoBehaviour
     public void CrossFade(string anim) => ChangeAnimation(anim, false);
 
     public void Play(string anim) => ChangeAnimation(anim, true);
+
+    public void PlayFrameSyncedAttack()
+    {
+        Play("attack");
+        var player = pendingName == "attack" ? pending : currentName == "attack" ? current : null;
+        if (player == null || !player.canSetSkipOnDrop || player == frameSyncedPlayer) return;
+        RestoreFrameSkipping();
+        frameSyncedPlayer = player;
+        savedSkipOnDrop = player.skipOnDrop;
+        player.skipOnDrop = false;
+    }
+
+    private void RestoreFrameSkipping()
+    {
+        if (frameSyncedPlayer != null) frameSyncedPlayer.skipOnDrop = savedSkipOnDrop;
+        frameSyncedPlayer = null;
+    }
 
     public bool IsReactionPlaying => hitReaction != null && hitReaction.Playing;
 
@@ -115,6 +134,10 @@ public sealed class UiLoopVideo : MonoBehaviour
         current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
         view != null && view.enabled && view.texture == current.targetTexture &&
         !waitingForLoopFrame && Time.frameCount > visibleSinceFrame;
+
+    public bool HasReachedAnimationTime(string anim, float seconds) =>
+        IsAnimationVisible(anim) && current.frameRate > 0 &&
+        current.frame >= Mathf.RoundToInt(seconds * current.frameRate);
 
     public bool IsAnimationMovementReady(string anim)
     {
@@ -427,6 +450,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     {
         if (player == null)
             return;
+
+        if (player == frameSyncedPlayer) RestoreFrameSkipping();
 
         player.prepareCompleted -= Prepared;
         player.frameReady -= FirstFrame;

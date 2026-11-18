@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -384,6 +385,20 @@ public class SkillExecutor : MonoBehaviour
 
                         if (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_exact_target) == 1 && ft == 0)
                             ro.exact = target;
+
+                        // These melee clips depict the impact itself. Resolve it on the cue using
+                        // the normal collision handler, without adding projectile flight time.
+                        if (useNaprig && ll != null && ll.syncProjectileToAttackVideo &&
+                            ro.visuals.TryGetValue("coll", out var collision) && collision != null &&
+                            collision.TryGetComponent<XDcoll>(out var hit) &&
+                            ro.main.TryGetComponent<ObjHolder>(out var projectileHolder) &&
+                            projectileTarget.main.TryGetComponent<ObjHolder>(out var targetHolder))
+                        {
+                            ro.main.SetActive(false);
+                            try { hit.Do(projectileHolder, targetHolder); }
+                            finally { if (ro.main != null) Destroy(ro.main); }
+                            return;
+                        }
                     
                         if (ro.dbObj.ID == "put")
                         {
@@ -472,7 +487,7 @@ public class SkillExecutor : MonoBehaviour
             MainStates.instance.DoNaprig(who, target, () =>
             {
                 PlayNaprigAttack(who, skl, attackTarget);
-                UnitActionTracker.Schedule(who, LaunchProjectiles, projectileDelay);
+                ScheduleNaprigProjectiles(who, ll, LaunchProjectiles, projectileDelay);
             });
         }
         else UnitActionTracker.Schedule(who, LaunchProjectiles, projectileDelay);
@@ -933,7 +948,7 @@ public class SkillExecutor : MonoBehaviour
                     MainStates.instance.DoNaprig(projectileOwner, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0), () =>
                     {
                         PlayNaprigAttack(projectileOwner, projectileSkill, projectileSkill.exact);
-                        UnitActionTracker.Schedule(projectileOwner, LaunchTargetedProjectiles, projectileDelay);
+                        ScheduleNaprigProjectiles(projectileOwner, ll, LaunchTargetedProjectiles, projectileDelay);
                     });
                 }
                 else UnitActionTracker.Schedule(projectileOwner, LaunchTargetedProjectiles, projectileDelay);
@@ -953,6 +968,37 @@ public class SkillExecutor : MonoBehaviour
                 EventManager.INV("casted", new ArgPass{what = savedSkl});                
                 
                 
+            }
+        }
+    }
+
+    private void ScheduleNaprigProjectiles(RObj who, SkillEtc effect, Action launch, float delay)
+    {
+        var video = effect != null && effect.syncProjectileToAttackVideo && who.visMain != null
+            ? who.visMain.GetComponent<UiLoopVideo>() : null;
+        if (video != null && video.HasAnimation("attack"))
+        {
+            video.PlayFrameSyncedAttack();
+            StartCoroutine(WaitForAttackRelease(who, video, launch, delay));
+        }
+        else
+            UnitActionTracker.Schedule(who, launch, delay);
+    }
+
+    private static IEnumerator WaitForAttackRelease(RObj who, UiLoopVideo video, Action launch, float delay)
+    {
+        using (UnitActionTracker.Begin(who))
+        {
+            float deadline = Time.realtimeSinceStartup + video.GetAnimationDuration("attack") + 5f;
+            while (who.main != null && who.main.activeInHierarchy && who.GetPar("health") > 0 &&
+                   video != null && video.isActiveAndEnabled && Time.realtimeSinceStartup < deadline)
+            {
+                if (video.HasReachedAnimationTime("attack", delay))
+                {
+                    launch();
+                    yield break;
+                }
+                yield return null;
             }
         }
     }
