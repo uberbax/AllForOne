@@ -519,6 +519,7 @@ public class RObj
     [NonSerialized] private int dmgTrackChangeDepth;
     [NonSerialized] private XDdmgTrack dmgTrackReceiver;
     [NonSerialized] private XDflash hpFlashReceiver;
+    [NonSerialized] private XDanimator hpAnimatorReceiver;
     [NonSerialized] private XDdeath hpDeathReceiver;
     [NonSerialized] private XDdrop hpDropReceiver;
     [NonSerialized] private DmgTrackValues dmgTrackBefore;
@@ -558,12 +559,13 @@ public class RObj
         {
             dmgTrackReceiver = GetActiveHpReceiver<XDdmgTrack>("dmg_track");
             hpFlashReceiver = GetActiveHpReceiver<XDflash>("flash");
+            hpAnimatorReceiver = GetActiveHpReceiver<XDanimator>("animator");
             hpDeathReceiver = GetActiveHpReceiver<XDdeath>("death");
             hpDropReceiver = GetActiveHpReceiver<XDdrop>("drop");
             if (dmgTrackReceiver != null) dmgTrackReceiver.Bind(this);
             if (hpDeathReceiver != null) hpDeathReceiver.Bind(this);
             if (hpDropReceiver != null) hpDropReceiver.Bind(this);
-            if (dmgTrackReceiver != null || hpFlashReceiver != null || hpDeathReceiver != null || hpDropReceiver != null)
+            if (dmgTrackReceiver != null || hpFlashReceiver != null || hpAnimatorReceiver != null || hpDeathReceiver != null || hpDropReceiver != null)
                 dmgTrackBefore = ReadDmgTrackValues(dmgTrackReceiver != null);
         }
         return new DmgTrackChange(this);
@@ -574,10 +576,11 @@ public class RObj
         if (--dmgTrackChangeDepth != 0) return;
         var receiver = dmgTrackReceiver;
         var flash = hpFlashReceiver;
+        var animator = hpAnimatorReceiver;
         var death = hpDeathReceiver;
         var drop = hpDropReceiver;
-        dmgTrackReceiver = null; hpFlashReceiver = null; hpDeathReceiver = null; hpDropReceiver = null;
-        if (receiver == null && flash == null && death == null && drop == null) return;
+        dmgTrackReceiver = null; hpFlashReceiver = null; hpAnimatorReceiver = null; hpDeathReceiver = null; hpDropReceiver = null;
+        if (receiver == null && flash == null && animator == null && death == null && drop == null) return;
         var before = dmgTrackBefore;
         var after = ReadDmgTrackValues(receiver != null);
         float hp = after.hp - before.hp, mana = after.mana - before.mana;
@@ -588,6 +591,8 @@ public class RObj
                 receiver.Changed(hp, mana, shield, message);
             if (hp != 0 && flash != null && flash.isActiveAndEnabled)
                 flash.Changed(hp);
+            if (hp < 0 && animator != null && animator.isActiveAndEnabled)
+                animator.PlayHit();
         }
         finally
         {

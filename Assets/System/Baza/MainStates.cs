@@ -3797,7 +3797,7 @@ public class MainStates : MonoBehaviour
                     // Keep the previous decoded frame until run is ready, then move immediately.
                     video.Play(movement);
                     float deadline = Time.realtimeSinceStartup + 5f;
-                    while (!video.IsAnimationVisible(movement))
+                    while (!video.IsAnimationVisible(movement) || video.IsReactionPlaying)
                     {
                         if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
                             !video.isActiveAndEnabled) yield break;
@@ -3843,7 +3843,8 @@ public class MainStates : MonoBehaviour
             {
                 if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
                 if (waitForVideo && (video == null || !video.isActiveAndEnabled ||
-                    video.IsAnimationFinished("attack") || animator == null || animator.prevState != "attack")) break;
+                    (video.IsAnimationFinished("attack") && !video.IsReactionPlaying) ||
+                    animator == null || animator.prevState != "attack")) break;
                 yield return null;
             }
 

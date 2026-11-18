@@ -27,6 +27,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     private RawImage overlay;
     private UiVideoAspect viewAspect;
     private UiVideoAspect overlayAspect;
+    private UiVideoHitReaction hitReaction;
     private VideoPlayer primary;
     private VideoPlayer secondary;
     private VideoPlayer current;
@@ -68,6 +69,28 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     public void Play(string anim) => ChangeAnimation(anim, true);
 
+    public bool IsReactionPlaying => hitReaction != null && hitReaction.Playing;
+
+    public bool PlayHitReaction()
+    {
+        var hit = FindClip("hit");
+        if (!isActiveAndEnabled || hit == null) return false;
+        if (hitReaction == null)
+            hitReaction = GetComponent<UiVideoHitReaction>() ?? gameObject.AddComponent<UiVideoHitReaction>();
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, "hit", StringComparison.OrdinalIgnoreCase))
+            {
+                hitReaction.Play(hit, entry.startTime, entry.visualScale, entry.visualOffset);
+                return true;
+            }
+        return false;
+    }
+
+    internal void RetireTexture(RenderTexture texture)
+    {
+        if (texture != null) retiredTextures.Add((texture, Time.frameCount));
+    }
+
     public bool HasAnimation(string anim) =>
         !string.IsNullOrWhiteSpace(anim) && FindClip(anim.Trim().ToLowerInvariant()) != null;
 
@@ -95,6 +118,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             return;
 
         anim = anim.Trim().ToLowerInvariant();
+        if (anim == "death" && hitReaction != null) hitReaction.Stop();
         var next = FindClip(anim);
         if (next == null)
         {
@@ -352,6 +376,7 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     private void OnDisable()
     {
+        if (hitReaction != null) hitReaction.Stop();
         CancelPending();
         var outgoing = current;
         current = null;

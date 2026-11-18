@@ -96,10 +96,12 @@ public sealed class UnitActionTracker : MonoBehaviour
         {
             float deadline = Time.unscaledTime + (video != null ? video.GetAnimationDuration("attack") + 10f : 5f);
             while (owner.main != null && owner.main.activeInHierarchy && owner.GetPar("health") > 0 &&
-                ((animator != null && animator.prevState == "attack") || (slotter != null && slotter.IsAttacking)) &&
+                ((animator != null && animator.prevState == "attack") || (slotter != null && slotter.IsAttacking) ||
+                    (video != null && video.IsReactionPlaying)) &&
                 Time.unscaledTime < deadline)
             {
-                if (video != null && video.IsAnimationFinished("attack") && (slotter == null || !slotter.IsAttacking)) break;
+                if (video != null && video.IsAnimationFinished("attack") && !video.IsReactionPlaying &&
+                    (slotter == null || !slotter.IsAttacking)) break;
                 yield return null;
             }
         }
