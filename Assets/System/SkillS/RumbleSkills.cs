@@ -71,13 +71,18 @@ public static class RumbleSkills
             {
                 var animator = visual.GetComponentInChildren<XDanimator>();
                 if (animator != null) animator.SetState("attack");
+                UnitActionTracker.WatchAnimation(who);
             }
             if (SoundManager.instance != null) SoundManager.instance.PlayAny(skill.dbObj.ID);
         }
         // Every cast owns separate projectile data; a later cast cannot mutate an earlier burst.
         var payload = CreatePayload(who, skill.dbObj.ID, addPars);
         runner.Begin(who, payload, target, origin);
-        EventManager.INV("skill_casted", new ArgPass { who = who, who2 = skill });
+        EventManager.INV("skill_casted", new ArgPass
+        {
+            who = who, who2 = skill, whats = new List<RObj> { target },
+            what1 = secondary ? "secondary" : "primary"
+        });
         return ExecReso.OK;
     }
     private static float HealthRatio(RObj unit) => unit.GetPar("health") / Mathf.Max(1,unit.GetPar("max_health"));
@@ -96,7 +101,29 @@ public sealed class RumbleSkillRunner : MonoBehaviour
     private readonly List<RumbleMovementLock> movementLocks = new List<RumbleMovementLock>();
     private readonly List<RumbleVfx.Lease> packEffects = new List<RumbleVfx.Lease>();
     private readonly Dictionary<Transform,Quaternion> spinningVisuals = new Dictionary<Transform,Quaternion>();
-    public void Begin(RObj who, RObj skill, RObj target, Vector3 origin) => StartCoroutine(Cast(who, skill, target, origin));
+    private RObj actionOwner;
+    private readonly List<IDisposable> actions = new List<IDisposable>();
+    public void Begin(RObj who, RObj skill, RObj target, Vector3 origin)
+    {
+        actionOwner = who;
+        StartTracked(Cast(who, skill, target, origin));
+    }
+    private Coroutine StartTracked(IEnumerator routine)
+    {
+        var action = UnitActionTracker.Begin(actionOwner);
+        if (action != null) actions.Add(action);
+        return StartCoroutine(TrackRoutine(routine, action));
+    }
+    private IEnumerator TrackRoutine(IEnumerator routine, IDisposable action)
+    {
+        try { while (routine.MoveNext()) yield return routine.Current; }
+        finally
+        {
+            (routine as IDisposable)?.Dispose();
+            action?.Dispose();
+            actions.Remove(action);
+        }
+    }
     private static float Value(RObj skill, string name, float fallback) { float value=skill.GetPar(name); return value>0?value:fallback; }
     private IEnumerator Cast(RObj who, RObj skill, RObj target, Vector3 origin)
     {
@@ -109,7 +136,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                     if (!RumbleSkills.Alive(who)) yield break;
                     var direction=RumbleSkills.Flat((RumbleSkills.Alive(target)?target.Position:origin+Vector3.right)-origin).normalized;
                     if(direction.sqrMagnitude<.01f)direction=Vector3.right;
-                    StartCoroutine(Pierce(who,skill,origin,direction));
+                    StartTracked(Pierce(who,skill,origin,direction));
                     if(i+1<skill.GetPar("proj_amount"))yield return new WaitForSeconds(Value(skill,"dt",.2f));
                 }
                 break;
@@ -124,7 +151,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                 foreach(var victim in RumbleSkills.Targets(who,who.Position,skill.GetPar("aoe"),false))
                 {
                     Hit(who,skill,victim);
-                    if(RumbleSkills.Alive(victim))StartCoroutine(Launch(victim,.65f));
+                    if(RumbleSkills.Alive(victim))StartTracked(Launch(victim,.65f));
                 }
                 Effect(skill.dbObj.ID,RumbleVfxLibrary.Stage.Impact,who.Position,skill.GetPar("aoe"),.8f);
                 break;
@@ -144,7 +171,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                 var fan=RumbleSkills.Targets(who,origin,skill.GetPar("range"),false);
                 fan.Sort((a,b)=>RumbleSkills.Distance(origin,a.Position).CompareTo(RumbleSkills.Distance(origin,b.Position)));
                 for(int i=0;i<Mathf.Min(fan.Count,(int)Value(skill,"targets",5));i++)
-                    StartCoroutine(Projectile(who,skill,fan[i],origin,"rumble_poison"));
+                    StartTracked(Projectile(who,skill,fan[i],origin,"rumble_poison"));
                 var allies=RumbleSkills.Targets(who,origin,Value(skill,"leap_range",6),true,new List<RObj>{who});
                 allies.Sort((a,b)=>RumbleSkills.Distance(origin,a.Position).CompareTo(RumbleSkills.Distance(origin,b.Position)));
                 if(allies.Count>0)yield return Leap(who,allies[0].Position+RumbleSkills.Flat(origin-allies[0].Position).normalized*.8f,.4f);
@@ -183,7 +210,7 @@ public sealed class RumbleSkillRunner : MonoBehaviour
                     }
                     string status=skill.dbObj.ID=="blazing_cannonball"?"rumble_burn":
                         (skill.dbObj.ID=="mysterious_potion"||skill.dbObj.ID=="energy_torrent"?RandomPotion():null);
-                    StartCoroutine(Projectile(who,skill,target,who.Position,status));
+                    StartTracked(Projectile(who,skill,target,who.Position,status));
                     if(i+1<skill.GetPar("proj_amount"))yield return new WaitForSeconds(Value(skill,"dt",.15f));
                 }
                 break;
@@ -362,6 +389,8 @@ public sealed class RumbleSkillRunner : MonoBehaviour
     private void OnDisable()
     {
         StopAllCoroutines();
+        foreach (var action in actions.ToArray()) action.Dispose();
+        actions.Clear();
         foreach(var motion in movementLocks)if(motion!=null)motion.Release();movementLocks.Clear();
         foreach(var effect in packEffects)effect.Stop();packEffects.Clear();
         foreach(var pair in spinningVisuals)if(pair.Key!=null)pair.Key.localRotation=pair.Value;spinningVisuals.Clear();

@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class Slotter : MonoBehaviour
 {
+    public bool IsAttacking
+    {
+        get
+        {
+            foreach (var entry in spawned)
+                if (entry != null && entry.strike != null) return true;
+            return false;
+        }
+    }
     public List<Transform> slots = new List<Transform>();
 
     [Header("Skill chains")]

@@ -3775,69 +3775,94 @@ public class MainStates : MonoBehaviour
         Vector3 home = who.main.transform.position;
         Vector3 destination = home + (target - home) *
             ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
-        StartCoroutine(ApproachNaprig(who, home, destination, onArrived));
+        var action = UnitActionTracker.Begin(who);
+        StartCoroutine(ApproachNaprig(who, home, destination, onArrived, action));
     }
 
-    private IEnumerator ApproachNaprig(RObj who, Vector3 home, Vector3 destination, Action onArrived)
+    private IEnumerator ApproachNaprig(RObj who, Vector3 home, Vector3 destination, Action onArrived, IDisposable action)
     {
-        var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
-            ? visual.GetComponentInChildren<XDanimator>() : null;
-        var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
-        string movement = video == null || video.HasAnimation("run") ? "run" :
-            video.HasAnimation("walk") ? "walk" : null;
-        if (movement != null)
+        bool handedOff = false;
+        try
         {
-            if (animator != null) animator.SetState(movement);
-            if (video != null)
+            var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
+                ? visual.GetComponentInChildren<XDanimator>() : null;
+            var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+            string movement = video == null || video.HasAnimation("run") ? "run" :
+                video.HasAnimation("walk") ? "walk" : null;
+            if (movement != null)
             {
-                // Keep the previous decoded frame until run is ready, then move immediately.
-                video.Play(movement);
-                float deadline = Time.realtimeSinceStartup + 5f;
-                while (!video.IsAnimationVisible(movement))
+                if (animator != null) animator.SetState(movement);
+                if (video != null)
                 {
-                    if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
-                        !video.isActiveAndEnabled) yield break;
-                    if (Time.realtimeSinceStartup >= deadline) yield break;
-                    yield return null;
+                    // Keep the previous decoded frame until run is ready, then move immediately.
+                    video.Play(movement);
+                    float deadline = Time.realtimeSinceStartup + 5f;
+                    while (!video.IsAnimationVisible(movement))
+                    {
+                        if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
+                            !video.isActiveAndEnabled) yield break;
+                        if (Time.realtimeSinceStartup >= deadline) yield break;
+                        yield return null;
+                    }
                 }
             }
-        }
-        if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
-        UtilsControl.Instance.MoveTo(who.main.transform, 5, destination, () =>
-        {
-            if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) return;
-            StartCoroutine(FinishNaprig(who, home, onArrived));
-        }, null, useRight: false, ignoreFlip: true);
-    }
-
-    private IEnumerator FinishNaprig(RObj who, Vector3 home, Action onArrived)
-    {
-        var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
-            ? visual.GetComponentInChildren<XDanimator>() : null;
-        var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
-        if (animator != null && (animator.prevState == "run" || animator.prevState == "walk"))
-            animator.SetState("idle");
-        if (onArrived != null) onArrived();
-        else if (animator != null) animator.SetState("attack", autoIdle: false);
-
-        bool waitForVideo = video != null && video.HasAnimation("attack") &&
-            animator != null && animator.prevState == "attack";
-        float duration = waitForVideo ? video.GetAnimationDuration("attack") + 10f :
-            video != null ? 3f : Mathf.Max(0, ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig));
-        float deadline = Time.realtimeSinceStartup + duration;
-        while (Time.realtimeSinceStartup < deadline)
-        {
             if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
-            if (waitForVideo && (video == null || !video.isActiveAndEnabled ||
-                video.IsAnimationFinished("attack") || animator == null || animator.prevState != "attack")) break;
-            yield return null;
+            UtilsControl.Instance.MoveTo(who.main.transform, 5, destination, () =>
+            {
+                if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0)
+                {
+                    CompleteNaprig(who, action);
+                    return;
+                }
+                StartCoroutine(FinishNaprig(who, home, onArrived, action));
+            }, null, useRight: false, ignoreFlip: true);
+            handedOff = true;
         }
-
-        if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
-        if (animator != null && animator.prevState == "attack") animator.SetState("idle");
-        UtilsControl.Instance.MoveTo(who.main.transform, 5, home, null, null, useRight: false, ignoreFlip: true);
+        finally { if (!handedOff) CompleteNaprig(who, action); }
     }
-    
+
+    private IEnumerator FinishNaprig(RObj who, Vector3 home, Action onArrived, IDisposable action)
+    {
+        bool returnScheduled = false;
+        try
+        {
+            var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
+                ? visual.GetComponentInChildren<XDanimator>() : null;
+            var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+            if (animator != null && (animator.prevState == "run" || animator.prevState == "walk"))
+                animator.SetState("idle");
+            if (onArrived != null) onArrived();
+            else if (animator != null) animator.SetState("attack", autoIdle: false);
+
+            bool waitForVideo = video != null && video.HasAnimation("attack") &&
+                animator != null && animator.prevState == "attack";
+            float duration = waitForVideo ? video.GetAnimationDuration("attack") + 10f :
+                video != null ? 3f : Mathf.Max(0, ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig));
+            float deadline = Time.realtimeSinceStartup + duration;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+                if (waitForVideo && (video == null || !video.isActiveAndEnabled ||
+                    video.IsAnimationFinished("attack") || animator == null || animator.prevState != "attack")) break;
+                yield return null;
+            }
+
+            if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+            if (animator != null && animator.prevState == "attack") animator.SetState("idle");
+            UtilsControl.Instance.MoveTo(who.main.transform, 5, home,
+                () => CompleteNaprig(who, action),
+                null, useRight: false, ignoreFlip: true);
+            returnScheduled = true;
+        }
+        finally { if (!returnScheduled) CompleteNaprig(who, action); }
+    }
+
+    private static void CompleteNaprig(RObj who, IDisposable action)
+    {
+        action?.Dispose();
+        EventManager.INV("naprig_completed", new ArgPass { who = who });
+    }
+
     public static List<Vizualo> allVisuals = new List<Vizualo>();
 
     private void Update()
@@ -4167,6 +4192,8 @@ public class MainStates : MonoBehaviour
                     }
                 }
             }
+            var openingAction = UnitActionTracker.For(curComateers[i]);
+            while (openingAction != null && openingAction.Busy) yield return null;
         }
 
         if (kk > 0)
@@ -4200,7 +4227,10 @@ public class MainStates : MonoBehaviour
             if (!combats[i].HasVis("combat")) continue;
             if (combats[i].GetPar("do_nothing") > 0) continue;
 
-            while (combats[i].main.name.IndexOf("_move") >= 0)
+            if (combats[i].main == null || !combats[i].main.activeInHierarchy || combats[i].GetPar("health") <= 0) continue;
+            var action = UnitActionTracker.For(combats[i]);
+            while (action != null && action.Busy) yield return null;
+            while (combats[i].main != null && combats[i].main.name.IndexOf("_move") >= 0)
             {
                 yield return null;
             }
@@ -4214,11 +4244,13 @@ public class MainStates : MonoBehaviour
             {
                 //vot zdes' can_cast = true cause its our turn
                 combats[i].SetPar("can_cast", 1);
-                while (this.awaitUnits[combats[i].RID] > 0)
+                while (this.awaitUnits.TryGetValue(combats[i].RID, out var waiting) && waiting > 0 &&
+                    combats[i].main != null && combats[i].main.activeInHierarchy && combats[i].GetPar("health") > 0)
                 {
                     yield return null;
                 }
                 combats[i].SetPar("can_cast", 0);
+                while (action != null && action.Busy) yield return null;
                 if (manualDt)
                 {
                     HandleCds(manualTick, combats[i]);
@@ -4246,6 +4278,8 @@ public class MainStates : MonoBehaviour
                 }
                 
                 
+                while (action != null && action.Busy) yield return null;
+
                 //case of extra turn
                 var go = combats[i].GetPar("extra_turn");
                 if (go > 0)
@@ -4287,7 +4321,7 @@ public class MainStates : MonoBehaviour
 
                     if (waitMove)
                     {
-                        while (combats[i].main.name.IndexOf("_move") >= 0)
+                        while (combats[i].main != null && combats[i].main.name.IndexOf("_move") >= 0)
                         {
                             yield return null;
                         }
@@ -4297,6 +4331,7 @@ public class MainStates : MonoBehaviour
             }
 
 
+            while (action != null && action.Busy) yield return null;
             if (tm > 0)
                 yield return new WaitForSeconds(tm);
             

@@ -292,6 +292,7 @@ public class SkillExecutor : MonoBehaviour
                 DoCustom(who, skl, targ[0]);
             else if (who.visuals.TryGetValue("animator", out var animator))
                 animator.GetComponentInChildren<XDanimator>().SetState("attack");
+            UnitActionTracker.WatchAnimation(who);
         }
 
         if (ll != null && ll.angle == 45) spellType = 2;
@@ -349,7 +350,7 @@ public class SkillExecutor : MonoBehaviour
 
                     for (int j = 0; j < p; j++)
                     {
-                        FunctionTimer.Create(() =>
+                        UnitActionTracker.Schedule(who, () =>
                         {
                         if (who.main == null || !who.main.activeInHierarchy) return;
                         RObj ro = null;
@@ -377,6 +378,7 @@ public class SkillExecutor : MonoBehaviour
                             ro = skl;
                         }
 
+                        UnitActionTracker.WatchProjectile(who, ro.main);
                         if (change != null)
                             ro.ChangePar(change.Key, change.Value);
 
@@ -404,12 +406,12 @@ public class SkillExecutor : MonoBehaviour
                         if (ro.dbObj.ID == "move") yy = 0;
                     
                         ro.main.SetActive(false);
-                        FunctionTimer.Create(() =>
+                        UnitActionTracker.Schedule(who, () =>
                         {
                             if (ro.main != null) ro.main.SetActive(true);
                         }, yy);
                     
-                        FunctionTimer.Create(() =>
+                        UnitActionTracker.Schedule(who, () =>
                         {
                             if (ro.main == null || projectileTarget.main == null || !projectileTarget.main.activeInHierarchy)
                             {
@@ -470,10 +472,10 @@ public class SkillExecutor : MonoBehaviour
             MainStates.instance.DoNaprig(who, target, () =>
             {
                 PlayNaprigAttack(who, skl, attackTarget);
-                FunctionTimer.Create(LaunchProjectiles, projectileDelay);
+                UnitActionTracker.Schedule(who, LaunchProjectiles, projectileDelay);
             });
         }
-        else FunctionTimer.Create(LaunchProjectiles, projectileDelay);
+        else UnitActionTracker.Schedule(who, LaunchProjectiles, projectileDelay);
 
         if (overPos == default)
             skl.SetPar("cd", skl.GetPar("cooldown"));
@@ -482,7 +484,9 @@ public class SkillExecutor : MonoBehaviour
         EventManager.INV("skill_casted", new ArgPass
         {
             who = who,
-            who2 = skl
+            who2 = skl,
+            what1 = overPos == default ? "primary" : "secondary",
+            whats = targ.GetRange(0, Mathf.Min(targ.Count, Mathf.Max(1, (int)skl.GetPar("targets"))))
         });
         
         return ExecReso.OK;
@@ -500,6 +504,7 @@ public class SkillExecutor : MonoBehaviour
             skl.SetPar("cd", 0);
         }
         
+        if (MainStates.instance.InIteration && UnitActionTracker.For(who)?.Busy == true) return;
         if (skl.GetPar("cd") > 0) return;
         if (who.GetPar("mana") < skl.GetPar("manacost")) return;
         
@@ -560,6 +565,10 @@ public class SkillExecutor : MonoBehaviour
             WaveSpawner.instance.DoSpawnAny(skl.dbObj.extraPars, "player", summonPos1, summonPos2, true, Vector3.zero, Vector3.zero);
             skl.SetPar("cd", skl.GetPar("cooldown"));
             SoundManager.instance.PlayAny(skl.dbObj.ID);
+            EventManager.INV("skill_casted", new ArgPass
+            {
+                who = who, who2 = skl, whats = new List<RObj> { who }
+            });
             return;
         }
         else if (skl.dbObj.ID.IndexOf("summon") >= 0)
@@ -569,6 +578,10 @@ public class SkillExecutor : MonoBehaviour
             WaveSpawner.instance.DoSpawnAny(skl.dbObj.extraPars, "player", null, null, true, trg.Position - new Vector3(1,1,0), trg.Position + new Vector3(1,1,0), isSummon:true);
             skl.SetPar("cd", skl.GetPar("cooldown"));
             SoundManager.instance.PlayAny(skl.dbObj.ID);
+            EventManager.INV("skill_casted", new ArgPass
+            {
+                who = who, who2 = skl, whats = new List<RObj> { trg }
+            });
             return;
         }
         
@@ -760,7 +773,7 @@ public class SkillExecutor : MonoBehaviour
                     {
                         for (int j = 0; j < p; j++)
                         {
-                            FunctionTimer.Create(() =>
+                            UnitActionTracker.Schedule(projectileOwner, () =>
                             {
                                 if (projectileOwner.main == null || !projectileOwner.main.activeInHierarchy ||
                                     (useTargetedNaprig && projectileOwner.GetPar("health") <= 0)) return;
@@ -775,6 +788,7 @@ public class SkillExecutor : MonoBehaviour
                                         ? (legs.position + head.position) * 0.5f : projectileOwner.main.transform.position;
                                     ro.Position = ro.main.transform.position;
                                 }
+                                UnitActionTracker.WatchProjectile(projectileOwner, ro.main);
                                 ro.AddViz("coll#scale:0.2");
 
                                 if (ro.dbObj.ID == "put")
@@ -919,15 +933,23 @@ public class SkillExecutor : MonoBehaviour
                     MainStates.instance.DoNaprig(projectileOwner, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0), () =>
                     {
                         PlayNaprigAttack(projectileOwner, projectileSkill, projectileSkill.exact);
-                        FunctionTimer.Create(LaunchTargetedProjectiles, projectileDelay);
+                        UnitActionTracker.Schedule(projectileOwner, LaunchTargetedProjectiles, projectileDelay);
                     });
                 }
-                else FunctionTimer.Create(LaunchTargetedProjectiles, projectileDelay);
+                else UnitActionTracker.Schedule(projectileOwner, LaunchTargetedProjectiles, projectileDelay);
 
                 lastSkl.SetPar("cd", lastSkl.GetPar("cooldown"));
                 lastWho.ChangePar("mana", -lastSkl.GetPar("manacost")); 
                 
                 lastSkl = null;
+                EventManager.INV("skill_casted", new ArgPass
+                {
+                    who = projectileOwner,
+                    who2 = projectileSkill,
+                    pos = pos,
+                    whats = projectileSkill.exact != null ? new List<RObj> { projectileSkill.exact } :
+                        projectileTarget != null ? new List<RObj> { projectileTarget } : new List<RObj>()
+                });
                 EventManager.INV("casted", new ArgPass{what = savedSkl});                
                 
                 
@@ -945,6 +967,7 @@ public class SkillExecutor : MonoBehaviour
             DoCustom(who, skill, target);
         else if (who.visuals.TryGetValue("animator", out var animator) && animator != null)
             animator.GetComponentInChildren<XDanimator>()?.SetState("attack", autoIdle: false);
+        UnitActionTracker.WatchAnimation(who);
     }
 
     public void DoCustom(RObj who, RObj skl, RObj targ)
