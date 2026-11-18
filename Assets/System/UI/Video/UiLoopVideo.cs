@@ -13,6 +13,10 @@ public sealed class UiLoopVideo : MonoBehaviour
         public string anim;
         public VideoClip clip;
         [Min(0)] public float startTime;
+        [Tooltip("Absolute time in the clip at which scripted movement may begin (after anticipation).")]
+        [Min(0)] public float movementStartTime;
+        [Tooltip("Absolute landing time. When later than Movement Start Time, return movement follows this interval.")]
+        [Min(0)] public float movementEndTime;
         [Min(0.01f)] public float visualScale = 1f;
         [Tooltip("Image offset as a fraction of the UI rectangle; does not move legs/head anchors.")]
         public Vector2 visualOffset;
@@ -111,6 +115,29 @@ public sealed class UiLoopVideo : MonoBehaviour
         current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
         view != null && view.enabled && view.texture == current.targetTexture &&
         !waitingForLoopFrame && Time.frameCount > visibleSinceFrame;
+
+    public bool IsAnimationMovementReady(string anim)
+    {
+        if (!IsAnimationVisible(anim)) return false;
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
+                return current.time >= entry.movementStartTime;
+        return true;
+    }
+
+    public bool TryGetAnimationMovementProgress(string anim, out float progress)
+    {
+        progress = 0;
+        if (!IsAnimationVisible(anim)) return false;
+        foreach (var entry in animations)
+            if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase) &&
+                entry.movementEndTime > entry.movementStartTime)
+            {
+                progress = Mathf.InverseLerp(entry.movementStartTime, entry.movementEndTime, (float)current.time);
+                return true;
+            }
+        return false;
+    }
 
     private void ChangeAnimation(string anim, bool instant)
     {

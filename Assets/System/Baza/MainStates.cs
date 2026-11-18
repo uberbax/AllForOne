@@ -3849,13 +3849,72 @@ public class MainStates : MonoBehaviour
             }
 
             if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
-            if (animator != null && animator.prevState == "attack") animator.SetState("idle");
-            UtilsControl.Instance.MoveTo(who.main.transform, 5, home,
-                () => CompleteNaprig(who, action),
-                null, useRight: false, ignoreFlip: true);
+            StartCoroutine(PlayNaprigReturn(who, home, action));
             returnScheduled = true;
         }
         finally { if (!returnScheduled) CompleteNaprig(who, action); }
+    }
+
+    private IEnumerator PlayNaprigReturn(RObj who, Vector3 home, IDisposable action)
+    {
+        try
+        {
+            if (who?.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+            var video = who.visMain != null ? who.visMain.GetComponent<UiLoopVideo>() : null;
+            var animator = who.visuals.TryGetValue("animator", out var visual) && visual != null
+                ? visual.GetComponentInChildren<XDanimator>() : null;
+            bool playReturn = video != null && video.isActiveAndEnabled && video.HasAnimation("return");
+            if (playReturn)
+            {
+                if (animator != null) animator.SetState("return", autoIdle: false);
+                video.Play("return");
+                // Keep anticipation planted; move only once the clip reaches its movement cue.
+                float readyDeadline = Time.realtimeSinceStartup + 5f;
+                while (!video.IsAnimationMovementReady("return") || video.IsReactionPlaying)
+                {
+                    if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
+                        !video.isActiveAndEnabled) yield break;
+                    if (Time.realtimeSinceStartup >= readyDeadline) yield break;
+                    yield return null;
+                }
+            }
+            else if (animator != null && animator.prevState == "attack") animator.SetState("idle");
+
+            bool arrived = false;
+            float progress = 0;
+            if (playReturn && video.TryGetAnimationMovementProgress("return", out progress))
+            {
+                Vector3 from = who.main.transform.position;
+                float movementDeadline = Time.realtimeSinceStartup + video.GetAnimationDuration("return") + 10f;
+                while (true)
+                {
+                    if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0 ||
+                        video == null || !video.isActiveAndEnabled) yield break;
+                    if (animator != null && animator.prevState != "return") yield break;
+                    if (!video.TryGetAnimationMovementProgress("return", out progress)) yield break;
+                    // The clip supplies the airborne pose; translate only between takeoff and landing.
+                    who.main.transform.position = Vector3.Lerp(from, home, Mathf.SmoothStep(0, 1, progress));
+                    if (progress >= 1) break;
+                    if (Time.realtimeSinceStartup >= movementDeadline) yield break;
+                    yield return null;
+                }
+                arrived = true;
+            }
+            else
+                UtilsControl.Instance.MoveTo(who.main.transform, 5, home, () => arrived = true,
+                    null, useRight: false, ignoreFlip: true);
+            float deadline = Time.realtimeSinceStartup + (playReturn ? video.GetAnimationDuration("return") + 10f : 0);
+            while (!arrived || (playReturn && video != null && video.isActiveAndEnabled &&
+                (animator == null || animator.prevState == "return") &&
+                (!video.IsAnimationFinished("return") || video.IsReactionPlaying) && Time.realtimeSinceStartup < deadline))
+            {
+                if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
+                yield return null;
+            }
+            if (animator != null && animator.prevState == "return") animator.SetState("idle");
+            else if (animator == null && playReturn && video != null) video.Play("idle");
+        }
+        finally { CompleteNaprig(who, action); }
     }
 
     private static void CompleteNaprig(RObj who, IDisposable action)

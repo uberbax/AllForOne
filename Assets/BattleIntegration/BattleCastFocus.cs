@@ -12,6 +12,8 @@ public sealed class BattleCastFocus : MonoBehaviour
     [SerializeField] private Transform stageRoot;
     [SerializeField] private Camera targetCamera;
     [SerializeField] private bool dimEnvironment = true;
+    [Tooltip("Usable viewport above the battle panels, in normalized screen coordinates.")]
+    [SerializeField] private Rect focusViewport = new Rect(.06f, .40f, .88f, .50f);
 
     private sealed class MaterialState
     {
@@ -26,7 +28,7 @@ public sealed class BattleCastFocus : MonoBehaviour
     private sealed class Participant
     {
         public Transform Transform;
-        public Vector3 LocalCenter;
+        public Vector3 LocalFeet, LocalHead;
     }
 
     private static readonly int ColorId = Shader.PropertyToID("_Color");
@@ -131,8 +133,12 @@ public sealed class BattleCastFocus : MonoBehaviour
         var root = unit.visMain != null ? unit.visMain.transform : unit.main.transform;
         var legs = root.Find("legs");
         var head = root.Find("head");
-        var center = legs != null && head != null ? (legs.position + head.position) * .5f : root.position;
-        participants.Add(new Participant { Transform = root, LocalCenter = root.InverseTransformPoint(center) });
+        participants.Add(new Participant
+        {
+            Transform = root,
+            LocalFeet = legs != null ? root.InverseTransformPoint(legs.position) : Vector3.zero,
+            LocalHead = head != null ? root.InverseTransformPoint(head.position) : Vector3.up
+        });
     }
 
     private void TintGraphic(Graphic graphic)
@@ -210,25 +216,44 @@ public sealed class BattleCastFocus : MonoBehaviour
     private void ApplyCamera(float weight)
     {
         var cameraTransform = cameraInUse.transform;
-        Vector3 center = Vector3.zero;
-        int count = 0;
+        Vector3 homeWorld = cameraTransform.parent != null ? cameraTransform.parent.TransformPoint(cameraHome) : cameraHome;
+        Vector3 right = cameraTransform.right, up = cameraTransform.up, forward = cameraTransform.forward;
+        float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+        float minY = float.PositiveInfinity, maxY = float.NegativeInfinity;
+        float nearestDepth = float.PositiveInfinity;
         foreach (var unit in participants)
             if (unit.Transform != null && unit.Transform.gameObject.activeInHierarchy)
             {
-                center += unit.Transform.TransformPoint(unit.LocalCenter);
-                count++;
+                Vector3 feet = unit.Transform.TransformPoint(unit.LocalFeet) - homeWorld;
+                Vector3 head = unit.Transform.TransformPoint(unit.LocalHead) - homeWorld;
+                float height = Mathf.Max(.01f, Vector3.Distance(feet, head));
+                // Keep space below the soles and around the moving arms/weapon.
+                float x = Vector3.Dot((feet + head) * .5f, right);
+                minX = Mathf.Min(minX, x - height * .35f);
+                maxX = Mathf.Max(maxX, x + height * .35f);
+                minY = Mathf.Min(minY, Vector3.Dot(feet, up) - height * .08f);
+                maxY = Mathf.Max(maxY, Vector3.Dot(head, up) + height * .08f);
+                nearestDepth = Mathf.Min(nearestDepth, Vector3.Dot(feet, forward), Vector3.Dot(head, forward));
             }
-        Vector3 homeWorld = cameraTransform.parent != null ? cameraTransform.parent.TransformPoint(cameraHome) : cameraHome;
+        float desiredZoom = Mathf.Clamp(settings != null ? settings.zoom : .78f, .55f, 1);
         Vector3 focus = homeWorld;
-        if (count > 0)
+        if (!float.IsPositiveInfinity(minX))
         {
-            var delta = center / count - homeWorld;
-            focus += cameraTransform.right * Vector3.Dot(delta, cameraTransform.right) +
-                cameraTransform.up * Vector3.Dot(delta, cameraTransform.up);
+            float viewportWidth = Mathf.Max(.1f, focusViewport.width);
+            float viewportHeight = Mathf.Max(.1f, focusViewport.height);
+            float baselineHalfHeight = cameraInUse.orthographic ? cameraSize :
+                Mathf.Max(.01f, nearestDepth) * Mathf.Tan(cameraFov * Mathf.Deg2Rad * .5f);
+            float requiredHalfHeight = Mathf.Max((maxY - minY) / (2 * viewportHeight),
+                (maxX - minX) / (2 * viewportWidth * cameraInUse.aspect));
+            desiredZoom = Mathf.Max(desiredZoom, requiredHalfHeight / baselineHalfHeight);
+            float halfHeight = baselineHalfHeight * desiredZoom;
+            // Frame participants above the lower HUD instead of at the full-screen center.
+            focus += right * ((minX + maxX) * .5f - (focusViewport.center.x - .5f) * 2 * halfHeight * cameraInUse.aspect) +
+                up * ((minY + maxY) * .5f - (focusViewport.center.y - .5f) * 2 * halfHeight);
         }
         cameraTransform.position = Vector3.Lerp(homeWorld, focus, weight);
         lastCameraPosition = cameraTransform.localPosition;
-        float zoom = Mathf.Lerp(1, Mathf.Clamp(settings != null ? settings.zoom : .78f, .55f, 1), weight);
+        float zoom = Mathf.Lerp(1, desiredZoom, weight);
         cameraInUse.orthographicSize = cameraSize * zoom;
         cameraInUse.fieldOfView = 2 * Mathf.Atan(Mathf.Tan(cameraFov * Mathf.Deg2Rad * .5f) * zoom) * Mathf.Rad2Deg;
     }
