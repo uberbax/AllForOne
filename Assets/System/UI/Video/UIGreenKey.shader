@@ -9,6 +9,7 @@ Shader "AllForOne/UI/Green Key Video"
         _Despill ("Green spill suppression", Range(0,1)) = 0.9
         _OutlineColor ("Outline color", Color) = (0.015,0.02,0.03,1)
         _OutlineWidth ("Outline width (video pixels)", Range(0,8)) = 0
+        [HideInInspector] _DeathDissolve ("Death Disintegration", Range(0,1)) = 0
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -29,17 +30,19 @@ Shader "AllForOne/UI/Green Key Video"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 2.0
+            #pragma target 3.0
             #pragma multi_compile_local _ UNITY_UI_CLIP_RECT
             #pragma multi_compile_local _ UNITY_UI_ALPHACLIP
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
+            #include "Assets/System/Effects/DeathDisintegration.cginc"
             struct appdata { float4 vertex:POSITION; float4 color:COLOR; float2 uv:TEXCOORD0; UNITY_VERTEX_INPUT_INSTANCE_ID };
             struct v2f { float4 vertex:SV_POSITION; fixed4 color:COLOR; float2 uv:TEXCOORD0; float4 worldPosition:TEXCOORD1; UNITY_VERTEX_OUTPUT_STEREO };
             sampler2D _MainTex;
             float4 _MainTex_TexelSize;
             fixed4 _Color, _OutlineColor;
             float _OutlineWidth;
+            float _DeathDissolve;
             float4 _ClipRect;
             float _GreenSimilarity, _GreenSoftness, _Despill;
             v2f vert(appdata v)
@@ -89,6 +92,23 @@ Shader "AllForOne/UI/Green Key Video"
                 }
                 else
                     pixel.a = foreground;
+                UNITY_BRANCH
+                if (_DeathDissolve > 0)
+                {
+                    bool flipped = ddx(i.uv.x) < 0;
+                    float2 burnUV = float2(flipped ? 1 - i.uv.x : i.uv.x, i.uv.y);
+                    pixel = ApplyDeathDisintegration(pixel, burnUV, _DeathDissolve);
+                    float2 sourceUV;
+                    float ash = FlyingAsh(burnUV, _DeathDissolve, sourceUV);
+                    if (ash > 0 && pixel.a < 1)
+                    {
+                        if (flipped) sourceUV.x = 1 - sourceUV.x;
+                        float4 fragment = tex2D(_MainTex, sourceUV);
+                        fragment.a = KeyAlpha(fragment);
+                        fragment.g = min(fragment.g, max(fragment.r, fragment.b));
+                        pixel = CompositeAsh(pixel, fragment, ash);
+                    }
+                }
                 pixel *= i.color;
                 #ifdef UNITY_UI_CLIP_RECT
                 pixel.a*=UnityGet2DClipping(i.worldPosition.xy,_ClipRect);

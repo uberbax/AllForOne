@@ -437,6 +437,7 @@ public class MainCycleDark : MonoBehaviour
         StopPrisonMovement();
         SetBattleWalking(false);
         StopStageCombat();
+        HideBattleVictory();
         RestoreBattleCamera();
     }
 
@@ -645,6 +646,11 @@ public class MainCycleDark : MonoBehaviour
             RestoreBattleCamera();
             return;
         }
+        if (stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
+        {
+            SetBattleWalking(false);
+            return;
+        }
         if (direction == 0 || battleMoveSpeed <= 0 || battleMovingHeroes.Count == 0)
         {
             SetBattleWalking(false);
@@ -662,7 +668,7 @@ public class MainCycleDark : MonoBehaviour
         bool hasActiveHero = false;
         foreach (var member in battleMovingHeroes)
         {
-            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
             hasActiveHero = true;
             if (member.Video != null)
             {
@@ -683,7 +689,7 @@ public class MainCycleDark : MonoBehaviour
         battleMovementCamera.transform.position += Vector3.right * delta;
         foreach (var member in battleMovingHeroes)
         {
-            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy) continue;
+            if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
             member.Hero.main.transform.position += Vector3.right * delta;
             member.Hero.Position = member.Hero.main.transform.position;
         }
@@ -718,6 +724,69 @@ public class MainCycleDark : MonoBehaviour
 
     private bool stageCombatActive;
     private bool stageCombatPending;
+    [SerializeField] private CanvasGroup battleVictoryBanner;
+    private Coroutine battleVictoryRoutine;
+
+    private static bool HasLivingStageUnit(List<GameObject> units)
+    {
+        foreach (var unit in units)
+            if (unit != null && unit.TryGetComponent<ObjHolder>(out var holder) &&
+                holder.obj != null && holder.obj.GetPar("health") > 0)
+                return true;
+        return false;
+    }
+
+    private static bool HasStageActionInProgress(List<GameObject> units)
+    {
+        foreach (var unit in units)
+            if (unit != null && unit.TryGetComponent<UnitActionTracker>(out var tracker) && tracker.Busy)
+                return true;
+        return false;
+    }
+
+    private void CheckStageCombatOutcome()
+    {
+        if (!stageCombatActive) return;
+        bool alliesAlive = HasLivingStageUnit(battleInventoryHeroes);
+        bool enemiesAlive = HasLivingStageUnit(battleSpawnedEnemies);
+        if (alliesAlive && enemiesAlive) return;
+        if (HasStageActionInProgress(battleInventoryHeroes) || HasStageActionInProgress(battleSpawnedEnemies)) return;
+
+        StopStageCombat();
+        ModelStatistics.instance.SetStatValueForce("battle", 1);
+        if (alliesAlive && !enemiesAlive && battleVictoryBanner != null)
+            battleVictoryRoutine = StartCoroutine(AnimateBattleVictory());
+    }
+
+    private void HideBattleVictory()
+    {
+        if (battleVictoryRoutine != null) StopCoroutine(battleVictoryRoutine);
+        battleVictoryRoutine = null;
+        if (battleVictoryBanner != null) battleVictoryBanner.gameObject.SetActive(false);
+    }
+
+    private IEnumerator AnimateBattleVictory()
+    {
+        const float fadeIn = .4f;
+        const float hold = 2.7f;
+        const float fadeOut = .65f;
+        battleVictoryBanner.alpha = 0;
+        battleVictoryBanner.transform.SetAsLastSibling();
+        battleVictoryBanner.gameObject.SetActive(true);
+        float started = Time.unscaledTime;
+        while (battleVictoryBanner != null && battleUI.activeInHierarchy)
+        {
+            float elapsed = Time.unscaledTime - started;
+            if (elapsed >= fadeIn + hold + fadeOut) break;
+            float appear = Mathf.SmoothStep(0, 1, Mathf.Clamp01(elapsed / fadeIn));
+            float disappear = Mathf.SmoothStep(0, 1, Mathf.Clamp01((elapsed - fadeIn - hold) / fadeOut));
+            battleVictoryBanner.alpha = appear * (1 - disappear);
+            battleVictoryBanner.transform.localScale = Vector3.one * Mathf.Lerp(.94f, 1, appear);
+            yield return null;
+        }
+        if (battleVictoryBanner != null) battleVictoryBanner.gameObject.SetActive(false);
+        battleVictoryRoutine = null;
+    }
 
     private void PrepareStageCombat(RObj unit)
     {
@@ -780,6 +849,7 @@ public class MainCycleDark : MonoBehaviour
         }
 
         StopStageCombat();
+        HideBattleVictory();
         RestoreBattleCamera();
         foreach (var spawned in battleInventoryHeroes)
         {
@@ -819,6 +889,7 @@ public class MainCycleDark : MonoBehaviour
             copy.AddViz(video != null ? "animator" : "animator#pr:1");
             copy.AddViz("coll#val:1.3,scale:1.3");
             copy.AddViz("dmg_track");
+            copy.AddViz("death");
             PrepareStageCombat(copy);
             state.awaitUnits[copy.RID] = 1;
             battleMovingHeroes.Add(new BattleHeroMovement
@@ -882,6 +953,7 @@ public class MainCycleDark : MonoBehaviour
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
             enemy.AddViz("coll#val:1.3,scale:1.3");
             enemy.AddViz("dmg_track");
+            enemy.AddViz("death");
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
         }
@@ -1428,7 +1500,7 @@ public class MainCycleDark : MonoBehaviour
 
     public void HandleAutomove()
     {
-        if (AlwaysMove)
+        if (AlwaysMove && !stageCombatActive && !stageCombatPending && MainStates.instance?.inBattle != true)
         {
             if (main.main.name.IndexOf("_move") < 0)
             {
@@ -1486,6 +1558,7 @@ public class MainCycleDark : MonoBehaviour
             if (!StageCombatReady()) return;
             stageCombatPending = false;
         }
+        CheckStageCombatOutcome();
         if (MainStates.instance.inBattle)
         {
             if (!MainStates.instance.InIteration)

@@ -15,6 +15,10 @@ public class XDdeath : ComponentBehavior
 
     // Update is called once per frame
     private bool done = false;
+    private static readonly int DeathDissolve = Shader.PropertyToID("_DeathDissolve");
+    private static readonly int DeathBounds = Shader.PropertyToID("_DeathBounds");
+    [SerializeField, Min(.1f)] private float disintegrationDuration = 1.2f;
+    private List<Material> disintegrationMaterials;
 
     public static float fadeAfter = 0;
     
@@ -133,7 +137,7 @@ public class XDdeath : ComponentBehavior
                 MainStates.instance.all.Remove(mon.RID);
             }, 2);
         }
-        else
+        else if (!TryDisintegrate())
         {
             
             FunctionTimer.Create(() =>
@@ -184,6 +188,69 @@ public class XDdeath : ComponentBehavior
             if (tt != null) tt.enabled = true;
         }
 
+    }
+
+    private bool TryDisintegrate()
+    {
+        var view = mon.visMain;
+        if (view == null || !isActiveAndEnabled) return false;
+
+        foreach (var graphic in view.GetComponentsInChildren<RawImage>(true))
+        {
+            var original = graphic.material;
+            if (original == null || !original.HasProperty(DeathDissolve)) continue;
+            var material = TrackDisintegrationMaterial(new Material(original));
+            graphic.material = material;
+        }
+
+        var sprites = view.GetComponentsInChildren<SpriteRenderer>(true);
+        var spriteShader = sprites.Length > 0 ? Resources.Load<Shader>("SpriteDeathDisintegration") : null;
+        if (spriteShader != null && spriteShader.isSupported)
+            foreach (var renderer in sprites)
+            {
+                if (renderer.sprite == null) continue;
+                var material = TrackDisintegrationMaterial(new Material(spriteShader));
+                var bounds = renderer.sprite.bounds;
+                material.SetVector(DeathBounds, new Vector4(bounds.min.x, bounds.min.y, bounds.size.x, bounds.size.y));
+                renderer.sharedMaterial = material;
+            }
+
+        if (disintegrationMaterials == null) return false;
+        StartCoroutine(Disintegrate(mon.main));
+        return true;
+    }
+
+    private Material TrackDisintegrationMaterial(Material material)
+    {
+        material.hideFlags = HideFlags.DontSave;
+        if (disintegrationMaterials == null) disintegrationMaterials = new List<Material>();
+        disintegrationMaterials.Add(material);
+        return material;
+    }
+
+    private IEnumerator Disintegrate(GameObject unit)
+    {
+        if (fadeAfter > 0) yield return new WaitForSeconds(fadeAfter);
+        float start = Time.unscaledTime;
+        float duration = Mathf.Max(.1f, disintegrationDuration);
+        while (unit != null)
+        {
+            float progress = Mathf.Clamp01((Time.unscaledTime - start) / duration);
+            foreach (var material in disintegrationMaterials)
+                material.SetFloat(DeathDissolve, progress);
+            if (progress >= 1)
+            {
+                Destroy(unit);
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (disintegrationMaterials == null) return;
+        foreach (var material in disintegrationMaterials) Destroy(material);
     }
 
     public void Changed(float dltHp)
