@@ -11,6 +11,10 @@ public class XDdrop : ComponentBehavior
     public static bool isCameraFace = false;
 
     public RObj deathFrom;
+    private Action<RObj, List<Bon>> groundPouch;
+
+    public void UseGroundPouch(Action<RObj, List<Bon>> spawnPouch) => groundPouch = spawnPouch;
+
     internal void Bind(RObj owner) => mon = owner;
 
     private bool EnsureBound()
@@ -32,6 +36,8 @@ public class XDdrop : ComponentBehavior
         if (mm.tags.Contains("player")) return;
         
         List<Bon> aa = ModelSet.GetMeItemsBon(dropTable);
+        bool usePouch = !withHit && groundPouch != null;
+        if (usePouch) groundPouch(mm, aa);
         
         //var a = DatabaseAll.instance.CreateItem("apple", 1, true, true);
         //drop here
@@ -40,6 +46,7 @@ public class XDdrop : ComponentBehavior
         {
             if (ResourceHolder.instance.items.ContainsKey(v.Key))
             {
+                if (usePouch) continue;
                 var a = DatabaseAll.instance.CreateItem(v.Key, v.Value, true, true);
                 if (a.it == ItemType.item && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.randomize_drop_stats) > 0)
                 {

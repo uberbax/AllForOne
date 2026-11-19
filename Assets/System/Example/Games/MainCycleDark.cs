@@ -438,6 +438,7 @@ public class MainCycleDark : MonoBehaviour
         SetBattleWalking(false);
         StopStageCombat();
         HideBattleVictory();
+        ClearBattleLootPouches();
         RestoreBattleCamera();
     }
 
@@ -615,6 +616,9 @@ public class MainCycleDark : MonoBehaviour
     }
 
     private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
+    private readonly List<RObj> battleGroundLoot = new List<RObj>();
+    [SerializeField] private Sprite battleLootPouchSprite;
+    private int originalChestSiblingIndex = -1;
 
     [SerializeField, Min(0)] private float battleMoveSpeed = 2.5f;
     [SerializeField] private bool battleVideoFacesLeft = true;
@@ -754,7 +758,8 @@ public class MainCycleDark : MonoBehaviour
 
         StopStageCombat();
         ModelStatistics.instance.SetStatValueForce("battle", 1);
-        if (alliesAlive && !enemiesAlive && battleVictoryBanner != null)
+        if (!alliesAlive || enemiesAlive) return;
+        if (battleVictoryBanner != null)
             battleVictoryRoutine = StartCoroutine(AnimateBattleVictory());
     }
 
@@ -917,6 +922,7 @@ public class MainCycleDark : MonoBehaviour
     {
         var state = MainStates.instance;
         if (state != null) state.lastTargetSelected = null;
+        ClearBattleLootPouches();
         foreach (var spawned in battleSpawnedEnemies)
         {
             if (spawned == null) continue;
@@ -953,6 +959,15 @@ public class MainCycleDark : MonoBehaviour
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
             enemy.AddViz("coll#val:1.3,scale:1.3");
             enemy.AddViz("dmg_track");
+            enemy.AddViz("drop");
+            if (battleLootPouchSprite != null && enemy.visuals.TryGetValue("drop", out var drop) && drop != null &&
+                drop.TryGetComponent<XDdrop>(out var dropBehavior))
+            {
+                var marker = slot.GetComponent<SpriteRenderer>();
+                int layer = marker != null ? marker.sortingLayerID : 0;
+                int order = marker != null ? marker.sortingOrder + 1 : 101;
+                dropBehavior.UseGroundPouch((unit, items) => SpawnBattleLootPouch(unit, items, layer, order));
+            }
             enemy.AddViz("death");
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
@@ -969,6 +984,104 @@ public class MainCycleDark : MonoBehaviour
         stageCombatPending = battleSpawnedEnemies.Count > 0 && battleInventoryHeroes.Count > 0;
         stageCombatActive = stageCombatPending;
         MainStates.instance.inBattle = stageCombatActive;
+    }
+
+    private void SpawnBattleLootPouch(RObj unit, List<Bon> drops, int sortingLayer, int sortingOrder)
+    {
+        var inventory = new RObj();
+        var state = MainStates.instance;
+        foreach (var drop in drops)
+        {
+            if (drop.Value <= 0 || !ResourceHolder.instance.items.ContainsKey(drop.Key)) continue;
+            var item = DatabaseAll.instance.CreateItem(drop.Key, drop.Value, withEmpty: false, withVisual: false);
+            if (item.it == ItemType.item && ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.randomize_drop_stats) > 0)
+                state.RandomizeItemStats(item);
+            item.index = inventory.GetFreeIndex(item.dbObj.sizeX, item.dbObj.sizeY);
+            item.owner = inventory;
+            inventory.inventory.Add(item);
+        }
+        if (inventory.inventory.Count == 0) return;
+
+        var ground = unit.visMain != null ? unit.visMain.transform.Find("legs") : null;
+        inventory.Position = ground != null ? ground.position : unit.main.transform.position;
+        var pouch = new GameObject("DarkPouch", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster),
+            typeof(Image), typeof(Button));
+        inventory.main = pouch;
+        pouch.layer = battleUI.layer;
+        var rect = (RectTransform)pouch.transform;
+        rect.SetParent(heroes.transform, false);
+        rect.pivot = new Vector2(.5f, 0);
+        rect.sizeDelta = new Vector2(64, 64);
+        rect.localScale = Vector3.one * .009f;
+        rect.position = inventory.Position;
+        var canvas = pouch.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.worldCamera = Camera.main;
+        canvas.sortingLayerID = sortingLayer;
+        canvas.sortingOrder = sortingOrder;
+
+        var image = pouch.GetComponent<Image>();
+        image.sprite = battleLootPouchSprite;
+        image.preserveAspect = true;
+        var button = pouch.GetComponent<Button>();
+        button.targetGraphic = image;
+        button.onClick.AddListener(() => OpenBattleLootPouch(inventory));
+        battleGroundLoot.Add(inventory);
+    }
+
+    private void OpenBattleLootPouch(RObj pouch)
+    {
+        var state = MainStates.instance;
+        if (state == null || state.UI_second == null || pouch.main == null) return;
+        var chest = state.UI_second;
+        if (originalChestSiblingIndex < 0) originalChestSiblingIndex = chest.transform.GetSiblingIndex();
+        SoundManager.instance.PlayAny("chest_open");
+        state.curLoot = pouch;
+        chest.transform.SetAsLastSibling();
+        if (!chest.activeSelf) chest.SetActive(true);
+        else UIfiller.GlobalRefresh();
+    }
+
+    private void RemoveBattleLootPouch(int index)
+    {
+        var pouch = battleGroundLoot[index];
+        var state = MainStates.instance;
+        if (state != null)
+        {
+            if (ReferenceEquals(state.curLoot, pouch))
+            {
+                if (state.UI_second != null) state.UI_second.SetActive(false);
+                state.curLoot = null;
+            }
+            foreach (var item in pouch.inventory)
+                if (ReferenceEquals(item.owner, pouch)) state.all.Remove(item.RID);
+        }
+        if (pouch.main != null) Destroy(pouch.main);
+        battleGroundLoot.RemoveAt(index);
+    }
+
+    private void UpdateBattleLootPouches()
+    {
+        for (int i = battleGroundLoot.Count - 1; i >= 0; i--)
+            if (!battleGroundLoot[i].inventory.Exists(item => item.GetPar("amount") > 0))
+                RemoveBattleLootPouch(i);
+        RestoreChestOrderIfClosed();
+    }
+
+    private void ClearBattleLootPouches()
+    {
+        for (int i = battleGroundLoot.Count - 1; i >= 0; i--)
+            RemoveBattleLootPouch(i);
+        RestoreChestOrderIfClosed();
+    }
+
+    private void RestoreChestOrderIfClosed()
+    {
+        if (originalChestSiblingIndex < 0) return;
+        var chest = MainStates.instance?.UI_second;
+        if (chest != null && chest.activeSelf) return;
+        if (chest != null) chest.transform.SetSiblingIndex(originalChestSiblingIndex);
+        originalChestSiblingIndex = -1;
     }
 
     private void RemoveBattleEnemyData(RObj enemy)
@@ -1516,6 +1629,7 @@ public class MainCycleDark : MonoBehaviour
         HandlePrisonMovement();
         HandleBattleMovement();
         HandleAutomove();
+        UpdateBattleLootPouches();
 
 
         /*
