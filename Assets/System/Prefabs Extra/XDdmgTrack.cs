@@ -45,7 +45,7 @@ public class XDdmgTrack : ComponentBehavior
     }
 
     // Called by parameter mutations; no per-frame polling.
-    public void Changed(float hpDlt, float manaDlt, float shldDlt, float msgDlt)
+    public void Changed(float hpDlt, float manaDlt, float shldDlt, float msgDlt, Vector3 damageDirection = default)
     {
         if (mon == null)
         {
@@ -71,6 +71,18 @@ public class XDdmgTrack : ComponentBehavior
             if (dlt < 0)
             {
                 DamageNumber newDamageNumber = UtilsControl.Instance.prefab.Spawn(where, dlt);
+                if (damageDirection.sqrMagnitude > .0001f && newDamageNumber.enableLerp)
+                {
+                    var camera = Camera.main;
+                    Vector3 right = camera != null ? camera.transform.right : newDamageNumber.GetFreshRightVector();
+                    float offset = Vector3.Dot(damageDirection.normalized, right) * .55f;
+                    var motion = newDamageNumber.lerpSettings;
+                    motion.minX = motion.maxX = offset;
+                    motion.randomFlip = false;
+                    newDamageNumber.lerpSettings = motion;
+                }
+                else
+                    newDamageNumber.lerpSettings = UtilsControl.Instance.prefab.lerpSettings;
 
                 if (mon.GetPar("was_crit") > 0)
                 {

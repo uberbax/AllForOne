@@ -3125,9 +3125,13 @@ public class MainStates : MonoBehaviour
     
     public void DealDamage(RObj a, RObj skl)
     {
-        using var dmgTrackChange = a.BeginDmgTrackChange();
         //when two chests collide ?
         if (skl.owner == null) return;
+        Vector3 damageDirection = (a.main != null ? a.main.transform.position : a.Position) -
+            (skl.owner.main != null ? skl.owner.main.transform.position : skl.owner.Position);
+        if (skl.main != null && skl.main.TryGetComponent<MoveDir>(out var travel) && travel.dir.sqrMagnitude > .0001f)
+            damageDirection = travel.dir;
+        using var dmgTrackChange = a.BeginDmgTrackChange(damageDirection: damageDirection);
         
         Debug.Log("DAMAGE: " +skl.owner.RID + " " +skl.dbObj.ID + " " + a.RID + " " + a.dbObj.ID);
         //precalc dmg formula

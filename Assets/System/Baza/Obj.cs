@@ -524,6 +524,7 @@ public class RObj
     [NonSerialized] private XDdeath hpDeathReceiver;
     [NonSerialized] private XDdrop hpDropReceiver;
     [NonSerialized] private DmgTrackValues dmgTrackBefore;
+    [NonSerialized] private Vector3 dmgTrackDirection;
 
     private struct DmgTrackValues
     {
@@ -553,11 +554,12 @@ public class RObj
     }
 
     /// <summary>Groups nested mutations into one notification with actual before/after deltas.</summary>
-    public DmgTrackChange BeginDmgTrackChange(bool observe = true)
+    public DmgTrackChange BeginDmgTrackChange(bool observe = true, Vector3 damageDirection = default)
     {
         if (!observe) return default;
         if (dmgTrackChangeDepth++ == 0)
         {
+            dmgTrackDirection = damageDirection;
             dmgTrackReceiver = GetActiveHpReceiver<XDdmgTrack>("dmg_track");
             hpFlashReceiver = GetActiveHpReceiver<XDflash>("flash");
             hpAnimatorReceiver = GetActiveHpReceiver<XDanimator>("animator");
@@ -578,6 +580,7 @@ public class RObj
     {
         if (--dmgTrackChangeDepth != 0) return;
         var receiver = dmgTrackReceiver;
+        Vector3 direction = dmgTrackDirection;
         var flash = hpFlashReceiver;
         var animator = hpAnimatorReceiver;
         var splash = hpSplashReceiver;
@@ -594,7 +597,7 @@ public class RObj
         {
             if (hp < 0 && splash != null) splash.Changed(hp);
             if (receiver != null && receiver.isActiveAndEnabled && (hp != 0 || mana != 0 || shield != 0 || message > 0))
-                receiver.Changed(hp, mana, shield, message);
+                receiver.Changed(hp, mana, shield, message, direction);
             if (hp != 0 && flash != null && flash.isActiveAndEnabled)
                 flash.Changed(hp);
             if (hp < 0 && animator != null && animator.isActiveAndEnabled)
