@@ -439,6 +439,7 @@ public class MainCycleDark : MonoBehaviour
         StopStageCombat();
         HideBattleVictory();
         ClearBattleLootPouches();
+        StopTrackingBattleLoot();
         RestoreBattleCamera();
     }
 
@@ -617,6 +618,95 @@ public class MainCycleDark : MonoBehaviour
 
     private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
     private readonly List<RObj> battleGroundLoot = new List<RObj>();
+    [SerializeField] private GameObject battleMinimap;
+    [SerializeField] private ScrollRect battleItems;
+    private readonly HashSet<RObj> pendingBattleLoot = new HashSet<RObj>();
+    private readonly List<RObj> collectedBattleLoot = new List<RObj>();
+    private MainStates battleLootState;
+
+    public void ShowBattleMap()
+    {
+        if (battleItems != null) battleItems.gameObject.SetActive(false);
+        if (battleMinimap != null) battleMinimap.SetActive(true);
+    }
+
+    public void ShowBattleItems()
+    {
+        if (battleItems == null || battleMinimap == null) return;
+        battleMinimap.SetActive(false);
+        battleItems.gameObject.SetActive(true);
+        RefreshBattleItems();
+    }
+
+    private void BeginBattleLootTracking(MainStates state)
+    {
+        StopTrackingBattleLoot();
+        collectedBattleLoot.Clear();
+        ShowBattleMap();
+        if (battleItems != null)
+        {
+            battleItems.StopMovement();
+            battleItems.content.anchoredPosition = Vector2.zero;
+        }
+        battleLootState = state;
+        battleLootState.ItemReceived += TrackBattleItem;
+    }
+
+    private void StopTrackingBattleLoot()
+    {
+        if (battleLootState != null) battleLootState.ItemReceived -= TrackBattleItem;
+        battleLootState = null;
+        pendingBattleLoot.Clear();
+    }
+
+    private void TrackBattleItem(RObj recipient, RObj item, float amount)
+    {
+        if (battleItems == null || recipient != battleLootState.mainPlayer || !pendingBattleLoot.Remove(item)) return;
+        var entry = item.GetPar("max_stack") > 1f
+            ? collectedBattleLoot.Find(o => o.dbObj == item.dbObj && o.shardID == item.shardID &&
+                                           o.GetPar("rarity") == item.GetPar("rarity"))
+            : null;
+        if (entry == null)
+        {
+            entry = new RObj
+            {
+                RID = item.RID,
+                dbID = item.dbID,
+                dbObj = item.dbObj,
+                it = item.it,
+                shardID = item.shardID,
+                curPars = new Dictionary<string, float>(item.curPars),
+                upgradePars = new Dictionary<string, float>(item.upgradePars)
+            };
+            collectedBattleLoot.Add(entry);
+        }
+        else
+        {
+            amount += entry.GetPar("amount");
+        }
+        entry.curPars["amount"] = amount;
+        entry.upgradePars["amount"] = amount;
+        if (battleItems.isActiveAndEnabled) RefreshBattleItems();
+    }
+
+    private void RefreshBattleItems()
+    {
+        var grid = battleItems.content;
+        const int columns = 3;
+        const int minimumCells = 12;
+        int cells = Mathf.Max(minimumCells, (collectedBattleLoot.Count + columns - 1) / columns * columns);
+        for (int i = 0; i < cells; i++)
+        {
+            var cell = i < grid.childCount ? grid.GetChild(i) : Instantiate(grid.GetChild(0), grid);
+            cell.gameObject.SetActive(true);
+            var holder = cell.GetComponentInChildren<ObjHolder>(true);
+            holder.obj = i < collectedBattleLoot.Count ? collectedBattleLoot[i] : null;
+            holder.gameObject.SetActive(holder.obj != null);
+            if (holder.obj != null) holder.OnEnable();
+        }
+        for (int i = cells; i < grid.childCount; i++)
+            grid.GetChild(i).gameObject.SetActive(false);
+    }
     [SerializeField] private Sprite battleLootPouchSprite;
     private int originalChestSiblingIndex = -1;
 
@@ -865,6 +955,7 @@ public class MainCycleDark : MonoBehaviour
             Destroy(spawned);
         }
         battleInventoryHeroes.Clear();
+        BeginBattleLootTracking(state);
         battleMovingHeroes.Clear();
         battleWalking = false;
 
@@ -999,6 +1090,7 @@ public class MainCycleDark : MonoBehaviour
             item.index = inventory.GetFreeIndex(item.dbObj.sizeX, item.dbObj.sizeY);
             item.owner = inventory;
             inventory.inventory.Add(item);
+            if (battleItems != null) pendingBattleLoot.Add(item);
         }
         if (inventory.inventory.Count == 0) return;
 
@@ -1054,7 +1146,11 @@ public class MainCycleDark : MonoBehaviour
                 state.curLoot = null;
             }
             foreach (var item in pouch.inventory)
-                if (ReferenceEquals(item.owner, pouch)) state.all.Remove(item.RID);
+                if (ReferenceEquals(item.owner, pouch))
+                {
+                    pendingBattleLoot.Remove(item);
+                    state.all.Remove(item.RID);
+                }
         }
         if (pouch.main != null) Destroy(pouch.main);
         battleGroundLoot.RemoveAt(index);
@@ -1464,7 +1560,7 @@ public class MainCycleDark : MonoBehaviour
         main.AdjustPosition();
         main.AddMeta("my_side");
         //
-        main.AddViz("click_move");
+        //main.AddViz("click_move");
         //Camera.main.GetComponent<CameraFollow>().target = main.main.transform;
 
         //

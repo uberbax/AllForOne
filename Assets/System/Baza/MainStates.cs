@@ -2507,6 +2507,8 @@ public class MainStates : MonoBehaviour
         return f;
     }
     
+    public event Action<RObj, RObj, float> ItemReceived;
+
     public void AddItem(RObj who, RObj what, bool overIndex = false)
     {
         LootRarityBeam.Remove(what);
@@ -2516,6 +2518,7 @@ public class MainStates : MonoBehaviour
             return;
         }
         
+        float receivedAmount = ItemReceived != null ? what.GetPar("amount") : 0f;
         while (true)
         {
             var a = who.inventory.Find(x =>
@@ -2545,8 +2548,8 @@ public class MainStates : MonoBehaviour
                 {
                     what.owner.inventory.Remove(what);
                 }
-                    what.owner = who;
-                return;
+                what.owner = who;
+                break;
             }
             else
             {
@@ -2556,13 +2559,15 @@ public class MainStates : MonoBehaviour
                 {
                     a.ChangePar("amount", what.upgradePars["amount"]);
                     what.ChangePar("amount", -what.upgradePars["amount"]);
-                    return;
+                    break;
                 }
                 
                 a.ChangePar("amount", dlt);
                 what.ChangePar("amount", -dlt);
             }
         }
+
+        if (receivedAmount > 0f) ItemReceived?.Invoke(who, what, receivedAmount);
     }
 
     public void ReplaceVisual(RObj who, GameObject what)
