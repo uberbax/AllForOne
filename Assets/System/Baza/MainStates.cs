@@ -4320,7 +4320,7 @@ public class MainStates : MonoBehaviour
                     HandleCds(manualTick, combats[i]);
                 }
 
-                yield return new WaitForSeconds(tm);
+                if (tm > 0) yield return new WaitForSeconds(tm);
                 this.awaitUnits[combats[i].RID] = 1;
                 
                 //collat damage
@@ -4337,7 +4337,7 @@ public class MainStates : MonoBehaviour
                         gv.Add("attack_prc", cld/100.0f);
                         SkillExecutor.instance.ExecuteSkill(combats[i], "col_strike", null, gv);
                         
-                        yield return new WaitForSeconds(tm);
+                        if (tm > 0) yield return new WaitForSeconds(tm);
                     }
                 }
                 

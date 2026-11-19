@@ -50,17 +50,21 @@ public sealed class BattleTurnPanel : MonoBehaviour
         if (panel == null || holder == null) return;
         if (input == null && !panel.TryGetComponent(out input)) input = panel.AddComponent<CanvasGroup>();
         var ally = FindCurrentAlly(out bool acceptsInput);
-        if (input != null && input.interactable != acceptsInput) input.interactable = acceptsInput;
-        if (ReferenceEquals(current, ally) && panel.activeSelf == (ally != null)) return;
-        panel.SetActive(false);
         current = ally;
-        holder.obj = ally;
+        // Keep the last ally's details during handoff or an enemy turn, in read-only mode.
+        var displayed = ally;
+        if (displayed == null && MainStates.instance?.inBattle == true && IsLivingStageAlly(holder.obj))
+            displayed = holder.obj;
+        if (input != null && input.interactable != acceptsInput) input.interactable = acceptsInput;
+        if (ReferenceEquals(holder.obj, displayed) && panel.activeSelf == (displayed != null)) return;
+        panel.SetActive(false);
+        holder.obj = displayed;
         holder.noTrack = true;
-        if (ally == null) return;
+        if (displayed == null) return;
         if (fillers == null) fillers = panel.GetComponentsInChildren<UIfiller>(true);
         foreach (var filler in fillers)
             if (filler.command == "GET_SKILLS" || filler.command == "GET_SKILLS_SELECT")
-                filler.param = ally.RID;
+                filler.param = displayed.RID;
         panel.SetActive(true);
     }
 

@@ -1563,7 +1563,7 @@ public class MainCycleDark : MonoBehaviour
         {
             if (!MainStates.instance.InIteration)
             {
-                coroutine = StartCoroutine(MainStates.instance.OneIteration(false, 1.7f, "sword", true));
+                coroutine = StartCoroutine(MainStates.instance.OneIteration(tm: 0, metaContain: "sword", awaitUnits: true));
             }
         }
         else
