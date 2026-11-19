@@ -282,6 +282,7 @@ public class SkillExecutor : MonoBehaviour
         
         bool isVideoCharacter = who.visMain.GetComponent<UiLoopVideo>() != null;
         bool useNaprig = overPos == default && UsesNaprig(skl);
+        var attackVideo = overPos == default ? GetProjectileAttackVideo(who, ll) : null;
         float projectileDelay = ll != null ? Mathf.Max(0, ll.projDelay) : 0;
         if (!isVideoCharacter && target != who && overPos == default)
             who.SetScale(target.Position.x > who.Position.x);
@@ -336,6 +337,7 @@ public class SkillExecutor : MonoBehaviour
         void LaunchProjectiles()
         {
             if (who.main == null || !who.main.activeInHierarchy || (useNaprig && who.GetPar("health") <= 0)) return;
+            var videoOrigin = GetProjectileVideoOrigin(attackVideo, ll);
             if (overPos == default) SoundManager.instance.PlayAny(skl.dbObj.ID, spellType);
             if (skl.dbObj.spawn != "")
             {
@@ -370,6 +372,7 @@ public class SkillExecutor : MonoBehaviour
                                 ro.main.transform.position =
                                     (tt.position + targ[0].main.transform.position)/2 + new Vector3(0, 4, 0);
                             }
+                            if (videoOrigin.HasValue) PlaceProjectileAtVideoOrigin(ro, videoOrigin.Value);
                             //
                             ro.Position = ro.main.transform.position;
                             ro.AddViz("coll");
@@ -415,8 +418,8 @@ public class SkillExecutor : MonoBehaviour
                             }
                         }
 
-                        float yy = useNaprig ? 0f : timeWait;
-                        if (!useNaprig && isEmpty) yy -= 0.3f;
+                        float yy = useNaprig || attackVideo != null ? 0f : timeWait;
+                        if (!useNaprig && attackVideo == null && isEmpty) yy -= 0.3f;
 
                         if (ro.dbObj.ID == "move") yy = 0;
                     
@@ -487,10 +490,10 @@ public class SkillExecutor : MonoBehaviour
             MainStates.instance.DoNaprig(who, target, () =>
             {
                 PlayNaprigAttack(who, skl, attackTarget);
-                ScheduleNaprigProjectiles(who, ll, LaunchProjectiles, projectileDelay);
+                ScheduleAttackProjectiles(who, attackVideo, LaunchProjectiles, projectileDelay);
             });
         }
-        else UnitActionTracker.Schedule(who, LaunchProjectiles, projectileDelay);
+        else ScheduleAttackProjectiles(who, attackVideo, LaunchProjectiles, projectileDelay);
 
         if (overPos == default)
             skl.SetPar("cd", skl.GetPar("cooldown"));
@@ -771,11 +774,13 @@ public class SkillExecutor : MonoBehaviour
                 var projectileTarget = curTargeter.find;
                 bool freeTargeting = MainStates.instance.freeTargeting;
                 bool useTargetedNaprig = UsesNaprig(projectileSkill);
+                var attackVideo = GetProjectileAttackVideo(projectileOwner, ll);
                 float projectileDelay = ll != null ? Mathf.Max(0, ll.projDelay) : 0;
                 void LaunchTargetedProjectiles()
                 {
                     if (projectileOwner.main == null || !projectileOwner.main.activeInHierarchy ||
                         (useTargetedNaprig && projectileOwner.GetPar("health") <= 0)) return;
+                    var videoOrigin = GetProjectileVideoOrigin(attackVideo, ll);
                     SoundManager.instance.PlayAny(savedSkl);
                     if (projectileSkill.dbObj.spawn != "")
                     {
@@ -795,7 +800,9 @@ public class SkillExecutor : MonoBehaviour
                                 var ro = DatabaseAll.instance.CreateProjectile(
                                     projectileOwner,
                                     savedSkl, Vector3.zero);
-                                if (useTargetedNaprig && projectileOwner.visMain != null)
+                                if (videoOrigin.HasValue)
+                                    PlaceProjectileAtVideoOrigin(ro, videoOrigin.Value);
+                                else if (useTargetedNaprig && projectileOwner.visMain != null)
                                 {
                                     var legs = projectileOwner.visMain.transform.Find("legs");
                                     var head = projectileOwner.visMain.transform.Find("head");
@@ -948,10 +955,16 @@ public class SkillExecutor : MonoBehaviour
                     MainStates.instance.DoNaprig(projectileOwner, pos + new Vector3(0, MainStates.instance.LIFT_PROJ, 0), () =>
                     {
                         PlayNaprigAttack(projectileOwner, projectileSkill, projectileSkill.exact);
-                        ScheduleNaprigProjectiles(projectileOwner, ll, LaunchTargetedProjectiles, projectileDelay);
+                        ScheduleAttackProjectiles(projectileOwner, attackVideo, LaunchTargetedProjectiles, projectileDelay);
                     });
                 }
-                else UnitActionTracker.Schedule(projectileOwner, LaunchTargetedProjectiles, projectileDelay);
+                else
+                {
+                    if (attackVideo != null &&
+                        projectileOwner.visuals.TryGetValue("animator", out var attackAnimator) && attackAnimator != null)
+                        attackAnimator.GetComponentInChildren<XDanimator>()?.SetState("attack");
+                    ScheduleAttackProjectiles(projectileOwner, attackVideo, LaunchTargetedProjectiles, projectileDelay);
+                }
 
                 lastSkl.SetPar("cd", lastSkl.GetPar("cooldown"));
                 lastWho.ChangePar("mana", -lastSkl.GetPar("manacost")); 
@@ -972,11 +985,34 @@ public class SkillExecutor : MonoBehaviour
         }
     }
 
-    private void ScheduleNaprigProjectiles(RObj who, SkillEtc effect, Action launch, float delay)
+    private static UiLoopVideo GetProjectileAttackVideo(RObj who, SkillEtc effect)
     {
         var video = effect != null && effect.syncProjectileToAttackVideo && who.visMain != null
             ? who.visMain.GetComponent<UiLoopVideo>() : null;
-        if (video != null && video.HasAnimation("attack"))
+        return video != null && video.isActiveAndEnabled && video.HasAnimation("attack") ? video : null;
+    }
+
+    private static Vector3? GetProjectileVideoOrigin(UiLoopVideo video, SkillEtc effect)
+    {
+        if (video != null && effect.projectileOriginUV != Vector2.zero &&
+            video.TryGetComponent<UiVideoAspect>(out var aspect) &&
+            aspect.TryGetWorldPoint(effect.projectileOriginUV, out var point))
+            return point;
+        return null;
+    }
+
+    private static void PlaceProjectileAtVideoOrigin(RObj projectile, Vector3 origin)
+    {
+        projectile.main.transform.position = origin;
+        projectile.Position = origin;
+        // Align the visible emitter too: effect prefabs can carry a local placement offset.
+        if (projectile.visuals.TryGetValue("vis_main", out var effect) && effect != null)
+            effect.transform.localPosition = Vector3.zero;
+    }
+
+    private void ScheduleAttackProjectiles(RObj who, UiLoopVideo video, Action launch, float delay)
+    {
+        if (video != null)
         {
             video.PlayFrameSyncedAttack();
             StartCoroutine(WaitForAttackRelease(who, video, launch, delay));

@@ -528,11 +528,15 @@ public class SkillEtc
     public GameObject effSelf;
     public List<string> conds = new List<string>();
     public GameObject projHit;
+    [Tooltip("Draw the impact at the projectile's position when it collides.")]
+    public bool hitEffectAtProjectile;
     public GameObject proj;
     [Min(0), Tooltip("Delay in seconds before releasing projectiles. With naprig, counted from arrival and the start of the attack animation.")]
     public float projDelay;
-    [Tooltip("For naprig video attacks, measure Proj Delay from the first clip frame using the video clock.")]
+    [Tooltip("Measure Proj Delay from the first attack clip frame using the video clock.")]
     public bool syncProjectileToAttackVideo;
+    [Tooltip("Optional projectile origin in attack video UV coordinates (bottom-left origin). Zero keeps the default spawn point.")]
+    public Vector2 projectileOriginUV;
     public string projHitMark = "";
 
     public float angle = 0;

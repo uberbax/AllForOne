@@ -116,6 +116,8 @@ public class XDcoll : ComponentBehavior
             (mm.obj.it != ItemType.projectile && mm.obj.it != ItemType.item)
             ) return;
 
+        Vector3 projectileImpactPosition = mm.transform.position;
+
         //if (MainStates.instance.dmgTimes.ContainsKey(mm.obj.owner.RID))
         //{
         //    Debug.Log(Time.time - MainStates.instance.dmgTimes[mm.obj.owner.RID]);
@@ -135,13 +137,7 @@ public class XDcoll : ComponentBehavior
             //explode
             MainStates.instance.DealDamage(m0.obj, mm.obj);
 
-            if (mm.obj.effect != null)
-            {
-                //var g = Instantiate(mm.obj.effect, transform.position, transform.rotation);
-                var g = Instantiate(mm.obj.effect);
-                g.transform.position = m0.obj.Position;
-                Destroy(g, 1);
-            }
+            PlayHitEffect(mm.obj, m0.obj, projectileImpactPosition);
             
             if (mm.obj.GetPar("bounce") > 0)
             {
@@ -183,13 +179,7 @@ public class XDcoll : ComponentBehavior
             MainStates.instance.DealDamage(m0.obj, mm.obj);
             //pen_cnt on heal ?
             //end effect ?
-            if (mm.obj.effect != null)
-            {
-                //var g = Instantiate(mm.obj.effect, m0.transform.position, transform.rotation);
-                var g = Instantiate(mm.obj.effect);
-                g.transform.position = m0.obj.Position;
-                Destroy(g, 1);
-            }
+            PlayHitEffect(mm.obj, m0.obj, projectileImpactPosition);
 
             if (mm.obj.GetPar("bounce") > 0)
             {
@@ -215,5 +205,14 @@ public class XDcoll : ComponentBehavior
                 mm.obj.Destroy();
         }        
     }
-    
+
+    private static void PlayHitEffect(RObj projectile, RObj target, Vector3 impactPosition)
+    {
+        if (projectile.effect == null) return;
+        var settings = projectile.it == ItemType.projectile && projectile.owner != null
+            ? ResourceHolder.instance.GetMeSkillEtc(projectile.owner.dbObj, projectile.dbObj.ID) : null;
+        Vector3 position = settings != null && settings.hitEffectAtProjectile ? impactPosition : target.Position;
+        var effect = Instantiate(projectile.effect, position, projectile.effect.transform.rotation);
+        Destroy(effect, 1);
+    }
 }

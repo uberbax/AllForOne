@@ -25,7 +25,7 @@ namespace Hovl
         private List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
 
         // Pooling
-        private static Transform poolRoot;
+        private Transform poolRoot;
         private Dictionary<GameObject, Queue<GameObject>> pools = new Dictionary<GameObject, Queue<GameObject>>();
 
         // Track instances that were spawned by this emitter and not yet returned to pool

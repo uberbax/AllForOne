@@ -24,25 +24,47 @@ public sealed class UiVideoAspect : BaseMeshEffect
         view = GetComponent<RawImage>();
     }
 
-    public override void ModifyMesh(VertexHelper vertices)
+    public bool TryGetWorldPoint(Vector2 videoUV, out Vector3 worldPoint)
     {
-        if (!IsActive() || vertices.currentVertCount == 0) return;
+        worldPoint = default;
+        if (!TryGetGeometry(out var rect, out float scaleX)) return false;
+        var uv = view.uvRect;
+        Vector2 point = new Vector2(
+            rect.xMin + rect.width * (videoUV.x - uv.x) / uv.width,
+            rect.yMin + rect.height * (videoUV.y - uv.y) / uv.height);
+        worldPoint = transform.TransformPoint(ApplyFraming(point, rect, scaleX));
+        return true;
+    }
+
+    private bool TryGetGeometry(out Rect rect, out float scaleX)
+    {
         if (view == null) view = GetComponent<RawImage>();
         var texture = view.texture;
-        var rect = view.rectTransform.rect;
-        if (texture == null || texture.height <= 0 || rect.width <= 0 || rect.height <= 0) return;
+        rect = view.rectTransform.rect;
+        scaleX = 0;
+        if (texture == null || texture.height <= 0 || rect.width <= 0 || rect.height <= 0) return false;
         var uv = view.uvRect;
-        if (Mathf.Abs(uv.height) < .00001f) return;
+        if (Mathf.Abs(uv.height) < .00001f || Mathf.Abs(uv.width) < .00001f) return false;
         float ratio = texture.width * Mathf.Abs(uv.width) / (texture.height * Mathf.Abs(uv.height));
-        float scaleX = rect.height * ratio / rect.width;
+        scaleX = rect.height * ratio / rect.width;
+        return true;
+    }
+
+    private Vector3 ApplyFraming(Vector3 position, Rect rect, float scaleX)
+    {
+        position.x = rect.center.x + (position.x - rect.center.x) * scaleX * visualScale + visualOffset.x * rect.width;
+        position.y = rect.center.y + (position.y - rect.center.y) * visualScale + visualOffset.y * rect.height;
+        return position;
+    }
+
+    public override void ModifyMesh(VertexHelper vertices)
+    {
+        if (!IsActive() || vertices.currentVertCount == 0 || !TryGetGeometry(out var rect, out float scaleX)) return;
         UIVertex vertex = default;
         for (int i = 0; i < vertices.currentVertCount; i++)
         {
             vertices.PopulateUIVertex(ref vertex, i);
-            var position = vertex.position;
-            position.x = rect.center.x + (position.x - rect.center.x) * scaleX * visualScale + visualOffset.x * rect.width;
-            position.y = rect.center.y + (position.y - rect.center.y) * visualScale + visualOffset.y * rect.height;
-            vertex.position = position;
+            vertex.position = ApplyFraming(vertex.position, rect, scaleX);
             vertices.SetUIVertex(vertex, i);
         }
     }

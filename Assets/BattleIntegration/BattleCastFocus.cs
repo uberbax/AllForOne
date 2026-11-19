@@ -36,6 +36,7 @@ public sealed class BattleCastFocus : MonoBehaviour
     private readonly List<SpriteState> sprites = new List<SpriteState>();
     private readonly List<GameObject> tintedRoots = new List<GameObject>();
     private readonly List<Participant> participants = new List<Participant>();
+    private readonly List<(Canvas Canvas, int Layer, int Order)> raisedCanvases = new List<(Canvas, int, int)>();
     private readonly HashSet<RObj> foreground = new HashSet<RObj>();
     private readonly HashSet<RObj> seenUnits = new HashSet<RObj>();
     private readonly HashSet<SpriteRenderer> seenSprites = new HashSet<SpriteRenderer>();
@@ -94,6 +95,8 @@ public sealed class BattleCastFocus : MonoBehaviour
             foreach (var graphic in root.GetComponentsInChildren<Graphic>(true)) TintGraphic(graphic);
             foreach (var sprite in root.GetComponentsInChildren<SpriteRenderer>(true)) CacheSprite(sprite);
         }
+        RaiseParticipants();
+
         if (dimEnvironment && settings != null && settings.sceneSprites != null)
             foreach (var sprite in settings.sceneSprites)
             {
@@ -126,6 +129,65 @@ public sealed class BattleCastFocus : MonoBehaviour
         deadline = startedAt + Mathf.Max(15, animationLength + distance * .4f + 6, projectiles + 2);
         activity = UnitActionTracker.Begin(caster);
         active = true;
+    }
+
+    private static Canvas FindUnitCanvas(RObj unit)
+    {
+        var canvas = unit.visMain != null ? unit.visMain.GetComponentInParent<Canvas>() : null;
+        return canvas != null && (canvas.isRootCanvas || canvas.overrideSorting) &&
+            canvas.transform.IsChildOf(unit.main.transform)
+            ? canvas : null;
+    }
+
+    private void RaiseParticipants()
+    {
+        int topLayer = 0;
+        int topOrder = int.MinValue;
+        void Include(int layer, int order)
+        {
+            int layerValue = SortingLayer.GetLayerValueFromID(layer);
+            int currentTopLayerValue = SortingLayer.GetLayerValueFromID(topLayer);
+            if (topOrder != int.MinValue && (layerValue < currentTopLayerValue ||
+                (layerValue == currentTopLayerValue && order <= topOrder))) return;
+            topLayer = layer;
+            topOrder = order;
+        }
+
+        foreach (var unit in seenUnits)
+        {
+            if (foreground.Contains(unit)) continue;
+            var canvas = FindUnitCanvas(unit);
+            if (canvas != null) Include(canvas.sortingLayerID, canvas.sortingOrder);
+        }
+        foreach (var state in sprites)
+            Include(state.Renderer.sortingLayerID, state.Renderer.sortingOrder);
+        foreach (var target in foreground)
+        {
+            if (target == caster) continue;
+            var canvas = FindUnitCanvas(target);
+            if (canvas == null) continue;
+            RaiseAbove(canvas, topLayer, topOrder);
+        }
+        // Resolve the attacker's order after the targets, so their promoted canvases cannot cover the lunge.
+        foreach (var target in foreground)
+        {
+            if (target == caster) continue;
+            var canvas = FindUnitCanvas(target);
+            if (canvas != null) Include(canvas.sortingLayerID, canvas.sortingOrder);
+        }
+        var attackerCanvas = FindUnitCanvas(caster);
+        if (attackerCanvas != null) RaiseAbove(attackerCanvas, topLayer, topOrder);
+    }
+
+    private void RaiseAbove(Canvas canvas, int layer, int order)
+    {
+        if (order == int.MinValue) return;
+        int currentLayerValue = SortingLayer.GetLayerValueFromID(canvas.sortingLayerID);
+        int layerValue = SortingLayer.GetLayerValueFromID(layer);
+        if (currentLayerValue > layerValue || (currentLayerValue == layerValue && canvas.sortingOrder > order)) return;
+        raisedCanvases.Add((canvas, canvas.sortingLayerID, canvas.sortingOrder));
+        canvas.sortingLayerID = layer;
+        canvas.sortingOrder = order + 1;
     }
 
     private void CacheParticipant(RObj unit)
@@ -267,6 +329,13 @@ public sealed class BattleCastFocus : MonoBehaviour
             cameraInUse.fieldOfView = cameraFov;
         }
         active = false;
+        foreach (var state in raisedCanvases)
+        {
+            if (state.Canvas == null) continue;
+            state.Canvas.sortingLayerID = state.Layer;
+            state.Canvas.sortingOrder = state.Order;
+        }
+        raisedCanvases.Clear();
         activity?.Dispose();
         activity = null;
         foreach (var root in tintedRoots)
