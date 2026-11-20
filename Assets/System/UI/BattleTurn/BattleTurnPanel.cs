@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class BattleTurnPanel : MonoBehaviour
@@ -7,6 +8,7 @@ public sealed class BattleTurnPanel : MonoBehaviour
     [SerializeField] private Transform stageRoot;
     private UIfiller[] fillers;
     private CanvasGroup input;
+    private IReadOnlyList<GameObject> stageParty;
     private RObj current;
     public RObj CurrentAlly => current;
 
@@ -45,6 +47,20 @@ public sealed class BattleTurnPanel : MonoBehaviour
         return null;
     }
 
+    public void SetStageParty(IReadOnlyList<GameObject> party) => stageParty = party;
+
+    private RObj FindFirstLivingAlly()
+    {
+        if (stageParty == null || !ConfigLoader.parseEnded) return null;
+        for (int i = 0; i < stageParty.Count; i++)
+        {
+            var member = stageParty[i];
+            if (member != null && member.TryGetComponent<ObjHolder>(out var unit) && IsLivingStageAlly(unit.obj))
+                return unit.obj;
+        }
+        return null;
+    }
+
     private void Refresh()
     {
         if (panel == null || holder == null) return;
@@ -55,6 +71,7 @@ public sealed class BattleTurnPanel : MonoBehaviour
         var displayed = ally;
         if (displayed == null && MainStates.instance?.inBattle == true && IsLivingStageAlly(holder.obj))
             displayed = holder.obj;
+        displayed ??= FindFirstLivingAlly();
         if (input != null && input.interactable != acceptsInput) input.interactable = acceptsInput;
         if (ReferenceEquals(holder.obj, displayed) && panel.activeSelf == (displayed != null)) return;
         panel.SetActive(false);

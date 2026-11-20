@@ -437,7 +437,7 @@ public class MainCycleDark : MonoBehaviour
         StopPrisonMovement();
         SetBattleWalking(false);
         StopStageCombat();
-        HideBattleVictory();
+        HideBattleAnnouncement();
         ClearBattleLootPouches();
         StopTrackingBattleLoot();
         RestoreBattleCamera();
@@ -807,6 +807,8 @@ public class MainCycleDark : MonoBehaviour
             battleEncounterTriggered = true;
             SetBattleWalking(false);
             SpawnBattleEnemies(partyFront + delta - battlePartyStartFrontX);
+            if (battleSpawnedEnemies.Count > 0)
+                ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f);
             battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
         }
     }
@@ -841,7 +843,10 @@ public class MainCycleDark : MonoBehaviour
     private bool stageCombatActive;
     private bool stageCombatPending;
     [SerializeField] private CanvasGroup battleVictoryBanner;
-    private Coroutine battleVictoryRoutine;
+    [SerializeField] private Graphic[] battleVictoryEchoes;
+    [SerializeField] private CanvasGroup battleAmbushBanner;
+    [SerializeField] private Graphic[] battleAmbushEchoes;
+    private Coroutine battleAnnouncementRoutine;
 
     private static bool HasLivingStageUnit(List<GameObject> units)
     {
@@ -871,38 +876,70 @@ public class MainCycleDark : MonoBehaviour
         StopStageCombat();
         ModelStatistics.instance.SetStatValueForce("battle", 1);
         if (!alliesAlive || enemiesAlive) return;
-        if (battleVictoryBanner != null)
-            battleVictoryRoutine = StartCoroutine(AnimateBattleVictory());
+        ShowBattleAnnouncement(battleVictoryBanner, battleVictoryEchoes, hold: 2.7f);
     }
 
-    private void HideBattleVictory()
+    private void ShowBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold)
     {
-        if (battleVictoryRoutine != null) StopCoroutine(battleVictoryRoutine);
-        battleVictoryRoutine = null;
-        if (battleVictoryBanner != null) battleVictoryBanner.gameObject.SetActive(false);
+        if (banner == null) return;
+        HideBattleAnnouncement();
+        battleAnnouncementRoutine = StartCoroutine(AnimateBattleAnnouncement(banner, echoes, hold));
     }
 
-    private IEnumerator AnimateBattleVictory()
+    private void HideBattleAnnouncement()
+    {
+        if (battleAnnouncementRoutine != null) StopCoroutine(battleAnnouncementRoutine);
+        battleAnnouncementRoutine = null;
+        if (battleVictoryBanner != null) battleVictoryBanner.gameObject.SetActive(false);
+        if (battleAmbushBanner != null) battleAmbushBanner.gameObject.SetActive(false);
+    }
+
+    private IEnumerator AnimateBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold)
     {
         const float fadeIn = .4f;
-        const float hold = 2.7f;
         const float fadeOut = .65f;
-        battleVictoryBanner.alpha = 0;
-        battleVictoryBanner.transform.SetAsLastSibling();
-        battleVictoryBanner.gameObject.SetActive(true);
+        banner.alpha = 0;
+        banner.transform.SetAsLastSibling();
+        banner.gameObject.SetActive(true);
         float started = Time.unscaledTime;
-        while (battleVictoryBanner != null && battleUI.activeInHierarchy)
+        while (banner != null && battleUI.activeInHierarchy)
         {
             float elapsed = Time.unscaledTime - started;
             if (elapsed >= fadeIn + hold + fadeOut) break;
             float appear = Mathf.SmoothStep(0, 1, Mathf.Clamp01(elapsed / fadeIn));
             float disappear = Mathf.SmoothStep(0, 1, Mathf.Clamp01((elapsed - fadeIn - hold) / fadeOut));
-            battleVictoryBanner.alpha = appear * (1 - disappear);
-            battleVictoryBanner.transform.localScale = Vector3.one * Mathf.Lerp(.94f, 1, appear);
+            banner.alpha = appear * (1 - disappear);
+            banner.transform.localScale = Vector3.one * Mathf.Lerp(.96f, 1, appear);
+            AnimateAnnouncementEchoes(echoes, elapsed);
             yield return null;
         }
-        if (battleVictoryBanner != null) battleVictoryBanner.gameObject.SetActive(false);
-        battleVictoryRoutine = null;
+        if (banner != null) banner.gameObject.SetActive(false);
+        battleAnnouncementRoutine = null;
+    }
+
+    private static void AnimateAnnouncementEchoes(Graphic[] echoes, float elapsed)
+    {
+        if (echoes == null) return;
+        const float echoDuration = .82f;
+        for (int i = 0; i < echoes.Length; i++)
+        {
+            var echo = echoes[i];
+            if (echo == null) continue;
+            float time = elapsed - i * .065f;
+            bool visible = time > 0 && time < echoDuration;
+            if (echo.enabled != visible) echo.enabled = visible;
+            if (!visible) continue;
+            float progress = time / echoDuration;
+            float spread = 1 - Mathf.Pow(1 - progress, 2);
+            float scale = 1 + spread * (.08f + i * .06f);
+            echo.rectTransform.localScale = new Vector3(scale, Mathf.Lerp(1, scale, .55f), 1);
+
+            float rise = Mathf.SmoothStep(0, 1, Mathf.Clamp01(time / .15f));
+            float fade = 1 - Mathf.SmoothStep(0, 1, (progress - .19f) / .81f);
+            var color = echo.color;
+            color.a = (.46f - i * .105f) * rise * fade;
+            if (echo.color.a != color.a) echo.color = color;
+        }
     }
 
     private void PrepareStageCombat(RObj unit)
@@ -971,7 +1008,7 @@ public class MainCycleDark : MonoBehaviour
         }
 
         StopStageCombat();
-        HideBattleVictory();
+        HideBattleAnnouncement();
         RestoreBattleCamera();
         foreach (var spawned in battleInventoryHeroes)
         {
@@ -1026,6 +1063,7 @@ public class MainCycleDark : MonoBehaviour
             index++;
         }
 
+        battleUI?.GetComponent<BattleTurnPanel>()?.SetStageParty(battleInventoryHeroes);
         BindBattleHeroBars();
 
         // Keep the position markers, but hide their placeholder portraits.
