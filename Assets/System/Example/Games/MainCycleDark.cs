@@ -710,6 +710,11 @@ public class MainCycleDark : MonoBehaviour
     [SerializeField] private Sprite battleLootPouchSprite;
     private int originalChestSiblingIndex = -1;
 
+    [SerializeField] private Transform battleEncounterTrigger;
+    private bool battleEncounterTriggered;
+    private float battlePartyStartFrontX;
+    private Coroutine battleEnemyEntrance;
+
     [SerializeField, Min(0)] private float battleMoveSpeed = 2.5f;
     [SerializeField] private bool battleVideoFacesLeft = true;
     private readonly List<BattleHeroMovement> battleMovingHeroes = new List<BattleHeroMovement>();
@@ -740,7 +745,7 @@ public class MainCycleDark : MonoBehaviour
             RestoreBattleCamera();
             return;
         }
-        if (stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
+        if (battleEnemyEntrance != null || stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
         {
             SetBattleWalking(false);
             return;
@@ -759,11 +764,11 @@ public class MainCycleDark : MonoBehaviour
 
         SetBattleWalking(true);
         bool ready = true;
-        bool hasActiveHero = false;
+        float partyFront = float.NegativeInfinity;
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
-            hasActiveHero = true;
+            partyFront = Mathf.Max(partyFront, member.Hero.main.transform.position.x);
             if (member.Video != null)
             {
                 var scale = member.Video.transform.localScale;
@@ -774,7 +779,16 @@ public class MainCycleDark : MonoBehaviour
             else member.Hero.SetScale(direction > 0);
         }
         // Wait for the decoded walk frame so the party never slides in an idle pose.
-        if (!ready || !hasActiveHero) return;
+        if (!ready || float.IsNegativeInfinity(partyFront)) return;
+
+        bool crossedEncounter = false;
+        if (direction > 0 && !battleEncounterTriggered && battleEncounterTrigger != null)
+        {
+            float distance = battleEncounterTrigger.position.x - partyFront;
+            crossedEncounter = distance >= 0f && delta >= distance;
+            if (crossedEncounter) delta = distance;
+        }
+
         if (!battleCameraMoved)
         {
             battleCameraHomeX = battleMovementCamera.transform.position.x;
@@ -786,6 +800,14 @@ public class MainCycleDark : MonoBehaviour
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
             member.Hero.main.transform.position += Vector3.right * delta;
             member.Hero.Position = member.Hero.main.transform.position;
+        }
+
+        if (crossedEncounter)
+        {
+            battleEncounterTriggered = true;
+            SetBattleWalking(false);
+            SpawnBattleEnemies(partyFront + delta - battlePartyStartFrontX);
+            battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
         }
     }
 
@@ -907,6 +929,11 @@ public class MainCycleDark : MonoBehaviour
 
     private void StopStageCombat()
     {
+        if (battleEnemyEntrance != null)
+        {
+            StopCoroutine(battleEnemyEntrance);
+            battleEnemyEntrance = null;
+        }
         if (!stageCombatActive && !stageCombatPending) return;
         stageCombatActive = stageCombatPending = false;
         var state = MainStates.instance;
@@ -955,6 +982,9 @@ public class MainCycleDark : MonoBehaviour
             Destroy(spawned);
         }
         battleInventoryHeroes.Clear();
+        ClearBattleEnemies();
+        battleEncounterTriggered = false;
+        battlePartyStartFrontX = float.NegativeInfinity;
         BeginBattleLootTracking(state);
         battleMovingHeroes.Clear();
         battleWalking = false;
@@ -978,6 +1008,7 @@ public class MainCycleDark : MonoBehaviour
             battleInventoryHeroes.Add(visual);
             visual.transform.SetParent(heroes.transform, true);
             copy.Position = position;
+            battlePartyStartFrontX = Mathf.Max(battlePartyStartFrontX, position.x);
             copy.SetScale(true);
             PrepareBattleHeroCanvas(copy, slot);
             AddBattleHeroShadow(copy, slot);
@@ -995,7 +1026,6 @@ public class MainCycleDark : MonoBehaviour
             index++;
         }
 
-        SpawnBattleEnemies();
         BindBattleHeroBars();
 
         // Keep the position markers, but hide their placeholder portraits.
@@ -1009,7 +1039,7 @@ public class MainCycleDark : MonoBehaviour
 
     private readonly List<GameObject> battleSpawnedEnemies = new List<GameObject>();
 
-    private void SpawnBattleEnemies()
+    private void ClearBattleEnemies()
     {
         var state = MainStates.instance;
         if (state != null) state.lastTargetSelected = null;
@@ -1024,7 +1054,15 @@ public class MainCycleDark : MonoBehaviour
         }
         battleSpawnedEnemies.Clear();
         var positions = heroes != null ? heroes.transform.Find("enemy") : null;
-        if (positions == null || state == null || ResourceHolder.instance == null || DatabaseAll.instance == null) return;
+        if (positions == null) return;
+        foreach (Transform slot in positions)
+            if (slot.TryGetComponent<SpriteRenderer>(out var placeholder)) placeholder.enabled = false;
+    }
+
+    private void SpawnBattleEnemies(float formationOffsetX)
+    {
+        var positions = heroes != null ? heroes.transform.Find("enemy") : null;
+        if (positions == null || MainStates.instance == null || ResourceHolder.instance == null || DatabaseAll.instance == null) return;
         string[] ids = { "zombie1", "zombie3" };
         for (int i = 0; i < ids.Length && i < positions.childCount; i++)
         {
@@ -1036,7 +1074,7 @@ public class MainCycleDark : MonoBehaviour
                 continue;
             }
             var slot = positions.GetChild(i);
-            var position = slot.position;
+            var position = slot.position + Vector3.right * formationOffsetX;
             if (battleInventoryHeroes.Count > 0) position.y = battleInventoryHeroes[0].transform.position.y;
             // Battle stage visuals do not participate in the overworld distance culling (allMons).
             var enemy = new RObj(id, 1, 1, false, position, false, ItemType.monster, isEnemy: true);
@@ -1060,21 +1098,57 @@ public class MainCycleDark : MonoBehaviour
                 dropBehavior.UseGroundPouch((unit, items) => SpawnBattleLootPouch(unit, items, layer, order));
             }
             enemy.AddViz("death");
+        }
+    }
+
+    private IEnumerator PlayBattleEnemyEntrance()
+    {
+        const float decodeGraceSeconds = 5f;
+        var appearing = new List<(UiLoopVideo Video, float Deadline)>();
+        foreach (var spawned in battleSpawnedEnemies)
+        {
+            var enemy = spawned.GetComponent<ObjHolder>().obj;
+            var video = enemy.visMain.GetComponent<UiLoopVideo>();
+            if (video == null || !video.HasAnimation("appear")) continue;
+            video.Play("appear");
+            appearing.Add((video, Time.unscaledTime + video.GetAnimationDuration("appear") + decodeGraceSeconds));
+        }
+
+        // Each enemy starts preparing idle as soon as its own clip ends.
+        var enteringIdle = new List<UiLoopVideo>(appearing.Count);
+        do
+        {
+            yield return null;
+            for (int i = appearing.Count - 1; i >= 0; i--)
+            {
+                var (video, deadline) = appearing[i];
+                if (video != null && !video.IsAnimationFinished("appear") && Time.unscaledTime < deadline) continue;
+                if (video != null)
+                {
+                    video.Play("idle");
+                    enteringIdle.Add(video);
+                }
+                appearing.RemoveAt(i);
+            }
+        } while (appearing.Count > 0);
+
+        float idleDeadline = Time.unscaledTime + decodeGraceSeconds;
+        while (Time.unscaledTime < idleDeadline &&
+               enteringIdle.Exists(video => video != null && video.HasAnimation("idle") && !video.IsAnimationVisible("idle")))
+            yield return null;
+
+        battleEnemyEntrance = null;
+        if (battleSpawnedEnemies.Count == 0 || battleInventoryHeroes.Count == 0) yield break;
+        foreach (var spawned in battleSpawnedEnemies)
+        {
+            var enemy = spawned.GetComponent<ObjHolder>().obj;
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
         }
-        for (int i = 0; i < positions.childCount; i++)
-        {
-            var placeholder = positions.GetChild(i).GetComponent<SpriteRenderer>();
-            if (placeholder != null) placeholder.enabled = false;
-        }
-        
-        //
-        //extra
+        BindBattleHeroBars();
         ModelStatistics.instance.SetStatValue("battle", 2);
-        stageCombatPending = battleSpawnedEnemies.Count > 0 && battleInventoryHeroes.Count > 0;
-        stageCombatActive = stageCombatPending;
-        MainStates.instance.inBattle = stageCombatActive;
+        stageCombatActive = stageCombatPending = true;
+        MainStates.instance.inBattle = true;
     }
 
     private void SpawnBattleLootPouch(RObj unit, List<Bon> drops, int sortingLayer, int sortingOrder)
@@ -1709,7 +1783,7 @@ public class MainCycleDark : MonoBehaviour
 
     public void HandleAutomove()
     {
-        if (AlwaysMove && !stageCombatActive && !stageCombatPending && MainStates.instance?.inBattle != true)
+        if (AlwaysMove && battleEnemyEntrance == null && !stageCombatActive && !stageCombatPending && MainStates.instance?.inBattle != true)
         {
             if (main.main.name.IndexOf("_move") < 0)
             {
@@ -1761,7 +1835,7 @@ public class MainCycleDark : MonoBehaviour
         }
         */
 
-        if (stageCombatActive && (battleUI == null || !battleUI.activeInHierarchy ||
+        if ((stageCombatActive || battleEnemyEntrance != null) && (battleUI == null || !battleUI.activeInHierarchy ||
             heroes == null || !heroes.activeInHierarchy)) StopStageCombat();
         if (stageCombatPending)
         {

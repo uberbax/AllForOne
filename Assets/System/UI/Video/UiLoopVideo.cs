@@ -49,6 +49,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     private bool pendingLoop;
     private bool currentLoop;
     private bool currentFinished;
+    private bool startDefaultIdle;
+    private float? entranceAlpha;
     private bool pendingFinished;
     private int pendingFrameReadyAt = -1;
     private bool pendingPlaybackStarted;
@@ -66,9 +68,8 @@ public sealed class UiLoopVideo : MonoBehaviour
         primary = GetComponent<VideoPlayer>();
         view.raycastTarget = false;
         ShowPoster();
-        var idle = FindClip("idle");
-        if (idle != null)
-            StartClip("idle", idle, true);
+        // Allow a spawner to request a starting clip before preparing the default idle.
+        startDefaultIdle = true;
     }
 
     public void CrossFade(string anim) => ChangeAnimation(anim, false);
@@ -132,7 +133,7 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     public bool IsAnimationVisible(string anim) =>
         current != null && string.Equals(currentName, anim, StringComparison.OrdinalIgnoreCase) &&
-        view != null && view.enabled && view.texture == current.targetTexture &&
+        view != null && view.enabled && !entranceAlpha.HasValue && view.texture == current.targetTexture &&
         !waitingForLoopFrame && Time.frameCount > visibleSinceFrame;
 
     public bool HasReachedAnimationTime(string anim, float seconds) =>
@@ -176,6 +177,14 @@ public sealed class UiLoopVideo : MonoBehaviour
             return;
         }
 
+        if (anim == "appear" && current == null && !entranceAlpha.HasValue)
+        {
+            entranceAlpha = view.color.a;
+            view.color = WithAlpha(view.color, 0);
+            view.enabled = false;
+        }
+
+        startDefaultIdle = false;
         if (pending != null && pendingName == anim)
         {
             pendingInstant = instant;
@@ -274,6 +283,13 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (startDefaultIdle)
+        {
+            startDefaultIdle = false;
+            var idle = FindClip("idle");
+            if (idle != null) StartClip("idle", idle, true);
+        }
+
         if (pendingFrameReadyAt >= 0 && Time.frameCount > pendingFrameReadyAt && pending != null)
         {
             pendingFrameReadyAt = -1;
@@ -288,6 +304,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             visibleSinceFrame = Time.frameCount;
         }
 
+        if (current != null && Time.frameCount > visibleSinceFrame) RestoreEntranceAlpha();
         ReleaseRetiredTextures(false);
     }
 
@@ -431,10 +448,20 @@ public sealed class UiLoopVideo : MonoBehaviour
         var outgoing = current;
         current = null;
         currentName = null;
+        RestoreEntranceAlpha();
         ShowPoster();
         Release(outgoing);
         RetireLoopHold();
         ReleaseRetiredTextures(true);
+    }
+
+    private void RestoreEntranceAlpha()
+    {
+        if (!entranceAlpha.HasValue) return;
+        var color = view.color;
+        color.a = entranceAlpha.Value;
+        view.color = color;
+        entranceAlpha = null;
     }
 
     private void ShowPoster()
@@ -443,7 +470,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             return;
         view.texture = poster;
         if (viewAspect != null) viewAspect.SetFraming(1f, Vector2.zero);
-        view.enabled = poster != null;
+        view.enabled = poster != null && !entranceAlpha.HasValue;
     }
 
     private void Release(VideoPlayer player)

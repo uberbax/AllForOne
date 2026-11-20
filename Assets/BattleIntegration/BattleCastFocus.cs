@@ -10,6 +10,7 @@ public sealed class BattleCastFocus : MonoBehaviour
 {
     [SerializeField] private BRATEffectBattle settings;
     [SerializeField] private Transform stageRoot;
+    [SerializeField] private Transform environmentRoot;
     [SerializeField] private Camera targetCamera;
     [SerializeField] private bool dimEnvironment = true;
     [Tooltip("Usable viewport above the battle panels, in normalized screen coordinates.")]
@@ -24,6 +25,7 @@ public sealed class BattleCastFocus : MonoBehaviour
     {
         public SpriteRenderer Renderer;
         public Color Color;
+        public MaterialPropertyBlock OriginalProperties, WorkingProperties;
     }
     private sealed class Participant
     {
@@ -96,6 +98,10 @@ public sealed class BattleCastFocus : MonoBehaviour
             foreach (var sprite in root.GetComponentsInChildren<SpriteRenderer>(true)) CacheSprite(sprite);
         }
         RaiseParticipants();
+
+        if (dimEnvironment && environmentRoot != null)
+            foreach (var sprite in environmentRoot.GetComponentsInChildren<SpriteRenderer>(true))
+                CacheSprite(sprite, usePropertyBlock: true);
 
         if (dimEnvironment && settings != null && settings.sceneSprites != null)
             foreach (var sprite in settings.sceneSprites)
@@ -222,10 +228,22 @@ public sealed class BattleCastFocus : MonoBehaviour
         graphic.material = state.Working;
     }
 
-    private void CacheSprite(SpriteRenderer sprite)
+    private void CacheSprite(SpriteRenderer sprite, bool usePropertyBlock = false)
     {
-        if (sprite != null && seenSprites.Add(sprite))
-            sprites.Add(new SpriteState { Renderer = sprite, Color = sprite.color });
+        if (sprite == null || !seenSprites.Add(sprite)) return;
+        var state = new SpriteState { Renderer = sprite, Color = sprite.color };
+        var material = sprite.sharedMaterial;
+        if (usePropertyBlock && material != null && material.HasProperty(ColorId))
+        {
+            // Cloud spawners copy the template renderer's color. Keep the temporary tint on this renderer.
+            state.OriginalProperties = new MaterialPropertyBlock();
+            state.WorkingProperties = new MaterialPropertyBlock();
+            sprite.GetPropertyBlock(state.OriginalProperties);
+            sprite.GetPropertyBlock(state.WorkingProperties);
+            state.Color = state.OriginalProperties.HasColor(ColorId)
+                ? state.OriginalProperties.GetColor(ColorId) : material.GetColor(ColorId);
+        }
+        sprites.Add(state);
     }
 
     private float FocusTime => Mathf.Max(.01f, settings != null ? settings.focusTime : .18f);
@@ -270,9 +288,18 @@ public sealed class BattleCastFocus : MonoBehaviour
                 state.Working.SetColor(ColorId, new Color(state.Tint.r * brightness, state.Tint.g * brightness,
                     state.Tint.b * brightness, state.Tint.a));
         foreach (var state in sprites)
-            if (state.Renderer != null)
-                state.Renderer.color = new Color(state.Color.r * brightness, state.Color.g * brightness,
-                    state.Color.b * brightness, state.Color.a);
+        {
+            if (state.Renderer == null) continue;
+            var tint = new Color(state.Color.r * brightness, state.Color.g * brightness,
+                state.Color.b * brightness, state.Color.a);
+            if (state.WorkingProperties == null)
+                state.Renderer.color = tint;
+            else
+            {
+                state.WorkingProperties.SetColor(ColorId, tint);
+                state.Renderer.SetPropertyBlock(state.WorkingProperties);
+            }
+        }
     }
 
     private void ApplyCamera(float weight)
@@ -344,7 +371,11 @@ public sealed class BattleCastFocus : MonoBehaviour
                     foreach (var state in materials)
                         if (graphic.material == state.Working) { graphic.material = state.Original; break; }
         foreach (var state in sprites)
-            if (state.Renderer != null) state.Renderer.color = state.Color;
+        {
+            if (state.Renderer == null) continue;
+            if (state.WorkingProperties == null) state.Renderer.color = state.Color;
+            else state.Renderer.SetPropertyBlock(state.OriginalProperties.isEmpty ? null : state.OriginalProperties);
+        }
         foreach (var state in materials)
             if (state.Working != null) Destroy(state.Working);
         materials.Clear();
