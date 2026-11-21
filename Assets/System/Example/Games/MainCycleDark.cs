@@ -480,6 +480,7 @@ public class MainCycleDark : MonoBehaviour
     
     private void Awake()
     {
+        if (battleLootChest != null) battleLootChest.gameObject.SetActive(false);
         UpdatePrisonArrows();
         if (buttonNext != null)
             prisonNextArrow = buttonNext.GetComponent<PrisonMoveArrow>() ?? buttonNext.AddComponent<PrisonMoveArrow>();
@@ -620,6 +621,8 @@ public class MainCycleDark : MonoBehaviour
     private readonly List<RObj> battleGroundLoot = new List<RObj>();
     [SerializeField] private GameObject battleMinimap;
     [SerializeField] private ScrollRect battleItems;
+    [SerializeField, Min(0)] private int battleLootSlotLimit;
+    [SerializeField] private GameObject[] battleLootExamples = System.Array.Empty<GameObject>();
     private readonly HashSet<RObj> pendingBattleLoot = new HashSet<RObj>();
     private readonly List<RObj> collectedBattleLoot = new List<RObj>();
     private MainStates battleLootState;
@@ -694,7 +697,14 @@ public class MainCycleDark : MonoBehaviour
         var grid = battleItems.content;
         const int columns = 3;
         const int minimumCells = 12;
-        int cells = Mathf.Max(minimumCells, (collectedBattleLoot.Count + columns - 1) / columns * columns);
+        int cells = battleLootSlotLimit > 0
+            ? battleLootSlotLimit
+            : Mathf.Max(minimumCells, (collectedBattleLoot.Count + columns - 1) / columns * columns);
+        bool showExamples = Application.isEditor && battleLootState == null && collectedBattleLoot.Count == 0;
+        foreach (var example in battleLootExamples)
+        {
+            if (example != null) example.SetActive(showExamples);
+        }
         for (int i = 0; i < cells; i++)
         {
             var cell = i < grid.childCount ? grid.GetChild(i) : Instantiate(grid.GetChild(0), grid);
@@ -708,6 +718,8 @@ public class MainCycleDark : MonoBehaviour
             grid.GetChild(i).gameObject.SetActive(false);
     }
     [SerializeField] private Sprite battleLootPouchSprite;
+    [SerializeField] private UIfiller battleLootChest;
+    private GameObject BattleChest => battleLootChest != null ? battleLootChest.gameObject : MainStates.instance?.UI_second;
     private int originalChestSiblingIndex = -1;
 
     [SerializeField] private Transform battleEncounterTrigger;
@@ -1236,14 +1248,38 @@ public class MainCycleDark : MonoBehaviour
     private void OpenBattleLootPouch(RObj pouch)
     {
         var state = MainStates.instance;
-        if (state == null || state.UI_second == null || pouch.main == null) return;
-        var chest = state.UI_second;
+        var chest = BattleChest;
+        if (state == null || chest == null || pouch.main == null) return;
         if (originalChestSiblingIndex < 0) originalChestSiblingIndex = chest.transform.GetSiblingIndex();
         SoundManager.instance.PlayAny("chest_open");
         state.curLoot = pouch;
+        if (battleLootChest != null) battleLootChest.enabled = true;
         chest.transform.SetAsLastSibling();
         if (!chest.activeSelf) chest.SetActive(true);
         else UIfiller.GlobalRefresh();
+    }
+
+    public void CollectDisplayedBattleLoot()
+    {
+        var state = MainStates.instance;
+        var pouch = state?.curLoot;
+        if (pouch == null || battleLootChest == null || !battleLootChest.isActiveAndEnabled) return;
+        if (!battleGroundLoot.Contains(pouch)) return;
+
+        // Snapshot the visible rewards because AddItem changes the pouch inventory.
+        var rewards = pouch.inventory.FindAll(item => item.GetPar("amount") > 0);
+        int count = Mathf.Min(rewards.Count, battleLootChest.root.childCount);
+        for (int i = 0; i < count; i++)
+        {
+            var item = rewards[i];
+            state.AddItem(state.mainPlayer, item);
+            // Experience is applied directly by AddItem and has no inventory transfer.
+            if (item.dbObj.ID == "exp") item.SetPar("amount", 0);
+        }
+
+        if (!pouch.inventory.Exists(item => item.GetPar("amount") > 0))
+            battleLootChest.gameObject.SetActive(false);
+        UIfiller.GlobalRefresh();
     }
 
     private void RemoveBattleLootPouch(int index)
@@ -1254,7 +1290,7 @@ public class MainCycleDark : MonoBehaviour
         {
             if (ReferenceEquals(state.curLoot, pouch))
             {
-                if (state.UI_second != null) state.UI_second.SetActive(false);
+                if (BattleChest != null) BattleChest.SetActive(false);
                 state.curLoot = null;
             }
             foreach (var item in pouch.inventory)
@@ -1286,7 +1322,7 @@ public class MainCycleDark : MonoBehaviour
     private void RestoreChestOrderIfClosed()
     {
         if (originalChestSiblingIndex < 0) return;
-        var chest = MainStates.instance?.UI_second;
+        var chest = BattleChest;
         if (chest != null && chest.activeSelf) return;
         if (chest != null) chest.transform.SetSiblingIndex(originalChestSiblingIndex);
         originalChestSiblingIndex = -1;
