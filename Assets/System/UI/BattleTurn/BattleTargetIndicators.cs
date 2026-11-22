@@ -10,6 +10,19 @@ public sealed class BattleTargetIndicators : MonoBehaviour
     private Camera worldCamera;
     private RObj selectedEnemy;
     private bool castFocusActive;
+    private (RectTransform Arrow, Vector3 Home) myArrow, enemyArrow;
+
+    private void Awake()
+    {
+        myArrow = FindArrow(targetMy);
+        enemyArrow = FindArrow(targetEnemy);
+    }
+
+    private static (RectTransform Arrow, Vector3 Home) FindArrow(RectTransform marker)
+    {
+        var arrow = marker != null ? marker.Find("Above - Arrow") as RectTransform : null;
+        return (arrow, arrow != null ? arrow.localPosition : Vector3.zero);
+    }
 
     public void SetCastFocusActive(bool active)
     {
@@ -40,18 +53,18 @@ public sealed class BattleTargetIndicators : MonoBehaviour
         if (castFocusActive) return;
         if (worldCamera == null || !worldCamera.isActiveAndEnabled) worldCamera = Camera.main;
         var ally = turns != null ? turns.CurrentAlly : null;
-        FollowX(targetMy, BelongsToStage(ally) && ally.main.activeInHierarchy ? ally : null);
+        Follow(targetMy, myArrow, BelongsToStage(ally) && ally.main.activeInHierarchy ? ally : null);
         var enemy = state.lastTargetSelected;
         if (BelongsToStage(enemy) && enemy.main.activeInHierarchy &&
             enemy.tags.Contains("enemy") && enemy.GetPar("health") > 0)
         {
             selectedEnemy = enemy;
-            FollowX(targetEnemy, enemy);
+            Follow(targetEnemy, enemyArrow, enemy);
         }
         else ClearEnemy();
     }
 
-    private void FollowX(RectTransform marker, RObj unit)
+    private void Follow(RectTransform marker, (RectTransform Arrow, Vector3 Home) upper, RObj unit)
     {
         if (marker == null) return;
         if (unit == null || worldCamera == null)
@@ -73,6 +86,23 @@ public sealed class BattleTargetIndicators : MonoBehaviour
         var position = marker.localPosition;
         position.x = point.x;
         marker.localPosition = position;
+        if (upper.Arrow != null)
+        {
+            var head = unit.visMain != null ? unit.visMain.transform.Find("head") : null;
+            if (head == null) head = unit.main.transform.Find("head");
+            var arrowPosition = upper.Home;
+            if (head != null)
+            {
+                var headScreen = worldCamera.WorldToScreenPoint(head.position);
+                if (headScreen.z > 0 && RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    marker, headScreen, uiCamera, out var headPoint))
+                {
+                    arrowPosition.x = headPoint.x;
+                    arrowPosition.y = headPoint.y;
+                }
+            }
+            upper.Arrow.localPosition = arrowPosition;
+        }
         Show(marker, true);
     }
 

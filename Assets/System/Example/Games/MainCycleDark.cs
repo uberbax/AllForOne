@@ -436,6 +436,7 @@ public class MainCycleDark : MonoBehaviour
     {
         StopPrisonMovement();
         SetBattleWalking(false);
+        if (SkillExecutor.instance != null) SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
         StopStageCombat();
         HideBattleAnnouncement();
         ClearBattleLootPouches();
@@ -1035,6 +1036,11 @@ public class MainCycleDark : MonoBehaviour
         battleEncounterTriggered = false;
         battlePartyStartFrontX = float.NegativeInfinity;
         BeginBattleLootTracking(state);
+        if (SkillExecutor.instance != null)
+        {
+            SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
+            SkillExecutor.instance.StageEnemySummon += TrySummonStageEnemy;
+        }
         battleMovingHeroes.Clear();
         battleWalking = false;
 
@@ -1103,6 +1109,7 @@ public class MainCycleDark : MonoBehaviour
             Destroy(spawned);
         }
         battleSpawnedEnemies.Clear();
+        cultistSummon = null;
         var positions = heroes != null ? heroes.transform.Find("enemy") : null;
         if (positions == null) return;
         foreach (Transform slot in positions)
@@ -1117,44 +1124,97 @@ public class MainCycleDark : MonoBehaviour
         string[] ids = {"cultist_boss"};
         for (int i = 0; i < ids.Length && i < positions.childCount; i++)
         {
-            var id = ids[i];
-            if (!DatabaseAll.instance.heroes.ContainsKey(id) ||
-                !ResourceHolder.instance.monsters.TryGetValue(id, out var prefab) || prefab == null)
-            {
-                Debug.LogWarning($"Cannot spawn battle enemy '{id}': missing hero config or monster prefab.", this);
-                continue;
-            }
             var slot = positions.GetChild(i);
             var position = slot.position + Vector3.right * formationOffsetX;
             if (battleInventoryHeroes.Count > 0) position.y = battleInventoryHeroes[0].transform.position.y;
-            // Battle stage visuals do not participate in the overworld distance culling (allMons).
-            var enemy = new RObj(id, 1, 1, false, position, false, ItemType.monster, isEnemy: true);
-            DatabaseAll.instance.CreateOnlyVizual(enemy, position);
-            battleSpawnedEnemies.Add(enemy.main);
-            enemy.main.transform.SetParent(heroes.transform, true);
-            enemy.Position = position;
-            enemy.SetScale(false);
-            PrepareBattleHeroCanvas(enemy, slot, id == "cultist_boss" ? 1.5f : 1f);
-            AddBattleHeroShadow(enemy, slot);
-            enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
-            enemy.AddViz("coll#val:1.3,scale:1.3");
-            enemy.AddViz("dmg_track");
-            enemy.AddViz("drop");
-            if (battleLootPouchSprite != null && enemy.visuals.TryGetValue("drop", out var drop) && drop != null &&
-                drop.TryGetComponent<XDdrop>(out var dropBehavior))
-            {
-                var marker = slot.GetComponent<SpriteRenderer>();
-                int layer = marker != null ? marker.sortingLayerID : 0;
-                int order = marker != null ? marker.sortingOrder + 1 : 101;
-                dropBehavior.UseGroundPouch((unit, items) => SpawnBattleLootPouch(unit, items, layer, order));
-            }
-            enemy.AddViz("death");
+            CreateStageEnemy(ids[i], slot, position, hasLoot: true);
         }
+    }
+
+    private const float EnemyAppearanceDecodeGrace = 5f;
+    private RObj cultistSummon;
+
+    private bool TrySummonStageEnemy(RObj caster, string id)
+    {
+        if (!stageCombatActive || caster?.dbID != "cultist_boss" || caster.main == null ||
+            !caster.main.activeInHierarchy || !battleSpawnedEnemies.Contains(caster.main)) return false;
+        if (cultistSummon?.main != null && cultistSummon.main.activeInHierarchy && cultistSummon.GetPar("health") > 0)
+            return false;
+
+        var slots = heroes.transform.Find("enemy");
+        if (slots == null || slots.childCount == 0) return false;
+        var slot = slots.GetChild(Mathf.Min(1, slots.childCount - 1));
+        battleSpawnedEnemies.RemoveAll(unit => unit == null);
+        cultistSummon = CreateStageEnemy(id, slot, caster.main.transform.position + Vector3.left * 1.75f,
+            hasLoot: false);
+        if (cultistSummon == null) return false;
+        StartCoroutine(PlaySummonEntrance(caster, cultistSummon));
+        return true;
+    }
+
+    private IEnumerator PlaySummonEntrance(RObj caster, RObj summon)
+    {
+        using var action = UnitActionTracker.Begin(caster);
+        bool IsPresent() => stageCombatActive && battleUI.activeInHierarchy && ReferenceEquals(cultistSummon, summon) &&
+            summon.main != null && summon.main.activeInHierarchy && summon.GetPar("health") > 0;
+
+        var video = summon.visMain.GetComponent<UiLoopVideo>();
+        if (video != null && video.HasAnimation("appear"))
+        {
+            video.Play("appear");
+            float deadline = Time.unscaledTime + video.GetAnimationDuration("appear") + EnemyAppearanceDecodeGrace;
+            while (IsPresent() && !video.IsAnimationFinished("appear") && Time.unscaledTime < deadline)
+                yield return null;
+
+            if (!IsPresent()) yield break;
+            video.Play("idle");
+            deadline = Time.unscaledTime + EnemyAppearanceDecodeGrace;
+            while (IsPresent() && video.HasAnimation("idle") && !video.IsAnimationVisible("idle") &&
+                   Time.unscaledTime < deadline)
+                yield return null;
+        }
+
+        if (!IsPresent()) yield break;
+        PrepareStageCombat(summon);
+        BattleEnemyClick.Attach(summon);
+        BindBattleHeroBars();
+    }
+
+    private RObj CreateStageEnemy(string id, Transform slot, Vector3 position, bool hasLoot)
+    {
+        if (!DatabaseAll.instance.heroes.ContainsKey(id) ||
+            !ResourceHolder.instance.monsters.TryGetValue(id, out var prefab) || prefab == null)
+        {
+            Debug.LogWarning($"Cannot spawn battle enemy '{id}': missing hero config or monster prefab.", this);
+            return null;
+        }
+        // Battle stage visuals do not participate in the overworld distance culling (allMons).
+        var enemy = new RObj(id, 1, 1, false, position, false, ItemType.monster, isEnemy: true);
+        DatabaseAll.instance.CreateOnlyVizual(enemy, position);
+        battleSpawnedEnemies.Add(enemy.main);
+        enemy.main.transform.SetParent(heroes.transform, true);
+        enemy.Position = position;
+        enemy.SetScale(false);
+        PrepareBattleHeroCanvas(enemy, slot, id == "cultist_boss" ? 1.5f : 1f);
+        AddBattleHeroShadow(enemy, slot);
+        enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
+        enemy.AddViz("coll#val:1.3,scale:1.3");
+        enemy.AddViz("dmg_track");
+        if (hasLoot) enemy.AddViz("drop");
+        if (battleLootPouchSprite != null && enemy.visuals.TryGetValue("drop", out var drop) && drop != null &&
+            drop.TryGetComponent<XDdrop>(out var dropBehavior))
+        {
+            var marker = slot.GetComponent<SpriteRenderer>();
+            int layer = marker != null ? marker.sortingLayerID : 0;
+            int order = marker != null ? marker.sortingOrder + 1 : 101;
+            dropBehavior.UseGroundPouch((unit, items) => SpawnBattleLootPouch(unit, items, layer, order));
+        }
+        enemy.AddViz("death");
+        return enemy;
     }
 
     private IEnumerator PlayBattleEnemyEntrance()
     {
-        const float decodeGraceSeconds = 5f;
         var appearing = new List<(UiLoopVideo Video, float Deadline)>();
         foreach (var spawned in battleSpawnedEnemies)
         {
@@ -1162,7 +1222,7 @@ public class MainCycleDark : MonoBehaviour
             var video = enemy.visMain.GetComponent<UiLoopVideo>();
             if (video == null || !video.HasAnimation("appear")) continue;
             video.Play("appear");
-            appearing.Add((video, Time.unscaledTime + video.GetAnimationDuration("appear") + decodeGraceSeconds));
+            appearing.Add((video, Time.unscaledTime + video.GetAnimationDuration("appear") + EnemyAppearanceDecodeGrace));
         }
 
         // Each enemy starts preparing idle as soon as its own clip ends.
@@ -1183,7 +1243,7 @@ public class MainCycleDark : MonoBehaviour
             }
         } while (appearing.Count > 0);
 
-        float idleDeadline = Time.unscaledTime + decodeGraceSeconds;
+        float idleDeadline = Time.unscaledTime + EnemyAppearanceDecodeGrace;
         while (Time.unscaledTime < idleDeadline &&
                enteringIdle.Exists(video => video != null && video.HasAnimation("idle") && !video.IsAnimationVisible("idle")))
             yield return null;
@@ -1397,7 +1457,7 @@ public class MainCycleDark : MonoBehaviour
             // The bars follow projected hero positions instead of the horizontal layout.
             var layout = rect.GetComponent<LayoutElement>() ?? rect.gameObject.AddComponent<LayoutElement>();
             layout.ignoreLayout = true;
-            bool used = i < units.Count;
+            bool used = i < units.Count && units[i] != null;
             var holder = rect.GetComponent<ObjHolder>() ?? rect.gameObject.AddComponent<ObjHolder>();
             holder.noTrack = true;
             holder.obj = used ? units[i].GetComponent<ObjHolder>().obj : null;

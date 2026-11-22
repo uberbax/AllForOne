@@ -11,6 +11,8 @@ using Random = UnityEngine.Random;
 public class SkillExecutor : MonoBehaviour
 {
     public static SkillExecutor instance;
+    private const string StageSummonSkill = "summon_zombie1";
+    public event Func<RObj, string, bool> StageEnemySummon;
 
     public Transform summonPos1;
     public Transform summonPos2;
@@ -174,6 +176,9 @@ public class SkillExecutor : MonoBehaviour
         float d = 1e+10f;
         //cur weapon skill ?
         skl = who.GetSKillReplace(skl);
+
+        if (skl.dbObj.ID == StageSummonSkill)
+            return ExecuteStageSummon(who, skl, overCd);
 
         if (RumbleSkills.Handles(skl.dbObj.ID))
             return RumbleSkills.Execute(this, who, skl, target, overPos, overCd, except, reqTag, addPars);
@@ -510,6 +515,20 @@ public class SkillExecutor : MonoBehaviour
         return ExecReso.OK;
     }
 
+    private ExecReso ExecuteStageSummon(RObj caster, RObj skill, bool overCd)
+    {
+        if (MainStates.instance?.inBattle != true || (!overCd && skill.GetPar("cd") > 0) ||
+            skill.dbObj.extraPars.Count == 0) return ExecReso.NO_TARGETS;
+        float manaCost = skill.GetPar("manacost") * (1 + caster.GetPar("mana_reduction") / 100f);
+        if (!overCd && caster.GetPar("mana") < manaCost) return ExecReso.NO_MANA;
+        if (StageEnemySummon?.Invoke(caster, skill.dbObj.extraPars[0].Key) != true) return ExecReso.NO_TARGETS;
+
+        skill.SetPar("cd", skill.GetPar("cooldown"));
+        if (manaCost > 0) caster.ChangePar("mana", -manaCost);
+        EventManager.INV("skill_casted", new ArgPass { who = caster, who2 = skill, whats = new List<RObj> { caster } });
+        return ExecReso.OK;
+    }
+
     private bool reqAction = false;
     public RObj lastWho;
     public RObj lastSkl;
@@ -537,7 +556,7 @@ public class SkillExecutor : MonoBehaviour
         
         //?
         var ss = skl.dbObj.extraPars;
-        if (ss.Count > 0 && skl.GetPar("req2") < 1)
+        if (ss.Count > 0 && skl.GetPar("req2") < 1 && skl.dbObj.ID != StageSummonSkill)
         {
             CastUniqueSkill(who, skl, target);
             return;
