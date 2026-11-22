@@ -1113,7 +1113,8 @@ public class MainCycleDark : MonoBehaviour
     {
         var positions = heroes != null ? heroes.transform.Find("enemy") : null;
         if (positions == null || MainStates.instance == null || ResourceHolder.instance == null || DatabaseAll.instance == null) return;
-        string[] ids = { "zombie1", "zombie3" };
+        //string[] ids = { "zombie1", "zombie3" };
+        string[] ids = {"cultist_boss"};
         for (int i = 0; i < ids.Length && i < positions.childCount; i++)
         {
             var id = ids[i];
@@ -1133,7 +1134,7 @@ public class MainCycleDark : MonoBehaviour
             enemy.main.transform.SetParent(heroes.transform, true);
             enemy.Position = position;
             enemy.SetScale(false);
-            PrepareBattleHeroCanvas(enemy, slot);
+            PrepareBattleHeroCanvas(enemy, slot, id == "cultist_boss" ? 1.5f : 1f);
             AddBattleHeroShadow(enemy, slot);
             enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
             enemy.AddViz("coll#val:1.3,scale:1.3");
@@ -1492,7 +1493,7 @@ public class MainCycleDark : MonoBehaviour
         }
     }
 
-    private void PrepareBattleHeroCanvas(RObj hero, Transform slot)
+    private void PrepareBattleHeroCanvas(RObj hero, Transform slot, float heightMultiplier = 1f)
     {
         var image = hero.visMain.GetComponent<RawImage>();
         if (image == null) return;
@@ -1511,7 +1512,7 @@ public class MainCycleDark : MonoBehaviour
         canvas.sortingOrder = placeholder != null ? placeholder.sortingOrder : 100;
         var canvasRect = (RectTransform)canvasObject.transform;
         canvasRect.sizeDelta = rect.rect.size;
-        canvasRect.localScale = Vector3.one * (targetHeight / Mathf.Max(.001f, sourceHeight));
+        canvasRect.localScale = Vector3.one * (targetHeight * heightMultiplier / Mathf.Max(.001f, sourceHeight));
         rect.SetParent(canvasRect, false);
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(.5f, .5f);
         rect.anchoredPosition3D = Vector3.zero;
