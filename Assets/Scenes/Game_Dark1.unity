@@ -166520,6 +166520,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Minimus::UIturnOrder
   holder: {fileID: 1108734058}
   scl: 1
+  myColor: {r: 0, g: 0, b: 0, a: 0}
+  enemyColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &453834438
 GameObject:
   m_ObjectHideFlags: 0
@@ -242167,6 +242169,7 @@ GameObject:
   - component: {fileID: 646144116}
   - component: {fileID: 646144118}
   - component: {fileID: 646144117}
+  - component: {fileID: 646144119}
   m_Layer: 5
   m_Name: Order line
   m_TagString: Untagged
@@ -242231,6 +242234,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646144115}
   m_CullTransparentMesh: 1
+--- !u!114 &646144119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646144115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ea91eae25b77d49b3698c74455f0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::Vizualo
+  condID: 
+  isNot: 0
+  relButton: {fileID: 0}
+  relButton2: {fileID: 0}
+  relPrice: {fileID: 0}
+  id: 
+  readyNotTakenTask: 0
+  taken: 0
+  notTaken: 0
+  notReady: 0
+  noConditionMatch: 0
+  asHolderCond: 0
+  asOther: {fileID: 917099332}
+  asOtherTxt: {fileID: 0}
+  reqs: []
+  forOther: {fileID: 0}
+  alsoActive: []
+  activateScale: 0
+  halfCanvasGroup: 0
 --- !u!1 &646274573
 GameObject:
   m_ObjectHideFlags: 0
@@ -418601,6 +418635,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Minimus::UIturnOrder
   holder: {fileID: 917099333}
   scl: 1
+  myColor: {r: 0.6156863, g: 0.5921569, b: 0.50980395, a: 1}
+  enemyColor: {r: 0.78823537, g: 0.21568629, b: 0.15294118, a: 1}
 --- !u!114 &1130023913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462520,7 +462556,7 @@ GameObject:
   - component: {fileID: 1248769993}
   - component: {fileID: 1248769992}
   m_Layer: 5
-  m_Name: Rim
+  m_Name: RimCur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

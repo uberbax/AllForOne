@@ -9,6 +9,15 @@ public sealed class BattleTargetIndicators : MonoBehaviour
     [SerializeField] private Transform stageRoot;
     private Camera worldCamera;
     private RObj selectedEnemy;
+    private bool castFocusActive;
+
+    public void SetCastFocusActive(bool active)
+    {
+        castFocusActive = active;
+        if (!active) return;
+        Show(targetMy, false);
+        Show(targetEnemy, false);
+    }
 
     private void OnEnable()
     {
@@ -28,6 +37,7 @@ public sealed class BattleTargetIndicators : MonoBehaviour
             ClearEnemy();
             return;
         }
+        if (castFocusActive) return;
         if (worldCamera == null || !worldCamera.isActiveAndEnabled) worldCamera = Camera.main;
         var ally = turns != null ? turns.CurrentAlly : null;
         FollowX(targetMy, BelongsToStage(ally) && ally.main.activeInHierarchy ? ally : null);

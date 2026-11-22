@@ -44,6 +44,7 @@ public sealed class BattleCastFocus : MonoBehaviour
     private readonly HashSet<SpriteRenderer> seenSprites = new HashSet<SpriteRenderer>();
     private IDisposable activity;
     private Camera cameraInUse;
+    private BattleTargetIndicators targetIndicators;
     private RObj caster;
     private XDanimator animator;
     private UiLoopVideo video;
@@ -57,6 +58,7 @@ public sealed class BattleCastFocus : MonoBehaviour
     private void OnEnable()
     {
         Unsubscribe();
+        TryGetComponent(out targetIndicators);
         EventManager.SUB("skill_casted", OnCast);
         EventManager.SUB("naprig_completed", OnNaprigCompleted);
     }
@@ -135,6 +137,7 @@ public sealed class BattleCastFocus : MonoBehaviour
         deadline = startedAt + Mathf.Max(15, animationLength + distance * .4f + 6, projectiles + 2);
         activity = UnitActionTracker.Begin(caster);
         active = true;
+        if (targetIndicators != null) targetIndicators.SetCastFocusActive(true);
     }
 
     private static Canvas FindUnitCanvas(RObj unit)
@@ -356,6 +359,7 @@ public sealed class BattleCastFocus : MonoBehaviour
             cameraInUse.fieldOfView = cameraFov;
         }
         active = false;
+        if (targetIndicators != null) targetIndicators.SetCastFocusActive(false);
         foreach (var state in raisedCanvases)
         {
             if (state.Canvas == null) continue;
