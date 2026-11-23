@@ -118,8 +118,7 @@ public sealed class BattleCastFocus : MonoBehaviour
         animator = caster.visuals.TryGetValue("animator", out var view) && view != null
             ? view.GetComponentInChildren<XDanimator>() : null;
         video = caster.visMain != null ? caster.visMain.GetComponent<UiLoopVideo>() : null;
-        naprig = ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 &&
-            (skill.dbObj.ID == "basic_melee" || skill.GetPar("use_naprig") > 0);
+        naprig = SkillExecutor.UsesNaprig(skill);
         naprigComplete = false;
         cameraHome = lastCameraPosition = cameraInUse.transform.localPosition;
         cameraSize = cameraInUse.orthographicSize;
@@ -270,8 +269,9 @@ public sealed class BattleCastFocus : MonoBehaviour
         cameraHome += cameraInUse.transform.localPosition - lastCameraPosition;
         float now = Time.unscaledTime;
         float weight = Mathf.SmoothStep(0, 1, Mathf.Clamp01((now - startedAt) / FocusTime));
-        bool animationActive = animator != null && animator.prevState == "attack" &&
-            !(video != null && video.IsAnimationFinished("attack"));
+        string attackAnimation = animator != null ? animator.prevState : null;
+        bool animationActive = (attackAnimation == "attack" || attackAnimation == "ult") &&
+            !(video != null && video.IsAnimationFinished(attackAnimation));
         bool finished = naprig ? naprigComplete : !animationActive;
         if (releaseAt < 0 && ((now >= minimumEnd && finished) || now >= deadline))
         {

@@ -1059,6 +1059,10 @@ public class MainCycleDark : MonoBehaviour
             var position = slot.position + positions.TransformVector(Vector3.down * (1.5f * (index / columns)));
             var copy = hero.Clone();
             copy.RID = "battle_hero_" + Guid.NewGuid().ToString("N");
+            // Heroes loaded from an older save may not have the ultimate from the current config.
+            foreach (var id in copy.dbObj.skills)
+                if (SkillExecutor.IsDarkHeroUltimate(id) && DatabaseAll.instance.skills.ContainsKey(id) && !copy.actSkills.Exists(skill => skill.dbID == id))
+                    copy.actSkills.Add(DatabaseAll.instance.CreateProjectile(copy, id, Vector3.zero, false, false));
             var visual = DatabaseAll.instance.CreateOnlyVizual(copy, position);
             battleInventoryHeroes.Add(visual);
             visual.transform.SetParent(heroes.transform, true);
@@ -1739,6 +1743,25 @@ public class MainCycleDark : MonoBehaviour
     {
     }
 
+    private static bool EnsureStarterParty(MainStates state, RObj player, bool loaded)
+    {
+        const string starterHero = "hero_mage";
+        const string initialized = "dark_starter_party_initialized";
+        if (player.longPars.ContainsKey(initialized)) return false;
+
+        // Older Dark saves could stop at the last starting skill equip, before the mage was granted.
+        if (loaded && (player.dbID != starterHero ||
+            !player.inventory.Exists(item => item.dbID == "crit_strike" && item.it == ItemType.projectile)))
+            return false;
+
+        // For legacy saves with a party, keep the roster the player already has.
+        if (!player.inventory.Exists(item => item.it == ItemType.monster && (loaded || item.dbID == starterHero)))
+            state.AddItem(player, starterHero, 1);
+
+        player.SetLongPar(initialized, 1);
+        return true;
+    }
+
     private void B(ArgPass obj)
     {
         Debug.Log("haha");
@@ -1794,11 +1817,9 @@ public class MainCycleDark : MonoBehaviour
             skl = main.inventory.Find(x => x.dbObj.ID == "crit_strike");
             MainStates.instance.Equip(main, skl, 52);
             
-            MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_mage", Value = 1}});
-            //MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_thief", Value = 1}});
-            //MainStates.instance.AddItems(new List<Bon>{new Bon{Key = "hero_warrior", Value = 1}});
-            
         }
+
+        var starterPartyInitialized = EnsureStarterParty(MainStates.instance, main, succLoad);
 
         //MainStates.instance.AddItems(new List<Bon> { new Bon { Key = "fire_arrow", Value = 1 } });
         //skl = main.inventory.Find(x => x.dbObj.ID == "fire_arrow");
@@ -1896,6 +1917,12 @@ public class MainCycleDark : MonoBehaviour
         main_pet.AddViz("pet");
 
         XDdmgTrack.scaleMult = 0.3f;
+
+        if (starterPartyInitialized)
+        {
+            MainStates.instance.Save();
+            PlayerPrefs.Save();
+        }
     }
 
     public void BattleEnded(ArgPass obj)

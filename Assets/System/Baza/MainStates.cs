@@ -3588,10 +3588,10 @@ public class MainStates : MonoBehaviour
         }
     }
 
-    public void DoNaprig(RObj who, RObj target, Action onArrived = null)
+    public void DoNaprig(RObj who, RObj target, Action onArrived = null, string attackAnimation = "attack")
     {
         if (target == null) return;
-        DoNaprig(who, target.Position, onArrived);
+        DoNaprig(who, target.Position, onArrived, attackAnimation);
     }
 
     public void MultiplyPars(RObj who, float mult)
@@ -3778,17 +3778,18 @@ public class MainStates : MonoBehaviour
     }
     
     
-    public void DoNaprig(RObj who, Vector3 target, Action onArrived = null)
+    public void DoNaprig(RObj who, Vector3 target, Action onArrived = null, string attackAnimation = "attack")
     {
         if (who?.main == null || !who.main.activeInHierarchy) return;
         Vector3 home = who.main.transform.position;
         Vector3 destination = home + (target - home) *
             ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.naprig_prc);
         var action = UnitActionTracker.Begin(who);
-        StartCoroutine(ApproachNaprig(who, home, destination, onArrived, action));
+        StartCoroutine(ApproachNaprig(who, home, destination, onArrived, attackAnimation, action));
     }
 
-    private IEnumerator ApproachNaprig(RObj who, Vector3 home, Vector3 destination, Action onArrived, IDisposable action)
+    private IEnumerator ApproachNaprig(RObj who, Vector3 home, Vector3 destination, Action onArrived,
+        string attackAnimation, IDisposable action)
     {
         bool handedOff = false;
         try
@@ -3823,14 +3824,14 @@ public class MainStates : MonoBehaviour
                     CompleteNaprig(who, action);
                     return;
                 }
-                StartCoroutine(FinishNaprig(who, home, onArrived, action));
+                StartCoroutine(FinishNaprig(who, home, onArrived, attackAnimation, action));
             }, null, useRight: false, ignoreFlip: true);
             handedOff = true;
         }
         finally { if (!handedOff) CompleteNaprig(who, action); }
     }
 
-    private IEnumerator FinishNaprig(RObj who, Vector3 home, Action onArrived, IDisposable action)
+    private IEnumerator FinishNaprig(RObj who, Vector3 home, Action onArrived, string attackAnimation, IDisposable action)
     {
         bool returnScheduled = false;
         try
@@ -3841,19 +3842,19 @@ public class MainStates : MonoBehaviour
             if (animator != null && (animator.prevState == "run" || animator.prevState == "walk"))
                 animator.SetState("idle");
             if (onArrived != null) onArrived();
-            else if (animator != null) animator.SetState("attack", autoIdle: false);
+            else if (animator != null) animator.SetState(attackAnimation, autoIdle: false);
 
-            bool waitForVideo = video != null && video.HasAnimation("attack") &&
-                animator != null && animator.prevState == "attack";
-            float duration = waitForVideo ? video.GetAnimationDuration("attack") + 10f :
+            bool waitForVideo = video != null && video.HasAnimation(attackAnimation) &&
+                (animator != null ? animator.prevState == attackAnimation : attackAnimation == "ult");
+            float duration = waitForVideo ? video.GetAnimationDuration(attackAnimation) + 10f :
                 video != null ? 3f : Mathf.Max(0, ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.wait_naprig));
             float deadline = Time.realtimeSinceStartup + duration;
             while (Time.realtimeSinceStartup < deadline)
             {
                 if (who.main == null || !who.main.activeInHierarchy || who.GetPar("health") <= 0) yield break;
                 if (waitForVideo && (video == null || !video.isActiveAndEnabled ||
-                    (video.IsAnimationFinished("attack") && !video.IsReactionPlaying) ||
-                    animator == null || animator.prevState != "attack")) break;
+                    (video.IsAnimationFinished(attackAnimation) && !video.IsReactionPlaying) ||
+                    (animator != null && animator.prevState != attackAnimation))) break;
                 yield return null;
             }
 
@@ -3887,7 +3888,7 @@ public class MainStates : MonoBehaviour
                     yield return null;
                 }
             }
-            else if (animator != null && animator.prevState == "attack") animator.SetState("idle");
+            else if (animator != null && (animator.prevState == "attack" || animator.prevState == "ult")) animator.SetState("idle");
 
             bool arrived = false;
             float progress = 0;

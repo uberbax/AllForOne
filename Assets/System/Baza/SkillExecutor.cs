@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 public class SkillExecutor : MonoBehaviour
 {
     public static SkillExecutor instance;
+    [SerializeField] private GameObject mageUltimateLaser;
     private const string StageSummonSkill = "summon_zombie1";
     public event Func<RObj, string, bool> StageEnemySummon;
 
@@ -230,6 +231,9 @@ public class SkillExecutor : MonoBehaviour
                 return ExecReso.NO_SIGHT;
             }
         }
+
+        if (overPos == default && IsDarkHeroUltimate(skl.dbObj.ID))
+            return ExecuteDarkHeroUltimate(who, skl, targ, overCd);
 
         var ll = ResourceHolder.instance.GetMeSkillEtc(who.dbObj, skl.dbObj.ID);
         int projSpawnType = 0;
@@ -513,6 +517,93 @@ public class SkillExecutor : MonoBehaviour
         });
         
         return ExecReso.OK;
+    }
+
+    internal static bool IsDarkHeroUltimate(string id) =>
+        id == "ult_thief" || id == "ult_warrior" || id == "ult_mage";
+
+    private static bool IsUltimateParticipantActive(RObj unit) =>
+        unit?.main != null && unit.main.activeInHierarchy && unit.GetPar("health") > 0;
+
+    private ExecReso ExecuteDarkHeroUltimate(RObj caster, RObj skill, List<RObj> targets, bool overCd)
+    {
+        if (!IsUltimateParticipantActive(caster) || (!overCd && skill.GetPar("cd") > 0) ||
+            caster.visMain == null || !caster.visMain.TryGetComponent<UiLoopVideo>(out var video) ||
+            !video.isActiveAndEnabled || !video.HasAnimation("ult")) return ExecReso.NO_TARGETS;
+
+        targets.RemoveAll(target => !IsUltimateParticipantActive(target));
+        if (targets.Count == 0) return ExecReso.NO_TARGETS;
+        int count = Mathf.Min(targets.Count, Mathf.Max(1, (int)skill.GetPar("targets")));
+        targets = targets.GetRange(0, count);
+
+        float manaCost = skill.GetPar("manacost") * (1 + caster.GetPar("mana_reduction") / 100f);
+        if (manaCost > 0) caster.ChangePar("mana", -manaCost);
+        skill.SetPar("cd", skill.GetPar("cooldown"));
+
+        var animator = caster.visuals.TryGetValue("animator", out var view) && view != null
+            ? view.GetComponentInChildren<XDanimator>() : null;
+        bool approach = UsesNaprig(skill);
+        void StartUltimate()
+        {
+            if (animator != null) animator.SetState("ult", autoIdle: false);
+            video.Play("ult");
+            StartCoroutine(PlayDarkHeroUltimate(caster, skill, targets, video, animator, approach));
+        }
+        if (approach) MainStates.instance.DoNaprig(caster, targets[0], StartUltimate, attackAnimation: "ult");
+        else StartUltimate();
+        EventManager.INV("skill_casted", new ArgPass { who = caster, who2 = skill, what1 = "primary", whats = targets });
+        return ExecReso.OK;
+    }
+
+    private IEnumerator PlayDarkHeroUltimate(RObj caster, RObj skill, List<RObj> targets,
+        UiLoopVideo video, XDanimator animator, bool approach)
+    {
+        using var action = UnitActionTracker.Begin(caster);
+        float impactTime = Mathf.Max(0, skill.GetPar("ult_impact_ms")) / 1000f;
+        float deadline = Time.unscaledTime + video.GetAnimationDuration("ult") + 5f;
+        bool hit = false;
+        while (IsUltimateParticipantActive(caster) && video != null && video.isActiveAndEnabled)
+        {
+            if (animator != null && animator.prevState != "ult") yield break;
+            bool finished = video.IsAnimationFinished("ult") || Time.unscaledTime >= deadline;
+            if (!hit && (finished || video.HasReachedAnimationTime("ult", impactTime)))
+            {
+                hit = true;
+                foreach (var target in targets)
+                {
+                    if (!IsUltimateParticipantActive(target)) continue;
+                    if (skill.dbObj.ID == "ult_mage") SpawnMageUltimateLaser(target);
+                    MainStates.instance.DealDamage(target, skill);
+                }
+            }
+            if (finished)
+            {
+                if (!approach)
+                {
+                    if (animator != null) animator.SetState("idle");
+                    else video.Play("idle");
+                }
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+    private void SpawnMageUltimateLaser(RObj target)
+    {
+        if (mageUltimateLaser == null) return;
+        var head = target.visMain != null ? target.visMain.transform.Find("head") : null;
+        var position = head != null ? head.position : target.main.transform.position + Vector3.up * 2f;
+        position.y = -1.33f;
+        var effect = Instantiate(mageUltimateLaser, position, Quaternion.Euler(0f, 90f, 0f));
+        var canvas = target.visMain != null ? target.visMain.GetComponentInParent<Canvas>() : null;
+        if (canvas != null)
+            foreach (var renderer in effect.GetComponentsInChildren<ParticleSystemRenderer>())
+            {
+                renderer.sortingLayerID = canvas.sortingLayerID;
+                renderer.sortingOrder = canvas.sortingOrder + 1;
+            }
+        Destroy(effect, 2f);
     }
 
     private ExecReso ExecuteStageSummon(RObj caster, RObj skill, bool overCd)
@@ -1058,9 +1149,10 @@ public class SkillExecutor : MonoBehaviour
         }
     }
 
-    private static bool UsesNaprig(RObj skill) =>
-        ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 &&
-        (skill.dbObj.ID == "basic_melee" || skill.GetPar("use_naprig") > 0);
+    public static bool UsesNaprig(RObj skill) =>
+        skill.dbObj.ID == "ult_warrior" || skill.dbObj.ID == "ult_thief" ||
+        (ConfigLoader.GetMetaParamValue(ConfigLoader.MetaParam.use_naprig) == 1 &&
+         (skill.dbObj.ID == "basic_melee" || skill.GetPar("use_naprig") > 0));
 
     private void PlayNaprigAttack(RObj who, RObj skill, RObj target)
     {

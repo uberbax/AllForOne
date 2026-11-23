@@ -35,7 +35,7 @@ public class XDanimator : ComponentBehavior
         
         anim2 = mon.visuals["vis_main"].GetComponent<PrAnimat>();        
         
-        if (pars.ContainsKey("pr") && (anim == null && guiControls == null && animVideo == null || !anim.enabled))
+        if (pars.ContainsKey("pr") && (anim == null && guiControls == null && animVideo == null || anim != null && !anim.enabled))
         {
             mon.visuals["vis_main"].AddComponent<PrAnimat>();
         }        
