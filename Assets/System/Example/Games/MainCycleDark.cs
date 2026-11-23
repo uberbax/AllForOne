@@ -439,6 +439,7 @@ public class MainCycleDark : MonoBehaviour
         if (SkillExecutor.instance != null) SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
         StopStageCombat();
         HideBattleAnnouncement();
+        ClearStagedCoffins();
         ClearBattleLootPouches();
         StopTrackingBattleLoot();
         RestoreBattleCamera();
@@ -820,10 +821,10 @@ public class MainCycleDark : MonoBehaviour
 
         if (crossedEncounter)
         {
-            var encounter = battleEncounters[nextBattleEncounter++];
+            int encounter = nextBattleEncounter++;
             SetBattleWalking(false);
             ClearBattleEnemies();
-            SpawnBattleEnemies(encounter.EnemyIds, partyFront + delta - battlePartyStartFrontX);
+            SpawnBattleEnemies(encounter, partyFront + delta - battlePartyStartFrontX);
             if (battleSpawnedEnemies.Count > 0)
             {
                 ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f);
@@ -1040,6 +1041,7 @@ public class MainCycleDark : MonoBehaviour
         }
         battleInventoryHeroes.Clear();
         ClearBattleEnemies();
+        ClearStagedCoffins();
         ClearBattleLootPouches();
         ReadBattleEncounterConfig();
         battlePartyStartFrontX = float.NegativeInfinity;
@@ -1092,6 +1094,15 @@ public class MainCycleDark : MonoBehaviour
             index++;
         }
 
+        if (battleInventoryHeroes.Count > 0)
+        {
+            for (int encounter = 0; encounter < battleEncounters.Count; encounter++)
+            {
+                float offset = Mathf.Max(0f, battleEncounters[encounter].X - battlePartyStartFrontX);
+                SpawnBattleEnemies(encounter, offset, stageCoffins: true);
+            }
+        }
+
         battleUI?.GetComponent<BattleTurnPanel>()?.SetStageParty(battleInventoryHeroes);
         BindBattleHeroBars();
 
@@ -1105,6 +1116,19 @@ public class MainCycleDark : MonoBehaviour
 
 
     private readonly List<GameObject> battleSpawnedEnemies = new List<GameObject>();
+    private readonly Dictionary<(int Encounter, int Entry), RObj> stagedCoffins = new();
+
+    private void ClearStagedCoffins()
+    {
+        foreach (var enemy in stagedCoffins.Values)
+        {
+            RemoveBattleEnemyData(enemy);
+            if (enemy.main == null) continue;
+            enemy.main.SetActive(false);
+            Destroy(enemy.main);
+        }
+        stagedCoffins.Clear();
+    }
 
     private void ClearBattleEnemies()
     {
@@ -1166,7 +1190,7 @@ public class MainCycleDark : MonoBehaviour
         });
     }
 
-    private void SpawnBattleEnemies(string[] enemyIds, float formationOffsetX)
+    private void SpawnBattleEnemies(int encounter, float formationOffsetX, bool stageCoffins = false)
     {
         var positions = heroes != null ? heroes.transform.Find("enemy") : null;
         if (positions == null || positions.childCount == 0 || MainStates.instance == null ||
@@ -1178,16 +1202,38 @@ public class MainCycleDark : MonoBehaviour
             ? Mathf.Max(1.75f, lastSlot.position.x - positions.GetChild(lastSlotIndex - 1).position.x)
             : 1.75f;
         int spawnedCount = 0;
-        foreach (var entry in enemyIds)
+        var enemyIds = battleEncounters[encounter].EnemyIds;
+        for (int entry = 0; entry < enemyIds.Length; entry++)
         {
-            var id = entry.Trim();
+            var id = enemyIds[entry].Trim();
             if (id.Length == 0) continue;
 
             var slot = positions.GetChild(Mathf.Min(spawnedCount, lastSlotIndex));
             float extraX = Mathf.Max(0, spawnedCount - lastSlotIndex) * spacing;
             var position = slot.position + Vector3.right * (formationOffsetX + extraX);
             if (battleInventoryHeroes.Count > 0) position.y = battleInventoryHeroes[0].transform.position.y;
-            if (CreateStageEnemy(id, slot, position, hasLoot: true) != null) spawnedCount++;
+            var key = (encounter, entry);
+
+            if (stageCoffins)
+            {
+                if (!HasStageEnemyAssets(id)) continue;
+                spawnedCount++;
+                if (id != "cultist_boss") continue;
+
+                var preview = CreateStageEnemyVisual(id, slot, position);
+                var video = preview.visMain.GetComponent<UiLoopVideo>();
+                if (video != null && video.HasAnimation("appear")) video.HoldFirstFrame("appear");
+                stagedCoffins.Add(key, preview);
+            }
+            else if (stagedCoffins.Remove(key, out var coffin))
+            {
+                ActivateStageEnemy(coffin, slot, hasLoot: true);
+                spawnedCount++;
+            }
+            else if (CreateStageEnemy(id, slot, position, hasLoot: true) != null)
+            {
+                spawnedCount++;
+            }
         }
     }
 
@@ -1240,23 +1286,39 @@ public class MainCycleDark : MonoBehaviour
         BindBattleHeroBars();
     }
 
+    private static bool HasStageEnemyAssets(string id) =>
+        DatabaseAll.instance.heroes.ContainsKey(id) &&
+        ResourceHolder.instance.monsters.TryGetValue(id, out var prefab) && prefab != null;
+
     private RObj CreateStageEnemy(string id, Transform slot, Vector3 position, bool hasLoot)
     {
-        if (!DatabaseAll.instance.heroes.ContainsKey(id) ||
-            !ResourceHolder.instance.monsters.TryGetValue(id, out var prefab) || prefab == null)
+        if (!HasStageEnemyAssets(id))
         {
             Debug.LogWarning($"Cannot spawn battle enemy '{id}': missing hero config or monster prefab.", this);
             return null;
         }
+
+        var enemy = CreateStageEnemyVisual(id, slot, position);
+        ActivateStageEnemy(enemy, slot, hasLoot);
+        return enemy;
+    }
+
+    private RObj CreateStageEnemyVisual(string id, Transform slot, Vector3 position)
+    {
         // Battle stage visuals do not participate in the overworld distance culling (allMons).
         var enemy = new RObj(id, 1, 1, false, position, false, ItemType.monster, isEnemy: true);
         DatabaseAll.instance.CreateOnlyVizual(enemy, position);
-        battleSpawnedEnemies.Add(enemy.main);
         enemy.main.transform.SetParent(heroes.transform, true);
         enemy.Position = position;
         enemy.SetScale(false);
         PrepareBattleHeroCanvas(enemy, slot, id == "cultist_boss" ? 1.5f : 1f);
         AddBattleHeroShadow(enemy, slot);
+        return enemy;
+    }
+
+    private void ActivateStageEnemy(RObj enemy, Transform slot, bool hasLoot)
+    {
+        battleSpawnedEnemies.Add(enemy.main);
         enemy.AddViz(enemy.visMain.GetComponent<UiLoopVideo>() != null ? "animator" : "animator#pr:1");
         enemy.AddViz("coll#val:1.3,scale:1.3");
         enemy.AddViz("dmg_track");
@@ -1270,7 +1332,6 @@ public class MainCycleDark : MonoBehaviour
             dropBehavior.UseGroundPouch((unit, items) => SpawnBattleLootPouch(unit, items, layer, order));
         }
         enemy.AddViz("death");
-        return enemy;
     }
 
     private IEnumerator PlayBattleEnemyEntrance()

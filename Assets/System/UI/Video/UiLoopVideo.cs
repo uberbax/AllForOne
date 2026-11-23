@@ -54,6 +54,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     private bool pendingFinished;
     private int pendingFrameReadyAt = -1;
     private bool pendingPlaybackStarted;
+    private bool pendingHoldFirstFrame;
+    private bool currentHeld;
     private int visibleSinceFrame = -1;
     private bool waitingForLoopFrame;
     private RenderTexture loopHold;
@@ -75,6 +77,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     public void CrossFade(string anim) => ChangeAnimation(anim, false);
 
     public void Play(string anim) => ChangeAnimation(anim, true);
+
+    public void HoldFirstFrame(string anim) => ChangeAnimation(anim, true, holdFirstFrame: true);
 
     public void PlayFrameSyncedAttack()
     {
@@ -163,7 +167,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         return false;
     }
 
-    private void ChangeAnimation(string anim, bool instant)
+    private void ChangeAnimation(string anim, bool instant, bool holdFirstFrame = false)
     {
         if (!isActiveAndEnabled || string.IsNullOrWhiteSpace(anim))
             return;
@@ -188,15 +192,32 @@ public sealed class UiLoopVideo : MonoBehaviour
         if (pending != null && pendingName == anim)
         {
             pendingInstant = instant;
+            if (!holdFirstFrame && pendingHoldFirstFrame)
+            {
+                pendingHoldFirstFrame = false;
+                if (pendingFrameReadyAt >= 0) pending.Play();
+            }
             if (instant && fading) FinishFade();
             return;
         }
 
         CancelPending();
-        if (current != null && currentName == anim && (current.isPlaying || currentLoop))
-            return;
+        if (current != null && currentName == anim)
+        {
+            if (currentHeld)
+            {
+                if (!holdFirstFrame)
+                {
+                    currentHeld = false;
+                    current.Play();
+                }
+                return;
+            }
 
-        StartClip(anim, next, anim == "idle" || anim == "walk" || anim == "run", instant);
+            if (!holdFirstFrame && (current.isPlaying || currentLoop)) return;
+        }
+
+        StartClip(anim, next, anim == "idle" || anim == "walk" || anim == "run", instant, holdFirstFrame);
     }
 
     private VideoClip FindClip(string anim)
@@ -221,7 +242,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         aspect.SetFraming(1f, Vector2.zero);
     }
 
-    private void StartClip(string anim, VideoClip next, bool loop, bool instant = false)
+    private void StartClip(string anim, VideoClip next, bool loop, bool instant = false, bool holdFirstFrame = false)
     {
         if (current == primary && secondary == null)
             secondary = gameObject.AddComponent<VideoPlayer>();
@@ -233,6 +254,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         pendingFinished = false;
         pendingFrameReadyAt = -1;
         pendingPlaybackStarted = false;
+        pendingHoldFirstFrame = holdFirstFrame;
         double startTime = 0;
         foreach (var entry in animations)
             if (entry != null && string.Equals(entry.anim, anim, StringComparison.OrdinalIgnoreCase))
@@ -275,6 +297,7 @@ public sealed class UiLoopVideo : MonoBehaviour
     private void FirstFrame(VideoPlayer source, long frame)
     {
         if (source != pending || !pendingPlaybackStarted || frame < pendingStartFrame) return;
+        if (pendingHoldFirstFrame) source.Pause();
         source.sendFrameReadyEvents = false;
         source.frameReady -= FirstFrame;
         // frameReady can precede the decoder's copy into the RenderTexture.
@@ -363,6 +386,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         currentStartFrame = pendingStartFrame;
         currentLoop = pendingLoop;
         currentFinished = pendingFinished;
+        currentHeld = pendingHoldFirstFrame;
         RetireLoopHold();
         waitingForLoopFrame = false;
         visibleSinceFrame = Time.frameCount;
