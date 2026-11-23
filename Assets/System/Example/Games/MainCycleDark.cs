@@ -724,7 +724,8 @@ public class MainCycleDark : MonoBehaviour
     private int originalChestSiblingIndex = -1;
 
     [SerializeField] private Transform battleEncounterTrigger;
-    private bool battleEncounterTriggered;
+    private readonly List<(float X, int Order, string[] EnemyIds)> battleEncounters = new();
+    private int nextBattleEncounter;
     private float battlePartyStartFrontX;
     private Coroutine battleEnemyEntrance;
 
@@ -797,10 +798,10 @@ public class MainCycleDark : MonoBehaviour
         if (!ready || float.IsNegativeInfinity(partyFront)) return;
 
         bool crossedEncounter = false;
-        if (direction > 0 && !battleEncounterTriggered && battleEncounterTrigger != null)
+        if (direction > 0 && nextBattleEncounter < battleEncounters.Count)
         {
-            float distance = battleEncounterTrigger.position.x - partyFront;
-            crossedEncounter = distance >= 0f && delta >= distance;
+            float distance = Mathf.Max(0f, battleEncounters[nextBattleEncounter].X - partyFront);
+            crossedEncounter = delta >= distance;
             if (crossedEncounter) delta = distance;
         }
 
@@ -819,12 +820,15 @@ public class MainCycleDark : MonoBehaviour
 
         if (crossedEncounter)
         {
-            battleEncounterTriggered = true;
+            var encounter = battleEncounters[nextBattleEncounter++];
             SetBattleWalking(false);
-            SpawnBattleEnemies(partyFront + delta - battlePartyStartFrontX);
+            ClearBattleEnemies();
+            SpawnBattleEnemies(encounter.EnemyIds, partyFront + delta - battlePartyStartFrontX);
             if (battleSpawnedEnemies.Count > 0)
+            {
                 ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f);
-            battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
+                battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
+            }
         }
     }
 
@@ -972,7 +976,8 @@ public class MainCycleDark : MonoBehaviour
         foreach (var bar in battleHeroBars)
         {
             var unit = bar.Hero;
-            if (unit?.main == null || !unit.HasVis("combat")) return false;
+            if (unit?.main == null || unit.GetPar("health") <= 0) continue;
+            if (!unit.HasVis("combat")) return false;
             var combat = unit.visuals["combat"].GetComponent<XDcombat>();
             if (combat == null || combat.mon != unit) return false;
         }
@@ -1035,7 +1040,8 @@ public class MainCycleDark : MonoBehaviour
         }
         battleInventoryHeroes.Clear();
         ClearBattleEnemies();
-        battleEncounterTriggered = false;
+        ClearBattleLootPouches();
+        ReadBattleEncounterConfig();
         battlePartyStartFrontX = float.NegativeInfinity;
         BeginBattleLootTracking(state);
         if (SkillExecutor.instance != null)
@@ -1079,7 +1085,6 @@ public class MainCycleDark : MonoBehaviour
             copy.AddViz("dmg_track");
             copy.AddViz("death");
             PrepareStageCombat(copy);
-            state.awaitUnits[copy.RID] = 1;
             battleMovingHeroes.Add(new BattleHeroMovement
             {
                 Hero = copy, Video = video, HasWalk = video != null && video.HasAnimation("walk")
@@ -1105,7 +1110,6 @@ public class MainCycleDark : MonoBehaviour
     {
         var state = MainStates.instance;
         if (state != null) state.lastTargetSelected = null;
-        ClearBattleLootPouches();
         foreach (var spawned in battleSpawnedEnemies)
         {
             if (spawned == null) continue;
@@ -1122,18 +1126,68 @@ public class MainCycleDark : MonoBehaviour
             if (slot.TryGetComponent<SpriteRenderer>(out var placeholder)) placeholder.enabled = false;
     }
 
-    private void SpawnBattleEnemies(float formationOffsetX)
+    private void ReadBattleEncounterConfig()
+    {
+        const string key = "battle_encounter";
+        const string prefix = key + "_";
+        battleEncounters.Clear();
+        nextBattleEncounter = 0;
+
+        bool hasEncounterConfig = false;
+        var config = ConfigLoader.Instance;
+        if (config != null)
+        {
+            foreach (var entry in config.metaConf)
+            {
+                int order = 0;
+                if (entry.Key != key && (!entry.Key.StartsWith(prefix, StringComparison.Ordinal) ||
+                    !int.TryParse(entry.Key.Substring(prefix.Length), out order) || order < 1))
+                    continue;
+
+                hasEncounterConfig = true;
+                var encounter = entry.Value;
+                var roster = encounter.stringVal.Trim();
+                if (roster.Length == 0 || roster == "x" || float.IsNaN(encounter.val) || float.IsInfinity(encounter.val))
+                    continue;
+
+                var ids = roster.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                if (ids.Length > 0) battleEncounters.Add((encounter.val, order, ids));
+            }
+        }
+
+        // Older configs still use the scene marker and the original roster.
+        if (!hasEncounterConfig && battleEncounterTrigger != null)
+            battleEncounters.Add((battleEncounterTrigger.position.x, 0, new[] { "cultist_boss" }));
+
+        battleEncounters.Sort((left, right) =>
+        {
+            int byPosition = left.X.CompareTo(right.X);
+            return byPosition != 0 ? byPosition : left.Order.CompareTo(right.Order);
+        });
+    }
+
+    private void SpawnBattleEnemies(string[] enemyIds, float formationOffsetX)
     {
         var positions = heroes != null ? heroes.transform.Find("enemy") : null;
-        if (positions == null || MainStates.instance == null || ResourceHolder.instance == null || DatabaseAll.instance == null) return;
-        //string[] ids = { "zombie1", "zombie3" };
-        string[] ids = {"cultist_boss"};
-        for (int i = 0; i < ids.Length && i < positions.childCount; i++)
+        if (positions == null || positions.childCount == 0 || MainStates.instance == null ||
+            ResourceHolder.instance == null || DatabaseAll.instance == null) return;
+
+        int lastSlotIndex = positions.childCount - 1;
+        var lastSlot = positions.GetChild(lastSlotIndex);
+        float spacing = lastSlotIndex > 0
+            ? Mathf.Max(1.75f, lastSlot.position.x - positions.GetChild(lastSlotIndex - 1).position.x)
+            : 1.75f;
+        int spawnedCount = 0;
+        foreach (var entry in enemyIds)
         {
-            var slot = positions.GetChild(i);
-            var position = slot.position + Vector3.right * formationOffsetX;
+            var id = entry.Trim();
+            if (id.Length == 0) continue;
+
+            var slot = positions.GetChild(Mathf.Min(spawnedCount, lastSlotIndex));
+            float extraX = Mathf.Max(0, spawnedCount - lastSlotIndex) * spacing;
+            var position = slot.position + Vector3.right * (formationOffsetX + extraX);
             if (battleInventoryHeroes.Count > 0) position.y = battleInventoryHeroes[0].transform.position.y;
-            CreateStageEnemy(ids[i], slot, position, hasLoot: true);
+            if (CreateStageEnemy(id, slot, position, hasLoot: true) != null) spawnedCount++;
         }
     }
 
@@ -1262,10 +1316,19 @@ public class MainCycleDark : MonoBehaviour
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
         }
+        var state = MainStates.instance;
+        foreach (var member in battleMovingHeroes)
+        {
+            var ally = member.Hero;
+            if (ally.main == null || !ally.main.activeInHierarchy || ally.GetPar("health") <= 0) continue;
+            state.allMetas[ally.RID] = ally;
+            state.awaitUnits[ally.RID] = 1;
+        }
+
         BindBattleHeroBars();
         ModelStatistics.instance.SetStatValue("battle", 2);
         stageCombatActive = stageCombatPending = true;
-        MainStates.instance.inBattle = true;
+        state.inBattle = true;
     }
 
     private void SpawnBattleLootPouch(RObj unit, List<Bon> drops, int sortingLayer, int sortingOrder)
