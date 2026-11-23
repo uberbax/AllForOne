@@ -604,20 +604,20 @@ public class MainCycleDark : MonoBehaviour
         toDeactiv.AddRange(deactivateBattle);
 
         goBattle.onClick.AddListener(() =>
-            {
-                List<GameObject> pap = new List<GameObject>{backs, heroes, battleUI};
-                pap.AddRange(battleBgs);
-                //infoBattle.gameObject.SetActive(false);
-                Transitioner.instance.Simple(map, pap, ()=>
-                {
-                    SpawnInventoryHeroes();
-                    
-                }, 
-                    toDeactiv);
-            }
-        );
+        {
+            if (battleEntryInProgress) return;
+
+            var battleObjects = new List<GameObject> { backs, heroes, battleUI };
+            battleObjects.AddRange(battleBgs);
+            battleEntryInProgress = true;
+            Transitioner.instance.Simple(map, battleObjects,
+                end: () => battleEntryInProgress = false,
+                toDeactivate: toDeactiv,
+                prepare: SpawnInventoryHeroes);
+        });
     }
 
+    private bool battleEntryInProgress;
     private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
     private readonly List<RObj> battleGroundLoot = new List<RObj>();
     [SerializeField] private GameObject battleMinimap;
@@ -745,6 +745,8 @@ public class MainCycleDark : MonoBehaviour
 
     private void HandleBattleMovement()
     {
+        if (battleEntryInProgress) return;
+
         int direction = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) -
                         (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
         MoveBattleHeroes(direction, Time.unscaledDeltaTime);

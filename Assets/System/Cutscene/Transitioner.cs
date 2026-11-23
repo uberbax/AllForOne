@@ -132,7 +132,8 @@ public class Transitioner : MonoBehaviour
         });
     }
     
-    public void Simple(GameObject go, List<GameObject> toActivate = null, Action end = null, List<GameObject> toDeactivate = null)
+    public void Simple(GameObject go, List<GameObject> toActivate = null, Action end = null,
+        List<GameObject> toDeactivate = null, Action prepare = null)
     {
         DoFade(1, 1, () =>
                 {
@@ -146,12 +147,9 @@ public class Transitioner : MonoBehaviour
                     if (toDeactivate != null)
                         foreach (var a in toDeactivate)
                             a.SetActive(false);
-                    
-                }, () =>
-        {
-            if (end != null)
-                end();
-        });
+
+                    prepare?.Invoke();
+                }, end);
     }
 
     public void ClearSteps()
