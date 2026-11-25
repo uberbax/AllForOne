@@ -41,6 +41,36 @@ public class UIfiller : MonoBehaviour
     public List<Transform> slots = new List<Transform>();
     public Transform root;
     public bool asGrid = false;
+
+    [SerializeField, Tooltip("The fixed slots are children of row containers under Root.")]
+    private bool fixedSlotsInRows;
+
+    public int FixedSlotCount
+    {
+        get
+        {
+            if (!root) return 0;
+            if (!fixedSlotsInRows) return root.childCount;
+
+            int count = 0;
+            for (int i = 0; i < root.childCount; i++)
+                count += root.GetChild(i).childCount;
+            return count;
+        }
+    }
+
+    private Transform GetFixedSlot(int index)
+    {
+        if (!fixedSlotsInRows) return root.GetChild(index);
+
+        for (int i = 0; i < root.childCount; i++)
+        {
+            var row = root.GetChild(i);
+            if (index < row.childCount) return row.GetChild(index);
+            index -= row.childCount;
+        }
+        throw new ArgumentOutOfRangeException(nameof(index));
+    }
     
     public GameObject spawn;
 
@@ -253,9 +283,10 @@ public class UIfiller : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < root.childCount; i++)
+                int slotCount = FixedSlotCount;
+                for (int i = 0; i < slotCount; i++)
             {
-                var jj = root.GetChild(i);
+                var jj = GetFixedSlot(i);
                 if (deactivateOverCnt)
                 {
                     jj.gameObject.SetActive(i < res.Count);

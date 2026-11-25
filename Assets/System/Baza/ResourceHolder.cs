@@ -292,6 +292,16 @@ public class ResourceHolder : MonoBehaviour
             return;
         }
         
+        if (a.param == "battle_job1")
+        {
+            var label = a.GetComponent<TextMeshProUGUI>();
+            string job = r.dbObj.parsStr["job1"];
+            label.text = job;
+            label.color = string.Equals(job, "Mystic", System.StringComparison.OrdinalIgnoreCase)
+                ? new Color32(230, 75, 75, 255) : Color.white;
+            return;
+        }
+
         if (a.param == "job1")
         {
             a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["job1"];

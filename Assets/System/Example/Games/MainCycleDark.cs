@@ -629,17 +629,46 @@ public class MainCycleDark : MonoBehaviour
     private readonly List<RObj> collectedBattleLoot = new List<RObj>();
     private MainStates battleLootState;
 
-    public void ShowBattleMap()
+    [SerializeField] private BattleEnemyInfo battleEnemyInfo;
+    [SerializeField] private GameObject[] battleTabHighlights = Array.Empty<GameObject>();
+    [SerializeField] private GameObject[] battleTabInactive = Array.Empty<GameObject>();
+
+    public RObj InspectedBattleEnemy()
     {
-        if (battleItems != null) battleItems.gameObject.SetActive(false);
-        if (battleMinimap != null) battleMinimap.SetActive(true);
+        if (MainStates.instance?.inBattle != true) return null;
+        var selected = MainStates.instance.lastTargetSelected;
+        if (selected?.main != null && battleSpawnedEnemies.Contains(selected.main) &&
+            selected.main.activeInHierarchy && selected.GetPar("health") > 0) return selected;
+        foreach (var unit in battleSpawnedEnemies)
+        {
+            if (unit != null && unit.activeInHierarchy && unit.TryGetComponent<ObjHolder>(out var holder) &&
+                holder.obj != null && holder.obj.GetPar("health") > 0) return holder.obj;
+        }
+        return null;
     }
+
+    private void SelectBattleTab(int index)
+    {
+        if (battleEnemyInfo != null) battleEnemyInfo.gameObject.SetActive(index == 0);
+        if (battleMinimap != null) battleMinimap.SetActive(index == 1);
+        if (battleItems != null) battleItems.gameObject.SetActive(index == 2);
+        for (int i = 0; i < battleTabHighlights.Length; i++)
+            if (battleTabHighlights[i] != null) battleTabHighlights[i].SetActive(i == index);
+        for (int i = 0; i < battleTabInactive.Length; i++)
+            if (battleTabInactive[i] != null) battleTabInactive[i].SetActive(i != index);
+    }
+
+    public void ShowBattleEnemy()
+    {
+        if (battleEnemyInfo != null) SelectBattleTab(0);
+    }
+
+    public void ShowBattleMap() => SelectBattleTab(1);
 
     public void ShowBattleItems()
     {
         if (battleItems == null || battleMinimap == null) return;
-        battleMinimap.SetActive(false);
-        battleItems.gameObject.SetActive(true);
+        SelectBattleTab(2);
         RefreshBattleItems();
     }
 
@@ -737,6 +766,7 @@ public class MainCycleDark : MonoBehaviour
     private Camera battleMovementCamera;
     private float battleCameraHomeX;
     private bool battleCameraMoved;
+    public float BattleTravelX { get; private set; }
 
     private sealed class BattleHeroMovement
     {
@@ -812,6 +842,7 @@ public class MainCycleDark : MonoBehaviour
             battleCameraMoved = true;
         }
         battleMovementCamera.transform.position += Vector3.right * delta;
+        BattleTravelX += delta;
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
@@ -842,6 +873,7 @@ public class MainCycleDark : MonoBehaviour
             battleMovementCamera.transform.position = position;
         }
         battleCameraMoved = false;
+        BattleTravelX = 0f;
     }
 
     private void SetBattleWalking(bool walking)
@@ -1459,7 +1491,7 @@ public class MainCycleDark : MonoBehaviour
 
         // Snapshot the visible rewards because AddItem changes the pouch inventory.
         var rewards = pouch.inventory.FindAll(item => item.GetPar("amount") > 0);
-        int count = Mathf.Min(rewards.Count, battleLootChest.root.childCount);
+        int count = Mathf.Min(rewards.Count, battleLootChest.FixedSlotCount);
         for (int i = 0; i < count; i++)
         {
             var item = rewards[i];
