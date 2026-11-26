@@ -439,6 +439,7 @@ public class MainCycleDark : MonoBehaviour
         if (SkillExecutor.instance != null) SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
         StopStageCombat();
         HideBattleAnnouncement();
+        ResetRavenDialogue();
         ClearStagedCoffins();
         ClearBattleLootPouches();
         StopTrackingBattleLoot();
@@ -767,6 +768,11 @@ public class MainCycleDark : MonoBehaviour
     private float battleCameraHomeX;
     private bool battleCameraMoved;
     public float BattleTravelX { get; private set; }
+    [SerializeField, Min(0f)] private float ravenScareDistance = .85f;
+    private RavenNpc[] battleRavens = Array.Empty<RavenNpc>();
+    private CanvasGroup ravenDialogue;
+    private Coroutine ravenDialogueRoutine;
+    private bool ravenDialogueShown;
 
     private sealed class BattleHeroMovement
     {
@@ -792,7 +798,8 @@ public class MainCycleDark : MonoBehaviour
             RestoreBattleCamera();
             return;
         }
-        if (battleEnemyEntrance != null || stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
+        if ((ravenDialogue != null && ravenDialogue.gameObject.activeInHierarchy && ravenDialogue.alpha > 0f) ||
+            battleEnemyEntrance != null || stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
         {
             SetBattleWalking(false);
             return;
@@ -846,8 +853,14 @@ public class MainCycleDark : MonoBehaviour
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
-            member.Hero.main.transform.position += Vector3.right * delta;
-            member.Hero.Position = member.Hero.main.transform.position;
+            var actor = member.Hero.main.transform;
+            float previousX = actor.position.x;
+            actor.position += Vector3.right * delta;
+            member.Hero.Position = actor.position;
+            if (ravenScareDistance <= 0f) continue;
+            foreach (var raven in battleRavens)
+                if (raven != null && raven.ScareIfNear(previousX, actor.position.x, ravenScareDistance))
+                    ShowRavenDialogue();
         }
 
         if (crossedEncounter)
@@ -862,6 +875,45 @@ public class MainCycleDark : MonoBehaviour
                 battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
             }
         }
+    }
+
+    private static void UseHollowDialogueBorder(Transform border)
+    {
+        if (border != null && !border.TryGetComponent<UiSolidBorder>(out _))
+            border.gameObject.AddComponent<UiSolidBorder>();
+    }
+
+    private void ShowRavenDialogue()
+    {
+        if (ravenDialogueShown || ravenDialogue == null) return;
+
+        ravenDialogueShown = true;
+        ravenDialogue.alpha = 1f;
+        ravenDialogue.gameObject.SetActive(true);
+        SetBattleWalking(false);
+        ravenDialogueRoutine = StartCoroutine(FadeRavenDialogue());
+    }
+
+    private IEnumerator FadeRavenDialogue()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+
+        const float fadeDuration = .4f;
+        while (ravenDialogue != null && ravenDialogue.alpha > 0f)
+        {
+            ravenDialogue.alpha = Mathf.MoveTowards(ravenDialogue.alpha, 0f, Time.unscaledDeltaTime / fadeDuration);
+            yield return null;
+        }
+
+        ravenDialogueRoutine = null;
+    }
+
+    private void ResetRavenDialogue()
+    {
+        if (ravenDialogueRoutine != null) StopCoroutine(ravenDialogueRoutine);
+        ravenDialogueRoutine = null;
+        ravenDialogueShown = false;
+        if (ravenDialogue != null) ravenDialogue.alpha = 0f;
     }
 
     private void RestoreBattleCamera()
@@ -1076,6 +1128,20 @@ public class MainCycleDark : MonoBehaviour
         ClearStagedCoffins();
         ClearBattleLootPouches();
         ReadBattleEncounterConfig();
+        var flock = heroes.transform.Find("Raven Flock");
+        battleRavens = flock != null ? flock.GetComponentsInChildren<RavenNpc>(true) : Array.Empty<RavenNpc>();
+        foreach (var raven in battleRavens) raven.ResetBattleFlight();
+        ResetRavenDialogue();
+        var dialogue = battleUI != null ? battleUI.transform.Find("dialogViewTest") : null;
+        ravenDialogue = null;
+        if (dialogue != null)
+        {
+            if (!dialogue.TryGetComponent(out ravenDialogue)) ravenDialogue = dialogue.gameObject.AddComponent<CanvasGroup>();
+            ravenDialogue.blocksRaycasts = false;
+            ravenDialogue.alpha = 0f;
+            UseHollowDialogueBorder(dialogue.Find("dialogueMain/Panel edge"));
+            UseHollowDialogueBorder(dialogue.Find("dialogueMain/Voice pointer"));
+        }
         battlePartyStartFrontX = float.NegativeInfinity;
         BeginBattleLootTracking(state);
         if (SkillExecutor.instance != null)
