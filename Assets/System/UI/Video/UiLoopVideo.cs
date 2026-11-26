@@ -78,6 +78,8 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     public void Play(string anim) => ChangeAnimation(anim, true);
 
+    public void PlayOnce(string anim) => ChangeAnimation(anim, true, loopOverride: false);
+
     public void HoldFirstFrame(string anim) => ChangeAnimation(anim, true, holdFirstFrame: true);
 
     public void PlayFrameSyncedAttack()
@@ -167,7 +169,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         return false;
     }
 
-    private void ChangeAnimation(string anim, bool instant, bool holdFirstFrame = false)
+    private void ChangeAnimation(string anim, bool instant, bool holdFirstFrame = false, bool? loopOverride = null)
     {
         if (!isActiveAndEnabled || string.IsNullOrWhiteSpace(anim))
             return;
@@ -188,8 +190,9 @@ public sealed class UiLoopVideo : MonoBehaviour
             view.enabled = false;
         }
 
+        bool loop = loopOverride ?? (anim == "idle" || anim == "walk" || anim == "run");
         startDefaultIdle = false;
-        if (pending != null && pendingName == anim)
+        if (pending != null && pendingName == anim && pendingLoop == loop)
         {
             pendingInstant = instant;
             if (!holdFirstFrame && pendingHoldFirstFrame)
@@ -214,10 +217,10 @@ public sealed class UiLoopVideo : MonoBehaviour
                 return;
             }
 
-            if (!holdFirstFrame && (current.isPlaying || currentLoop)) return;
+            if (!holdFirstFrame && currentLoop == loop && (current.isPlaying || currentLoop)) return;
         }
 
-        StartClip(anim, next, anim == "idle" || anim == "walk" || anim == "run", instant, holdFirstFrame);
+        StartClip(anim, next, loop, instant, holdFirstFrame);
     }
 
     private VideoClip FindClip(string anim)
