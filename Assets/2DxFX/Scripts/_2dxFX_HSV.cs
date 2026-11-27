@@ -1,4 +1,4 @@
-﻿//////////////////////////////////////////////
+//////////////////////////////////////////////
 /// 2DxFX - 2D SPRITE FX - by VETASOFT 2020 //
 //////////////////////////////////////////////
 
@@ -67,6 +67,9 @@ public class _2dxFX_HSV : MonoBehaviour
         {
             ShaderChange = 1;
             if (tempMaterial != null) DestroyImmediate(tempMaterial);
+            ForceMaterial.hideFlags = HideFlags.None;
+            ForceMaterial.shader = Shader.Find(shader);
+            ApplyEffectProperties(ForceMaterial);
             if (CanvasSpriteRenderer != null)
             {
                 CanvasSpriteRenderer.sharedMaterial = ForceMaterial;
@@ -75,9 +78,6 @@ public class _2dxFX_HSV : MonoBehaviour
             {
                 CanvasImage.material = ForceMaterial;
             }
-            ForceMaterial.hideFlags = HideFlags.None;
-            ForceMaterial.shader = Shader.Find(shader);
-
 
         }
         if ((ForceMaterial == null) && (ShaderChange == 1))
@@ -85,6 +85,7 @@ public class _2dxFX_HSV : MonoBehaviour
             if (tempMaterial != null) DestroyImmediate(tempMaterial);
             tempMaterial = new Material(Shader.Find(shader));
             tempMaterial.hideFlags = HideFlags.None;
+            ApplyEffectProperties(tempMaterial);
             if (CanvasSpriteRenderer != null)
             {
                 CanvasSpriteRenderer.sharedMaterial = tempMaterial;
@@ -108,6 +109,7 @@ public class _2dxFX_HSV : MonoBehaviour
         {
             ForceMaterial.shader = Shader.Find(shader);
             ForceMaterial.hideFlags = HideFlags.None;
+            ApplyEffectProperties(ForceMaterial);
             if (CanvasSpriteRenderer != null)
             {
                 CanvasSpriteRenderer.sharedMaterial = ForceMaterial;
@@ -122,25 +124,20 @@ public class _2dxFX_HSV : MonoBehaviour
             }
         }
 #endif
-        if (ActiveChange)
-        {
-            if (CanvasSpriteRenderer != null)
-            {
-                CanvasSpriteRenderer.sharedMaterial.SetFloat("_Alpha", 1 - _Alpha);
-                CanvasSpriteRenderer.sharedMaterial.SetFloat("_HueShift", _HueShift);
-                CanvasSpriteRenderer.sharedMaterial.SetFloat("_Sat", _Saturation);
-                CanvasSpriteRenderer.sharedMaterial.SetFloat("_Val", _ValueBrightness);
-            }
-            else if (CanvasImage != null)
-            {
-                CanvasImage.material.SetFloat("_Alpha", 1 - _Alpha);
-                CanvasImage.material.SetFloat("_HueShift", _HueShift);
-                CanvasImage.material.SetFloat("_Sat", _Saturation);
-                CanvasImage.material.SetFloat("_Val", _ValueBrightness);
-            }
+        if (CanvasSpriteRenderer != null)
+            ApplyEffectProperties(CanvasSpriteRenderer.sharedMaterial);
+        else if (CanvasImage != null)
+            ApplyEffectProperties(CanvasImage.material);
+    }
 
-        }
+    private void ApplyEffectProperties(Material material)
+    {
+        if (!ActiveChange || material == null) return;
 
+        material.SetFloat("_Alpha", 1 - _Alpha);
+        material.SetFloat("_HueShift", _HueShift);
+        material.SetFloat("_Sat", _Saturation);
+        material.SetFloat("_Val", _ValueBrightness);
     }
 
     void OnDestroy()
@@ -198,6 +195,8 @@ public class _2dxFX_HSV : MonoBehaviour
             ActiveChange = true;
             tempMaterial = new Material(Shader.Find(shader));
             tempMaterial.hideFlags = HideFlags.None;
+            // UI masks can copy the material as soon as it is assigned to the Image.
+            ApplyEffectProperties(tempMaterial);
             if (CanvasSpriteRenderer != null)
             {
                 CanvasSpriteRenderer.sharedMaterial = tempMaterial;
@@ -211,6 +210,7 @@ public class _2dxFX_HSV : MonoBehaviour
         {
             ForceMaterial.shader = Shader.Find(shader);
             ForceMaterial.hideFlags = HideFlags.None;
+            ApplyEffectProperties(ForceMaterial);
             if (CanvasSpriteRenderer != null)
             {
                 CanvasSpriteRenderer.sharedMaterial = ForceMaterial;

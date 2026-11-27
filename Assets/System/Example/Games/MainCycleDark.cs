@@ -85,7 +85,7 @@ public class MainCycleDark : MonoBehaviour
         int visit = ++prisonVisit;
         canMovePrison = false;
         prisonScrollInitialized = false;
-        UpdatePrisonArrows();
+        UpdatePrisonControls();
         StopPrisonMovement();
         Transitioner.instance.DoFade(1, 1, () =>
         {
@@ -117,6 +117,7 @@ public class MainCycleDark : MonoBehaviour
     public bool canMovePrison = false;
     public GameObject buttonNext;
     public GameObject buttonPrev;
+    [SerializeField] private GameObject prisonReturnToTown;
     
     [SerializeField, Min(0)] private float prisonMoveSpeed = 200f;
     [SerializeField] private bool prisonVideoFacesLeft = true;
@@ -157,7 +158,7 @@ public class MainCycleDark : MonoBehaviour
         prisonVisitActive = false;
         canMovePrison = false;
         UpdateDemonGuis();
-        UpdatePrisonArrows();
+        UpdatePrisonControls();
         StopPrisonMovement();
         if (prisonExitRoutine != null)
         {
@@ -255,17 +256,19 @@ public class MainCycleDark : MonoBehaviour
     }
 
 
-    private void UpdatePrisonArrows()
+    private void UpdatePrisonControls()
     {
         if (buttonNext != null && buttonNext.activeSelf != canMovePrison)
             buttonNext.SetActive(canMovePrison);
         if (buttonPrev != null && buttonPrev.activeSelf != canMovePrison)
             buttonPrev.SetActive(canMovePrison);
+        if (prisonReturnToTown != null && prisonReturnToTown.activeSelf != canMovePrison)
+            prisonReturnToTown.SetActive(canMovePrison);
     }
 
     private void HandlePrisonMovement()
     {
-        UpdatePrisonArrows();
+        UpdatePrisonControls();
         if (!canMovePrison || charLift == null || cages == null ||
             !cages.activeInHierarchy || !charLift.isActiveAndEnabled)
         {
@@ -361,7 +364,7 @@ public class MainCycleDark : MonoBehaviour
             InitializePrisonScroll((RectTransform)cages.transform);
             canMovePrison = true;
             lift.transform.parent = dynScreen.transform;
-            UpdatePrisonArrows();
+            UpdatePrisonControls();
         }, null, useRight:false, ignoreFlip:true);
     }
 
@@ -484,7 +487,7 @@ public class MainCycleDark : MonoBehaviour
     private void Awake()
     {
         if (battleLootChest != null) battleLootChest.gameObject.SetActive(false);
-        UpdatePrisonArrows();
+        UpdatePrisonControls();
         if (buttonNext != null)
             prisonNextArrow = buttonNext.GetComponent<PrisonMoveArrow>() ?? buttonNext.AddComponent<PrisonMoveArrow>();
         if (buttonPrev != null)
