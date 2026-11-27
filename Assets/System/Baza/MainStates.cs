@@ -886,6 +886,7 @@ public class MainStates : MonoBehaviour
 
         if (buying) OnBuy(moved);
         Save();
+        SoundManager.instance?.PlayAny("shop_buy");
         return true;
     }
 

@@ -1,10 +1,19 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+// Add the listener before EventSystem processes the release at execution order -1000.
+[DefaultExecutionOrder(-1100)]
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
     public AudioClip click;
+    [SerializeField] private bool playButtonClicks;
+    private readonly List<Button> pendingClickButtons = new List<Button>();
+    private readonly List<RaycastResult> buttonHits = new List<RaycastResult>();
+    private PointerEventData buttonPointer;
+    private EventSystem buttonEventSystem;
 
     public AudioSource source;
     private void Awake()
@@ -24,10 +33,59 @@ public class SoundManager : MonoBehaviour
         mon = MainStates.instance.all["settings"];
     }
 
-    public void PlayClick()
+    private void Update()
     {
-        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, mon.GetPar("volume_sound"));
+        if (!playButtonClicks || click == null) return;
+        var eventSystem = EventSystem.current;
+        if (eventSystem == null || !(eventSystem.currentInputModule is StandaloneInputModule module)) return;
+
+        var input = module.input;
+        int touchCount = input.touchCount;
+        for (int i = 0; i < touchCount; i++)
+        {
+            var touch = input.GetTouch(i);
+            if (touch.type != TouchType.Indirect && touch.phase == TouchPhase.Ended)
+                ArmButtonClick(eventSystem, touch.position, touch.fingerId);
+        }
+        if (touchCount == 0 && input.mousePresent && input.GetMouseButtonUp(0))
+            ArmButtonClick(eventSystem, input.mousePosition, -1);
     }
+
+    private void ArmButtonClick(EventSystem eventSystem, Vector2 position, int pointerId)
+    {
+        if (buttonEventSystem != eventSystem)
+        {
+            buttonEventSystem = eventSystem;
+            buttonPointer = new PointerEventData(eventSystem);
+        }
+        buttonPointer.Reset();
+        buttonPointer.position = position;
+        buttonPointer.pointerId = pointerId;
+        buttonPointer.button = PointerEventData.InputButton.Left;
+        eventSystem.RaycastAll(buttonPointer, buttonHits);
+        var hit = buttonHits.Count > 0 ? buttonHits[0].gameObject : null;
+        buttonHits.Clear();
+        var handler = ExecuteEvents.GetEventHandler<IPointerClickHandler>(hit);
+        if (handler == null || !handler.TryGetComponent<Button>(out var button) ||
+            !button.IsInteractable() || pendingClickButtons.Contains(button)) return;
+
+        // Let the EventSystem decide whether the release is a click or a cancelled drag.
+        button.onClick.AddListener(PlayClick);
+        pendingClickButtons.Add(button);
+    }
+
+    private void LateUpdate() => ClearButtonClickListeners();
+
+    private void OnDisable() => ClearButtonClickListeners();
+
+    private void ClearButtonClickListeners()
+    {
+        foreach (var button in pendingClickButtons)
+            if (button != null) button.onClick.RemoveListener(PlayClick);
+        pendingClickButtons.Clear();
+    }
+
+    public void PlayClick() => PlayEffect(click);
 
     public void PlayEffect(AudioClip clip)
     {
