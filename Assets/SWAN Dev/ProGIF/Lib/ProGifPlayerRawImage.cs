@@ -12,6 +12,8 @@ public sealed class ProGifPlayerRawImage : ProGifPlayerComponent
 
 	private Texture2D _displayTexture2D = null;
 
+    private Texture _fallbackTexture;
+
     void Awake()
     {
         if (destinationRawImage == null)
@@ -19,6 +21,8 @@ public sealed class ProGifPlayerRawImage : ProGifPlayerComponent
             destinationRawImage = gameObject.GetComponent<RawImage>();
             displayType = DisplayType.RawImage;
         }
+
+        if (destinationRawImage != null) _fallbackTexture = destinationRawImage.texture;
     }
 
     // Update gif frame for the Player (Update is called once per frame)
@@ -113,7 +117,11 @@ public sealed class ProGifPlayerRawImage : ProGifPlayerComponent
     {
 		if(_displayTexture2D != null) 
 		{
+			if (destinationRawImage != null && destinationRawImage.texture == _displayTexture2D && _fallbackTexture != null)
+				destinationRawImage.texture = _fallbackTexture;
+
 			Destroy(_displayTexture2D);
+			_displayTexture2D = null;
 		}
         base.Clear(clearBytes, clearCallbacks);
     }
