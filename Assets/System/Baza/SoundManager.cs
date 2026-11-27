@@ -29,6 +29,17 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, mon.GetPar("volume_sound"));
     }
 
+    public void PlayEffect(AudioClip clip)
+    {
+        if (clip == null || mon == null) return;
+
+        float volume = Mathf.Clamp01(mon.GetPar("volume_sound"));
+        if (volume <= 0f) return;
+
+        var listenerCamera = Camera.main;
+        AudioSource.PlayClipAtPoint(clip, listenerCamera != null ? listenerCamera.transform.position : transform.position, volume);
+    }
+
     public void PlayAny(string sound, int spellType = 0)
     {
         if (mon == null) return;

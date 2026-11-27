@@ -301,6 +301,7 @@ public class MainCycleDark : MonoBehaviour
             FacePrisonDirection(direction);
             if (!charLift.IsAnimationVisible("walk")) return;
             ApplyPrisonScroll(area, characterRect, nextX);
+            footstepsMovementFrame = Time.frameCount;
         }
     }
 
@@ -365,11 +366,44 @@ public class MainCycleDark : MonoBehaviour
             canMovePrison = true;
             lift.transform.parent = dynScreen.transform;
             UpdatePrisonControls();
-        }, null, useRight:false, ignoreFlip:true);
+        }, null, useRight:false, eachF: _ =>
+        {
+            if (prisonVisitActive && visit == prisonVisit && charLift.isActiveAndEnabled && Time.deltaTime > 0f)
+                footstepsMovementFrame = Time.frameCount;
+        }, ignoreFlip:true);
     }
 
     public List<GameObject> actives;
     public AudioClip musicMain;
+
+    [SerializeField] private AudioClip footstepsClip;
+    [SerializeField, Range(0f, 1f)] private float footstepsVolume = .55f;
+    private AudioSource footstepsSource;
+    private int footstepsMovementFrame = -1;
+
+    private void UpdateFootsteps()
+    {
+        if (footstepsMovementFrame != Time.frameCount || footstepsClip == null)
+        {
+            if (footstepsSource != null && footstepsSource.isPlaying) footstepsSource.Stop();
+            return;
+        }
+
+        if (footstepsSource == null)
+        {
+            footstepsSource = gameObject.AddComponent<AudioSource>();
+            footstepsSource.playOnAwake = false;
+            footstepsSource.loop = true;
+            footstepsSource.spatialBlend = 0f;
+            footstepsSource.clip = footstepsClip;
+        }
+
+        float volume = 1f;
+        if (MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var settings))
+            volume = settings.GetPar("volume_sound");
+        footstepsSource.volume = Mathf.Clamp01(footstepsVolume * volume);
+        if (!footstepsSource.isPlaying) footstepsSource.Play();
+    }
     public void MusicCheck()
     {
         bool q = false;
@@ -386,6 +420,7 @@ public class MainCycleDark : MonoBehaviour
         UpdateDemonGuis();
         UpdateBattleHeroBars();
         MusicCheck();
+        UpdateFootsteps();
         //if (canMovePrison && prisonScrollInitialized && cages != null && lift != null)
         //    lift.transform.position = cages.transform.TransformPoint(prisonLiftHome);
     }
@@ -437,6 +472,8 @@ public class MainCycleDark : MonoBehaviour
 
     private void OnDisable()
     {
+        footstepsMovementFrame = -1;
+        if (footstepsSource != null) footstepsSource.Stop();
         StopPrisonMovement();
         SetBattleWalking(false);
         if (SkillExecutor.instance != null) SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
@@ -453,6 +490,8 @@ public class MainCycleDark : MonoBehaviour
     {
         if (!focused)
         {
+            footstepsMovementFrame = -1;
+            if (footstepsSource != null) footstepsSource.Stop();
             StopPrisonMovement();
             SetBattleWalking(false);
         }
@@ -853,6 +892,7 @@ public class MainCycleDark : MonoBehaviour
         }
         battleMovementCamera.transform.position += Vector3.right * delta;
         BattleTravelX += delta;
+        if (!Mathf.Approximately(delta, 0f)) footstepsMovementFrame = Time.frameCount;
         foreach (var member in battleMovingHeroes)
         {
             if (member.Hero.main == null || !member.Hero.main.activeInHierarchy || member.Hero.GetPar("health") <= 0) continue;
@@ -874,6 +914,7 @@ public class MainCycleDark : MonoBehaviour
             SpawnBattleEnemies(encounter, partyFront + delta - battlePartyStartFrontX);
             if (battleSpawnedEnemies.Count > 0)
             {
+                SoundManager.instance?.PlayEffect(battleAmbushSound);
                 ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f);
                 battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
             }
@@ -953,6 +994,7 @@ public class MainCycleDark : MonoBehaviour
     [SerializeField] private Graphic[] battleVictoryEchoes;
     [SerializeField] private CanvasGroup battleAmbushBanner;
     [SerializeField] private Graphic[] battleAmbushEchoes;
+    [SerializeField] private AudioClip battleAmbushSound;
     private Coroutine battleAnnouncementRoutine;
 
     private static bool HasLivingStageUnit(List<GameObject> units)

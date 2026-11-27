@@ -49234,6 +49234,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
+--- !u!114 &124774757 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
+  m_PrefabInstance: {fileID: 124774756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c5c6cd167ee804287a922f1f9c30ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::SoundManager
 --- !u!1 &124864844
 GameObject:
   m_ObjectHideFlags: 0
@@ -76531,7 +76542,10 @@ MonoBehaviour:
   - {fileID: 1539404499}
   - {fileID: 2087058527}
   - {fileID: 1589522555}
+  - {fileID: 214550081}
   musicMain: {fileID: 8300000, guid: 868a10f9bc0b9d2478b5474bb1a8e153, type: 3}
+  footstepsClip: {fileID: 8300000, guid: a6a0ba260774d0c41aca1c4809bb3515, type: 3}
+  footstepsVolume: 0.55
   battleMinimap: {fileID: 1727961548}
   battleItems: {fileID: 1768094577}
   battleLootSlotLimit: 12
@@ -76558,6 +76572,7 @@ MonoBehaviour:
   - {fileID: 1418003946}
   - {fileID: 1291947220}
   - {fileID: 286333209}
+  battleAmbushSound: {fileID: 8300000, guid: df3a2c9c2f1325e4e839e8ae0c7aa8ab, type: 3}
   battleAmbushBanner: {fileID: 1186167401}
   battleAmbushEchoes:
   - {fileID: 360448316}
@@ -84706,6 +84721,7 @@ GameObject:
   - component: {fileID: 214550086}
   - component: {fileID: 214550087}
   - component: {fileID: 214550088}
+  - component: {fileID: 214550089}
   m_Layer: 5
   m_Name: BATTLE
   m_TagString: Untagged
@@ -84713,6 +84729,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &214550089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214550081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: 6b8ce50076209d64694a21b650dc1d32, type: 3}
 --- !u!224 &214550082
 RectTransform:
   m_ObjectHideFlags: 0
@@ -297868,6 +297898,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 124774757}
+        m_TargetAssemblyTypeName: SoundManager, Minimus
+        m_MethodName: PlayEffect
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: c1052d980ce19f84e9a366e7e4c1c180, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 770706875}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
