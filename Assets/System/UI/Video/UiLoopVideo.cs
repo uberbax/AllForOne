@@ -24,6 +24,7 @@ public sealed class UiLoopVideo : MonoBehaviour
 
     [SerializeField] private VideoClip clip;
     [SerializeField] private Texture poster;
+    [SerializeField] private AudioClip appearAudioFallback;
     [SerializeField] private List<AnimationClipEntry> animations = new List<AnimationClipEntry>();
     [SerializeField, Min(0)] private float crossFadeDuration = 0.15f;
 
@@ -34,6 +35,8 @@ public sealed class UiLoopVideo : MonoBehaviour
     private UiVideoHitReaction hitReaction;
     private VideoPlayer primary;
     private VideoPlayer secondary;
+    private AudioSource primaryAudio;
+    private AudioSource secondaryAudio;
     private VideoPlayer current;
     private VideoPlayer pending;
     private VideoPlayer frameSyncedPlayer;
@@ -198,7 +201,7 @@ public sealed class UiLoopVideo : MonoBehaviour
             if (!holdFirstFrame && pendingHoldFirstFrame)
             {
                 pendingHoldFirstFrame = false;
-                if (pendingFrameReadyAt >= 0) pending.Play();
+                if (pendingFrameReadyAt >= 0) PlayPreparedClip(pending);
             }
             if (instant && fading) FinishFade();
             return;
@@ -212,7 +215,8 @@ public sealed class UiLoopVideo : MonoBehaviour
                 if (!holdFirstFrame)
                 {
                     currentHeld = false;
-                    current.Play();
+                    PlayPreparedClip(current);
+                    PlayAppearFallback();
                 }
                 return;
             }
@@ -278,7 +282,14 @@ public sealed class UiLoopVideo : MonoBehaviour
         };
         pending.targetTexture.Create();
         pending.isLooping = loop && pendingStartFrame == 0;
-        pending.audioOutputMode = VideoAudioOutputMode.None;
+        bool playAudio = (anim == "attack" || anim == "ult" || anim == "appear") && next.audioTrackCount > 0;
+        pending.audioOutputMode = playAudio ? VideoAudioOutputMode.AudioSource : VideoAudioOutputMode.None;
+        pending.controlledAudioTrackCount = (ushort)(playAudio ? 1 : 0);
+        if (playAudio)
+        {
+            pending.EnableAudioTrack(0, true);
+            pending.SetTargetAudioSource(0, GetVideoAudioSource(pending));
+        }
         pending.timeUpdateMode = VideoTimeUpdateMode.UnscaledGameTime;
         pending.waitForFirstFrame = true;
         pending.sendFrameReadyEvents = true;
@@ -289,12 +300,53 @@ public sealed class UiLoopVideo : MonoBehaviour
         pending.Prepare();
     }
 
+    private AudioSource GetVideoAudioSource(VideoPlayer player)
+    {
+        var audio = player == primary ? primaryAudio : secondaryAudio;
+        if (audio != null) return audio;
+
+        audio = gameObject.AddComponent<AudioSource>();
+        audio.playOnAwake = false;
+        audio.spatialBlend = 0f;
+        if (player == primary) primaryAudio = audio;
+        else secondaryAudio = audio;
+        return audio;
+    }
+
     private void Prepared(VideoPlayer source)
     {
         if (source != pending) return;
         if (pendingStartFrame > 0) source.frame = pendingStartFrame;
         pendingPlaybackStarted = true;
-        source.Play();
+        if (source.audioOutputMode == VideoAudioOutputMode.AudioSource)
+            source.GetTargetAudioSource(0).volume = GetVideoAudioVolume();
+        PlayPreparedClip(source, pendingHoldFirstFrame);
+    }
+
+    private static float GetVideoAudioVolume()
+    {
+        if (MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var settings))
+            return Mathf.Clamp01(settings.GetPar("volume_sound") / 100f);
+        return 1f;
+    }
+
+    private void PlayAppearFallback()
+    {
+        if (currentName != "appear" || currentHeld || appearAudioFallback == null || current.clip.audioTrackCount > 0)
+            return;
+
+        var audio = GetVideoAudioSource(current);
+        audio.clip = appearAudioFallback;
+        audio.volume = GetVideoAudioVolume();
+        audio.mute = false;
+        audio.Play();
+    }
+
+    private static void PlayPreparedClip(VideoPlayer player, bool holdFirstFrame = false)
+    {
+        if (player.audioOutputMode == VideoAudioOutputMode.AudioSource)
+            player.GetTargetAudioSource(0).mute = holdFirstFrame;
+        player.Play();
     }
 
     private void FirstFrame(VideoPlayer source, long frame)
@@ -399,6 +451,7 @@ public sealed class UiLoopVideo : MonoBehaviour
         view.enabled = true;
         ApplyFraming(viewAspect, currentName);
         Release(outgoing);
+        PlayAppearFallback();
     }
 
     private void CancelPending()
@@ -516,6 +569,12 @@ public sealed class UiLoopVideo : MonoBehaviour
         var target = player.targetTexture;
         player.targetTexture = null;
         player.Stop();
+        var audio = player == primary ? primaryAudio : secondaryAudio;
+        if (audio != null && audio.clip != null)
+        {
+            audio.Stop();
+            audio.clip = null;
+        }
         if (target != null)
             retiredTextures.Add((target, Time.frameCount));
     }

@@ -69,6 +69,9 @@ public class SoundManager : MonoBehaviour
         if (handler == null || !handler.TryGetComponent<Button>(out var button) ||
             !button.IsInteractable() || pendingClickButtons.Contains(button)) return;
 
+        var skillSlot = button.GetComponentInParent<ObjHolder>();
+        if (skillSlot != null && skillSlot.filler != null && skillSlot.filler.command == "GET_SKILLS_SELECT") return;
+
         // Let the EventSystem decide whether the release is a click or a cancelled drag.
         button.onClick.AddListener(PlayClick);
         pendingClickButtons.Add(button);

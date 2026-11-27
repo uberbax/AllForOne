@@ -17,15 +17,48 @@ public sealed class TavernDialogue : MonoBehaviour
     [SerializeField, Min(0)] private int roomPrice = 25;
     [SerializeField, Min(0)] private int wilmerPrice = 150;
 
+    [SerializeField] private AudioClip openingVoice;
+    [SerializeField] private AudioClip annaVoice;
+    [SerializeField] private AudioClip rolandVoice;
+    [SerializeField] private AudioClip wilmerVoice;
+    private AudioSource voiceSource;
+
     private string currentLine;
     private string previousLine;
     private string playerReply;
 
-    private void OnDisable() => Close();
+    private void OnEnable() => PlayVoice(openingVoice);
+
+    private void OnDisable()
+    {
+        if (voiceSource != null) voiceSource.Stop();
+        Close();
+    }
+
+    private void PlayVoice(AudioClip clip)
+    {
+        if (clip == null) return;
+        if (voiceSource == null)
+        {
+            voiceSource = gameObject.AddComponent<AudioSource>();
+            voiceSource.playOnAwake = false;
+            voiceSource.spatialBlend = 0f;
+        }
+
+        float volume = 1f;
+        if (MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var settings))
+            volume = Mathf.Clamp01(settings.GetPar("volume_sound") / 100f);
+
+        voiceSource.Stop();
+        voiceSource.clip = clip;
+        voiceSource.volume = volume;
+        voiceSource.Play();
+    }
 
     public void TalkToAnna()
     {
         Begin("Anna");
+        PlayVoice(annaVoice);
         Show("I'm Anna. If you're here for a quiet drink, you've picked the right night. Even the floorboards are behaving.",
             "How's business?", () => Show(
                 "Quiet enough to hear the rain. You look like you've had your share of it. I've got a dry room upstairs, if you'd like a proper rest.",
@@ -35,6 +68,7 @@ public sealed class TavernDialogue : MonoBehaviour
     public void TalkToRoland()
     {
         Begin("Roland");
+        PlayVoice(rolandVoice);
         if (HasJoined(RolandId))
         {
             End("I can't wait for our next adventure. Oathwake is still out there, and so is the road.");
@@ -57,6 +91,7 @@ public sealed class TavernDialogue : MonoBehaviour
     public void TalkToWilmer()
     {
         Begin("Wilmer");
+        PlayVoice(wilmerVoice);
         if (HasJoined(WilmerId))
         {
             End("I'm still in. Here's hoping the next chest is so full we have to carry it out between us.");

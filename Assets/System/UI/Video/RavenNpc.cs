@@ -64,7 +64,7 @@ public sealed class RavenNpc : MonoBehaviour
         }
     }
 
-    public bool ScareIfNear(float previousHeroX, float heroX, float radius)
+    public bool ScareIfNear(float previousHeroX, float heroX, float radius, System.Action onTakeoff = null)
     {
         if (fled || !isActiveAndEnabled || !video.HasAnimation("fly")) return false;
 
@@ -74,7 +74,7 @@ public sealed class RavenNpc : MonoBehaviour
 
         fled = true;
         if (behavior != null) StopCoroutine(behavior);
-        behavior = StartCoroutine(Flee(x >= previousHeroX ? 1f : -1f));
+        behavior = StartCoroutine(Flee(x >= previousHeroX ? 1f : -1f, onTakeoff));
         return true;
     }
 
@@ -97,7 +97,7 @@ public sealed class RavenNpc : MonoBehaviour
         }
     }
 
-    private IEnumerator Flee(float side)
+    private IEnumerator Flee(float side, System.Action onTakeoff)
     {
         video.PlayOnce("fly");
         float deadline = Time.unscaledTime + 2f;
@@ -111,6 +111,7 @@ public sealed class RavenNpc : MonoBehaviour
         transform.localScale = scale;
         if (roadShadow != null) roadShadow.gameObject.SetActive(false);
 
+        onTakeoff?.Invoke();
         const float duration = 1.2f;
         var start = transform.position;
         var displacement = new Vector3(side * 3.8f, 3.2f, 0f);

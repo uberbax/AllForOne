@@ -381,6 +381,12 @@ public class MainCycleDark : MonoBehaviour
     private AudioSource footstepsSource;
     private int footstepsMovementFrame = -1;
 
+    private void TrackNaprigFootsteps(Transform actor)
+    {
+        if (battleUI != null && battleUI.activeInHierarchy && heroes != null && actor.IsChildOf(heroes.transform))
+            footstepsMovementFrame = Time.frameCount;
+    }
+
     private void UpdateFootsteps()
     {
         if (footstepsMovementFrame != Time.frameCount || footstepsClip == null)
@@ -477,6 +483,7 @@ public class MainCycleDark : MonoBehaviour
         StopPrisonMovement();
         SetBattleWalking(false);
         if (SkillExecutor.instance != null) SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
+        if (MainStates.instance != null) MainStates.instance.NaprigApproachMoved -= TrackNaprigFootsteps;
         StopStageCombat();
         HideBattleAnnouncement();
         ResetRavenDialogue();
@@ -815,6 +822,9 @@ public class MainCycleDark : MonoBehaviour
     private CanvasGroup ravenDialogue;
     private Coroutine ravenDialogueRoutine;
     private bool ravenDialogueShown;
+    [SerializeField] private AudioClip ravenTakeoffSound;
+    private bool ravenTakeoffSoundPlayed;
+    private Action ravenTakeoffCallback;
 
     private sealed class BattleHeroMovement
     {
@@ -902,7 +912,7 @@ public class MainCycleDark : MonoBehaviour
             member.Hero.Position = actor.position;
             if (ravenScareDistance <= 0f) continue;
             foreach (var raven in battleRavens)
-                if (raven != null && raven.ScareIfNear(previousX, actor.position.x, ravenScareDistance))
+                if (raven != null && raven.ScareIfNear(previousX, actor.position.x, ravenScareDistance, ravenTakeoffCallback))
                     ShowRavenDialogue();
         }
 
@@ -925,6 +935,13 @@ public class MainCycleDark : MonoBehaviour
     {
         if (border != null && !border.TryGetComponent<UiSolidBorder>(out _))
             border.gameObject.AddComponent<UiSolidBorder>();
+    }
+
+    private void PlayRavenTakeoffSound()
+    {
+        if (ravenTakeoffSoundPlayed) return;
+        ravenTakeoffSoundPlayed = true;
+        SoundManager.instance?.PlayEffect(ravenTakeoffSound);
     }
 
     private void ShowRavenDialogue()
@@ -957,6 +974,7 @@ public class MainCycleDark : MonoBehaviour
         if (ravenDialogueRoutine != null) StopCoroutine(ravenDialogueRoutine);
         ravenDialogueRoutine = null;
         ravenDialogueShown = false;
+        ravenTakeoffSoundPlayed = false;
         if (ravenDialogue != null) ravenDialogue.alpha = 0f;
     }
 
@@ -1175,6 +1193,7 @@ public class MainCycleDark : MonoBehaviour
         ReadBattleEncounterConfig();
         var flock = heroes.transform.Find("Raven Flock");
         battleRavens = flock != null ? flock.GetComponentsInChildren<RavenNpc>(true) : Array.Empty<RavenNpc>();
+        ravenTakeoffCallback ??= PlayRavenTakeoffSound;
         foreach (var raven in battleRavens) raven.ResetBattleFlight();
         ResetRavenDialogue();
         var dialogue = battleUI != null ? battleUI.transform.Find("dialogViewTest") : null;
@@ -1189,6 +1208,8 @@ public class MainCycleDark : MonoBehaviour
         }
         battlePartyStartFrontX = float.NegativeInfinity;
         BeginBattleLootTracking(state);
+        state.NaprigApproachMoved -= TrackNaprigFootsteps;
+        state.NaprigApproachMoved += TrackNaprigFootsteps;
         if (SkillExecutor.instance != null)
         {
             SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;

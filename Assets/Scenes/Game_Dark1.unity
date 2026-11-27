@@ -41884,6 +41884,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &105729323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49182,13 +49189,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
-      propertyPath: source
-      value: 
-      objectReference: {fileID: 519420035}
-    - target: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
       propertyPath: click
       value: 
       objectReference: {fileID: 8300000, guid: 0a928ca2931467f46871f7354b2572b3, type: 3}
+    - target: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 519420035}
     - target: {fileID: 3935155142025776123, guid: 463106023d9c74b4a80e523c25c123f9, type: 3}
       propertyPath: playButtonClicks
       value: 1
@@ -76575,17 +76582,18 @@ MonoBehaviour:
   battleMoveSpeed: 2.3
   battleVideoFacesLeft: 1
   ravenScareDistance: 3.85
+  ravenTakeoffSound: {fileID: 8300000, guid: b4ed0b222a39cd84191d49eb7661b57e, type: 3}
   battleVictoryBanner: {fileID: 2059725021}
   battleVictoryEchoes:
   - {fileID: 1418003946}
   - {fileID: 1291947220}
   - {fileID: 286333209}
-  battleAmbushSound: {fileID: 8300000, guid: df3a2c9c2f1325e4e839e8ae0c7aa8ab, type: 3}
   battleAmbushBanner: {fileID: 1186167401}
   battleAmbushEchoes:
   - {fileID: 360448316}
   - {fileID: 198830556}
   - {fileID: 600433559}
+  battleAmbushSound: {fileID: 8300000, guid: df3a2c9c2f1325e4e839e8ae0c7aa8ab, type: 3}
   battleShadowSprite: {fileID: 21300000, guid: 31c61a9cf3b93024eb8546c024510967, type: 3}
   battlePoint: {fileID: 0}
   playerPos: {fileID: 0}
@@ -84737,20 +84745,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &214550089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214550081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Minimus::PlayMusic
-  musicName: 
-  music: {fileID: 8300000, guid: 6b8ce50076209d64694a21b650dc1d32, type: 3}
 --- !u!224 &214550082
 RectTransform:
   m_ObjectHideFlags: 0
@@ -84912,6 +84906,20 @@ MonoBehaviour:
     y: 0.4
     width: 0.88
     height: 0.5
+--- !u!114 &214550089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214550081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda862f849050c44ca2b4cefbc1e5df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlayMusic
+  musicName: 
+  music: {fileID: 8300000, guid: 6b8ce50076209d64694a21b650dc1d32, type: 3}
 --- !u!1 &214688911
 GameObject:
   m_ObjectHideFlags: 0
@@ -93886,6 +93894,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &241304515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101033,6 +101048,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &259273614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196334,6 +196356,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &505704620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230852,6 +230881,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &591431620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246768,6 +246804,10 @@ MonoBehaviour:
   speakerLabel: {fileID: 509366977}
   roomPrice: 25
   wilmerPrice: 150
+  openingVoice: {fileID: 8300000, guid: da30de0a62f2e90418d9df1731e0b76b, type: 3}
+  annaVoice: {fileID: 8300000, guid: 01dddba28f0d24147acb8466ffba96ca, type: 3}
+  rolandVoice: {fileID: 8300000, guid: 0a410bd55f6caf94d8545a9b2581beb6, type: 3}
+  wilmerVoice: {fileID: 8300000, guid: 0abcdeabe550121479a633a867d8a0cf, type: 3}
 --- !u!114 &633009346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270554,6 +270594,13 @@ MonoBehaviour:
   m_Script: {fileID: 900124380}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ClickSpawnMarker
+  radius: 0.5
+  color:
+    r: 0.2
+    g: 0.8
+    b: 1
+    a: 0.3
+  text: Tier1
 --- !u!114 &692181041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336976,7 +337023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5152638567245083225, guid: 892e5e90d45276549af85a81f1bee786, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 18.349335
+      value: 18.349365
       objectReference: {fileID: 0}
     - target: {fileID: 5152638567245083225, guid: 892e5e90d45276549af85a81f1bee786, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -449652,7 +449699,6 @@ MonoBehaviour:
     - {fileID: 857059466535614692, guid: 5b97b88ef156d5e43a51d3569f3e489c, type: 3}
   sounds:
     m_keys:
-    - basic_melee
     - basic_range
     - axe_skill
     - bow_skill
@@ -449672,8 +449718,9 @@ MonoBehaviour:
     - basic_magic
     - lightning_strike
     - shop_buy
+    - shopkeeper_greeting
+    - smith_greeting
     m_values:
-    - {fileID: 8300000, guid: db3fc47d7c9ab4f49a60cbfebc36b836, type: 3}
     - {fileID: 8300000, guid: 8d3f502a33436ad45868e60e7b2aa5f5, type: 3}
     - {fileID: 8300000, guid: db3fc47d7c9ab4f49a60cbfebc36b836, type: 3}
     - {fileID: 8300000, guid: 8d3f502a33436ad45868e60e7b2aa5f5, type: 3}
@@ -449693,6 +449740,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 8726efdd65e8bc44ba3503904f93e52e, type: 3}
     - {fileID: 8300000, guid: 47d95f9cb585f9c4e94d4fc54e60b225, type: 3}
     - {fileID: 8300000, guid: 7f9ab26cb42b4d24c91df916937fdfe5, type: 3}
+    - {fileID: 8300000, guid: a692de4b682e5d24e8b1ee5477be406f, type: 3}
+    - {fileID: 8300000, guid: ad829dffc64ef66499f85ccd90f62f2a, type: 3}
   heroClasses:
     m_keys:
     - hero_warrior
@@ -627607,6 +627656,7 @@ GameObject:
   - component: {fileID: 1623419896}
   - component: {fileID: 1623419898}
   - component: {fileID: 1623419899}
+  - component: {fileID: 1623419900}
   m_Layer: 5
   m_Name: MARKET
   m_TagString: Untagged
@@ -627688,6 +627738,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
+--- !u!114 &1623419900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623419894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1dd9e749e883246addd3d2584577cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlaySound
+  soundName: shopkeeper_greeting
 --- !u!114 &1623419899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808071,6 +808134,7 @@ GameObject:
   - component: {fileID: 2087058529}
   - component: {fileID: 2087058532}
   - component: {fileID: 2087058533}
+  - component: {fileID: 2087058534}
   m_Layer: 5
   m_Name: FORGE
   m_TagString: Untagged
@@ -808177,6 +808241,19 @@ MonoBehaviour:
   - {fileID: 2108021536}
   - {fileID: 1345821168}
   - {fileID: 1896408637}
+--- !u!114 &2087058534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087058527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1dd9e749e883246addd3d2584577cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Minimus::PlaySound
+  soundName: smith_greeting
 --- !u!114 &2087058533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817548,6 +817625,7 @@ GameObject:
   - component: {fileID: 2113652152}
   - component: {fileID: 2113652153}
   - component: {fileID: 2113652154}
+  - component: {fileID: 2113652155}
   m_Layer: 5
   m_Name: UI_ItemTooltip
   m_TagString: Untagged
@@ -817555,6 +817633,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!223 &2113652155
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113652151}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 0
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 2
+  m_TargetDisplay: 0
 --- !u!224 &2113652152
 RectTransform:
   m_ObjectHideFlags: 0

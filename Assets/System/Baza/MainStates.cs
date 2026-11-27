@@ -2509,6 +2509,7 @@ public class MainStates : MonoBehaviour
     }
     
     public event Action<RObj, RObj, float> ItemReceived;
+    public event Action<Transform> NaprigApproachMoved;
 
     public void AddItem(RObj who, RObj what, bool overIndex = false)
     {
@@ -3826,7 +3827,12 @@ public class MainStates : MonoBehaviour
                     return;
                 }
                 StartCoroutine(FinishNaprig(who, home, onArrived, attackAnimation, action));
-            }, null, useRight: false, ignoreFlip: true);
+            }, null, useRight: false, eachF: actor =>
+            {
+                if (NaprigApproachMoved != null && Time.deltaTime > 0f && actor != null &&
+                    actor.gameObject.activeInHierarchy && who.GetPar("health") > 0f && actor.position != destination)
+                    NaprigApproachMoved.Invoke(actor);
+            }, ignoreFlip: true);
             handedOff = true;
         }
         finally { if (!handedOff) CompleteNaprig(who, action); }
