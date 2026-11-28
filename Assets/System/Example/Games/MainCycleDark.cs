@@ -5,6 +5,7 @@ using EditorAttributes;
 using LayerLab;
 using NavMeshPlus.Extensions;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Diagnostics;
@@ -67,6 +68,10 @@ public class MainCycleDark : MonoBehaviour
     [Header("Embark")]
     public Button embark;
     public GameObject map;
+    [SerializeField] private Slider missionMapExperience;
+    [SerializeField] private TMP_Text missionMapLevel;
+    [SerializeField] private TMP_Text missionMapExperienceText;
+    [SerializeField] private TMP_Text missionMapSkillRunes;
     public GameObject prev;
     
     [Header("Town Back")]
@@ -469,6 +474,7 @@ public class MainCycleDark : MonoBehaviour
         UpdateDemonGuis();
         UpdateBattleWorldInteractions();
         UpdateInventoryDragHighlight();
+        UpdateMissionMapProgress();
         UpdateBattleHeroBars();
         MusicCheck();
         UpdateFootsteps();
@@ -927,6 +933,8 @@ public class MainCycleDark : MonoBehaviour
     private sealed class BattleHeroMovement
     {
         public RObj Hero;
+        public RObj InventoryHero;
+        public bool Participated;
         public UiLoopVideo Video;
         public bool HasWalk;
     }
@@ -1240,6 +1248,7 @@ public class MainCycleDark : MonoBehaviour
 
     private bool stageCombatActive;
     private bool stageCombatPending;
+    private bool stageEncounterHasBoss;
     [SerializeField] private CanvasGroup battleVictoryBanner;
     [SerializeField] private Graphic[] battleVictoryEchoes;
     [SerializeField] private CanvasGroup battleAmbushBanner;
@@ -1276,7 +1285,30 @@ public class MainCycleDark : MonoBehaviour
         StopStageCombat();
         ModelStatistics.instance.SetStatValueForce("battle", 1);
         if (!alliesAlive || enemiesAlive) return;
+        AwardStageExperience(stageEncounterHasBoss ? 100 : 50);
         ShowBattleAnnouncement(battleVictoryBanner, battleVictoryEchoes, hold: 2.7f);
+    }
+
+    private void AwardStageExperience(int amount)
+    {
+        var state = MainStates.instance;
+        foreach (var member in battleMovingHeroes)
+        {
+            if (!member.Participated) continue;
+            state.AddItem(member.InventoryHero, "exp", amount);
+
+            // Keep surviving combat copies current for the next encounter in this run.
+            if (member.Hero.main == null || member.Hero.GetPar("health") <= 0) continue;
+            var savedProgress = member.InventoryHero.upgradePars;
+            var activeProgress = member.Hero.upgradePars;
+            activeProgress["exp"] = savedProgress["exp"];
+            activeProgress["level"] = savedProgress["level"];
+            activeProgress["c_exp"] = savedProgress["c_exp"];
+            activeProgress["max_c_exp"] = savedProgress["max_c_exp"];
+            member.Hero.RecalcPars();
+        }
+
+        state.Save();
     }
 
     private void ShowBattleTutorial()
@@ -1524,7 +1556,7 @@ public class MainCycleDark : MonoBehaviour
             PrepareStageCombat(copy);
             battleMovingHeroes.Add(new BattleHeroMovement
             {
-                Hero = copy, Video = video, HasWalk = video != null && video.HasAnimation("walk")
+                Hero = copy, InventoryHero = hero, Video = video, HasWalk = video != null && video.HasAnimation("walk")
             });
             index++;
         }
@@ -1806,9 +1838,11 @@ public class MainCycleDark : MonoBehaviour
 
         battleEnemyEntrance = null;
         if (battleSpawnedEnemies.Count == 0 || battleInventoryHeroes.Count == 0) yield break;
+        stageEncounterHasBoss = false;
         foreach (var spawned in battleSpawnedEnemies)
         {
             var enemy = spawned.GetComponent<ObjHolder>().obj;
+            if (enemy.dbID == "cultist_boss" || enemy.GetPar("is_boss") > 0) stageEncounterHasBoss = true;
             PrepareStageCombat(enemy);
             BattleEnemyClick.Attach(enemy);
         }
@@ -1816,7 +1850,8 @@ public class MainCycleDark : MonoBehaviour
         foreach (var member in battleMovingHeroes)
         {
             var ally = member.Hero;
-            if (ally.main == null || !ally.main.activeInHierarchy || ally.GetPar("health") <= 0) continue;
+            member.Participated = ally.main != null && ally.main.activeInHierarchy && ally.GetPar("health") > 0;
+            if (!member.Participated) continue;
             state.allMetas[ally.RID] = ally;
             state.awaitUnits[ally.RID] = 1;
         }
@@ -2149,6 +2184,20 @@ public class MainCycleDark : MonoBehaviour
         var legs = rect.Find("legs");
         if (legs != null)
             canvasRect.position += hero.main.transform.position - legs.position;
+    }
+
+    private void UpdateMissionMapProgress()
+    {
+        if (map == null || !map.activeInHierarchy || missionMapExperience == null) return;
+        var state = MainStates.instance;
+        if (state == null || !state.HasMain()) return;
+
+        var player = state.mainPlayer;
+        state.GetMeExpPars(player, out float progress, out float currentExp, out float requiredExp, out _);
+        missionMapExperience.SetValueWithoutNotify(progress);
+        missionMapLevel.SetText("{0:0}", player.GetPar("level"));
+        missionMapExperienceText.SetText("{0:0}/{1:0}", currentExp, requiredExp);
+        missionMapSkillRunes.SetText("{0:0}", state.GetItemsCount("skill_rune"));
     }
 
     public void HandleEmbark()
