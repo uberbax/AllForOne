@@ -390,7 +390,7 @@ public class MainStates : MonoBehaviour
     }
     public void GetMeExpPars(RObj obj, out float rat, out float cr, out float cm, out float level)
     {
-        var cur = obj.upgradePars["exp"];
+        float cur = obj.upgradePars.TryGetValue("exp", out float totalExp) ? Mathf.Max(0f, totalExp) : 0f;
         int l = -1;
         for (int i = 0; i < expCurve.Count; i++)
         {
@@ -743,7 +743,7 @@ public class MainStates : MonoBehaviour
 
 
         var d = gs.GetComponent<UnoSlot>();
-        if (ti == null || (d != null && d.eqNum != ti.dbObj.pars["slot"])) return;
+        if (ti == null || (d != null && !MatchesEquipmentSlot(ti, d))) return;
 
         // The destination inventory can replace ti.owner during the move.
         bool fromEquipment = tf.command == "GET_ITEMS_BY_SLOTS";
@@ -890,6 +890,12 @@ public class MainStates : MonoBehaviour
         return true;
     }
 
+
+    internal static bool MatchesEquipmentSlot(RObj item, UnoSlot slot)
+    {
+        return item?.dbObj != null && item.dbObj.pars.TryGetValue("slot", out var slotNumber) &&
+               slot.eqNum == slotNumber;
+    }
 
     private RObj GetEquipmentOwner(UIfiller filler)
     {

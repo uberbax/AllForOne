@@ -467,6 +467,8 @@ public class MainCycleDark : MonoBehaviour
     private void LateUpdate()
     {
         UpdateDemonGuis();
+        UpdateBattleWorldInteractions();
+        UpdateInventoryDragHighlight();
         UpdateBattleHeroBars();
         MusicCheck();
         UpdateFootsteps();
@@ -527,6 +529,7 @@ public class MainCycleDark : MonoBehaviour
     private void OnDisable()
     {
         if (prisonLiftSource != null) prisonLiftSource.Stop();
+        ClearInventoryDragHighlight();
         footstepsMovementFrame = -1;
         if (footstepsSource != null) footstepsSource.Stop();
         StopPrisonMovement();
@@ -598,6 +601,10 @@ public class MainCycleDark : MonoBehaviour
     {
         if (battleMinimapMarker != null && battleMinimapStart != null)
             battleMinimapMarkerOffset = battleMinimapStart.InverseTransformPoint(battleMinimapMarker.position);
+        inventoryWindow = managment != null ? managment.transform.Find("INVENTORY") : null;
+        inventoryEquipment = inventoryWindow != null ? inventoryWindow.Find("Window/Char")?.GetComponent<UIfiller>() : null;
+        RegisterBattleWorldButtons(heroes);
+        foreach (var background in battleBgs) RegisterBattleWorldButtons(background);
         if (battleLootChest != null) battleLootChest.gameObject.SetActive(false);
         UpdatePrisonControls();
         if (buttonNext != null)
@@ -942,7 +949,7 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
         if ((ravenDialogue != null && ravenDialogue.gameObject.activeInHierarchy && ravenDialogue.alpha > 0f) ||
-            battleEnemyEntrance != null || stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true)
+            BattleEncounterInProgress)
         {
             SetBattleWalking(false);
             return;
@@ -1100,6 +1107,136 @@ public class MainCycleDark : MonoBehaviour
         }
     }
 
+
+    private Transform inventoryWindow;
+    private UIfiller inventoryEquipment;
+    private GameObject previousInventoryDrag;
+    private Image inventoryDragHighlight;
+
+    private void ClearInventoryDragHighlight()
+    {
+        previousInventoryDrag = null;
+        if (inventoryDragHighlight != null && inventoryDragHighlight.gameObject.activeSelf)
+            inventoryDragHighlight.gameObject.SetActive(false);
+    }
+
+    private void UpdateInventoryDragHighlight()
+    {
+        var drag = DragObject.DraggableObject;
+        if (!DragObject.inDrag || drag == null || inventoryEquipment == null ||
+            !inventoryEquipment.isActiveAndEnabled || inventoryEquipment.root == null)
+        {
+            ClearInventoryDragHighlight();
+            return;
+        }
+
+        if (drag != previousInventoryDrag)
+        {
+            ClearInventoryDragHighlight();
+            previousInventoryDrag = drag;
+            ShowInventoryDragHighlight(drag.GetComponent<ObjHolder>());
+        }
+
+        if (inventoryDragHighlight != null && inventoryDragHighlight.gameObject.activeSelf)
+        {
+            float pulse = .5f + .5f * Mathf.Sin(Time.unscaledTime * 9f);
+            inventoryDragHighlight.color = new Color(1f, .79f, .30f, Mathf.Lerp(.58f, 1f, pulse));
+        }
+    }
+
+    private void ShowInventoryDragHighlight(ObjHolder dragged)
+    {
+        var source = dragged != null ? dragged.filler : null;
+        if (source == null || !source.isActiveAndEnabled || source.command != "GET_ITEMS" ||
+            !source.transform.IsChildOf(inventoryWindow) || source.compatibility != inventoryEquipment.compatibility) return;
+
+        foreach (Transform child in inventoryEquipment.root)
+        {
+            if (!child.gameObject.activeInHierarchy || !child.TryGetComponent<UnoSlot>(out var slot) ||
+                !MainStates.MatchesEquipmentSlot(dragged.obj, slot)) continue;
+
+            var frame = child.Find("BackpackFrame/blue")?.GetComponent<Image>();
+            if (frame == null || frame.sprite == null) return;
+            if (inventoryDragHighlight == null)
+            {
+                var overlay = new GameObject("Equip Slot Highlight", typeof(RectTransform), typeof(Image));
+                overlay.layer = child.gameObject.layer;
+                inventoryDragHighlight = overlay.GetComponent<Image>();
+                inventoryDragHighlight.raycastTarget = false;
+                inventoryDragHighlight.fillCenter = false;
+            }
+
+            var rect = inventoryDragHighlight.rectTransform;
+            rect.SetParent(child, false);
+            rect.SetAsLastSibling();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = -Vector2.one * 3f;
+            rect.offsetMax = Vector2.one * 3f;
+            inventoryDragHighlight.sprite = frame.sprite;
+            inventoryDragHighlight.type = frame.type;
+            inventoryDragHighlight.gameObject.SetActive(true);
+            return;
+        }
+    }
+
+    private readonly List<CanvasGroup> battleWorldInteractionGroups = new();
+    private bool battleWorldInteractionsLocked;
+    private bool BattleEncounterInProgress => battleEnemyEntrance != null || stageCombatActive ||
+        stageCombatPending || MainStates.instance?.inBattle == true;
+
+    private void RegisterBattleWorldButtons(GameObject root)
+    {
+        if (root == null) return;
+        foreach (var button in root.GetComponentsInChildren<Button>(true))
+        {
+            // Crypt Inspection already uses its group to track the background sprite's visibility.
+            var target = button.TryGetComponent<CanvasGroup>(out _) ? button.transform.parent.gameObject : button.gameObject;
+            RegisterBattleWorldInteraction(target);
+        }
+    }
+
+    private void RegisterBattleWorldInteraction(GameObject target)
+    {
+        if (!target.TryGetComponent(out CanvasGroup group)) group = target.AddComponent<CanvasGroup>();
+        if (battleWorldInteractionGroups.Contains(group)) return;
+        group.interactable = group.blocksRaycasts = !BattleEncounterInProgress;
+        group.alpha = group.interactable ? 1f : 0f;
+        battleWorldInteractionGroups.Add(group);
+    }
+
+    private void UpdateBattleWorldInteractions()
+    {
+        bool locked = battleUI != null && battleUI.activeInHierarchy && BattleEncounterInProgress;
+        if (locked && !battleWorldInteractionsLocked)
+        {
+            battleUI.transform.Find("UI Crypt Inspection")?.gameObject.SetActive(false);
+            battleUI.transform.Find("UI Amulet Inspection")?.gameObject.SetActive(false);
+            var state = MainStates.instance;
+            if (state != null && battleGroundLoot.Contains(state.curLoot))
+            {
+                if (BattleChest != null) BattleChest.SetActive(false);
+                state.curLoot = null;
+            }
+        }
+        battleWorldInteractionsLocked = locked;
+        float targetAlpha = locked ? 0f : 1f;
+        const float fadeSeconds = .25f;
+        float fadeStep = Time.unscaledDeltaTime / fadeSeconds;
+        for (int i = battleWorldInteractionGroups.Count - 1; i >= 0; i--)
+        {
+            var group = battleWorldInteractionGroups[i];
+            if (group == null)
+            {
+                battleWorldInteractionGroups.RemoveAt(i);
+                continue;
+            }
+
+            if (group.interactable == locked) group.interactable = !locked;
+            if (group.blocksRaycasts == locked) group.blocksRaycasts = !locked;
+            if (group.alpha != targetAlpha) group.alpha = Mathf.MoveTowards(group.alpha, targetAlpha, fadeStep);
+        }
+    }
 
     private bool stageCombatActive;
     private bool stageCombatPending;
@@ -1274,8 +1411,7 @@ public class MainCycleDark : MonoBehaviour
 
     public void ReturnFromBattleToMap()
     {
-        if (battleEntryInProgress || !battleUI.activeInHierarchy || battleEnemyEntrance != null ||
-            stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true) return;
+        if (battleEntryInProgress || !battleUI.activeInHierarchy || BattleEncounterInProgress) return;
 
         battleEntryInProgress = true;
         SetBattleWalking(false);
@@ -1733,10 +1869,12 @@ public class MainCycleDark : MonoBehaviour
         button.targetGraphic = image;
         button.onClick.AddListener(() => OpenBattleLootPouch(inventory));
         battleGroundLoot.Add(inventory);
+        RegisterBattleWorldInteraction(pouch);
     }
 
     private void OpenBattleLootPouch(RObj pouch)
     {
+        if (BattleEncounterInProgress) return;
         var state = MainStates.instance;
         var chest = BattleChest;
         if (state == null || chest == null || pouch.main == null) return;
@@ -1751,6 +1889,7 @@ public class MainCycleDark : MonoBehaviour
 
     public void CollectDisplayedBattleLoot()
     {
+        if (BattleEncounterInProgress) return;
         var state = MainStates.instance;
         var pouch = state?.curLoot;
         if (pouch == null || battleLootChest == null || !battleLootChest.isActiveAndEnabled) return;

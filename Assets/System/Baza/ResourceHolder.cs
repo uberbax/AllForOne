@@ -280,9 +280,10 @@ public class ResourceHolder : MonoBehaviour
             return;
         }
 
-        if (a.param == "real_name")
+        if (a.param == "real_name" && r.dbObj != null &&
+            r.dbObj.parsStr.TryGetValue("realName", out var realName) && !string.IsNullOrWhiteSpace(realName))
         {
-            a.GetComponent<TextMeshProUGUI>().text = r.dbObj.parsStr["realName"];
+            a.GetComponent<TextMeshProUGUI>().text = realName;
             return;
         }
         
@@ -388,6 +389,13 @@ public class ResourceHolder : MonoBehaviour
             return;
         }
         
+        if (a.param == "exp" && a.TryGetComponent(out Slider expBar))
+        {
+            MainStates.instance.GetMeExpPars(r, out float progress, out _, out _, out _);
+            expBar.SetValueWithoutNotify(Mathf.Lerp(expBar.minValue, expBar.maxValue, progress));
+            return;
+        }
+
         if (a.GetComponent<Image>() != null)
         {
             var img = a.GetComponent<Image>();
@@ -455,7 +463,7 @@ public class ResourceHolder : MonoBehaviour
         else if (a.GetComponent<TextMeshProUGUI>() != null)
         {
             var txt = a.GetComponent<TextMeshProUGUI>();
-            if (a.param == "id")
+            if (a.param == "id" || a.param == "real_name")
             {
                 if (r.dynamic != null)
                 {

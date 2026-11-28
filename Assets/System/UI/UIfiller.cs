@@ -13,6 +13,8 @@ public class UIfiller : MonoBehaviour
     [Header("Count")] 
     public TextMeshProUGUI dopText;
     public string dopAdd = "";
+    [SerializeField, Min(-1), Tooltip("Use -1 for the original count, 0 to count occupied fixed slots, or a positive number for a capacity label.")]
+    private int countDisplayCapacity = -1;
     
     [Header("Next Prev")]
     public int lo = -1;
@@ -213,7 +215,17 @@ public class UIfiller : MonoBehaviour
 
         if (dopText != null)
         {
-            dopText.text = dopAdd + res.Count + "/" + t0;
+            int count = res.Count;
+            int capacity = t0;
+            if (countDisplayCapacity >= 0)
+            {
+                capacity = countDisplayCapacity > 0 ? countDisplayCapacity : FixedSlotCount;
+                int slotsToCount = countDisplayCapacity == 0 ? Mathf.Min(count, capacity) : count;
+                count = 0;
+                for (int i = 0; i < slotsToCount; i++)
+                    if (res[i] != null) count++;
+            }
+            dopText.text = dopAdd + count + "/" + capacity;
         }
         
         savedResult = res;
