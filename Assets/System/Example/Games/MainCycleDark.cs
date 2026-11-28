@@ -34,6 +34,9 @@ public class MainCycleDark : MonoBehaviour
     [Header("<color=red>MENU</color>")] 
     [HelpBox("Set this", MessageMode.Warning)]
     public Button start;
+    [SerializeField] private Button newGameButton;
+    [SerializeField] private GameObject storyIntro;
+    private bool startMenuAccepted;
     [HelpBox("Set this", MessageMode.Warning)]
     public GameObject loading;
     public List<GameObject> activateAfterLoading;
@@ -43,11 +46,13 @@ public class MainCycleDark : MonoBehaviour
 
     [Header("Lift")] 
     public List<Transform> demonGuis = new List<Transform>();
+    [SerializeField] private AudioClip[] demonApproachVoices = Array.Empty<AudioClip>();
     [SerializeField, Min(0)] private float demonGuiDistance = 300f;
     [SerializeField, Min(0)] private float demonGuiDistanceHysteresis = 50f;
     public Button goDownPrison;
     public GameObject cages;
     public GameObject lift;
+    [SerializeField] private AudioClip prisonLiftSound;
     public GameObject dynScreen;
     public Transform liftLo;
     public Transform liftHi;
@@ -93,12 +98,14 @@ public class MainCycleDark : MonoBehaviour
         }, () =>
         {
             if (!prisonVisitActive || visit != prisonVisit) return;
+            PlayPrisonLiftSound();
             UtilsControl.Instance.MoveTo(lift.transform, 200f, liftLo.position, () =>
             {
                 if (!prisonVisitActive || visit != prisonVisit) return;
                 UtilsControl.Instance.MoveTo(dynScreen.transform, 200f, dynScreenLo.position, () =>
                 {
                     if (!prisonVisitActive || visit != prisonVisit) return;
+                    if (prisonLiftSource != null) prisonLiftSource.Stop();
                     //particles dust ?
                     door.GetComponent<SpriterAnim>().CrossFade("open", 0);
                     //enable movement
@@ -137,6 +144,28 @@ public class MainCycleDark : MonoBehaviour
     private bool prisonVisitActive;
     private Coroutine prisonExitRoutine;
     private string prisonDoorState;
+    private AudioSource prisonLiftSource;
+
+    private void PlayPrisonLiftSound()
+    {
+        if (prisonLiftSound == null) return;
+
+        float volume = 1f;
+        if (MainStates.instance != null && MainStates.instance.all.TryGetValue("settings", out var settings))
+            volume = Mathf.Clamp01(settings.GetPar("volume_sound"));
+        if (volume <= 0f) return;
+
+        if (prisonLiftSource == null)
+        {
+            prisonLiftSource = lift.AddComponent<AudioSource>();
+            prisonLiftSource.playOnAwake = false;
+            prisonLiftSource.spatialBlend = 0f;
+        }
+
+        prisonLiftSource.clip = prisonLiftSound;
+        prisonLiftSource.volume = volume;
+        prisonLiftSource.Play();
+    }
 
     private void CapturePrisonState()
     {
@@ -156,6 +185,7 @@ public class MainCycleDark : MonoBehaviour
     {
         prisonVisit++;
         prisonVisitActive = false;
+        if (prisonLiftSource != null) prisonLiftSource.Stop();
         canMovePrison = false;
         UpdateDemonGuis();
         UpdatePrisonControls();
@@ -276,8 +306,13 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
 
-        int direction = (prisonNextArrow != null && prisonNextArrow.IsHeld ? 1 : 0) -
-                        (prisonPrevArrow != null && prisonPrevArrow.IsHeld ? 1 : 0);
+        bool moveRight = (prisonNextArrow != null && prisonNextArrow.IsHeld) ||
+                         Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
+                         Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        bool moveLeft = (prisonPrevArrow != null && prisonPrevArrow.IsHeld) ||
+                        Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+                        Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+        int direction = (moveRight ? 1 : 0) - (moveLeft ? 1 : 0);
         var area = cages.transform as RectTransform;
         var characterRect = charLift.transform as RectTransform;
         if (direction == 0 || area == null || characterRect == null)
@@ -440,12 +475,17 @@ public class MainCycleDark : MonoBehaviour
         float characterX = canShow ? area.InverseTransformPoint(charLift.transform.position).x : 0;
         float distance = Mathf.Max(0, demonGuiDistance);
         float hysteresis = Mathf.Max(0, demonGuiDistanceHysteresis);
-        foreach (var gui in demonGuis)
+        for (int i = 0; i < demonGuis.Count; i++)
         {
+            var gui = demonGuis[i];
             if (gui == null) continue;
             bool visible = canShow && Mathf.Abs(area.InverseTransformPoint(gui.position).x - characterX) <=
                 distance + (gui.gameObject.activeSelf ? hysteresis : 0);
-            if (gui.gameObject.activeSelf != visible) gui.gameObject.SetActive(visible);
+            if (gui.gameObject.activeSelf == visible) continue;
+
+            gui.gameObject.SetActive(visible);
+            if (visible && i < demonApproachVoices.Length)
+                SoundManager.instance?.PlayEffect(demonApproachVoices[i]);
         }
     }
 
@@ -478,6 +518,7 @@ public class MainCycleDark : MonoBehaviour
 
     private void OnDisable()
     {
+        if (prisonLiftSource != null) prisonLiftSource.Stop();
         footstepsMovementFrame = -1;
         if (footstepsSource != null) footstepsSource.Stop();
         StopPrisonMovement();
@@ -511,25 +552,40 @@ public class MainCycleDark : MonoBehaviour
         cages.SetActive(false);
     }
 
-    public void DoMenu(bool hasRun)
+    private void DoMenu()
     {
-        if (hasRun)
+        start.onClick.RemoveListener(BeginFromMenu);
+        start.onClick.AddListener(BeginFromMenu);
+        if (newGameButton != null)
         {
-            start.onClick.AddListener( ()=>
-                Transitioner.instance.Simple(loading, activateAfterLoading)
-            );
-        }
-        else
-        {
-            start.onClick.AddListener(() =>
-                {
-                    Transitioner.instance.Simple(loading, activateAfterLoading);
-                }
-            );
+            newGameButton.onClick.RemoveListener(BeginFromMenu);
+            newGameButton.onClick.AddListener(BeginFromMenu);
         }
     }
-    
-    
+
+    private void BeginFromMenu()
+    {
+        if (startMenuAccepted) return;
+        startMenuAccepted = true;
+
+        if (storyIntro == null)
+        {
+            Transitioner.instance.Simple(loading, activateAfterLoading);
+            return;
+        }
+
+        storyIntro.SetActive(true);
+        foreach (var view in activateAfterLoading)
+            view.SetActive(false);
+        loading.SetActive(false);
+    }
+
+    public void FinishStoryIntro()
+    {
+        if (!startMenuAccepted || storyIntro == null || !storyIntro.activeSelf) return;
+        Transitioner.instance.Simple(storyIntro, activateAfterLoading);
+    }
+
     private void Awake()
     {
         if (battleLootChest != null) battleLootChest.gameObject.SetActive(false);
@@ -810,6 +866,7 @@ public class MainCycleDark : MonoBehaviour
     private Coroutine battleEnemyEntrance;
 
     [SerializeField, Min(0)] private float battleMoveSpeed = 2.5f;
+    [SerializeField, Min(0)] private float battleBacktrackDistance = 1.4f;
     [SerializeField] private bool battleVideoFacesLeft = true;
     private readonly List<BattleHeroMovement> battleMovingHeroes = new List<BattleHeroMovement>();
     private bool battleWalking;
@@ -865,6 +922,7 @@ public class MainCycleDark : MonoBehaviour
         if (battleMovementCamera == null || !battleMovementCamera.isActiveAndEnabled)
             battleMovementCamera = Camera.main;
         float delta = direction * battleMoveSpeed * deltaTime;
+        if (direction < 0) delta = Mathf.Max(delta, -battleBacktrackDistance - BattleTravelX);
         if (battleMovementCamera == null) { SetBattleWalking(false); return; }
         if (Mathf.Approximately(delta, 0)) { SetBattleWalking(false); return; }
 
@@ -1178,6 +1236,49 @@ public class MainCycleDark : MonoBehaviour
     }
 
 
+    public void ReturnFromBattleToMap()
+    {
+        if (battleEntryInProgress || !battleUI.activeInHierarchy || battleEnemyEntrance != null ||
+            stageCombatActive || stageCombatPending || MainStates.instance?.inBattle == true) return;
+
+        battleEntryInProgress = true;
+        SetBattleWalking(false);
+        infoBattle.SetActive(false);
+        var mapObjects = new List<GameObject> { map, managment };
+        mapObjects.AddRange(deactivateBattle);
+        var battleObjects = new List<GameObject> { heroes };
+        battleObjects.AddRange(battleBgs);
+
+        Transitioner.instance.Simple(battleUI, mapObjects,
+            end: () => battleEntryInProgress = false,
+            toDeactivate: battleObjects,
+            prepare: ClearBattleStage);
+    }
+
+    private void ClearBattleStage()
+    {
+        StopStageCombat();
+        HideBattleAnnouncement();
+        RestoreBattleCamera();
+        ResetRavenDialogue();
+        foreach (var spawned in battleInventoryHeroes)
+        {
+            if (spawned == null) continue;
+            var oldHolder = spawned.GetComponent<ObjHolder>();
+            if (oldHolder != null && oldHolder.obj != null) RemoveBattleEnemyData(oldHolder.obj);
+            spawned.SetActive(false);
+            Destroy(spawned);
+        }
+        battleInventoryHeroes.Clear();
+        battleMovingHeroes.Clear();
+        battleHeroBars.Clear();
+        battleWalking = false;
+        ClearBattleEnemies();
+        ClearStagedCoffins();
+        ClearBattleLootPouches();
+        StopTrackingBattleLoot();
+    }
+
     private void SpawnInventoryHeroes()
     {
         var state = MainStates.instance;
@@ -1190,27 +1291,12 @@ public class MainCycleDark : MonoBehaviour
             return;
         }
 
-        StopStageCombat();
-        HideBattleAnnouncement();
-        RestoreBattleCamera();
-        foreach (var spawned in battleInventoryHeroes)
-        {
-            if (spawned == null) continue;
-            var oldHolder = spawned.GetComponent<ObjHolder>();
-            if (oldHolder != null && oldHolder.obj != null) RemoveBattleEnemyData(oldHolder.obj);
-            spawned.SetActive(false);
-            Destroy(spawned);
-        }
-        battleInventoryHeroes.Clear();
-        ClearBattleEnemies();
-        ClearStagedCoffins();
-        ClearBattleLootPouches();
+        ClearBattleStage();
         ReadBattleEncounterConfig();
         var flock = heroes.transform.Find("Raven Flock");
         battleRavens = flock != null ? flock.GetComponentsInChildren<RavenNpc>(true) : Array.Empty<RavenNpc>();
         ravenTakeoffCallback ??= PlayRavenTakeoffSound;
         foreach (var raven in battleRavens) raven.ResetBattleFlight();
-        ResetRavenDialogue();
         var dialogue = battleUI != null ? battleUI.transform.Find("dialogViewTest") : null;
         ravenDialogue = null;
         if (dialogue != null)
@@ -1230,8 +1316,6 @@ public class MainCycleDark : MonoBehaviour
             SkillExecutor.instance.StageEnemySummon -= TrySummonStageEnemy;
             SkillExecutor.instance.StageEnemySummon += TrySummonStageEnemy;
         }
-        battleMovingHeroes.Clear();
-        battleWalking = false;
 
         int index = 0;
         int columns = positions.childCount;
@@ -2086,7 +2170,7 @@ public class MainCycleDark : MonoBehaviour
             main = MainStates.instance.mainPlayer;
         }
 
-        DoMenu(succLoad);
+        DoMenu();
 
         main.AddViz("shadow");
         main.AddViz("combat#no:1");
