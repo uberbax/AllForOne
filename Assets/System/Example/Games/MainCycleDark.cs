@@ -125,6 +125,7 @@ public class MainCycleDark : MonoBehaviour
     public GameObject buttonNext;
     public GameObject buttonPrev;
     [SerializeField] private GameObject prisonReturnToTown;
+    [SerializeField] private GameObject prisonFeedWarning;
     
     [SerializeField, Min(0)] private float prisonMoveSpeed = 200f;
     [SerializeField] private bool prisonVideoFacesLeft = true;
@@ -186,6 +187,7 @@ public class MainCycleDark : MonoBehaviour
         prisonVisit++;
         prisonVisitActive = false;
         if (prisonLiftSource != null) prisonLiftSource.Stop();
+        if (prisonFeedWarning != null) prisonFeedWarning.SetActive(false);
         canMovePrison = false;
         UpdateDemonGuis();
         UpdatePrisonControls();
@@ -303,6 +305,12 @@ public class MainCycleDark : MonoBehaviour
             !cages.activeInHierarchy || !charLift.isActiveAndEnabled)
         {
             SetPrisonWalking(false);
+            return;
+        }
+
+        if (prisonFeedWarning != null && prisonFeedWarning.activeInHierarchy)
+        {
+            StopPrisonMovement();
             return;
         }
 
@@ -588,6 +596,8 @@ public class MainCycleDark : MonoBehaviour
 
     private void Awake()
     {
+        if (battleMinimapMarker != null && battleMinimapStart != null)
+            battleMinimapMarkerOffset = battleMinimapStart.InverseTransformPoint(battleMinimapMarker.position);
         if (battleLootChest != null) battleLootChest.gameObject.SetActive(false);
         UpdatePrisonControls();
         if (buttonNext != null)
@@ -728,6 +738,11 @@ public class MainCycleDark : MonoBehaviour
     private readonly List<GameObject> battleInventoryHeroes = new List<GameObject>();
     private readonly List<RObj> battleGroundLoot = new List<RObj>();
     [SerializeField] private GameObject battleMinimap;
+    [SerializeField] private RectTransform battleMinimapMarker;
+    [SerializeField] private RectTransform battleMinimapStart;
+    [SerializeField] private RectTransform battleMinimapEncounter;
+    [SerializeField] private RectTransform battleMinimapBoss;
+    private Vector3 battleMinimapMarkerOffset;
     [SerializeField] private ScrollRect battleItems;
     [SerializeField, Min(0)] private int battleLootSlotLimit;
     [SerializeField] private GameObject[] battleLootExamples = System.Array.Empty<GameObject>();
@@ -770,6 +785,25 @@ public class MainCycleDark : MonoBehaviour
     }
 
     public void ShowBattleMap() => SelectBattleTab(1);
+
+    private void UpdateBattleMinimapMarker(float worldX)
+    {
+        if (battleMinimapMarker == null || battleMinimapStart == null ||
+            battleMinimapEncounter == null || battleMinimapBoss == null) return;
+
+        const float encounterX = 8f;
+        const float bossX = 16f;
+        bool firstSegment = worldX <= encounterX;
+        float progress = firstSegment ? Mathf.InverseLerp(0f, encounterX, worldX) : Mathf.InverseLerp(encounterX, bossX, worldX);
+        var from = firstSegment ? battleMinimapStart : battleMinimapEncounter;
+        var to = firstSegment ? battleMinimapEncounter : battleMinimapBoss;
+
+        float distanceFromNode = Mathf.Min(progress, 1f - progress);
+        float overLine = Mathf.InverseLerp(.2f, .4f, distanceFromNode);
+        var offset = battleMinimapMarkerOffset;
+        offset.y = Mathf.SmoothStep(offset.y, 19f, overLine);
+        battleMinimapMarker.position = Vector3.Lerp(from.position, to.position, progress) + battleMinimapStart.TransformVector(offset);
+    }
 
     public void ShowBattleItems()
     {
@@ -960,6 +994,7 @@ public class MainCycleDark : MonoBehaviour
         }
         battleMovementCamera.transform.position += Vector3.right * delta;
         BattleTravelX += delta;
+        UpdateBattleMinimapMarker(partyFront + delta);
         if (!Mathf.Approximately(delta, 0f)) footstepsMovementFrame = Time.frameCount;
         foreach (var member in battleMovingHeroes)
         {
@@ -1045,6 +1080,7 @@ public class MainCycleDark : MonoBehaviour
             position.x = battleCameraHomeX;
             battleMovementCamera.transform.position = position;
         }
+        if (battleCameraMoved) UpdateBattleMinimapMarker(0f);
         battleCameraMoved = false;
         BattleTravelX = 0f;
     }
