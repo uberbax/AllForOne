@@ -27,6 +27,8 @@ namespace BRATANDRONIKLIB
         [Header("Image and collision contours")]
         [SerializeField] private Image background;
         [SerializeField] private Surface[] surfaces = Array.Empty<Surface>();
+        [Tooltip("Upper edge of foreground art, in image UVs ordered left to right. Rain is hidden below the edge.")]
+        [SerializeField] private Vector2[] foregroundSilhouette = Array.Empty<Vector2>();
         [Header("Rain (in source-image pixels)")]
         [SerializeField, Range(0, 400)] private float dropsPerSecond = 170f;
         [SerializeField] private Vector2 fallSpeed = new Vector2(720, 1050);
@@ -254,8 +256,46 @@ namespace BRATANDRONIKLIB
             }
         }
 
+        private bool IsBehindForeground(Vector2 point, float padding)
+        {
+            float x = Mathf.Max(0, point.x - padding) / _imageSize.x;
+            if (x < foregroundSilhouette[0].x || x > foregroundSilhouette[foregroundSilhouette.Length - 1].x)
+                return false;
+
+            for (int i = 1; i < foregroundSilhouette.Length; i++)
+            {
+                Vector2 next = foregroundSilhouette[i];
+                if (x > next.x) continue;
+
+                Vector2 previous = foregroundSilhouette[i - 1];
+                float y = Mathf.Lerp(previous.y, next.y, Mathf.InverseLerp(previous.x, next.x, x));
+                return point.y <= y * _imageSize.y + padding;
+            }
+            return false;
+        }
+
+        private Vector2 ClipToForegroundEdge(Vector2 visible, Vector2 hidden, float padding)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 midpoint = (visible + hidden) * .5f;
+                if (IsBehindForeground(midpoint, padding)) hidden = midpoint;
+                else visible = midpoint;
+            }
+            return visible;
+        }
+
         private void Streak(VertexHelper vh, Matrix4x4 matrix, Vector2 tail, Vector2 head, float width, float opacity, float brightness = 1f)
         {
+            if (foregroundSilhouette != null && foregroundSilhouette.Length >= 2)
+            {
+                bool headHidden = IsBehindForeground(head, width);
+                bool tailHidden = IsBehindForeground(tail, width);
+                if (headHidden && tailHidden) return;
+                if (headHidden) head = ClipToForegroundEdge(tail, head, width);
+                else if (tailHidden) tail = ClipToForegroundEdge(head, tail, width);
+            }
+
             Vector2 d = head - tail;
             if (d.sqrMagnitude < .00001f) return;
             Vector2 side = new Vector2(-d.y, d.x).normalized * width;

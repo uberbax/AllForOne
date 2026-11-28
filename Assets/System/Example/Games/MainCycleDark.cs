@@ -925,7 +925,8 @@ public class MainCycleDark : MonoBehaviour
             if (battleSpawnedEnemies.Count > 0)
             {
                 SoundManager.instance?.PlayEffect(battleAmbushSound);
-                ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f);
+                ShowBattleAnnouncement(battleAmbushBanner, battleAmbushEchoes, hold: 1.25f,
+                    onFinished: encounter == 0 ? ShowBattleTutorial : null);
                 battleEnemyEntrance = StartCoroutine(PlayBattleEnemyEntrance());
             }
         }
@@ -1013,6 +1014,7 @@ public class MainCycleDark : MonoBehaviour
     [SerializeField] private CanvasGroup battleAmbushBanner;
     [SerializeField] private Graphic[] battleAmbushEchoes;
     [SerializeField] private AudioClip battleAmbushSound;
+    [SerializeField] private GameObject battleTutorial;
     private Coroutine battleAnnouncementRoutine;
 
     private static bool HasLivingStageUnit(List<GameObject> units)
@@ -1046,11 +1048,22 @@ public class MainCycleDark : MonoBehaviour
         ShowBattleAnnouncement(battleVictoryBanner, battleVictoryEchoes, hold: 2.7f);
     }
 
-    private void ShowBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold)
+    private void ShowBattleTutorial()
     {
-        if (banner == null) return;
+        if (battleTutorial == null || !battleUI.activeInHierarchy || !heroes.activeInHierarchy) return;
+        battleTutorial.transform.SetAsLastSibling();
+        battleTutorial.SetActive(true);
+    }
+
+    private void ShowBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold, Action onFinished = null)
+    {
+        if (banner == null)
+        {
+            onFinished?.Invoke();
+            return;
+        }
         HideBattleAnnouncement();
-        battleAnnouncementRoutine = StartCoroutine(AnimateBattleAnnouncement(banner, echoes, hold));
+        battleAnnouncementRoutine = StartCoroutine(AnimateBattleAnnouncement(banner, echoes, hold, onFinished));
     }
 
     private void HideBattleAnnouncement()
@@ -1061,7 +1074,7 @@ public class MainCycleDark : MonoBehaviour
         if (battleAmbushBanner != null) battleAmbushBanner.gameObject.SetActive(false);
     }
 
-    private IEnumerator AnimateBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold)
+    private IEnumerator AnimateBattleAnnouncement(CanvasGroup banner, Graphic[] echoes, float hold, Action onFinished)
     {
         const float fadeIn = .4f;
         const float fadeOut = .65f;
@@ -1082,6 +1095,7 @@ public class MainCycleDark : MonoBehaviour
         }
         if (banner != null) banner.gameObject.SetActive(false);
         battleAnnouncementRoutine = null;
+        if (battleUI.activeInHierarchy) onFinished?.Invoke();
     }
 
     private static void AnimateAnnouncementEchoes(Graphic[] echoes, float elapsed)
@@ -1134,6 +1148,7 @@ public class MainCycleDark : MonoBehaviour
 
     private void StopStageCombat()
     {
+        if (battleTutorial != null) battleTutorial.SetActive(false);
         if (battleEnemyEntrance != null)
         {
             StopCoroutine(battleEnemyEntrance);
@@ -2291,6 +2306,8 @@ public class MainCycleDark : MonoBehaviour
             heroes == null || !heroes.activeInHierarchy)) StopStageCombat();
         if (stageCombatPending)
         {
+            if (battleTutorial != null && (battleTutorial.activeInHierarchy ||
+                (nextBattleEncounter == 1 && battleAmbushBanner != null && battleAmbushBanner.isActiveAndEnabled))) return;
             if (!StageCombatReady()) return;
             stageCombatPending = false;
         }

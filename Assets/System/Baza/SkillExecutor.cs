@@ -613,11 +613,38 @@ public class SkillExecutor : MonoBehaviour
         float manaCost = skill.GetPar("manacost") * (1 + caster.GetPar("mana_reduction") / 100f);
         if (!overCd && caster.GetPar("mana") < manaCost) return ExecReso.NO_MANA;
         if (StageEnemySummon?.Invoke(caster, skill.dbObj.extraPars[0].Key) != true) return ExecReso.NO_TARGETS;
+        StartCoroutine(PlayStageSummonCast(caster));
 
         skill.SetPar("cd", skill.GetPar("cooldown"));
         if (manaCost > 0) caster.ChangePar("mana", -manaCost);
         EventManager.INV("skill_casted", new ArgPass { who = caster, who2 = skill, whats = new List<RObj> { caster } });
         return ExecReso.OK;
+    }
+
+    private IEnumerator PlayStageSummonCast(RObj caster)
+    {
+        if (caster.visMain == null || !caster.visMain.TryGetComponent<UiLoopVideo>(out var video) ||
+            !video.isActiveAndEnabled || !video.HasAnimation("ult")) yield break;
+
+        using var action = UnitActionTracker.Begin(caster);
+        var animator = caster.visuals.TryGetValue("animator", out var view) && view != null
+            ? view.GetComponentInChildren<XDanimator>() : null;
+        if (animator != null) animator.SetState("ult", autoIdle: false);
+        video.Play("ult");
+
+        float deadline = Time.unscaledTime + video.GetAnimationDuration("ult") + 5f;
+        while (IsUltimateParticipantActive(caster) && video != null && video.isActiveAndEnabled)
+        {
+            if (animator != null && animator.prevState != "ult") yield break;
+            if (video.IsAnimationFinished("ult") || Time.unscaledTime >= deadline)
+            {
+                if (animator != null) animator.SetState("idle");
+                else video.Play("idle");
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
     private bool reqAction = false;

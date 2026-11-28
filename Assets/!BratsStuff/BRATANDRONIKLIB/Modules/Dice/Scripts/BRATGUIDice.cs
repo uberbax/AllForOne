@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -26,6 +27,7 @@ public sealed class BRATGUIDice : MonoBehaviour
     [SerializeField] private TMP_Text resultFaces;
     [Tooltip("Минимальное время броска перед показом результата. Ждём физической остановки обоих кубиков; работает при Time.timeScale = 0.")]
     [SerializeField, Min(0.5f)] private float rollDuration = 2.1f;
+    [SerializeField] private UnityEvent onRollStarted = new UnityEvent();
 
     private static readonly Vector3[] FaceNormals =
     { Vector3.up, Vector3.forward, Vector3.right, Vector3.left, Vector3.back, Vector3.down };
@@ -89,6 +91,7 @@ public sealed class BRATGUIDice : MonoBehaviour
         SetGroup(rollGroup, 0, false);
         if (resultGroup != null) resultGroup.alpha = 0;
         _roll = StartCoroutine(AnimateRoll());
+        onRollStarted.Invoke();
     }
 
     public static Quaternion RotationForFace(int value, float yaw)
